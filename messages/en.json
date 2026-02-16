@@ -1,0 +1,197 @@
+{
+	"errors": {
+		"internal-server-error": "Internal server error.",
+		"invalid-form-fields": "Invalid or missing fields.",
+		"too-many-requests": "Too many requests."
+	},
+	"AboutPage": {
+		"meta": {
+			"title": "About the project"
+		},
+		"title": "About the project"
+	},
+	"AppFooter": {
+		"creator": "Austrian Centre for Digital Humanities",
+		"menu": {
+			"guidance": {
+				"label": "Guidance",
+				"items": {
+					"discover": "Discover",
+					"deposit": "Deposit",
+					"guidance": "Guidance",
+					"deposition_resources": "Deposition Resources",
+					"deposition_agreement": "Deposition Agreement",
+					"filenames_formats_metadata": "Filenames, Formats, and Metadata",
+					"faq": "FAQ",
+					"further_guidance": "Further Guidance",
+					"technical_setup": "Technical Setup",
+					"api_access": "API Access"
+				}
+			},
+			"policies": {
+				"label": "Policies",
+				"items": {
+					"collection_policy": "Collection Policy",
+					"preservation_policy": "Preservation Policy",
+					"privacy_policy": "Privacy Policy",
+					"terms_of_use": "Terms of Use"
+				}
+			},
+			"helpdesk": {
+				"label": "Helpdesk",
+				"items": {
+					"description": "ACDH runs a helpdesk offering advice for questions related to various digital humanities topics.",
+					"browse_website": "Browse Wesbite",
+					"search": "Search",
+					"log_in": "Log in"
+				}
+			},
+			"contact_box": {
+				"label": "Contact us!",
+				"description": "Contact us before submitting the data to clarify any open questions, ensure that the data fulfils ARCHE’s requirements and inform us of the planned deposition in good time. Please bear in mind that submission, including curation, can be a lengthy process and allow sufficient time.",
+				"button_label": "Contact",
+				"button_url": "mailto:arche@oeaw.ac.at"
+			}
+		},
+		"navigation": {
+			"items": {
+				"contact": "Contact",
+				"imprint": "Imprint",
+				"contact_us": "Contact us!"
+			},
+			"label": "Secondary"
+		},
+		"navigation-social-media": {
+			"items": {
+				"bluesky": "Bluesky",
+				"instagram": "Instagram",
+				"linkedin": "LinkedIn",
+				"mastodon": "Mastodon",
+				"twitter": "Twitter",
+				"youtube": "YouTube"
+			},
+			"label": "Social media"
+		}
+	},
+	"AppHeader": {
+		"navigation": {
+			"drawer": {
+				"close": "Close navigation menu",
+				"label": "Navigation menu",
+				"open": "Open navigation menu"
+			},
+			"menu": {
+				"discover": {
+					"label": "Discover",
+					"url": "/discover?q=&preferredLang=en&includeBinaries=0&linkNamedEntities=1&page=1&pageSize=10&facets[http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23type][]=https%3A%2F%2Fvocabs.acdh.oeaw.ac.at%2Fschema%23TopCollection&noCache=0"
+				},
+				"deposit": {
+					"label": "Deposit",
+					"url": "#",
+					"items": {
+						"deposition_process": {
+							"label": "Deposition Process",
+							"url": "/deposition-process"
+						},
+						"deposition_agreement": {
+							"label": "Deposition Agreement",
+							"url": "/deposition-agreement"
+						},
+						"filenames_formats_metadata": {
+							"label": "Filenames, Formats, and Metadata",
+							"url": "/filenames-formats-metadata"
+						},
+						"faq": {
+							"label": "FAQ",
+							"url": "/faq"
+						},
+						"further_guidance": {
+							"label": "Further Guidance",
+							"url": "/further-guidance"
+						},
+						"technical_setup": {
+							"label": "Technical Setup",
+							"url": "/technical-setup"
+						},
+						"api_access": {
+							"label": "API Access",
+							"url": "/api-access"
+						}
+					}
+				},
+				"policies": {
+					"label": "Policies",
+					"url": "#",
+					"items": {
+						"collection_policy": {
+							"label": "Collection Policy",
+							"url": "/collection-policy"
+						},
+						"preservation_policy": {
+							"label": "Preservation Policy",
+							"url": "/preservation-policy"
+						},
+						"privacy_policy": {
+							"label": "Privacy Policy",
+							"url": "/privacy-policy"
+						},
+						"terms_of_use": {
+							"label": "Terms of Use",
+							"url": "/terms-of-use"
+						}
+					}
+				},
+				"about_arche": {
+					"label": "About Arche",
+					"url": "/about-arche"
+				}
+			},
+			"hero": {
+				"title": "Discover Resources",
+				"subtitle": "Browse the various resources on ARCHE ",
+				"search": "Search"
+			},
+			"label": "Primary"
+		}
+	},
+	"ColorSchemeSwitcher": {
+		"change-color-scheme": "Change color scheme",
+		"color-schemes": {
+			"dark": "Dark",
+			"light": "Light",
+			"system": "System"
+		}
+	},
+	"Error": {
+		"something-went-wrong": "Something went wrong!",
+		"try-again": "Try again"
+	},
+	"ImprintPage": {
+		"meta": {
+			"title": "Imprint"
+		},
+		"title": "Imprint"
+	},
+	"IndexPage": {
+		"badge": "ACDH frontend team",
+		"lead-in": "This is a starter template built with Next.js 15. It includes internationalisation, dark mode, and end-to-end testing.",
+		"title": "Application template"
+	},
+	"Loading": {
+		"loading": "Loading"
+	},
+	"LocaleLayout": {
+		"skip-to-main-content": "Skip to main content"
+	},
+	"LocaleSwitcher": {
+		"current-locale": "Current language: {locale}",
+		"switch-locale": "Switch locale",
+		"switch-locale-to": "Switch to {locale}"
+	},
+	"NotFoundPage": {
+		"meta": {
+			"title": "Page not found"
+		},
+		"title": "Page not found"
+	}
+}
