@@ -1,6 +1,10 @@
 # app template
 
-template repository for next.js apps.
+ARCHE REACT GUI
+
+## how to update static pages
+
+http://localhost:3000/browser/api/static-content
 
 ## how to run
 
