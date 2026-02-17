@@ -1,11 +1,9 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import { env } from "@/config/env.config";
-import { getStaticPage } from "@/lib/api/static-pages-api";
+import { getStaticPage, getStaticPageFromDisk } from "@/lib/api/static-pages-api";
 import TwTokens from "@/lib/api/TwTokens";
 import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
 
@@ -39,7 +37,8 @@ export default async function FAQPage(props: Readonly<StaticPageProps>): Promise
 	setRequestLocale(locale);
 	const lang = getIntlLanguage(locale);
 
-	const html = await getStaticPage("faq", lang);
+	const cached = await getStaticPageFromDisk("faq", lang);
+	const html = cached ?? (await getStaticPage("faq", lang));
 
 	return (
 		<MainContent className="content-start">

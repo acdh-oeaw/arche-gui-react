@@ -256,8 +256,8 @@ code {
 .cards-container {
 	margin-right: 0 !important;
 	margin-left: 0 !important;
+	padding-top: 50px;
 	padding-right: 0 !important;
-	padding-bottom: 150px;
 	padding-left: 0 !important;
 	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-size: cover;
@@ -327,6 +327,17 @@ details[open] summary .static-acc-title {
 	color: rgb(255, 255, 255, 100%) !important;
 }
 
+/* Ensure static FAQ accordions expand even if Tailwind variants are missing */
+.accordion-static details > div {
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 300ms ease;
+}
+
+.accordion-static details[open] > div {
+	max-height: 60vh;
+}
+
 details p {
 	margin: 0;
 	padding: 12px 16px;
@@ -342,6 +353,10 @@ details p {
 	font-size: 16px;
 	font-family: Lato, Roboto, Helvetica, sans-serif;
 	line-height: normal;
+}
+
+.table-row-acdh-blue td {
+	background-color: #88dbdf;
 }
 
 @layer utilities {

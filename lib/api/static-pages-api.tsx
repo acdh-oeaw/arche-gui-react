@@ -1,5 +1,7 @@
 import { createUrl, request } from "@acdh-oeaw/lib";
 import { notFound } from "next/navigation";
+import { promises as fs } from "fs";
+import { join } from "path";
 
 import { env } from "@/config/env.config";
 import { renderTemplate } from "@/lib/api/render-template";
@@ -28,4 +30,40 @@ export async function getStaticPage(page: string, lang: string): Promise<string>
 
 		throw error;
 	}
+}
+
+export async function getStaticPageFromDisk(
+	page: string,
+	lang: "en" | "de",
+): Promise<string | null> {
+	const filePath = join(process.cwd(), "static-content", lang, `${page}.html`);
+	try {
+		return await fs.readFile(filePath, "utf8");
+	} catch (error) {
+		if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+			return null;
+		}
+		throw error;
+	}
+}
+
+export async function writeStaticPageToDisk(
+	page: string,
+	lang: "en" | "de",
+	html: string,
+): Promise<void> {
+	const dirPath = join(process.cwd(), "static-content", lang);
+	const filePath = join(dirPath, `${page}.html`);
+	await fs.mkdir(dirPath, { recursive: true });
+	await fs.writeFile(filePath, html, "utf8");
+}
+
+export function injectHtmlIntoDiv(html: string, id: string, innerHtml: string): string {
+	const pattern = new RegExp(
+		`<div([^>]*\\s)?id=[\"']${id}[\"']([^>]*)>[\\s\\S]*?<\\/div>`,
+		"i",
+	);
+	const replacement = `<div id="${id}">${innerHtml}</div>`;
+	if (!pattern.test(html)) return html;
+	return html.replace(pattern, replacement);
 }

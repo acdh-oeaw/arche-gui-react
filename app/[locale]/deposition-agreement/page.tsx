@@ -1,11 +1,9 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import { env } from "@/config/env.config";
-import { getStaticPage } from "@/lib/api/static-pages-api";
+import { getStaticPage, getStaticPageFromDisk } from "@/lib/api/static-pages-api";
 import TwTokens from "@/lib/api/TwTokens";
 import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
 
@@ -26,13 +24,13 @@ export async function generateMetadata(
 
 	const metadata: Metadata = {
 		title: t("items.deposition-agreement.title"),
-		description: t("items.depositon-process.description"),
+		description: t("items.deposition-agreement.description"),
 	};
 
 	return metadata;
 }
 
-export default async function DepositionAgreementPage(
+export default async function DepositionAgreementsPage(
 	props: Readonly<StaticPageProps>,
 ): Promise<ReactNode> {
 	const { params } = props;
@@ -41,9 +39,8 @@ export default async function DepositionAgreementPage(
 	setRequestLocale(locale);
 	const lang = getIntlLanguage(locale);
 
-	const t = await getTranslations("ImprintPage");
-
-	const html = await getStaticPage("deposition-agreement", lang);
+	const cached = await getStaticPageFromDisk("deposition-agreement", lang);
+	const html = cached ?? (await getStaticPage("deposition-agreement", lang));
 
 	return (
 		<MainContent className="content-start">

@@ -1,11 +1,9 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
-import { env } from "@/config/env.config";
-import { getStaticPage } from "@/lib/api/static-pages-api";
+import { getStaticPage, getStaticPageFromDisk } from "@/lib/api/static-pages-api";
 import TwTokens from "@/lib/api/TwTokens";
 import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
 
@@ -41,7 +39,8 @@ export default async function FurtherGuidancePage(
 	setRequestLocale(locale);
 	const lang = getIntlLanguage(locale);
 
-	const html = await getStaticPage("further-guidance", lang);
+	const cached = await getStaticPageFromDisk("further-guidance", lang);
+	const html = cached ?? (await getStaticPage("further-guidance", lang));
 
 	return (
 		<MainContent className="content-start">

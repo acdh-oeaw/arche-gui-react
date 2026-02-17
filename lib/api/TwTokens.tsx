@@ -3,23 +3,30 @@ export default function TwTokens() {
 		<div
 			className="
       btn-arche-blue mission-container static-pages p span ul li
-      static-page static-pages-list code col-span-1 col-span-2 col-span-3
-      col-span-4 col-span-5 col-span-6 col-span-12 col-span-full col-start-2 my-12 mt-[30px] mt-[50px] mt-[100px] mb-[100px] flex grid h-4
-      h-5 w-4 w-5 w-full max-w-none grid-cols-1
+      static-page static-pages-list code table-hover table-row-acdhBlue accordion-static
+      group cursor-pointer select-none transition-colors open:bg-blue-50 open:text-white [&::-webkit-details-marker]:hidden
+      overflow-hidden max-h-0 open:max-h-[60vh] transition-[max-height] duration-300
+      transition-transform group-open:rotate-180
+      col-span-1 col-span-2 col-span-3 col-span-4 col-span-5 col-span-6 col-span-12 col-span-full col-start-2 my-12 mt-[30px] mt-[50px] mt-[100px] mb-[100px]
+      flex grid table h-4 h-5 w-4
+			w-5
+			w-full
+			max-w-none
+			grid-cols-1
 			grid-cols-2
 			grid-cols-3
 			grid-cols-4
 			grid-cols-5
 			grid-cols-6
-			grid-cols-7
-      grid-cols-8 grid-cols-9 grid-cols-10 grid-cols-11
-      grid-cols-12
-			justify-center
-			gap-4
+      grid-cols-7 grid-cols-8 grid-cols-9 grid-cols-10
+      grid-cols-11
+			grid-cols-12
+			justify-center gap-4
 			gap-6
 			gap-8
-      bg-white
+			bg-white
       p-[24px]
+      text-end
       sm:col-span-1
       sm:col-span-2
       sm:col-span-3
