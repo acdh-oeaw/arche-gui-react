@@ -3,9 +3,12 @@ export default function TwTokens() {
 		<div
 			className="
       btn-arche-blue mission-container static-pages p span ul li
-      static-page static-pages-list col-span-1 col-span-2 col-span-3 col-span-4
-      col-span-5 col-span-6 col-span-12 col-span-full col-start-2 my-12 mt-[30px] mt-[50px] mt-[100px] mb-[100px] flex grid h-4 w-4
-      w-full max-w-none grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4
+      static-page static-pages-list code col-span-1 col-span-2 col-span-3
+      col-span-4 col-span-5 col-span-6 col-span-12 col-span-full col-start-2 my-12 mt-[30px] mt-[50px] mt-[100px] mb-[100px] flex grid h-4
+      h-5 w-4 w-5 w-full max-w-none grid-cols-1
+			grid-cols-2
+			grid-cols-3
+			grid-cols-4
 			grid-cols-5
 			grid-cols-6
 			grid-cols-7

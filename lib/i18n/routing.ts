@@ -22,6 +22,10 @@ export const routing = defineRouting({
 	localePrefix,
 	locales,
 	pathnames: {
+		"/": {
+			"en-GB": "/",
+			"de-AT": "/",
+		},
 		"/about-arche": {
 			"en-GB": "/about-arche",
 			"de-AT": "/ueber-arche",
@@ -50,6 +54,27 @@ export const routing = defineRouting({
 		"/technical-setup": {
 			"en-GB": "/technical-setup",
 			"de-AT": "/technischer-aufbau",
+		},
+
+		"/api-access": {
+			"en-GB": "/api-access",
+			"de-AT": "/api-zugriff",
+		},
+		"/collection-policy": {
+			"en-GB": "/collection-policy",
+			"de-AT": "/sammlungsstrategie",
+		},
+		"/preservation-policy": {
+			"en-GB": "/preservation-policy",
+			"de-AT": "/konservierungsrichtlinien",
+		},
+		"/privacy-policy": {
+			"en-GB": "/privacy-policy",
+			"de-AT": "/datenschutzbestimmungen",
+		},
+		"/terms-of-use": {
+			"en-GB": "/terms-of-use",
+			"de-AT": "/nutzungsbedingungen",
 		},
 
 		"/imprint": {

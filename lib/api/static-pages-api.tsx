@@ -1,9 +1,8 @@
-import { createUrl, createUrlSearchParams, request } from "@acdh-oeaw/lib";
+import { createUrl, request } from "@acdh-oeaw/lib";
 import { notFound } from "next/navigation";
 
 import { env } from "@/config/env.config";
 import { renderTemplate } from "@/lib/api/render-template";
-import type { IntlLocale } from "@/lib/i18n/locales";
 import { isHttpError } from "@/lib/server/errors";
 
 function createApiUrl(page: string, lang: string): URL {

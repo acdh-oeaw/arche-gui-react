@@ -166,6 +166,73 @@
 		"something-went-wrong": "Something went wrong!",
 		"try-again": "Try again"
 	},
+	"StaticPages": {
+		"items": {
+			"depositon-process": {
+				"title": "Deposition Process",
+				"url": "/deposition-process",
+				"description": "Learn more about data submission"
+			},
+			"deposition-agreement": {
+				"title": "Depositon Agreement",
+				"url": "/deposition-agreement",
+				"description": "Legal agreement between ARCHE and depositors",
+				"pdf": "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/DepositionAgreement/ARCHE_DepositionAgreement.pdf"
+			},
+			"filenames-formats-metadata": {
+				"title": "Filenames, Formats, and Metadata",
+				"url": "/filenames-formats-metadata",
+				"description": "Prepare data correctly"
+			},
+			"faq": {
+				"title": "FAQ",
+				"url": "/faq",
+				"description": "Answers to frequently asked questions and practical tips for depositors"
+			},
+			"further-guidance": {
+				"title": "Further Guidance",
+				"url": "/further-guidance",
+				"description": "For consolidation"
+			},
+			"technical-setup": {
+				"title": "Technical Setup",
+				"url": "/technical-setup",
+				"description": "Software components, client libraries, dissemination services and storage procedures"
+			},
+			"api-access": {
+				"title": "API Access",
+				"url": "/api-access",
+				"description": "Interfaces for programmatic search and query of ARCHE data"
+			},
+			"collection-policy": {
+				"title": "Collection Policy",
+				"url": "/collection-policy",
+				"description": "Scope of collections, evaluation, and storage duration",
+				"pdf": "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/CollectionPolicy/ARCHE_CollectionPolicy.pdf"
+			},
+			"preservation-policy": {
+				"title": "Preservation Policy",
+				"url": "/preservation-policy",
+				"description": "Archiving, maintenance and risk management",
+				"pdf": "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/PreservationPolicy/ARCHE_PreservationPolicy.pdf"
+			},
+			"privacy-policy": {
+				"title": "Privacy Policy",
+				"url": "/privacy-policy",
+				"description": "Protective measures for personal data"
+			},
+			"terms-of-use": {
+				"title": "Terms of use",
+				"url": "/terms-of-use",
+				"description": "Conditions for the deposit, access, and use of data"
+			},
+			"about-arche": {
+				"title": "About ARCHE",
+				"url": "/about-arche",
+				"description": "Learn more about our services"
+			}
+		}
+	},
 	"ImprintPage": {
 		"meta": {
 			"title": "Imprint"

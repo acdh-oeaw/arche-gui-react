@@ -19,10 +19,11 @@
 
 body {
 	color: var(--color-arche-gray);
+	font-weight: 400;
 	font-style: normal;
-	font-size: 16px;
+	font-size: 1rem;
 	font-family: Lato, Roboto, Helvetica, sans-serif !important;
-	line-height: 20px;
+	line-height: 1.5rem;
 }
 
 a {
@@ -63,10 +64,11 @@ p,
 span {
 	margin-bottom: 1rem;
 	color: rgb(102, 102, 102, 100%);
+	font-weight: 400;
 	font-style: normal;
-	font-size: 16px;
+	font-size: 1rem;
 	font-family: Lato, Roboto, Helvetica, sans-serif;
-	line-height: 25px;
+	line-height: 1.5rem;
 	overflow-wrap: break-word;
 }
 
@@ -84,6 +86,12 @@ input::placeholder {
 	opacity: 30%;
 
 	/* Ensures full opacity */
+}
+
+code {
+	color: rgb(196, 14, 111);
+	font-size: 0.875rem;
+	overflow-wrap: break-word;
 }
 
 .static-pages-list li {

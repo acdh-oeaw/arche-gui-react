@@ -8,12 +8,13 @@ export const proxy: NextProxy = composeMiddleware(csrfMiddlware, i18nMiddlware);
 
 export const config: ProxyConfig = {
 	matcher: [
+		"/",
 		/**
 		 * Next.js does not support arbitrary expressions for `matcher`.
 		 *
 		 * @see https://github.com/vercel/next.js/issues/56398
 		 */
-		"/((?!api|_next|.*\\..*).*)",
+		"/((?!api/|_next|.*\\..*).*)",
 		"/api/:path*",
 	],
 };

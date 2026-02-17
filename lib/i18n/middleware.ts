@@ -7,7 +7,8 @@ import type { Middleware } from "@/lib/server/compose-middlewares";
 const intlMiddleware = createI18nMiddleware(routing);
 
 export const middleware: Middleware = function middleware(request, response) {
-	if (!request.nextUrl.pathname.startsWith("/api")) {
+	/* we have to change it to /api/ because we have a static page url for /api-access and then this rule blocks this static page url... */
+	if (!request.nextUrl.pathname.startsWith("/api/")) {
 		const response = intlMiddleware(request);
 
 		if (request.method !== "GET") {

@@ -166,6 +166,73 @@
 		"something-went-wrong": "Etwas ist schief gelaufen!",
 		"try-again": "Erneut versuchen"
 	},
+	"StaticPages": {
+		"items": {
+			"depositon-process": {
+				"title": "Ressourcen einreichen",
+				"url": "/einreichungsprozess",
+				"description": "Erfahren Sie mehr über die Dateneinreichung"
+			},
+			"deposition-agreement": {
+				"title": "Datenübergabevertrag",
+				"url": "/datenuebergabevertrag",
+				"description": "Rechtliche Vereinbarung zwischen ARCHE und Datengebenden",
+				"pdf": "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/DepositionAgreement/ARCHE_Datenuebergabevertrag.pdf"
+			},
+			"filenames-formats-metadata": {
+				"title": "Dateinamen, Formate und Metadaten",
+				"url": "/dateinamen-formate-metadaten",
+				"description": "Daten richtig vorbereiten"
+			},
+			"faq": {
+				"title": "FAQ",
+				"url": "/faq-de",
+				"description": "Antworten auf häufig gestellte Fragen und Praxishinweise für Datengebende"
+			},
+			"further-guidance": {
+				"title": "Weiterführende Informationen",
+				"url": "/weiterfuehrende-informationen",
+				"description": "Zur Vertiefung"
+			},
+			"technical-setup": {
+				"title": "Technischer Aufbau (nur EN)",
+				"url": "technischer-aufbau",
+				"description": "Softwarekomponenten, Client-Bibliotheken, Verbreitungsservices und Speicherverfahren"
+			},
+			"api-access": {
+				"title": "API-Zugriff (nur EN)",
+				"url": "/api-zugriff",
+				"description": "Schnittstellen für die programmgesteuerte Suche und Abfrage der ARCHE-Daten"
+			},
+			"collection-policy": {
+				"title": "Sammlungsstrategie",
+				"url": "/sammlungsstrategie",
+				"description": "Sammlungsbereich, Evaluation und Speicherdauer",
+				"pdf": "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/CollectionPolicy/ARCHE_Sammlungsstrategie.pdf"
+			},
+			"preservation-policy": {
+				"title": "Konservierungsrichtlinien",
+				"url": "/konservierungsrichtlinien",
+				"description": "Archivierung, Wartung und Risikomanagement",
+				"pdf": "https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/PreservationPolicy/ARCHE_Konservierungsrichtlinen.pdf"
+			},
+			"privacy-policy": {
+				"title": "Datenschutzbestimmungen",
+				"url": "/datenschutzbestimmungen",
+				"description": "Schutzmaßnahmen für personenbezogene Daten"
+			},
+			"terms-of-use": {
+				"title": "Nutzungsbedingungen",
+				"url": "/nutzungsbedingungen",
+				"description": "Bedingungen für die Hinterlegung, den Zugang und die Verwendung von Daten"
+			},
+			"about-arche": {
+				"title": "Über ARCHE",
+				"url": "/ueber-arche",
+				"description": "Erfahren Sie mehr über unsere Services"
+			}
+		}
+	},
 	"ImprintPage": {
 		"meta": {
 			"title": "Impressum"
