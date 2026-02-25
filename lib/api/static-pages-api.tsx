@@ -67,3 +67,77 @@ export function injectHtmlIntoDiv(html: string, id: string, innerHtml: string): 
 	if (!pattern.test(html)) return html;
 	return html.replace(pattern, replacement);
 }
+
+type CollectionItem = {
+	title: string;
+	description: string;
+	identifier: string;
+};
+
+function normalizeWhitespace(value: string): string {
+	return value.replace(/\s+/g, " ").trim();
+}
+
+function truncateText(value: string, maxLength: number): string {
+	if (value.length <= maxLength) return value;
+	const truncated = value.slice(0, maxLength).trimEnd();
+	return `${truncated}…`;
+}
+
+function escapeHtml(value: string): string {
+	return value
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll('"', "&quot;")
+		.replaceAll("'", "&#39;");
+}
+
+/**
+ * Render a simple carousel HTML from the "topcollections" JSON payload.
+ * Expected input shape: { [id: string]: { title, description, identifier, ... } }
+ */
+export function renderCollectionsCarousel(
+	data: Record<string, CollectionItem>,
+	options?: { imageBaseUrl?: string; descriptionMaxLength?: number },
+): string {
+	const imageBaseUrl = options?.imageBaseUrl ?? "https://example.com/";
+	const descriptionMaxLength = options?.descriptionMaxLength ?? 150;
+	const items = Object.entries(data).map(([id, item]) => ({
+		id,
+		...item,
+	}));
+
+	const cards = items
+		.map((item) => {
+			const title = escapeHtml(item.title ?? "");
+			const description = escapeHtml(
+				truncateText(normalizeWhitespace(item.description ?? ""), descriptionMaxLength),
+			);
+			const href = escapeHtml(item.identifier ?? "#");
+			const cardId = escapeHtml(item.id);
+			const imgSrc = escapeHtml(`${imageBaseUrl}${item.id}`);
+
+			return `
+<article class="collection-card" data-collection-id="${cardId}">
+  <div class="collection-card-media">
+    <img class="collection-card-image" src="${imgSrc}" alt="${title}" loading="lazy" />
+  </div>
+  <div class="collection-card-body">
+    <h3 class="collection-card-title">${title}</h3>
+    <p class="collection-card-description">${description}</p>
+    <a class="collection-card-link" href="${href}">More</a>
+  </div>
+</article>`;
+		})
+		.join("");
+
+	return `
+<div class="collections-carousel" data-carousel>
+  <button class="collections-carousel-btn" data-carousel="prev" aria-label="Previous">‹</button>
+  <div class="collections-carousel-track" data-carousel="track">
+    ${cards}
+  </div>
+  <button class="collections-carousel-btn" data-carousel="next" aria-label="Next">›</button>
+</div>`;
+}

@@ -47,6 +47,7 @@ const result = createEnv({
 			const schema = v.object({
 				NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
 				NEXT_PUBLIC_GITHUB_STATIC_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_ARCHE_THUMBNAIL_URL: v.pipe(v.string(), v.url()),
 				NEXT_PUBLIC_BOTS: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 				NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: v.optional(v.pipe(v.string(), v.nonEmpty())),
 				NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: v.pipe(v.string(), v.url()),
@@ -82,6 +83,7 @@ const result = createEnv({
 		CI: process.env.CI,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
 		NEXT_PUBLIC_GITHUB_STATIC_URL: process.env.NEXT_PUBLIC_GITHUB_STATIC_URL,
+		NEXT_PUBLIC_ARCHE_THUMBNAIL_URL: process.env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,
 		NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
 		NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL: process.env.NEXT_PUBLIC_IMPRINT_SERVICE_BASE_URL,

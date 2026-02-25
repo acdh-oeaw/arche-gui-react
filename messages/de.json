@@ -230,6 +230,11 @@
 				"title": "Über ARCHE",
 				"url": "/ueber-arche",
 				"description": "Erfahren Sie mehr über unsere Services"
+			},
+			"home": {
+				"title": "ARCHE",
+				"url": "/",
+				"description": "ARCHE"
 			}
 		}
 	},

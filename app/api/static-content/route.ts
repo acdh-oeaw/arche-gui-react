@@ -1,12 +1,16 @@
+import { createUrl } from "@acdh-oeaw/lib";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { env } from "@/config/env.config";
 import {
 	getStaticPage,
 	injectHtmlIntoDiv,
+	renderCollectionsCarousel,
 	writeStaticPageToDisk,
 } from "@/lib/api/static-pages-api";
 
 const BASE_API_URL = "https://arche-curation.acdh-dev.oeaw.ac.at/browser/api";
+const ARCHE_CORE_API = "https://arche-curation.acdh-dev.oeaw.ac.at/api";
 const PAGES = [
 	"deposition-process",
 	"deposition-agreement",
@@ -20,10 +24,18 @@ const PAGES = [
 	"privacy-policy",
 	"terms-of-use",
 	"about-arche",
+	"home",
 ] as const;
 const LANGS = ["en", "de"] as const;
 
 type Lang = (typeof LANGS)[number];
+
+function createThumbnailUrl(id: string): URL {
+	return createUrl({
+		baseUrl: env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL,
+		pathname: `?id=${ARCHE_CORE_API}/${id}&width=350`,
+	});
+}
 
 /* It fetches the tables inside the static content */
 async function fetchText(url: string): Promise<string> {
@@ -32,6 +44,20 @@ async function fetchText(url: string): Promise<string> {
 		throw new Error(`Request failed with status ${response.status}`);
 	}
 	return response.text();
+}
+
+async function fetchJson<T>(url: string): Promise<T> {
+	const response = await fetch(url, { cache: "no-store" });
+	if (!response.ok) {
+		throw new Error(`Request failed with status ${response.status}`);
+	}
+	return response.json() as Promise<T>;
+}
+
+interface CollectionItem {
+	title: string;
+	description: string;
+	identifier: string;
 }
 
 async function buildAndSave(page: string, lang: Lang): Promise<void> {
@@ -45,6 +71,22 @@ async function buildAndSave(page: string, lang: Lang): Promise<void> {
 
 		let merged = injectHtmlIntoDiv(staticHtml, "metadata-table", metadataTable);
 		merged = injectHtmlIntoDiv(merged, "filenames-formats-dynamic-table", formatsTable);
+
+		await writeStaticPageToDisk(page, lang, merged);
+		return;
+	}
+
+	if (page === "home") {
+		const [staticHtml, collections] = await Promise.all([
+			getStaticPage(page, lang),
+			fetchJson<Record<string, CollectionItem>>(`${BASE_API_URL}/topcollections/10/${lang}`),
+		]);
+		// src="https://arche-thumbnails.acdh.oeaw.ac.at?id=https://arche.acdh.oeaw.ac.at/api/937837&width=350"
+		const carousel = renderCollectionsCarousel(collections, {
+			imageBaseUrl: createThumbnailUrl("1989"),
+			descriptionMaxLength: 50,
+		});
+		const merged = injectHtmlIntoDiv(staticHtml, "collections-container", carousel);
 
 		await writeStaticPageToDisk(page, lang, merged);
 		return;

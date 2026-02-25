@@ -91,31 +91,31 @@
 					"items": {
 						"deposition_process": {
 							"label": "Deposition Process",
-							"url": "/deposition-process"
+							"url": "/browser/deposition-process"
 						},
 						"deposition_agreement": {
 							"label": "Deposition Agreement",
-							"url": "/deposition-agreement"
+							"url": "/browser/deposition-agreement"
 						},
 						"filenames_formats_metadata": {
 							"label": "Filenames, Formats, and Metadata",
-							"url": "/filenames-formats-metadata"
+							"url": "/browser/filenames-formats-metadata"
 						},
 						"faq": {
 							"label": "FAQ",
-							"url": "/faq"
+							"url": "/browser/faq"
 						},
 						"further_guidance": {
 							"label": "Further Guidance",
-							"url": "/further-guidance"
+							"url": "/browser/further-guidance"
 						},
 						"technical_setup": {
 							"label": "Technical Setup",
-							"url": "/technical-setup"
+							"url": "/browser/technical-setup"
 						},
 						"api_access": {
 							"label": "API Access",
-							"url": "/api-access"
+							"url": "/browser/api-access"
 						}
 					}
 				},
@@ -125,25 +125,25 @@
 					"items": {
 						"collection_policy": {
 							"label": "Collection Policy",
-							"url": "/collection-policy"
+							"url": "/browser/collection-policy"
 						},
 						"preservation_policy": {
 							"label": "Preservation Policy",
-							"url": "/preservation-policy"
+							"url": "/browser/preservation-policy"
 						},
 						"privacy_policy": {
 							"label": "Privacy Policy",
-							"url": "/privacy-policy"
+							"url": "/browser/privacy-policy"
 						},
 						"terms_of_use": {
 							"label": "Terms of Use",
-							"url": "/terms-of-use"
+							"url": "/browser/terms-of-use"
 						}
 					}
 				},
 				"about_arche": {
 					"label": "About Arche",
-					"url": "/about-arche"
+					"url": "/browser/about-arche"
 				}
 			},
 			"hero": {
@@ -230,6 +230,11 @@
 				"title": "About ARCHE",
 				"url": "/about-arche",
 				"description": "Learn more about our services"
+			},
+			"home": {
+				"title": "ARCHE",
+				"url": "/",
+				"description": "ARCHE"
 			}
 		}
 	},
