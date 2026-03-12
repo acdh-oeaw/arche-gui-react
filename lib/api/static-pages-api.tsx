@@ -99,9 +99,12 @@ function escapeHtml(value: string): string {
  */
 export function renderCollectionsCarousel(
 	data: Record<string, CollectionItem>,
-	options?: { imageBaseUrl?: string; descriptionMaxLength?: number },
+	options?: {
+		getImageUrl?: (id: string) => string | URL;
+		descriptionMaxLength?: number;
+	},
 ): string {
-	const imageBaseUrl = options?.imageBaseUrl ?? "https://example.com/";
+	const getImageUrl = options?.getImageUrl;
 	const descriptionMaxLength = options?.descriptionMaxLength ?? 150;
 	const items = Object.entries(data).map(([id, item]) => ({
 		id,
@@ -112,11 +115,15 @@ export function renderCollectionsCarousel(
 		.map((item) => {
 			const title = escapeHtml(item.title ?? "");
 			const description = escapeHtml(
-				truncateText(normalizeWhitespace(item.description ?? ""), descriptionMaxLength),
+				descriptionMaxLength > 0
+					? truncateText(normalizeWhitespace(item.description ?? ""), descriptionMaxLength)
+					: normalizeWhitespace(item.description ?? ""),
 			);
 			const href = escapeHtml(item.identifier ?? "#");
 			const cardId = escapeHtml(item.id);
-			const imgSrc = escapeHtml(`${imageBaseUrl}${item.id}`);
+			const imgSrc = escapeHtml(
+				String(getImageUrl ? getImageUrl(item.id) : `https://example.com/${item.id}`),
+			);
 
 			return `
 <article class="collection-card" data-collection-id="${cardId}">

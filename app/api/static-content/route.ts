@@ -31,10 +31,12 @@ const LANGS = ["en", "de"] as const;
 type Lang = (typeof LANGS)[number];
 
 function createThumbnailUrl(id: string): URL {
-	return createUrl({
+	const url = createUrl({
 		baseUrl: env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL,
-		pathname: `?id=${ARCHE_CORE_API}/${id}&width=350`,
 	});
+	url.searchParams.set("id", `${ARCHE_CORE_API}/${id}`);
+	url.searchParams.set("width", "350");
+	return url;
 }
 
 /* It fetches the tables inside the static content */
@@ -83,8 +85,8 @@ async function buildAndSave(page: string, lang: Lang): Promise<void> {
 		]);
 		// src="https://arche-thumbnails.acdh.oeaw.ac.at?id=https://arche.acdh.oeaw.ac.at/api/937837&width=350"
 		const carousel = renderCollectionsCarousel(collections, {
-			imageBaseUrl: createThumbnailUrl("1989"),
-			descriptionMaxLength: 50,
+			getImageUrl: createThumbnailUrl,
+			descriptionMaxLength: 0,
 		});
 		const merged = injectHtmlIntoDiv(staticHtml, "collections-container", carousel);
 
