@@ -46,6 +46,7 @@ const result = createEnv({
 		public(environment) {
 			const schema = v.object({
 				NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_ARCHE_SYMFONY_API: v.optional(v.pipe(v.string(), v.url())),
 				NEXT_PUBLIC_GITHUB_STATIC_URL: v.pipe(v.string(), v.url()),
 				NEXT_PUBLIC_ARCHE_THUMBNAIL_URL: v.pipe(v.string(), v.url()),
 				NEXT_PUBLIC_BOTS: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
@@ -82,6 +83,7 @@ const result = createEnv({
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
 		CI: process.env.CI,
 		NEXT_PUBLIC_APP_BASE_URL: process.env.NEXT_PUBLIC_APP_BASE_URL,
+		NEXT_PUBLIC_ARCHE_SYMFONY_API: process.env.NEXT_PUBLIC_ARCHE_SYMFONY_API,
 		NEXT_PUBLIC_GITHUB_STATIC_URL: process.env.NEXT_PUBLIC_GITHUB_STATIC_URL,
 		NEXT_PUBLIC_ARCHE_THUMBNAIL_URL: process.env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL,
 		NEXT_PUBLIC_BOTS: process.env.NEXT_PUBLIC_BOTS,

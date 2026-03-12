@@ -119,8 +119,8 @@ export function renderCollectionsCarousel(
 					? truncateText(normalizeWhitespace(item.description ?? ""), descriptionMaxLength)
 					: normalizeWhitespace(item.description ?? ""),
 			);
-			const href = escapeHtml(item.identifier ?? "#");
 			const cardId = escapeHtml(item.id);
+			const href = escapeHtml(`/browser/metadata/${item.id}`);
 			const imgSrc = escapeHtml(
 				String(getImageUrl ? getImageUrl(item.id) : `https://example.com/${item.id}`),
 			);
