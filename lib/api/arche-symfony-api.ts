@@ -1,69 +1,33 @@
+import { createUrl, request } from "@acdh-oeaw/lib";
+import { notFound } from "next/navigation";
+
 import { env } from "@/config/env.config";
+import { isHttpError } from "@/lib/server/errors";
 
-export class ArcheSymfonyApiError extends Error {
-	name = "ArcheSymfonyApiError" as const;
-
-	constructor(
-		message: string,
-		public readonly status: number,
-	) {
-		super(message);
-	}
-}
-
-function createMetadataUrl(id: string): URL {
+function createApiUrl(id: string, page: string, lang: string): URL {
 	const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
-	if (baseUrl == null || baseUrl.length === 0) {
-		throw new ArcheSymfonyApiError("NEXT_PUBLIC_ARCHE_SYMFONY_API is not configured.", 500);
-	}
-
-	const normalizedId = id.replace(/^\/+|\/+$/g, "");
-	const url = new URL(baseUrl);
+	const url = createUrl({ baseUrl });
 	const basePath = url.pathname.replace(/\/+$/, "");
-	url.pathname = `${basePath}/${encodeURIComponent(normalizedId)}/metadata`;
+	const pathSegments = [page, id, lang].map((segment) => {
+		return encodeURIComponent(segment.replace(/^\/+|\/+$/g, ""));
+	});
+	url.pathname = `${basePath}/${pathSegments.join("/")}`;
 
 	return url;
 }
 
-export interface ArcheMetadataPayload {
-	content: string;
-	contentType: string;
-	sourceUrl: string;
-}
-
-export async function getArcheMetadataById(id: string): Promise<ArcheMetadataPayload> {
-	const normalizedId = id.trim();
-	if (normalizedId.length === 0) {
-		throw new ArcheSymfonyApiError("Metadata id is required.", 400);
-	}
-
-	const url = createMetadataUrl(normalizedId);
-	console.warn("[arche-symfony-api] Fetch URL", { url: String(url) });
-	let response: Response;
+export async function getData(id: string, page: string, lang: string): Promise<unknown> {
 	try {
-		response = await fetch(url, { cache: "no-store" });
+		const apiUrl = createApiUrl(id, page, lang);
+		console.warn("[arche-symfony-api] Fetch URL", { url: String(apiUrl) });
+		const apiData = await request(apiUrl, { responseType: "json" });
+
+		return apiData;
 	} catch (error) {
-		console.error("[arche-symfony-api] Network error", { url: String(url), error });
-		throw new ArcheSymfonyApiError("Failed to reach ARCHE API.", 502);
-	}
+		if (isHttpError(error) && error.response.status === 404) {
+			notFound();
+		}
 
-	if (!response.ok) {
-		const bodySnippet = (await response.text()).slice(0, 300);
-		console.error("[arche-symfony-api] Upstream error", {
-			url: String(url),
-			status: response.status,
-			bodySnippet,
-		});
-		throw new ArcheSymfonyApiError(
-			`ARCHE API request failed with status ${String(response.status)}.`,
-			response.status,
-		);
+		throw error;
 	}
-
-	const content = await response.text();
-	return {
-		content,
-		contentType: response.headers.get("content-type") ?? "",
-		sourceUrl: String(url),
-	};
 }
