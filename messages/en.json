@@ -91,31 +91,31 @@
 					"items": {
 						"deposition_process": {
 							"label": "Deposition Process",
-							"url": "/browser/deposition-process"
+							"url": "/deposition-process"
 						},
 						"deposition_agreement": {
 							"label": "Deposition Agreement",
-							"url": "/browser/deposition-agreement"
+							"url": "/deposition-agreement"
 						},
 						"filenames_formats_metadata": {
 							"label": "Filenames, Formats, and Metadata",
-							"url": "/browser/filenames-formats-metadata"
+							"url": "/filenames-formats-metadata"
 						},
 						"faq": {
 							"label": "FAQ",
-							"url": "/browser/faq"
+							"url": "/faq"
 						},
 						"further_guidance": {
 							"label": "Further Guidance",
-							"url": "/browser/further-guidance"
+							"url": "/further-guidance"
 						},
 						"technical_setup": {
 							"label": "Technical Setup",
-							"url": "/browser/technical-setup"
+							"url": "/technical-setup"
 						},
 						"api_access": {
 							"label": "API Access",
-							"url": "/browser/api-access"
+							"url": "/api-access"
 						}
 					}
 				},
@@ -125,25 +125,25 @@
 					"items": {
 						"collection_policy": {
 							"label": "Collection Policy",
-							"url": "/browser/collection-policy"
+							"url": "/collection-policy"
 						},
 						"preservation_policy": {
 							"label": "Preservation Policy",
-							"url": "/browser/preservation-policy"
+							"url": "/preservation-policy"
 						},
 						"privacy_policy": {
 							"label": "Privacy Policy",
-							"url": "/browser/privacy-policy"
+							"url": "/privacy-policy"
 						},
 						"terms_of_use": {
 							"label": "Terms of Use",
-							"url": "/browser/terms-of-use"
+							"url": "/terms-of-use"
 						}
 					}
 				},
 				"about_arche": {
 					"label": "About Arche",
-					"url": "/browser/about-arche"
+					"url": "/about-arche"
 				}
 			},
 			"hero": {

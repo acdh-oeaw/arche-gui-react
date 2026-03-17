@@ -1,10 +1,10 @@
 import { createUrl, request } from "@acdh-oeaw/lib";
-import { notFound } from "next/navigation";
 import { promises as fs } from "fs";
+import { notFound } from "next/navigation";
 import { join } from "path";
 
 import { env } from "@/config/env.config";
-import { renderTemplate } from "@/lib/api/render-template";
+import { renderTemplate } from "@/lib/helpers/render-template";
 import { isHttpError } from "@/lib/server/errors";
 
 function createApiUrl(page: string, lang: string): URL {
@@ -59,20 +59,17 @@ export async function writeStaticPageToDisk(
 }
 
 export function injectHtmlIntoDiv(html: string, id: string, innerHtml: string): string {
-	const pattern = new RegExp(
-		`<div([^>]*\\s)?id=[\"']${id}[\"']([^>]*)>[\\s\\S]*?<\\/div>`,
-		"i",
-	);
+	const pattern = new RegExp(`<div([^>]*\\s)?id=[\"']${id}[\"']([^>]*)>[\\s\\S]*?<\\/div>`, "i");
 	const replacement = `<div id="${id}">${innerHtml}</div>`;
 	if (!pattern.test(html)) return html;
 	return html.replace(pattern, replacement);
 }
 
-type CollectionItem = {
+interface CollectionItem {
 	title: string;
 	description: string;
 	identifier: string;
-};
+}
 
 function normalizeWhitespace(value: string): string {
 	return value.replace(/\s+/g, " ").trim();
@@ -106,10 +103,12 @@ export function renderCollectionsCarousel(
 ): string {
 	const getImageUrl = options?.getImageUrl;
 	const descriptionMaxLength = options?.descriptionMaxLength ?? 150;
-	const items = Object.entries(data).map(([id, item]) => ({
-		id,
-		...item,
-	}));
+	const items = Object.entries(data).map(([id, item]) => {
+		return {
+			id,
+			...item,
+		};
+	});
 
 	const cards = items
 		.map((item) => {

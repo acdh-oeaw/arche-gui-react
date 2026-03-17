@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import type { Metadata as ParsedMetadata } from "@/lib/Objects/metadata";
+import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 import { BasicView } from "./basic/basic-view";
 import { OldResourceView } from "./old-resource/old-resource-view";
@@ -12,7 +12,6 @@ import { PublicationView } from "./publication/publication-view";
 
 interface MetadataViewProps {
 	metadata: ParsedMetadata;
-	rawData: unknown;
 }
 
 function extractTypeLabel(type: string | null): string {
@@ -25,7 +24,7 @@ function extractTypeLabel(type: string | null): string {
 	return separatorIndex >= 0 ? type.slice(separatorIndex + 1) : type;
 }
 
-function renderByType(typeLabel: string, metadata: ParsedMetadata, rawData: unknown): ReactNode {
+function renderByType(typeLabel: string, metadata: ParsedMetadata): ReactNode {
 	const normalizedType = typeLabel.toLowerCase();
 
 	switch (normalizedType) {
@@ -42,12 +41,12 @@ function renderByType(typeLabel: string, metadata: ParsedMetadata, rawData: unkn
 		case "oldresource":
 			return <OldResourceView metadata={metadata} />;
 		default:
-			return <BasicView metadata={metadata} rawData={rawData} />;
+			return <BasicView metadata={metadata} />;
 	}
 }
 
 export function MetadataView(props: Readonly<MetadataViewProps>): ReactNode {
-	const { metadata, rawData } = props;
+	const { metadata } = props;
 	const acdhType = metadata.getAcdhType() ?? "";
 	const typeLabel = extractTypeLabel(acdhType);
 
@@ -56,7 +55,7 @@ export function MetadataView(props: Readonly<MetadataViewProps>): ReactNode {
 			<p>
 				{"Type:"} {typeLabel.length > 0 ? typeLabel : "Unknown"}
 			</p>
-			{renderByType(typeLabel, metadata, rawData)}
+			{renderByType(typeLabel, metadata)}
 		</section>
 	);
 }

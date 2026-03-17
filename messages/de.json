@@ -91,31 +91,31 @@
 					"items": {
 						"deposition_process": {
 							"label": "Ressourcen einreichen",
-							"url": "browser/de/einreichungsprozess"
+							"url": "/einreichungsprozess"
 						},
 						"deposition_agreement": {
 							"label": "Datenübergabevertrag",
-							"url": "/browser/de/datenuebergabevertrag"
+							"url": "/datenuebergabevertrag"
 						},
 						"filenames_formats_metadata": {
 							"label": "Dateinamen, Formate und Metadaten",
-							"url": "/browser/de/dateinamen-formate-metadaten"
+							"url": "/dateinamen-formate-metadaten"
 						},
 						"faq": {
 							"label": "FAQ",
-							"url": "/browser/de/faq-de"
+							"url": "/faq-de"
 						},
 						"further_guidance": {
 							"label": "Weiterführende Informationen",
-							"url": "/browser/de/weiterfuehrende-informationen"
+							"url": "/weiterfuehrende-informationen"
 						},
 						"technical_setup": {
 							"label": "Technischer Aufbau",
-							"url": "/browser/de/technischer-aufbau"
+							"url": "/technischer-aufbau"
 						},
 						"api_access": {
 							"label": "API-Zugriff",
-							"url": "/browser/de/api-zugriff"
+							"url": "/api-zugriff"
 						}
 					}
 				},
@@ -125,25 +125,25 @@
 					"items": {
 						"collection_policy": {
 							"label": "Sammlungsstrategie",
-							"url": "/browser/de/sammlungsstrategie"
+							"url": "/sammlungsstrategie"
 						},
 						"preservation_policy": {
 							"label": "Konservierungsrichtlinien",
-							"url": "/browser/de/konservierungsrichtlinien"
+							"url": "/konservierungsrichtlinien"
 						},
 						"privacy_policy": {
 							"label": "Datenschutzbestimmungen",
-							"url": "/browser/de/datenschutzbestimmungen"
+							"url": "/datenschutzbestimmungen"
 						},
 						"terms_of_use": {
 							"label": "Nutzungsbedingungen",
-							"url": "/browser/de/nutzungsbedingungen"
+							"url": "/nutzungsbedingungen"
 						}
 					}
 				},
 				"about_arche": {
 					"label": "Über ARCHE",
-					"url": "/browser/de/ueber-arche"
+					"url": "/ueber-arche"
 				}
 			},
 			"hero": {

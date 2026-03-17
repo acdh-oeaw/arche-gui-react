@@ -2,6 +2,7 @@ import { createUrl, request } from "@acdh-oeaw/lib";
 import { notFound } from "next/navigation";
 
 import { env } from "@/config/env.config";
+import { Metadata } from "@/lib/objects/metadata";
 import { isHttpError } from "@/lib/server/errors";
 
 function createApiUrl(id: string, page: string, lang: string): URL {
@@ -16,12 +17,11 @@ function createApiUrl(id: string, page: string, lang: string): URL {
 	return url;
 }
 
-export async function getData(id: string, page: string, lang: string): Promise<unknown> {
+export async function getJsonData(id: string, page: string, lang: string): Promise<unknown> {
 	try {
 		const apiUrl = createApiUrl(id, page, lang);
-		console.warn("[arche-symfony-api] Fetch URL", { url: String(apiUrl) });
+		//console.warn("[arche-symfony-api] Fetch URL", { url: String(apiUrl) });
 		const apiData = await request(apiUrl, { responseType: "json" });
-
 		return apiData;
 	} catch (error) {
 		if (isHttpError(error) && error.response.status === 404) {
@@ -30,4 +30,9 @@ export async function getData(id: string, page: string, lang: string): Promise<u
 
 		throw error;
 	}
+}
+
+export async function getData(id: string, page: string, lang: string): Promise<Metadata> {
+	const jsonData = await getJsonData(id, page, lang);
+	return new Metadata(jsonData as JSON, lang);
 }

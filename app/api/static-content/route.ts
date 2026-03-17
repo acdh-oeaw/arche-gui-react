@@ -9,23 +9,23 @@ import {
 	writeStaticPageToDisk,
 } from "@/lib/api/static-pages-api";
 
-const BASE_API_URL = "https://arche-curation.acdh-dev.oeaw.ac.at/browser/api";
-const ARCHE_CORE_API = "https://arche-curation.acdh-dev.oeaw.ac.at/api";
-const PAGES = [
-	"deposition-process",
-	"deposition-agreement",
-	"filenames-formats-metadata",
-	"faq",
-	"further-guidance",
-	"technical-setup",
-	"api-access",
-	"collection-policy",
-	"preservation-policy",
-	"privacy-policy",
-	"terms-of-use",
-	"about-arche",
-	"home",
-] as const;
+const baseApiUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
+if (baseApiUrl == null || baseApiUrl.length === 0) {
+	throw new Error("NEXT_PUBLIC_ARCHE_SYMFONY_API is not configured.");
+}
+const BASE_API_URL = baseApiUrl.replace(/\/+$/, "");
+
+const ARCHE_CORE_API = env.ARCHE_CORE_API as string;
+
+const PAGES = (env.STATIC_CONTENT_PAGES as string)
+	.split(",")
+	.map((page) => {
+		return page.trim();
+	})
+	.filter((page) => {
+		return page.length > 0;
+	});
+
 const LANGS = ["en", "de"] as const;
 
 type Lang = (typeof LANGS)[number];
@@ -43,7 +43,7 @@ function createThumbnailUrl(id: string): URL {
 async function fetchText(url: string): Promise<string> {
 	const response = await fetch(url, { cache: "no-store" });
 	if (!response.ok) {
-		throw new Error(`Request failed with status ${response.status}`);
+		throw new Error(`Request failed with status ${String(response.status)}`);
 	}
 	return response.text();
 }
@@ -51,7 +51,7 @@ async function fetchText(url: string): Promise<string> {
 async function fetchJson<T>(url: string): Promise<T> {
 	const response = await fetch(url, { cache: "no-store" });
 	if (!response.ok) {
-		throw new Error(`Request failed with status ${response.status}`);
+		throw new Error(`Request failed with status ${String(response.status)}`);
 	}
 	return response.json() as Promise<T>;
 }
@@ -104,8 +104,7 @@ export async function GET(request: NextRequest) {
 	const pageParam = searchParams.get("page");
 	const langs: Array<Lang> =
 		langParam && LANGS.includes(langParam as Lang) ? [langParam as Lang] : [...LANGS];
-	const pages =
-		pageParam && PAGES.includes(pageParam as (typeof PAGES)[number]) ? [pageParam] : [...PAGES];
+	const pages = pageParam && PAGES.includes(pageParam) ? [pageParam] : [...PAGES];
 
 	const results = await Promise.allSettled(
 		pages.flatMap((page) => {

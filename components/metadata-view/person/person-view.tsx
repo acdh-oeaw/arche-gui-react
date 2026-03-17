@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import type { Metadata as ParsedMetadata } from "@/lib/Objects/metadata";
+import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface PersonViewProps {
 	metadata: ParsedMetadata;

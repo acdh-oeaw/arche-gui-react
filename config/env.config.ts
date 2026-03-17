@@ -25,10 +25,12 @@ const result = createEnv({
 		},
 		private(environment) {
 			const schema = v.object({
+				ARCHE_CORE_API: v.pipe(v.string(), v.url()),
 				BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 				BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 				CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
 				NEXT_RUNTIME: v.optional(v.picklist(["edge", "nodejs"])),
+				STATIC_CONTENT_PAGES: v.pipe(v.string(), v.nonEmpty()),
 			});
 
 			const result = v.safeParse(schema, environment);
@@ -79,6 +81,7 @@ const result = createEnv({
 		},
 	},
 	environment: {
+		ARCHE_CORE_API: process.env.ARCHE_CORE_API,
 		BUILD_MODE: process.env.BUILD_MODE,
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
 		CI: process.env.CI,
@@ -94,6 +97,7 @@ const result = createEnv({
 		NEXT_PUBLIC_REDMINE_ID: process.env.NEXT_PUBLIC_REDMINE_ID,
 		NEXT_RUNTIME: process.env.NEXT_RUNTIME,
 		NODE_ENV: process.env.NODE_ENV,
+		STATIC_CONTENT_PAGES: process.env.STATIC_CONTENT_PAGES,
 	},
 	validation: v.parse(
 		v.optional(v.picklist(["disabled", "enabled", "public"]), "enabled"),
