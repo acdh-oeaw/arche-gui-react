@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
+import { CitationBlock } from "@/components/metadata-view/default-blocks/citation-block";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
+import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface BasicViewProps {
@@ -25,13 +27,14 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							<div>Available Date</div>
 							<div>type</div>
 						</div>
-						<div>
-							<TitleBlock metadata={metadata}></TitleBlock>
-						</div>
-						<div>Title</div>
-						<div>alterntive title</div>
 
-						<div>Citation</div>
+						<TitleBlock metadata={metadata}></TitleBlock>
+
+						<CitationBlock
+							citationBaseUrl={env.NEXT_PUBLIC_CITATION_URL}
+							identifier={metadata.getAcdhIdentifier()}
+							language={language}
+						/>
 
 						<div>Summary component</div>
 						<div>

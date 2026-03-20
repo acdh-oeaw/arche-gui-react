@@ -15,9 +15,9 @@ if (baseApiUrl == null || baseApiUrl.length === 0) {
 }
 const BASE_API_URL = baseApiUrl.replace(/\/+$/, "");
 
-const ARCHE_CORE_API = env.ARCHE_CORE_API as string;
+const NEXT_PUBLIC_ARCHE_CORE_API = env.NEXT_PUBLIC_ARCHE_CORE_API as string;
 
-const PAGES = (env.STATIC_CONTENT_PAGES as string)
+const PAGES = (env.NEXT_PUBLIC_STATIC_CONTENT_PAGES as string)
 	.split(",")
 	.map((page) => {
 		return page.trim();
@@ -34,7 +34,7 @@ function createThumbnailUrl(id: string): URL {
 	const url = createUrl({
 		baseUrl: env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL,
 	});
-	url.searchParams.set("id", `${ARCHE_CORE_API}/${id}`);
+	url.searchParams.set("id", `${NEXT_PUBLIC_ARCHE_CORE_API}/${id}`);
 	url.searchParams.set("width", "350");
 	return url;
 }
