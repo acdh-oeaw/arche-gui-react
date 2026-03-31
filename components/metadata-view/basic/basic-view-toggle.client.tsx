@@ -1,19 +1,26 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo, useState } from "react";
 
-import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/breadcrumb-block";
+import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/BreadcrumbBlock";
 
 interface BasicViewToggleProps {
-	children: ReactNode;
+	basicContent: ReactNode;
 	expertData: Record<string, unknown>;
 	id: string;
 	language: string;
+	sideContent?: ReactNode;
 }
 
 interface ExpertRow {
 	property: string;
-	value: string;
+	valueText: string;
+	valueParts: Array<{
+		text: string;
+		href?: string;
+		isExternal?: boolean;
+	}>;
 }
 
 type SortKey = "property" | "value";
@@ -36,28 +43,133 @@ function toText(value: unknown): string {
 	}
 }
 
-function toRows(data: Record<string, unknown>): Array<ExpertRow> {
-	return Object.entries(data).flatMap(([property, value]) => {
-		if (Array.isArray(value)) {
-			return value.map((entry) => {
-				return {
-					property,
-					value: toText(entry),
-				};
-			});
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readString(value: unknown): string | null {
+	if (value == null) return null;
+	if (typeof value === "string") {
+		const trimmed = value.trim();
+		return trimmed.length > 0 ? trimmed : null;
+	}
+	if (typeof value === "number" || typeof value === "boolean") {
+		return String(value);
+	}
+	return null;
+}
+
+function isUrl(value: string): boolean {
+	return /^https?:\/\//i.test(value);
+}
+
+function toExpertValue(value: unknown): Omit<ExpertRow, "property"> {
+	if (Array.isArray(value) && value.length > 0) {
+		// Nested arrays are flattened before this function; fallback to first item if encountered.
+		return toExpertValue(value[0]);
+	}
+
+	if (isRecord(value)) {
+		const type = readString(value.type);
+		const id = readString(value.id);
+		const title = readString(value.title);
+		const rawValue = readString(value.value);
+		const externalUrl = readString(value.externalUrl);
+
+		if (type === "REL" && id != null) {
+			return {
+				valueText: title ?? rawValue ?? id,
+				valueParts: [
+					{
+						text: title ?? rawValue ?? id,
+						href: `/metadata/${encodeURIComponent(id)}`,
+					},
+				],
+			};
 		}
 
-		return [
-			{
-				property,
-				value: toText(value),
-			},
-		];
+		if (externalUrl != null && isUrl(externalUrl)) {
+			return {
+				valueText: rawValue ?? title ?? externalUrl,
+				valueParts: [
+					{
+						text: rawValue ?? title ?? externalUrl,
+						href: externalUrl,
+						isExternal: true,
+					},
+				],
+			};
+		}
+
+		const urlCandidate = rawValue ?? title ?? id;
+		if (urlCandidate != null && isUrl(urlCandidate)) {
+			return {
+				valueText: urlCandidate,
+				valueParts: [
+					{
+						text: urlCandidate,
+						href: urlCandidate,
+						isExternal: true,
+					},
+				],
+			};
+		}
+
+		return {
+			valueText: title ?? rawValue ?? id ?? toText(value),
+			valueParts: [{ text: title ?? rawValue ?? id ?? toText(value) }],
+		};
+	}
+
+	const textValue = toText(value);
+	if (isUrl(textValue)) {
+		return {
+			valueText: textValue,
+			valueParts: [
+				{
+					text: textValue,
+					href: textValue,
+					isExternal: true,
+				},
+			],
+		};
+	}
+
+	return { valueText: textValue, valueParts: [{ text: textValue }] };
+}
+
+function flattenValues(value: unknown): Array<unknown> {
+	if (Array.isArray(value)) {
+		return value.flatMap((entry) => {
+			return flattenValues(entry);
+		});
+	}
+	return [value];
+}
+
+function toRows(data: Record<string, unknown>): Array<ExpertRow> {
+	return Object.entries(data).map(([property, value]) => {
+		const entries = flattenValues(value).map((entry) => {
+			return toExpertValue(entry);
+		});
+
+		return {
+			property,
+			valueText: entries
+				.map((entry) => {
+					return entry.valueText;
+				})
+				.filter(Boolean)
+				.join(", "),
+			valueParts: entries.flatMap((entry) => {
+				return entry.valueParts;
+			}),
+		};
 	});
 }
 
 export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNode {
-	const { children, expertData, id, language } = props;
+	const { basicContent, expertData, id, language, sideContent } = props;
 
 	const [isExpertView, setIsExpertView] = useState(false);
 	const [query, setQuery] = useState("");
@@ -70,6 +182,8 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 		return toRows(expertData);
 	}, [expertData]);
 
+	const t = useTranslations("AppContent");
+
 	const filteredRows = useMemo<Array<ExpertRow>>(() => {
 		const normalizedQuery = query.trim().toLowerCase();
 
@@ -79,13 +193,13 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 				: rows.filter((row) => {
 						return (
 							row.property.toLowerCase().includes(normalizedQuery) ||
-							row.value.toLowerCase().includes(normalizedQuery)
+							row.valueText.toLowerCase().includes(normalizedQuery)
 						);
 					});
 
 		return [...visibleRows].sort((a, b) => {
-			const left = sortKey === "property" ? a.property : a.value;
-			const right = sortKey === "property" ? b.property : b.value;
+			const left = sortKey === "property" ? a.property : a.valueText;
+			const right = sortKey === "property" ? b.property : b.valueText;
 			const result = left.localeCompare(right, undefined, { sensitivity: "base" });
 			return sortDirection === "asc" ? result : -result;
 		});
@@ -120,134 +234,174 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 		<>
 			<section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
 				<div className="lg:col-span-12">
-					<BreadcrumbBlock id={id} language={language} />
-					<button
-						className="inline-flex items-center rounded border border-[#e1e1e1] px-3 py-2 text-small font-medium"
-						onClick={() => {
-							setIsExpertView((current) => {
-								return !current;
-							});
-						}}
-						type="button"
-					>
-						{isExpertView ? "Basic view" : "Expert view"}
-					</button>
+					<div className="flex flex-wrap items-center justify-between gap-3">
+						<BreadcrumbBlock id={id} language={language} />
+						<button
+							className="btn-arche-blue inline-flex items-center"
+							onClick={() => {
+								setIsExpertView((current) => {
+									return !current;
+								});
+							}}
+							type="button"
+						>
+							{isExpertView ? t("metaview.basic_view") : t("metaview.expert_view")}
+						</button>
+					</div>
 				</div>
 				<div className="lg:col-span-12">{"HAS NEW VERSIOn"}</div>
 			</section>
 
-			<div className={isExpertView ? "hidden" : "block"} id="metadata-content">
-				{children}
-			</div>
+			<section
+				className={isExpertView ? "hidden" : "grid grid-cols-1 gap-6 p-6 lg:grid-cols-12"}
+				id="metadata-content"
+			>
+				<div className={sideContent != null ? "lg:col-span-9" : "lg:col-span-12"}>{basicContent}</div>
+				{sideContent != null ? <aside className="space-y-3 lg:col-span-3">{sideContent}</aside> : null}
+			</section>
 
 			<section
-				className={isExpertView ? "grid grid-cols-1 gap-6 lg:grid-cols-12" : "hidden"}
+				className={isExpertView ? "grid grid-cols-1 gap-6 p-6 lg:grid-cols-12" : "hidden"}
 				id="expert-content"
 			>
-				<div className="space-y-4 rounded-[12px] border border-[#e1e1e1] bg-white p-4 lg:col-span-12">
-					<input
-						className="w-full rounded border border-[#e1e1e1] p-2"
-						onChange={(event) => {
-							setQuery(event.currentTarget.value);
-							setCurrentPage(1);
-						}}
-						placeholder="Search..."
-						type="search"
-						value={query}
-					/>
-					<div className="flex items-center justify-between gap-3">
-						<div className="text-small">{`Results: ${String(filteredRows.length)}`}</div>
-						<label className="inline-flex items-center gap-2 text-small">
-							{"Rows per page"}
-							<select
-								className="rounded border border-[#e1e1e1] px-2 py-1"
-								onChange={(event) => {
-									setPageSize(
-										Number(event.currentTarget.value) as (typeof PAGE_SIZE_OPTIONS)[number],
-									);
-									setCurrentPage(1);
-								}}
-								value={pageSize}
-							>
-								{PAGE_SIZE_OPTIONS.map((option) => {
-									return (
-										<option key={option} value={option}>
-											{option}
-										</option>
-									);
-								})}
-							</select>
-						</label>
-					</div>
+				<div
+					className={`space-y-4 rounded-[12px] border border-[#e1e1e1] bg-white p-4 ${
+						sideContent != null ? "lg:col-span-9" : "lg:col-span-12"
+					}`}
+				>
+					<div className="basic-inside-content-div">
+						<div className="expert-dt-wrapper">
+							<h4 className="expert-view-title">{t("metaview.expert_view")}</h4>
+							<div className="expert-table-controls">
+								<label className="expert-page-size-label inline-flex items-center gap-2 text-small">
+									{t("metaview.show")}
+									<select
+										className="expert-page-size-select rounded border border-[#e1e1e1] px-2 py-1"
+										onChange={(event) => {
+											setPageSize(
+												Number(event.currentTarget.value) as (typeof PAGE_SIZE_OPTIONS)[number],
+											);
+											setCurrentPage(1);
+										}}
+										value={pageSize}
+									>
+										{PAGE_SIZE_OPTIONS.map((option) => {
+											return (
+												<option key={option} value={option}>
+													{option}
+												</option>
+											);
+										})}
+									</select>
+									{t("metaview.entries")}
+								</label>
+								<label className="expert-search-label inline-flex items-center gap-3 text-small">
+									{`${t("metaview.search")}:`}
+									<input
+										className="expert-search-input w-full rounded border border-[#e1e1e1] p-2"
+										onChange={(event) => {
+											setQuery(event.currentTarget.value);
+											setCurrentPage(1);
+										}}
+										type="search"
+										value={query}
+									/>
+								</label>
+								<div className="expert-results-count text-small">{`Results: ${String(filteredRows.length)}`}</div>
+							</div>
 
-					<div className="overflow-x-auto">
-						<table className="w-full border-collapse">
-							<thead>
-								<tr>
-									<th className="border-b border-[#e1e1e1] p-2 text-left">
-										<button
-											className="inline-flex items-center gap-2"
-											onClick={() => {
-												toggleSort("property");
-											}}
-											type="button"
-										>
-											{"Property"}
-											{sortKey === "property" ? (sortDirection === "asc" ? "▲" : "▼") : null}
-										</button>
-									</th>
-									<th className="border-b border-[#e1e1e1] p-2 text-left">
-										<button
-											className="inline-flex items-center gap-2"
-											onClick={() => {
-												toggleSort("value");
-											}}
-											type="button"
-										>
-											{"Value"}
-											{sortKey === "value" ? (sortDirection === "asc" ? "▲" : "▼") : null}
-										</button>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{pagedRows.map((row, index) => {
-									return (
-										<tr key={`${row.property}-${String((activePage - 1) * pageSize + index)}`}>
-											<td className="border-b border-[#f0f0f0] p-2 align-top">{row.property}</td>
-											<td className="border-b border-[#f0f0f0] p-2">{row.value}</td>
+							<div className="overflow-x-auto">
+								<table className="w-full border-collapse">
+									<thead>
+										<tr>
+											<th className="border-b border-[#e1e1e1] p-2 text-left">
+												<button
+													className="expert-sort-btn inline-flex items-center gap-2"
+													onClick={() => {
+														toggleSort("property");
+													}}
+													type="button"
+												>
+													{t("metaview.property")}
+													{sortKey === "property" ? (sortDirection === "asc" ? "▲" : "▼") : null}
+												</button>
+											</th>
+											<th className="border-b border-[#e1e1e1] p-2 text-left">
+												<button
+													className="expert-sort-btn inline-flex items-center gap-2"
+													onClick={() => {
+														toggleSort("value");
+													}}
+													type="button"
+												>
+													{t("metaview.values")}
+													{sortKey === "value" ? (sortDirection === "asc" ? "▲" : "▼") : null}
+												</button>
+											</th>
 										</tr>
-									);
-								})}
-							</tbody>
-						</table>
-					</div>
-					<div className="flex items-center justify-between gap-3 text-small">
-						<div>{`Page ${String(activePage)} of ${String(totalPages)}`}</div>
-						<div className="inline-flex items-center gap-2">
-							<button
-								className="rounded border border-[#e1e1e1] px-3 py-1 disabled:opacity-40"
-								disabled={activePage <= 1}
-								onClick={() => {
-									setCurrentPage(Math.max(1, activePage - 1));
-								}}
-								type="button"
-							>
-								{"Previous"}
-							</button>
-							<button
-								className="rounded border border-[#e1e1e1] px-3 py-1 disabled:opacity-40"
-								disabled={activePage >= totalPages}
-								onClick={() => {
-									setCurrentPage(Math.min(totalPages, activePage + 1));
-								}}
-								type="button"
-							>
-								{"Next"}
-							</button>
+									</thead>
+									<tbody>
+										{pagedRows.map((row, index) => {
+											return (
+												<tr key={`${row.property}-${String((activePage - 1) * pageSize + index)}`}>
+													<td className="border-b border-[#f0f0f0] p-2 align-top">
+														{row.property}
+													</td>
+													<td className="border-b border-[#f0f0f0] p-2">
+														{row.valueParts.map((part, partIndex) => {
+															return (
+																<span key={`${row.property}-part-${String(partIndex)}`}>
+																	{partIndex > 0 ? ", " : null}
+																	{part.href != null ? (
+																		<a
+																			href={part.href}
+																			rel={part.isExternal ? "noopener noreferrer" : undefined}
+																			target={part.isExternal ? "_blank" : undefined}
+																		>
+																			{part.text}
+																		</a>
+																	) : (
+																		part.text
+																	)}
+																</span>
+															);
+														})}
+													</td>
+												</tr>
+											);
+										})}
+									</tbody>
+								</table>
+							</div>
+							<div className="flex items-center justify-between gap-3 text-small">
+								<div>{`Page ${String(activePage)} of ${String(totalPages)}`}</div>
+								<div className="inline-flex items-center gap-2">
+									<button
+										className="rounded border border-[#e1e1e1] px-3 py-1 disabled:opacity-40"
+										disabled={activePage <= 1}
+										onClick={() => {
+											setCurrentPage(Math.max(1, activePage - 1));
+										}}
+										type="button"
+									>
+										{"Previous"}
+									</button>
+									<button
+										className="rounded border border-[#e1e1e1] px-3 py-1 disabled:opacity-40"
+										disabled={activePage >= totalPages}
+										onClick={() => {
+											setCurrentPage(Math.min(totalPages, activePage + 1));
+										}}
+										type="button"
+									>
+										{"Next"}
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
+				{sideContent != null ? <aside className="space-y-3 lg:col-span-3">{sideContent}</aside> : null}
 			</section>
 		</>
 	);

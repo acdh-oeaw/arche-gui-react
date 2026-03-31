@@ -10,6 +10,18 @@
 		},
 		"title": "About the project"
 	},
+	"AppContent": {
+		"metaview": {
+			"available_since": "Available since",
+			"basic_view": "Basic View",
+			"expert_view": "Expert view",
+			"show": "Show",
+			"entries": "entries",
+			"search": "Search",
+			"property": "Property",
+			"values": "Value(s)"
+		}
+	},
 	"AppFooter": {
 		"creator": "Austrian Centre for Digital Humanities",
 		"menu": {

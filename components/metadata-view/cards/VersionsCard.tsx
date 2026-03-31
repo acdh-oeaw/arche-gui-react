@@ -3,6 +3,7 @@
 import React, { useCallback, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
+import { ArcheLoader } from "@/components/ui/arche-loader";
 import VersionsBlock from "../default-blocks/VersionsBlock";
 
 type Status = "pending" | "empty" | "has";
@@ -41,7 +42,9 @@ const VersionsCard = ({ data }: { data: any }) => {
 				<div className="flex flex-col p-[12px] gap-[24px] border-t border-[#E1EDF3]">
 					{v1 === "pending" ? (
 						<>
-							<div className="versions-properties">Loading</div>
+							<div className="versions-properties">
+								<ArcheLoader label="Loading..." size={32} />
+							</div>
 							{/* Mount it hidden so it can fetch & call onDataStatus */}
 							<div className="hidden">
 								<VersionsBlock endpoint={data} onDataStatus={onV1} />

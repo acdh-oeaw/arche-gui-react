@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { PUBLIC_CONFIG } from '@/config/public';
-import Image from 'next/image';
-import loaderGif from '@/public/images/arche_logo_flip_47px.gif';
+import { ArcheLoader } from '@/components/ui/arche-loader';
 
 // ---------- Types ----------
 export type TreeItem = {
@@ -124,15 +123,7 @@ function TreeNode({
       {isFolder && open && (
         <div>
           {loading && (
-            <div className="flex justify-center items-center p-8">
-              <Image
-                src={loaderGif}
-                alt="Loading..."
-                width={64}
-                height={64}
-                className="w-16 h-16"
-              />
-            </div>
+            <ArcheLoader className="p-8" />
           )}
 
           {loadError && !loading && (
@@ -252,20 +243,8 @@ export default function VersionsBlock({
 
   // Loading indicator
   if (loading) {
-    return (
-      <div className="flex justify-center items-center p-8">
-        <Image
-          src={loaderGif}
-          alt="Loading..."
-          width={64}
-          height={64}
-          className="w-16 h-16"
-        />
-      </div>
-    );
+    return <ArcheLoader className="p-8" />;
   }
-
-  if (loading) return <div className="text-sm text-gray-600">Loading…</div>;
   if (error) return <div className="text-sm text-red-600">Error: {error}</div>;
   if (!data || (Array.isArray(data) && data.length === 0))
     return <div className="text-sm text-gray-500">No data available.</div>;

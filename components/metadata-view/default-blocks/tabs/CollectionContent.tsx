@@ -4,8 +4,7 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { PUBLIC_CONFIG } from '@/config/public';
-import Image from 'next/image';
-import loaderGif from '@/public/images/arche_logo_flip_47px.gif';
+import { ArcheLoader } from '@/components/ui/arche-loader';
 
 // ---------- Types ----------
 export type TreeItem = {
@@ -123,15 +122,7 @@ function TreeNode({
       {isFolder && open && (
         <div>
           {loading && (
-            <div className="flex justify-center items-center p-8">
-              <Image
-                src={loaderGif}
-                alt="Loading..."
-                width={64}
-                height={64}
-                className="w-16 h-16"
-              />
-            </div>
+            <ArcheLoader className="p-8" />
           )}
 
           {loadError && !loading && (
@@ -256,17 +247,7 @@ export default function CollectionContent({
 
   // Loading indicator
   if (loading) {
-    return (
-      <div className="flex justify-center items-center p-8">
-        <Image
-          src={loaderGif}
-          alt="Loading..."
-          width={64}
-          height={64}
-          className="w-16 h-16"
-        />
-      </div>
-    );
+    return <ArcheLoader className="p-8" />;
   }
 
   // If initial fetch failed → render empty div (per your request)

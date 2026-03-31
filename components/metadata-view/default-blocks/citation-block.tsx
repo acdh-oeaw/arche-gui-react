@@ -2,35 +2,13 @@
 
 import { useEffect, useState } from "react";
 
+import { ArcheLoader } from "@/components/ui/arche-loader";
+import { CITATION_FORMATS, type CitationFormatValue, fetchCitation } from "@/lib/api/citation-api";
+
 interface CitationBlockProps {
 	citationBaseUrl: string | null;
 	identifier: string | null;
 	language: string;
-}
-
-const CITATION_FORMATS = [
-	{ label: "APA6TH", value: "apa-6th-edition" },
-	{ label: "HARVARD", value: "harvard-cite-them-right" },
-	{ label: "VANCOUVER", value: "nlm-citation-sequence" },
-	{ label: "ARCHE", value: "arche-citation-style" },
-	{ label: "JSON-CSL", value: "application/vnd.citationstyles.csl+json" },
-	{ label: "BIBLATEX", value: "application/x-bibtex" },
-] as const;
-
-type CitationFormatValue = (typeof CITATION_FORMATS)[number]["value"];
-
-function createCitationUrl(
-	baseUrl: string,
-	identifier: string,
-	language: string,
-	format: CitationFormatValue,
-): URL {
-	const url = new URL(baseUrl);
-	url.searchParams.set("id", identifier);
-	url.searchParams.set("lang", language);
-	url.searchParams.set("format", format);
-
-	return url;
 }
 
 export function CitationBlock(props: Readonly<CitationBlockProps>) {
@@ -40,8 +18,10 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isCopied, setIsCopied] = useState(false);
+	const hasHtmlMarkup = /<\/?[a-z][\s\S]*>/i.test(citationText);
 
 	useEffect(() => {
+		//check the identifier
 		if (identifier == null || identifier.length === 0) {
 			setCitationText("");
 			setError("Missing identifier.");
@@ -49,14 +29,13 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 			return;
 		}
 
+		//check the citation api url is available
 		if (citationBaseUrl == null || citationBaseUrl.length === 0) {
 			setCitationText("");
 			setError("NEXT_PUBLIC_CITATION_URL is not configured.");
 			setIsLoading(false);
 			return;
 		}
-
-		const citationUrl = createCitationUrl(citationBaseUrl, identifier, language, format);
 
 		const abortController = new AbortController();
 
@@ -65,18 +44,15 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 				setIsLoading(true);
 				setError(null);
 				setIsCopied(false);
-				const response = await fetch(citationUrl, {
-					cache: "no-store",
+				const text = await fetchCitation({
+					baseUrl: citationBaseUrl,
+					format,
+					identifier,
+					language,
 					signal: abortController.signal,
 				});
-
-				if (!response.ok) {
-					throw new Error(`HTTP ${String(response.status)}`);
-				}
-
-				const text = await response.text();
 				if (!abortController.signal.aborted) {
-					setCitationText(text.trim());
+					setCitationText(text);
 				}
 			} catch (fetchError) {
 				if (!abortController.signal.aborted) {
@@ -117,19 +93,25 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 		<div className="space-y-3">
 			<h4 className="mb-0">{"Cite Collection"}</h4>
 			<div className="flex flex-col gap-6 rounded-[24px] bg-[#dce2e9] p-6">
-				<div className="min-h-20 text-[26px] leading-[1.45] whitespace-pre-wrap text-[#4f4f4f]">
-					{isLoading
-						? "Loading citation..."
-						: error != null
-							? `Citation unavailable: ${error}`
-							: citationText.length > 0
-								? citationText
-								: "No citation available."}
+				<div className="min-h-20 text-[12px] leading-[1.45] whitespace-pre-wrap text-[#4f4f4f]">
+					{isLoading ? (
+						<ArcheLoader label="Loading citation..." size={32} />
+					) : error != null ? (
+						`Citation unavailable: ${error}`
+					) : citationText.length > 0 ? (
+						hasHtmlMarkup ? (
+							<div dangerouslySetInnerHTML={{ __html: citationText }} />
+						) : (
+							citationText
+						)
+					) : (
+						"No citation available."
+					)}
 				</div>
 
 				<div className="flex flex-col justify-end gap-3 sm:flex-row sm:items-center">
-						<select
-							className="h-14 min-w-[260px] rounded-[12px] border border-[#6f7b86] bg-white px-4 text-[24px] leading-none text-[#4f4f4f]"
+					<select
+						className="h-7 min-w-[120px] rounded-[6px] border border-[#6f7b86] bg-white px-2 text-[12px] leading-none text-[#4f4f4f]"
 						onChange={(event) => {
 							setFormat(event.currentTarget.value as CitationFormatValue);
 						}}
@@ -144,8 +126,8 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 						})}
 					</select>
 
-						<button
-							className="h-14 min-w-[140px] rounded-[12px] bg-[#005a87] px-6 text-[24px] leading-none text-white transition-colors hover:bg-[#004a70] disabled:cursor-not-allowed disabled:opacity-60"
+					<button
+						className="h-7 min-w-[120px] rounded-[6px] bg-[#005a87] px-6 text-[12px] leading-none text-white transition-colors hover:bg-[#004a70] disabled:cursor-not-allowed disabled:opacity-60"
 						disabled={isLoading || citationText.length === 0}
 						onClick={() => {
 							void handleCopy();

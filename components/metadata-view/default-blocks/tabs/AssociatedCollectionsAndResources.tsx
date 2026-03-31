@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { ArcheLoader } from '@/components/ui/arche-loader';
 
 export default function AssociatedCollectionsAndResources({
   endpoint,
@@ -37,7 +38,7 @@ export default function AssociatedCollectionsAndResources({
     };
   }, [endpoint, onDataStatus]);
 
-  if (loading) return <div className="text-sm text-gray-600">Loading…</div>;
+  if (loading) return <ArcheLoader className="p-2" label="Loading..." size={40} />;
   if (error) return <div className="text-sm text-red-600">Error: {error}</div>;
   if (!data || (Array.isArray(data) && data.length === 0))
     return <div className="text-sm text-gray-500">No data available.</div>;

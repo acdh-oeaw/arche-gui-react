@@ -4,8 +4,7 @@ import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { PUBLIC_CONFIG } from '@/config/public';
-import Image from 'next/image';
-import loaderGif from '@/public/images/arche_logo_flip_47px.gif';
+import { ArcheLoader } from '@/components/ui/arche-loader';
 
 type Item = { id: number; title: string };
 
@@ -51,15 +50,7 @@ export default function NextPrevItem({
     <div className="flex flex-col w-full">
       {/* Loader */}
       {loading && (
-        <div className="flex justify-center items-center p-8">
-          <Image
-            src={loaderGif}
-            alt="Loading...."
-            width={64}
-            height={64}
-            className="w-16 h-16"
-          />
-        </div>
+        <ArcheLoader className="p-8" />
       )}
 
       {/* Error */}

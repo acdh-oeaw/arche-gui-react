@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
@@ -13,21 +14,20 @@ interface BasicViewProps {
 
 export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 	const { metadata, language = "en" } = props;
-
+	const t = useTranslations("AppContent");
 	return (
-		<div className="mx-auto w-full max-w-[1320px] px-3">
+		<div className="metadata-main-content mx-auto w-full px-3">
 			<BasicViewToggle
-				expertData={metadata.getExpertTableData()}
-				id={metadata.getId()}
-				language={language}
-			>
-				<section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col rounded-[12px] border border-[#e1e1e1] bg-white pt-5 pr-5 pl-5 lg:col-span-9">
-						<div>
-							<div>Available Date</div>
-							<div>type</div>
+				basicContent={
+					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-6">
+						<div className="flex flex-wrap items-center justify-between gap-3">
+							<div>
+								{t("metaview.available_since")}&nbsp;
+								{metadata.getAvailableDate()}
+							</div>
+							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
 						</div>
-
+						<hr></hr>
 						<TitleBlock metadata={metadata}></TitleBlock>
 
 						<CitationBlock
@@ -59,7 +59,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							<ul>
 								<li>Collection Content</li>
 								<li>Associated Collections and Resources</li>
-								<li>Publications</li>
+								<li>Publications</li>tube
 							</ul>
 						</div>
 
@@ -72,17 +72,21 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							</ul>
 						</div>
 					</div>
-
-					<aside className="space-y-3 lg:col-span-3">
+				}
+				expertData={metadata.getExpertTableData()}
+				id={metadata.getId()}
+				language={language}
+				sideContent={
+					<>
 						<div>SIDE BOXES</div>
 						<div>Title Image ---- for TopCollection only</div>
 						<div>
 							MAP --- If Place/acdh:hasSpatialCoverage is filled out then show a box with a map and
 							the Places (acdh:hasWkt, acdh:hasLatitude/acdh:hasLongitude)
 						</div>
-					</aside>
-				</section>
-			</BasicViewToggle>
+					</>
+				}
+			/>
 		</div>
 	);
 }
