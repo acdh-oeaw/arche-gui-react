@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
-import { CitationBlock } from "@/components/metadata-view/default-blocks/citation-block";
+import { BasicViewToggle } from "@/components/metadata-view/basic/BasicViewToggle.client";
+import { CitationBlock } from "@/components/metadata-view/default-blocks/CitationBlock";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
@@ -27,7 +27,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							</div>
 							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
 						</div>
-						<hr></hr>
+						<hr className="meatdata-view-top-hr"></hr>
 						<TitleBlock metadata={metadata}></TitleBlock>
 
 						<CitationBlock

@@ -92,8 +92,8 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 	return (
 		<div className="space-y-3">
 			<h4 className="mb-0">{"Cite Collection"}</h4>
-			<div className="flex flex-col gap-6 rounded-[24px] bg-[#dce2e9] p-6">
-				<div className="min-h-20 text-[12px] leading-[1.45] whitespace-pre-wrap text-[#4f4f4f]">
+			<div className="basic-inside-content-div">
+				<div className="">
 					{isLoading ? (
 						<ArcheLoader label="Loading citation..." size={32} />
 					) : error != null ? (
@@ -109,7 +109,7 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 					)}
 				</div>
 
-				<div className="flex flex-col justify-end gap-3 sm:flex-row sm:items-center">
+				<div className="flex w-full flex-col justify-end gap-3 sm:flex-row sm:items-center">
 					<select
 						className="h-7 min-w-[120px] rounded-[6px] border border-[#6f7b86] bg-white px-2 text-[12px] leading-none text-[#4f4f4f]"
 						onChange={(event) => {

@@ -262,6 +262,10 @@ code {
 	padding-bottom: 50px;
 }
 
+.meatdata-view-top-hr {
+	color: #333;
+}
+
 .expert-dt-wrapper {
 	display: flex;
 	flex-shrink: 0;
