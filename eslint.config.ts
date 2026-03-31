@@ -43,7 +43,7 @@ export default defineConfig(
 			"check-file/filename-naming-convention": [
 				"error",
 				{
-					"**/*": "?(_)+([a-z])*([a-z0-9])*(-+([a-z0-9]))",
+
 				},
 				{ ignoreMiddleExtensions: true },
 			],

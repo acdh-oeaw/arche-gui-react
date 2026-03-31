@@ -48,7 +48,7 @@ export class Metadata {
 	#transformProperties() {
 		for (const [prop, v] of Object.entries(this.data)) {
 			if (!v || Array.isArray(v) || typeof v !== "object") continue;
-			const propvals = Object.values(v) as AnyObj[];
+			const propvals = Object.values(v);
 			for (const bucket of propvals) {
 				if (!bucket || typeof bucket !== "object") continue;
 
@@ -111,7 +111,7 @@ export class Metadata {
 		const category = this.getAcdhCategory()?.toLowerCase();
 		const vocabs = this.getAcdhCategoryVocabsId()?.toLowerCase();
 		const format = this.getFormat()?.toLowerCase();
-		const fileName = this.getDataByProperty("acdh:hasFilename")?.[0]?.["value"] ?? "";
+		const fileName = this.getDataByProperty("acdh:hasFilename")?.[0]?.value ?? "";
 
 		if (AUDIO_CATEGORIES.includes(category)) {
 			return "audio";
@@ -128,19 +128,19 @@ export class Metadata {
 				return "glb";
 			}
 
-			if (fileName && fileName.includes(".ply")) {
+			if (fileName?.includes(".ply")) {
 				return "ply";
 			}
 		}
 
-		if (vocabs && vocabs.includes("/image")) {
+		if (vocabs?.includes("/image")) {
 			if (IIIF_FORMATS.includes(format)) {
 				return "image";
 			}
 		}
 
 		if (category === "xml/tei" || category === "dataset") {
-			if (fileName && fileName.includes(".xml")) {
+			if (fileName?.includes(".xml")) {
 				return "tei";
 			}
 		}
@@ -152,9 +152,9 @@ export class Metadata {
 		const wkt = this.data?.["acdh:hasWKT"]?.[this.mainId]?.[this.mainLang]?.[0]?.value;
 		const coordinate = this.data?.["acdh:hasLatitude"]?.[this.mainId]?.[this.mainLang]?.[0]?.value;
 
-		if (wkt && wkt.toLowerCase().includes("multipolygon")) {
+		if (wkt?.toLowerCase().includes("multipolygon")) {
 			return "multipolygon";
-		} else if (wkt && wkt.toLowerCase().includes("polygon")) {
+		} else if (wkt?.toLowerCase().includes("polygon")) {
 			return "polygon";
 		} else if (coordinate) {
 			return "coordinates";
@@ -255,7 +255,7 @@ export class Metadata {
 	}
 
 	getId(): string {
-		return this.data.id;
+		return String(this.data?.id ?? "");
 	}
 	getParentId(): string {
 		if (this.data?.["acdh:isPartOf"]) {
@@ -291,7 +291,7 @@ export class Metadata {
 		return "";
 	}
 
-	getDataByProperty(property: string): any[] {
+	getDataByProperty(property: string): Array<any> {
 		const propData = this.properties?.[property];
 		if (!propData) return [];
 
@@ -304,8 +304,8 @@ export class Metadata {
 			return propData[this.language];
 		}
 		// Else, if there's a value for 'und'
-		else if (propData["und"]) {
-			return propData["und"];
+		else if (propData.und) {
+			return propData.und;
 		}
 		// Else, if the keys are integers, return the whole array
 		else if (typeof firstKey === "string" && !isNaN(Number(firstKey))) {
@@ -422,7 +422,7 @@ export class Metadata {
 	}
 
 	#fetchCardsData(props: Record<string, string>) {
-		const result: Record<string, any[]> = {};
+		const result: Record<string, Array<any>> = {};
 
 		for (const [k, v] of Object.entries(props)) {
 			let bucket = this.properties?.[k];
@@ -443,7 +443,7 @@ export class Metadata {
 	}
 
 	#fetchBlocksData(props: Record<string, string>) {
-		const result: Record<string, any[]> = {};
+		const result: Record<string, Array<any>> = {};
 
 		for (const [k, v] of Object.entries(props)) {
 			let bucket = this.properties?.[k];
@@ -683,16 +683,16 @@ export class Metadata {
 		const proto = Object.getPrototypeOf(this);
 		const methodNames = Object.getOwnPropertyNames(proto).filter(
 			(name) =>
-				typeof this[name] === "function" &&
+				{return typeof this[name] === "function" &&
 				name.startsWith("get") &&
 				name !== "get" && // avoid edge case
-				name !== "toJSON",
+				name !== "toJSON"},
 		);
 
 		for (const name of methodNames) {
 			const key = name
 				.replace(/^get/, "") // remove "get"
-				.replace(/^[A-Z]/, (c) => c.toLowerCase()); // lowercase first letter
+				.replace(/^[A-Z]/, (c) => {return c.toLowerCase()}); // lowercase first letter
 
 			result[key] = this[name]();
 		}

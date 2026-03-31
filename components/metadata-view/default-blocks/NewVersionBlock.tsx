@@ -1,86 +1,93 @@
-'use client';
 
-import Cookies from 'js-cookie';
+
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { PUBLIC_CONFIG } from '@/config/public';
+
 import { ArcheLoader } from '@/components/ui/arche-loader';
+import { getJsonData } from '@/lib/api/ArcheSymfonyApi';
 
-type Item = { id: number; title: string };
 
-export default function NewVersionBlock({
-  identifier,
-}: {
-  identifier: string;
-}) {
-  const [data, setData] = useState<Item[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const lang = Cookies.get('i18nextLng') || 'en';
-
-  useEffect(() => {
-    const ac = new AbortController();
-
-    async function load() {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const res = await fetch(
-          `${PUBLIC_CONFIG.browserApiBase}/versions-list/${identifier}/${lang}`
-        );
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-
-        setData(json);
-      } catch (e: any) {
-        if (e.name !== 'AbortError') setError(e.message ?? 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-    return () => ac.abort();
-  }, []);
-
-  return (
-    <div className="flex flex-col w-full">
-      {/* Loader */}
-      {loading && (
-        <ArcheLoader className="p-8" />
-      )}
-
-      {/* Error */}
-      {!loading && error && (
-        <div className="rounded border border-red-300 bg-red-50 text-red-700 p-3">
-          Failed to load: {error}
-        </div>
-      )}
-
-      {/* Data */}
-      {!loading && !error && data?.length > 0 && (
-        <div className="flex flex-col lg:flex-row w-full">
-          {data?.[0]?.id !== identifier && (
-            <div
-              id="metadata-versions-alert"
-              role="alert"
-              className="w-full flex items-center rounded-md border border-red-200 bg-red-50 p-3 text-red-700"
-            >
-              <div className="w-full text-center">
-                The resource has a newer version!
-                <Link
-                  href={`/browser/metadata/${data?.[0]?.id}`}
-                  id="metadata-versions-alert-url"
-                  className="font-medium underline hover:text-red-800"
-                >
-                  Click here for the newer version
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
+interface VersionsProps {
+	id: string;
+	language: string;
 }
+
+interface VersionEntry {
+	id?: string;
+	label: string;
+}
+export function NewVersionBlock({ id, language }: Readonly<VersionsProps>) {
+
+
+	const [items, setItems] = useState<Array<VersionEntry>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+			//it cancels the in-flight request when components unmounts / dependencies change (e.g. id, language, format) before the previous request finishes.
+			const controller = new AbortController();
+
+			async function loadNewVersion(): Promise<void> {
+				try {
+					setIsLoading(true);
+					setError(null);
+					const json = await getJsonData(
+						{ id:id, page:"versions-list", language: language, signal: controller.signal });
+					if (!controller.signal.aborted) {
+						console.log("ssssss");
+
+						setItems(
+							json
+						);
+
+					}
+				} catch (fetchError) {
+					console.log("ERRRORR");
+					console.log(fetchError);
+					if (!controller.signal.aborted) {
+						const message =
+							fetchError instanceof Error ? fetchError.message : "Failed to load versions.";
+						setError(message);
+						setItems([]);
+					}
+				} finally {
+					if (!controller.signal.aborted) {
+						setIsLoading(false);
+					}
+				}
+			}
+
+			void loadNewVersion();
+
+			return () => {
+				controller.abort();
+			};
+		}, [id, language]);
+
+		if (isLoading) {
+			return <ArcheLoader label="Loading versions..." size={24} />;
+		}
+
+	if (error != null) {
+			return null;
+		}
+
+		return (
+			<ul className="flex flex-wrap items-center gap-2">
+
+				{items.map((item, index) => {
+					console.log("item");
+					console.log(item);
+					return (
+						<div>ssssss</div>
+
+					);
+				})}
+			</ul>
+		);
+
+
+}
+
+
+

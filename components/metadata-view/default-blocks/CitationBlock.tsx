@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { CITATION_FORMATS, type CitationFormatValue, fetchCitation } from "@/lib/api/citation-api";
+import { CITATION_FORMATS, type CitationFormatValue, fetchCitation } from "@/lib/api/CitationApi";
 
 interface CitationBlockProps {
 	citationBaseUrl: string | null;

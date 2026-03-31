@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo, useState } from "react";
 
 import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/BreadcrumbBlock";
+import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
+
 
 interface BasicViewToggleProps {
 	basicContent: ReactNode;
@@ -249,7 +251,7 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 						</button>
 					</div>
 				</div>
-				<div className="lg:col-span-12">{"HAS NEW VERSIOn"}</div>
+				<div className="lg:col-span-12">NEW : <NewVersionBlock id={id} language={language}></NewVersionBlock></div>
 			</section>
 
 			<section

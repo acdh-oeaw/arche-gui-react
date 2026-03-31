@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 
 import { Link } from "@/components/link";
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { fetchBreadcrumb } from "@/lib/api/breadcrumb-api";
+import { getJsonData } from "@/lib/api/ArcheSymfonyApi";
+import { fetchBreadcrumb } from "@/lib/api/BreadcrumbApi";
 
 interface BreadcrumbBlockProps {
 	id: string;
@@ -16,25 +17,11 @@ interface BreadcrumbEntry {
 	label: string;
 }
 
-function pickText(...values: Array<unknown>): string | null {
-	for (const value of values) {
-		if (typeof value === "string" && value.trim().length > 0) {
-			return value.trim();
-		}
-
-		if (typeof value === "number") {
-			return String(value);
-		}
-	}
-
-	return null;
-}
-
 function normalizeBreadcrumbArray(payload: Array<Record<string, unknown>>): Array<BreadcrumbEntry> {
 	return payload
 		.map((item) => {
-			const id = pickText(item.id, item.identifier);
-			const label = pickText(item.title, item.label, item.name, item.value, id);
+			const id = item.id;
+			const label = item.title;
 
 			if (label == null) return null;
 
@@ -61,29 +48,28 @@ export function BreadcrumbBlock({ id, language }: Readonly<BreadcrumbBlockProps>
 			try {
 				setIsLoading(true);
 				setError(null);
-				const json = await fetchBreadcrumb({
-					identifier: id,
-					language,
-					signal: controller.signal,
-				});
-				if (!controller.signal.aborted) {
+
+				const json = await getJsonData({ id:id, page:"breadcrumb", language: language, signal: controller.signal });
+
+
 					setItems(
 						Array.isArray(json)
 							? normalizeBreadcrumbArray(json as Array<Record<string, unknown>>)
 							: [],
 					);
-				}
+
 			} catch (fetchError) {
-				if (!controller.signal.aborted) {
-					const message =
-						fetchError instanceof Error ? fetchError.message : "Failed to load breadcrumbs.";
-					setError(message);
-					setItems([]);
-				}
+if (!controller.signal.aborted) {
+						const message =
+							fetchError instanceof Error ? fetchError.message : "Failed to load breadcrumbs.";
+						setError(message);
+						setItems([]);
+					}
+
 			} finally {
-				if (!controller.signal.aborted) {
-					setIsLoading(false);
-				}
+					if (!controller.signal.aborted) {
+						setIsLoading(false);
+					}
 			}
 		}
 

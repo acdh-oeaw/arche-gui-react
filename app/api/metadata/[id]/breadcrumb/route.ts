@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { getJsonData } from "@/lib/api/arche-symfony-api";
+import { getJsonData } from "@/lib/api/ArcheSymfonyApi";
 
 interface RouteContext {
 	params: Promise<{

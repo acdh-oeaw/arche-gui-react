@@ -5,34 +5,42 @@ import { env } from "@/config/env.config";
 import { Metadata } from "@/lib/objects/metadata";
 import { isHttpError } from "@/lib/server/errors";
 
+
+interface ApiParams {
+  readonly id: string;
+  readonly page: string;
+  readonly language: string;
+  readonly signal?: AbortSignal;
+}
+
+
 function createApiUrl(id: string, page: string, lang: string): URL {
 	const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
 	const url = createUrl({ baseUrl });
 	const basePath = url.pathname.replace(/\/+$/, "");
-	const pathSegments = [page, id, lang].map((segment) => {
-		return encodeURIComponent(segment.replace(/^\/+|\/+$/g, ""));
-	});
-	url.pathname = `${basePath}/${pathSegments.join("/")}`;
+
+	url.pathname = `${basePath}/${page}/${id}/${lang}`;
 
 	return url;
 }
 
-export async function getJsonData(id: string, page: string, lang: string): Promise<unknown> {
-	try {
-		const apiUrl = createApiUrl(id, page, lang);
-		//console.warn("[arche-symfony-api] Fetch URL", { url: String(apiUrl) });
-		const apiData = await request(apiUrl, { responseType: "json" });
-		return apiData;
-	} catch (error) {
-		if (isHttpError(error) && error.response.status === 404) {
-			notFound();
-		}
+export async function getJsonData(params: Readonly<ApiParams>): Promise<unknown> {
 
-		throw error;
-	}
+	const { id, page, language, signal } = params;
+
+	const apiUrl = createApiUrl(id, page, language);
+
+		//console.warn("[arche-symfony-api] Fetch URL", { url: String(apiUrl) });
+
+		const res = await fetch(apiUrl, { cache: "no-store", signal });
+  	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		return (await res.json()) as unknown;
+
+
+
 }
 
 export async function getData(id: string, page: string, lang: string): Promise<Metadata> {
-	const jsonData = await getJsonData(id, page, lang);
+	const jsonData = await getJsonData({ id:id, page:page, language: lang });
 	return new Metadata(jsonData as JSON, lang);
 }

@@ -9,7 +9,7 @@ import { PersonView } from "@/components/metadata-view/person/person-view";
 import { PlaceView } from "@/components/metadata-view/place/place-view";
 import { ProjectView } from "@/components/metadata-view/project/project-view";
 import { PublicationView } from "@/components/metadata-view/publication/publication-view";
-import { getData } from "@/lib/api/arche-symfony-api";
+import { getData } from "@/lib/api/ArcheSymfonyApi";
 import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
 
 interface MetadataPageProps {

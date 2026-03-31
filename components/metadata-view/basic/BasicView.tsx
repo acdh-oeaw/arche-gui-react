@@ -17,6 +17,9 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 	const t = useTranslations("AppContent");
 	return (
 		<div className="metadata-main-content mx-auto w-full px-3">
+
+
+
 			<BasicViewToggle
 				basicContent={
 					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-6">
