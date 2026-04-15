@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHE Stats Widget</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f0f4f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  /* ── Section wrapper ── */
+  .stats-section {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .stats-section__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .stats-section__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #0a5d83;
+    margin-bottom: 10px;
+  }
+
+  .stats-section__title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0d2133;
+    line-height: 1.2;
+  }
+
+  /* ── Cards grid ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  /* ── Single stat card ── */
+  .stat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px 28px 32px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(10, 93, 131, 0.08);
+    border: 1px solid #ddeef7;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(10, 93, 131, 0.15);
+  }
+
+  /* coloured top accent bar */
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 16px 16px 0 0;
+  }
+  .stat-card--collections::before { background: linear-gradient(90deg, #0a5d83, #1a8bb5); }
+  .stat-card--resources::before   { background: linear-gradient(90deg, #1a8bb5, #4fc3f7); }
+  .stat-card--size::before        { background: linear-gradient(90deg, #2196a8, #26c6da); }
+
+  /* subtle watermark circle */
+  .stat-card__bg-circle {
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    opacity: 0.045;
+  }
+  .stat-card--collections .stat-card__bg-circle { background: #0a5d83; }
+  .stat-card--resources   .stat-card__bg-circle { background: #1a8bb5; }
+  .stat-card--size        .stat-card__bg-circle { background: #2196a8; }
+
+  /* icon */
+  .stat-card__icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 24px;
+  }
+  .stat-card--collections .stat-card__icon { background: #e8f4fb; }
+  .stat-card--resources   .stat-card__icon { background: #e5f6fd; }
+  .stat-card--size        .stat-card__icon { background: #e3f7f9; }
+
+  /* number */
+  .stat-card__number {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: #0d2133;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+    min-height: 58px;             /* prevents layout shift */
+  }
+
+  .stat-card__number .suffix {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0a5d83;
+    vertical-align: baseline;
+  }
+
+  /* loading shimmer */
+  .stat-card__number.is-loading {
+    background: linear-gradient(90deg, #e0ecf5 25%, #c8dfe9 50%, #e0ecf5 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 8px;
+    color: transparent;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* label */
+  .stat-card__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5a7a8f;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  /* description */
+  .stat-card__desc {
+    font-size: 12px;
+    color: #8aa8bc;
+    line-height: 1.5;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-card__number { font-size: 40px; }
+  }
+
+  /* ── Error state ── */
+  .stats-error {
+    text-align: center; color: #c0392b;
+    font-size: 13px; margin-top: 16px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<section class="stats-section">
+
+  <div class="stats-section__header">
+    <div class="stats-section__eyebrow">ARCHE at a glance</div>
+    <div class="stats-section__title">Explore Our Digital Archive</div>
+  </div>
+
+  <div class="stats-grid">
+
+    <!-- Collections -->
+    <div class="stat-card stat-card--collections">
+      <div class="stat-card__bg-circle"></div>
+      <div class="stat-card__icon">
+        <!-- folder-stack icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0a5d83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <path d="M3 11h18"/>
+        </svg>
+      </div>
+      <div class="stat-card__number is-loading" id="count-collections">–</div>
+      <div class="stat-card__label">Collections</div>
+      <div class="stat-card__desc">Curated top-level collections<br>published in ARCHE</div>
+    </div>
+
+    <!-- Resources -->
+    <div class="stat-card stat-card--resources">
+      <div class="stat-card__bg-circle"></div>
+      <div class="stat-card__icon">
+        <!-- file-stack icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a8bb5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="9" y1="13" x2="15" y2="13"/>
+          <line x1="9" y1="17" x2="12" y2="17"/>
+        </svg>
+      </div>
+      <div class="stat-card__number is-loading" id="count-resources">–</div>
+      <div class="stat-card__label">Resources</div>
+      <div class="stat-card__desc">Individual digital objects<br>archived and accessible</div>
+    </div>
+
+    <!-- Size -->
+    <div class="stat-card stat-card--size">
+      <div class="stat-card__bg-circle"></div>
+      <div class="stat-card__icon">
+        <!-- database icon -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2196a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M3 5v14a9 3 0 0 0 18 0V5"/>
+          <path d="M3 12a9 3 0 0 0 18 0"/>
+        </svg>
+      </div>
+      <div class="stat-card__number is-loading" id="count-size">–</div>
+      <div class="stat-card__label">Total Size</div>
+      <div class="stat-card__desc">Total volume of data<br>stored in the repository</div>
+    </div>
+
+  </div><!-- /.stats-grid -->
+
+  <div class="stats-error" id="stats-error">
+    ⚠ Could not load statistics. Please try again later.
+  </div>
+
+</section>
+
+<script>
+$(function () {
+
+  /* ─── helpers ─────────────────────────────── */
+
+  /**
+   * Animated counter – counts from 0 to `end` over `duration` ms.
+   * @param {string}   selector  jQuery selector for the element
+   * @param {number}   end       target number
+   * @param {number}   duration  ms
+   * @param {function} formatter called with the current value, returns HTML string
+   */
+  function countUp(selector, end, duration, formatter) {
+    var $el = $(selector);
+    $el.removeClass('is-loading');
+    var startTime = null;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      // ease-out cubic
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(eased * end);
+      $el.html(formatter(current));
+      if (progress < 1) requestAnimationFrame(step);
+      else $el.html(formatter(end)); // ensure exact final value
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  /** Format integer with thousands separator */
+  function fmtInt(n) {
+    return n.toLocaleString('en-US');
+  }
+
+  /** Format bytes (GB input) to human size */
+  function fmtSize(gb) {
+    if (gb >= 1000) {
+      return (gb / 1000).toFixed(2) + '<span class="suffix"> TB</span>';
+    }
+    return gb.toFixed(2) + '<span class="suffix"> GB</span>';
+  }
+
+  /* ─── fetch ───────────────────────────────── */
+
+  // ↓ Replace this URL with your real endpoint
+  var API_URL = '/api/your-stats-endpoint';
+
+  // — DEMO: comment out the $.getJSON block and use this instead —
+  var DEMO_DATA = {
+    topCollection: 52,
+    resources: "470895",
+    size: "8.971387265813064"   // GB
+  };
+
+  function renderStats(data) {
+    var collections = parseInt(data.topCollection, 10);
+    var resources   = parseInt(data.resources,     10);
+    var sizeGb      = parseFloat(data.size);
+
+    countUp('#count-collections', collections, 1600,
+      function(v) { return fmtInt(v); }
+    );
+
+    countUp('#count-resources', resources, 2200,
+      function(v) { return fmtInt(v); }
+    );
+
+    countUp('#count-size', sizeGb, 1800,
+      function(v) { return fmtSize(v); }
+    );
+  }
+
+  /* ── use DEMO data directly (remove this block when using real API) ── */
+  setTimeout(function () {
+    renderStats(DEMO_DATA);
+  }, 600); // small delay to show the shimmer effect
+
+  /* ── real API call (uncomment + set API_URL to use) ──
+  $.getJSON(API_URL)
+    .done(function (data) {
+      renderStats(data);
+    })
+    .fail(function () {
+      $('.stat-card__number').removeClass('is-loading').text('–');
+      $('#stats-error').fadeIn();
+    });
+  */
+
+});
+</script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
-import { BasicView } from "./basic/BasicView";
+import { BasicView } from "./basic/basic-view";
 import { OldResourceView } from "./old-resource/old-resource-view";
 import { OrganisationView } from "./organisation/organisation-view";
 import { PersonView } from "./person/person-view";

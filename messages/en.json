@@ -19,7 +19,23 @@
 			"entries": "entries",
 			"search": "Search",
 			"property": "Property",
-			"values": "Value(s)"
+			"values": "Value(s)",
+			"newer_version_text":"The resource has a newer version!",
+			"newer_version_url_text": "Click here for the newer version.",
+			"summary": "Summary",
+			"research_discipline": "Research Discipline",
+			"subject": "Subject",
+			"spatial_coverage": "Spatial Coverage",
+			"coverage_date": "Coverage Date",
+			"era": "Era",
+			"methods": "Methods",
+			"methods_description": "Methods Description",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"note": "Note",
+			"see_also": "See Also",
+			"url": "URL",
+			"related_project": "Related Project"
 		}
 	},
 	"AppFooter": {

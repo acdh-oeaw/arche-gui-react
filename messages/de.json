@@ -19,7 +19,23 @@
 			"entries": "Einträge",
 			"search": "Suche",
 			"property": "Eigenschaft",
-			"values": "Wert(e)"
+			"values": "Wert(e)",
+			"newer_version_text":"Die Ressource hat eine neuere Version!",
+			"newer_version_url_text": "Klicken Sie hier für die neuere Version.",
+			"summary": "Summary",
+			"research_discipline": "Research Discipline",
+			"subject": "Subject",
+			"spatial_coverage": "Spatial Coverage",
+			"coverage_date": "Coverage Date",
+			"era": "Era",
+			"methods": "Methods",
+			"methods_description": "Methods Description",
+			"show_more": "Show more",
+			"show_less": "Show less",
+			"note": "Note",
+			"see_also": "Siehe auch",
+			"url": "URL",
+			"related_project": "Verwandtes Projekt"
 		}
 	},
 	"AppFooter": {

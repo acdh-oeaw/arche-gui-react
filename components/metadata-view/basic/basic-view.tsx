@@ -1,9 +1,12 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { BasicViewToggle } from "@/components/metadata-view/basic/BasicViewToggle.client";
-import { CitationBlock } from "@/components/metadata-view/default-blocks/CitationBlock";
-import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
+import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
+import { CitationBlock } from "@/components/metadata-view/default-blocks/citation-block";
+import { NewVersionBlock } from "@/components/metadata-view/default-blocks/new-version-block";
+import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/see-also-block";
+import SummaryBlock from "@/components/metadata-view/default-blocks/summary-block";
+import TitleBlock from "@/components/metadata-view/default-blocks/title-block";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
@@ -30,7 +33,17 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							</div>
 							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
 						</div>
+						<NewVersionBlock
+							id={metadata.getId()}
+							language={language}
+							translations={{
+								newer_version_text: t("metaview.newer_version_text"),
+								newer_version_url_text: t("metaview.newer_version_url_text"),
+							}}
+						/>
+
 						<hr className="meatdata-view-top-hr"></hr>
+
 						<TitleBlock metadata={metadata}></TitleBlock>
 
 						<CitationBlock
@@ -39,23 +52,11 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							language={language}
 						/>
 
-						<div>Summary component</div>
-						<div>
-							[Summary/Zusammenfassung] - Includes the content related properties in this order:
-							acdh:hasRelatedDiscipline [Forschungsdisziplin/Research Discipline] acdh:hasSubject
-							[Betreff/Subject] acdh:hasSpatialCoverage [Geografische Abdeckung/Spatial Coverage]
-							acdh:hasCoverageStartDate – acdh:hasCoverageEndDate (only display year; Coverage Date:
-							start – end; or Coverage Date: start; ordered by earliest date first) [Zeitliche
-							Abdeckung/Coverage Date] acdh:hasCreatedStartDateOriginal –
-							acdh:hasCreatedEndDateOriginal (only display year; ordered by earliest date first)
-							[Entstehungszeit des Originals/Creation Date of Original] acdh:hasTemporalCoverage
-							[Epoche/Era] acdh:hasDescription [Beschreibung/Description] - shorten text after 12
-							lines [...Continue reading/Weiterlesen] acdh:hasNote [Anmerkung/Note]
-						</div>
-						<div>
-							[See also/Siehe auch] acdh:hasUrl [URL/URL] acdh:hasRelatedProject (TopCollection,
-							Collection) [Related Project/Verwandtes Projekt]
-						</div>
+
+						<SummaryBlock  metadata={metadata} ></SummaryBlock>
+
+						<SeeAlsoBlock metadata={metadata} ></SeeAlsoBlock>
+
 
 						<div>TABS</div>
 						<div>
@@ -89,6 +90,15 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						</div>
 					</>
 				}
+				translations={{
+					basic_view: t("metaview.basic_view"),
+					expert_view: t("metaview.expert_view"),
+					show: t("metaview.show"),
+					entries: t("metaview.entries"),
+					search: t("metaview.search"),
+					property: t("metaview.property"),
+					values: t("metaview.values"),
+				}}
 			/>
 		</div>
 	);

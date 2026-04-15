@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import FooterContactBox from "@/components/Footer/FooterContactBox";
+import FooterContactBox from "@/components/footer/footer-contact-box";
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
 

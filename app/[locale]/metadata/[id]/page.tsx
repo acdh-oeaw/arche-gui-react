@@ -2,7 +2,7 @@ import type { Metadata as NextMetadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { BasicView } from "@/components/metadata-view/basic/BasicView";
+import { BasicView } from "@/components/metadata-view/basic/basic-view";
 import { OldResourceView } from "@/components/metadata-view/old-resource/old-resource-view";
 import { OrganisationView } from "@/components/metadata-view/organisation/organisation-view";
 import { PersonView } from "@/components/metadata-view/person/person-view";

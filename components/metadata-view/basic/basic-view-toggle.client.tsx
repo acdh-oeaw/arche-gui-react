@@ -1,11 +1,18 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo, useState } from "react";
 
-import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/BreadcrumbBlock";
-import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
+import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks-example/BreadcrumbBlock";
 
+export interface MetaviewTranslations {
+	basic_view: string;
+	expert_view: string;
+	show: string;
+	entries: string;
+	search: string;
+	property: string;
+	values: string;
+}
 
 interface BasicViewToggleProps {
 	basicContent: ReactNode;
@@ -13,6 +20,7 @@ interface BasicViewToggleProps {
 	id: string;
 	language: string;
 	sideContent?: ReactNode;
+	translations: MetaviewTranslations;
 }
 
 interface ExpertRow {
@@ -171,7 +179,7 @@ function toRows(data: Record<string, unknown>): Array<ExpertRow> {
 }
 
 export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNode {
-	const { basicContent, expertData, id, language, sideContent } = props;
+	const { basicContent, expertData, id, language, sideContent, translations: t } = props;
 
 	const [isExpertView, setIsExpertView] = useState(false);
 	const [query, setQuery] = useState("");
@@ -183,8 +191,6 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 	const rows = useMemo<Array<ExpertRow>>(() => {
 		return toRows(expertData);
 	}, [expertData]);
-
-	const t = useTranslations("AppContent");
 
 	const filteredRows = useMemo<Array<ExpertRow>>(() => {
 		const normalizedQuery = query.trim().toLowerCase();
@@ -247,11 +253,11 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 							}}
 							type="button"
 						>
-							{isExpertView ? t("metaview.basic_view") : t("metaview.expert_view")}
+							{isExpertView ? t.basic_view : t.expert_view}
 						</button>
 					</div>
 				</div>
-				<div className="lg:col-span-12">NEW : <NewVersionBlock id={id} language={language}></NewVersionBlock></div>
+
 			</section>
 
 			<section
@@ -273,10 +279,10 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 				>
 					<div className="basic-inside-content-div">
 						<div className="expert-dt-wrapper">
-							<h4 className="expert-view-title">{t("metaview.expert_view")}</h4>
+							<h4 className="expert-view-title">{t.expert_view}</h4>
 							<div className="expert-table-controls">
 								<label className="expert-page-size-label inline-flex items-center gap-2 text-small">
-									{t("metaview.show")}
+									{t.show}
 									<select
 										className="expert-page-size-select rounded border border-[#e1e1e1] px-2 py-1"
 										onChange={(event) => {
@@ -295,10 +301,10 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 											);
 										})}
 									</select>
-									{t("metaview.entries")}
+									{t.entries}
 								</label>
 								<label className="expert-search-label inline-flex items-center gap-3 text-small">
-									{`${t("metaview.search")}:`}
+									{`${t.search}:`}
 									<input
 										className="expert-search-input w-full rounded border border-[#e1e1e1] p-2"
 										onChange={(event) => {
@@ -324,7 +330,7 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 													}}
 													type="button"
 												>
-													{t("metaview.property")}
+													{t.property}
 													{sortKey === "property" ? (sortDirection === "asc" ? "▲" : "▼") : null}
 												</button>
 											</th>
@@ -336,7 +342,7 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 													}}
 													type="button"
 												>
-													{t("metaview.values")}
+													{t.values}
 													{sortKey === "value" ? (sortDirection === "asc" ? "▲" : "▼") : null}
 												</button>
 											</th>

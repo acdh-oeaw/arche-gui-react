@@ -1,5 +1,4 @@
-
-
+"use client";
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -10,17 +9,20 @@ import { getJsonData } from '@/lib/api/ArcheSymfonyApi';
 interface VersionsProps {
 	id: string;
 	language: string;
+	translations: {
+		newer_version_text: string;
+		newer_version_url_text: string;
+	};
 }
 
 interface VersionEntry {
 	id?: string;
 	label: string;
 }
-export function NewVersionBlock({ id, language }: Readonly<VersionsProps>) {
-
+export function NewVersionBlock({ id, language, translations: t }: Readonly<VersionsProps>) {
 
 	const [items, setItems] = useState<Array<VersionEntry>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -34,7 +36,6 @@ export function NewVersionBlock({ id, language }: Readonly<VersionsProps>) {
 					const json = await getJsonData(
 						{ id:id, page:"versions-list", language: language, signal: controller.signal });
 					if (!controller.signal.aborted) {
-						console.log("ssssss");
 
 						setItems(
 							json
@@ -42,8 +43,6 @@ export function NewVersionBlock({ id, language }: Readonly<VersionsProps>) {
 
 					}
 				} catch (fetchError) {
-					console.log("ERRRORR");
-					console.log(fetchError);
 					if (!controller.signal.aborted) {
 						const message =
 							fetchError instanceof Error ? fetchError.message : "Failed to load versions.";
@@ -68,22 +67,23 @@ export function NewVersionBlock({ id, language }: Readonly<VersionsProps>) {
 			return <ArcheLoader label="Loading versions..." size={24} />;
 		}
 
-	if (error != null) {
+	if (error != null || items.length === 0) {
 			return null;
 		}
 
 		return (
-			<ul className="flex flex-wrap items-center gap-2">
-
-				{items.map((item, index) => {
-					console.log("item");
-					console.log(item);
+			<div className="flex flex-wrap items-center gap-2">
+				{items.map((item: VersionEntry, index: number) => {
 					return (
-						<div>ssssss</div>
-
+						<div key={item.id ?? index} className="w-full rounded-lg bg-rose-100 px-6 py-4 text-center text-slate-700">
+							{t.newer_version_text}{" "}
+							<Link className="text-blue-500 hover:underline" href={`/browser/metadata/${item.id ?? ""}`}>
+								{t.newer_version_url_text}
+							</Link>
+						</div>
 					);
 				})}
-			</ul>
+			</div>
 		);
 
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/components/link";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import { getJsonData } from "@/lib/api/ArcheSymfonyApi";
-import { fetchBreadcrumb } from "@/lib/api/BreadcrumbApi";
+
 
 interface BreadcrumbBlockProps {
 	id: string;

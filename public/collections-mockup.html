@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collections Redesign – Mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f4f8; color: #1a2b3c; }
+
+  /* ── Section label ── */
+  .section-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #0a5d83;
+    margin-bottom: 8px;
+  }
+
+  /* ══════════════════════════════════════════
+     CONCEPT A – "Featured + Row"
+  ══════════════════════════════════════════ */
+  .concept { padding: 48px 40px; background: #f0f4f8; }
+  .concept-title {
+    font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #0a5d83;
+    border-left: 3px solid #0a5d83; padding-left: 10px;
+    margin-bottom: 28px;
+  }
+
+  /* Hero featured card */
+  .featured-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(10,93,131,0.13);
+    margin-bottom: 24px;
+    min-height: 320px;
+  }
+  .featured-hero-image {
+    background: linear-gradient(135deg, #0a5d83 0%, #1a8bb5 60%, #4fc3f7 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .featured-hero-image img {
+    width: 220px; height: 220px; object-fit: contain;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.25));
+  }
+  .featured-hero-image .new-badge {
+    position: absolute; top: 20px; left: 20px;
+    background: #e74c3c; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 5px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(231,76,60,0.4);
+  }
+  .featured-hero-content {
+    padding: 40px;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 16px;
+  }
+  .featured-hero-content .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #0a5d83; opacity: 0.7;
+  }
+  .featured-hero-content h2 {
+    font-size: 26px; font-weight: 800; line-height: 1.25;
+    color: #0d2133;
+  }
+  .featured-hero-content p {
+    font-size: 15px; line-height: 1.65; color: #3a5068; max-width: 420px;
+  }
+  .featured-hero-content .meta-row {
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .meta-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: #eef6fb; border-radius: 8px; padding: 6px 12px;
+    font-size: 12px; font-weight: 600; color: #0a5d83;
+  }
+  .meta-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .featured-hero-content .cta-btn {
+    align-self: flex-start;
+    background: #0a5d83; color: #fff;
+    border: none; border-radius: 10px;
+    padding: 12px 28px; font-size: 14px; font-weight: 700;
+    cursor: pointer; text-decoration: none; display: inline-block;
+    transition: background 0.2s;
+  }
+  .featured-hero-content .cta-btn:hover { background: #07486a; }
+
+  /* Other cards row */
+  .cards-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+  .mini-card {
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e0ecf4;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .mini-card-img {
+    height: 100px; background: #f5f9fc;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid #edf3f8;
+  }
+  .mini-card-img img { max-height: 80px; max-width: 100%; object-fit: contain; }
+  .mini-card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .mini-card-body h3 {
+    font-size: 14px; font-weight: 700; line-height: 1.35;
+    color: #0d2133;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .mini-card-body p {
+    font-size: 12px; line-height: 1.5; color: #5a7a8f;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    flex: 1;
+  }
+  .mini-card-link {
+    display: block; text-align: center;
+    background: #0a5d83; color: #fff;
+    padding: 8px; font-size: 12px; font-weight: 700;
+    text-decoration: none; border-radius: 6px; margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     CONCEPT B – "Split spotlight"
+  ══════════════════════════════════════════ */
+  .concept-b-inner {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .spotlight-card {
+    background: #0a5d83;
+    border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 8px 32px rgba(10,93,131,0.2);
+    min-height: 420px;
+  }
+  .spotlight-card-image {
+    background: linear-gradient(180deg, rgba(10,93,131,0.3) 0%, rgba(10,93,131,0.8) 100%),
+                linear-gradient(135deg, #1a8bb5, #4fc3f7);
+    height: 220px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .spotlight-card-image img { max-height: 180px; max-width: 80%; object-fit: contain; }
+  .spotlight-card-image .new-ribbon {
+    position: absolute; top: 0; right: 0;
+    background: #e74c3c;
+    color: #fff; font-size: 10px; font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px 6px 10px;
+    border-radius: 0 0 0 14px;
+  }
+  .spotlight-card-body {
+    padding: 28px; color: #fff; flex: 1;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .spotlight-card-body .eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; opacity: 0.65;
+  }
+  .spotlight-card-body h2 {
+    font-size: 22px; font-weight: 800; line-height: 1.3;
+  }
+  .spotlight-card-body p {
+    font-size: 13px; line-height: 1.65; opacity: 0.82; flex: 1;
+  }
+  .spotlight-card-body .meta-pills {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(255,255,255,0.15); color: #fff;
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .spotlight-card-body .cta-btn-inv {
+    align-self: flex-start;
+    background: #fff; color: #0a5d83;
+    border: none; border-radius: 8px;
+    padding: 10px 22px; font-size: 13px; font-weight: 700;
+    cursor: pointer; text-decoration: none; display: inline-block;
+  }
+
+  /* Side list */
+  .side-list { display: flex; flex-direction: column; gap: 14px; }
+  .side-item {
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e0ecf4;
+    display: flex; gap: 14px; align-items: center;
+    padding: 14px;
+    text-decoration: none; color: inherit;
+    transition: box-shadow 0.2s;
+  }
+  .side-item:hover { box-shadow: 0 4px 16px rgba(10,93,131,0.1); }
+  .side-item-img {
+    width: 64px; height: 64px; flex-shrink: 0;
+    background: #f0f8fc;
+    border-radius: 8px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #e0ecf4;
+  }
+  .side-item-img img { max-width: 56px; max-height: 56px; object-fit: contain; }
+  .side-item-text { flex: 1; min-width: 0; }
+  .side-item-text h4 {
+    font-size: 13px; font-weight: 700; color: #0d2133;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    line-height: 1.35;
+  }
+  .side-item-text p {
+    font-size: 11px; color: #7a9ab0; margin-top: 4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .side-item-arrow { color: #0a5d83; font-size: 18px; flex-shrink: 0; opacity: 0.6; }
+
+  /* ══════════════════════════════════════════
+     CONCEPT C – "Magazine grid"
+  ══════════════════════════════════════════ */
+  .magazine-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+  }
+  .mag-feature {
+    grid-column: 1; grid-row: 1 / 3;
+    background: #fff; border-radius: 16px;
+    overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    display: flex; flex-direction: column;
+    border: 1px solid #e0ecf4;
+    position: relative;
+  }
+  .mag-feature-image {
+    height: 240px; background: linear-gradient(135deg, #eef6fb 0%, #cce7f5 100%);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .mag-feature-image img { max-height: 200px; max-width: 80%; object-fit: contain; }
+  .mag-badge {
+    position: absolute; bottom: -14px; left: 24px;
+    background: #0a5d83; color: #fff;
+    font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; padding: 6px 16px; border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(10,93,131,0.35);
+  }
+  .mag-feature-body { padding: 32px 24px 24px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .mag-feature-body .label {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #0a5d83; opacity: 0.7;
+  }
+  .mag-feature-body h2 { font-size: 24px; font-weight: 800; line-height: 1.3; color: #0d2133; }
+  .mag-feature-body p { font-size: 14px; line-height: 1.6; color: #4a6478; flex: 1; }
+  .mag-feature-body .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .tag {
+    background: #eef6fb; color: #0a5d83;
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+  }
+  .mag-feature-body .cta { align-self: flex-start; }
+  .btn-primary {
+    background: #0a5d83; color: #fff; border: none;
+    border-radius: 8px; padding: 10px 22px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    text-decoration: none; display: inline-block;
+  }
+
+  .mag-small {
+    background: #fff; border-radius: 12px;
+    overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e0ecf4;
+    display: flex; gap: 0; flex-direction: column;
+  }
+  .mag-small-image {
+    height: 110px; background: #f5f9fc;
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid #edf3f8;
+  }
+  .mag-small-image img { max-height: 90px; max-width: 80%; object-fit: contain; }
+  .mag-small-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .mag-small-body h3 {
+    font-size: 14px; font-weight: 700; color: #0d2133;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .mag-small-body p {
+    font-size: 12px; color: #6a8a9c; line-height: 1.5;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    flex: 1;
+  }
+  .mag-small-body a {
+    font-size: 12px; font-weight: 700; color: #0a5d83; text-decoration: none;
+  }
+
+  /* Divider */
+  .divider { height: 2px; background: #d0e4ef; margin: 48px 0; border-radius: 2px; }
+
+  /* Header */
+  .page-header {
+    background: #0a5d83; color: #fff;
+    text-align: center; padding: 20px 40px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  }
+  .page-header span { opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  ARCHE Collections – Redesign Mockup &nbsp;|&nbsp; <span>3 Concepts for "Latest Collection" prominence</span>
+</div>
+
+<!-- ══ CONCEPT A ═════════════════════════════════════════════════════ -->
+<div class="concept">
+  <div class="concept-title">Concept A — Hero Feature + Row</div>
+  <p class="section-label">Collections</p>
+
+  <!-- Featured newest -->
+  <div class="featured-hero">
+    <div class="featured-hero-image">
+      <div class="new-badge">✦ New Addition</div>
+      <!-- placeholder logo -->
+      <svg viewBox="0 0 220 180" width="220" xmlns="http://www.w3.org/2000/svg" style="opacity:0.25">
+        <circle cx="110" cy="90" r="80" fill="white"/>
+        <text x="110" y="102" text-anchor="middle" font-size="32" fill="#0a5d83" font-weight="bold">ARCHE</text>
+      </svg>
+    </div>
+    <div class="featured-hero-content">
+      <div class="eyebrow">Latest Addition · April 2026</div>
+      <h2>Troesmis. Römisches Legionslager – Munizipium – spätantike und byzantinische Grenzfestung</h2>
+      <p>Archäologische Erforschung eines der größten antiken und byzantinischen Zentren an der unteren Donau mittels modernster Methoden der Fernerkundung, geophysikalischer Prospektion und digitaler Kartographie.</p>
+      <div class="meta-row">
+        <div class="meta-chip">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="14" height="11" rx="2"/><path d="M5 1v4M11 1v4M1 7h14"/>
+          </svg>
+          2026
+        </div>
+        <div class="meta-chip">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 2a6 6 0 100 12A6 6 0 008 2z"/><path d="M8 5v3l2 2"/>
+          </svg>
+          Archaeology
+        </div>
+        <div class="meta-chip">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 12l4-4 3 3 5-6"/>
+          </svg>
+          3 Resources
+        </div>
+      </div>
+      <a href="#" class="cta-btn">Explore Collection →</a>
+    </div>
+  </div>
+
+  <!-- Other collections row -->
+  <div class="cards-row">
+    <div class="mini-card">
+      <div class="mini-card-img">
+        <svg viewBox="0 0 120 80" width="80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="80" fill="#eef6fb" rx="6"/>
+          <text x="60" y="45" text-anchor="middle" font-size="12" fill="#0a5d83" font-weight="bold">ODeeg</text>
+        </svg>
+      </div>
+      <div class="mini-card-body">
+        <h3>ODEEG Collections Data</h3>
+        <p>The ODEEG project has been funded by the go!digital programme 2016, Austria, and is connected to the wide...</p>
+        <a href="#" class="mini-card-link">More</a>
+      </div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-img">
+        <svg viewBox="0 0 120 80" width="80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="80" fill="#eef6fb" rx="6"/>
+          <text x="60" y="45" text-anchor="middle" font-size="11" fill="#0a5d83" font-weight="bold">Glaser</text>
+        </svg>
+      </div>
+      <div class="mini-card-body">
+        <h3>Glaser Abklatsche (2015-2016)</h3>
+        <p>3D Scans of selected Squeezes from the Glaser Collection at the archive of the Austrian Academy of...</p>
+        <a href="#" class="mini-card-link">More</a>
+      </div>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-img">
+        <svg viewBox="0 0 120 80" width="80" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="80" fill="#eef6fb" rx="6"/>
+          <text x="60" y="45" text-anchor="middle" font-size="10" fill="#0a5d83" font-weight="bold">travel!digital</text>
+        </svg>
+      </div>
+      <div class="mini-card-body">
+        <h3>travel!digital Collection</h3>
+        <p>A digital collection of early German travel guides on non-European countries which were released by the...</p>
+        <a href="#" class="mini-card-link">More</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider" style="margin: 0 40px;"></div>
+
+<!-- ══ CONCEPT B ═════════════════════════════════════════════════════ -->
+<div class="concept">
+  <div class="concept-title">Concept B — Dark Spotlight + Side List</div>
+  <p class="section-label">Collections</p>
+
+  <div class="concept-b-inner">
+    <!-- Spotlight (newest) -->
+    <div class="spotlight-card">
+      <div class="spotlight-card-image">
+        <div class="new-ribbon">New</div>
+        <svg viewBox="0 0 200 160" width="160" xmlns="http://www.w3.org/2000/svg" style="opacity:0.35">
+          <circle cx="100" cy="80" r="70" fill="white"/>
+          <text x="100" y="90" text-anchor="middle" font-size="28" fill="#0a5d83" font-weight="bold">ARCHE</text>
+        </svg>
+      </div>
+      <div class="spotlight-card-body">
+        <div class="eyebrow">Latest Addition · April 2026</div>
+        <h2>Troesmis. Römisches Legionslager – Munizipium – spätantike und byzantinische Grenzfestung</h2>
+        <p>Archäologische Erforschung eines der größten antiken und byzantinischen Zentren an der unteren Donau mittels modernster Methoden.</p>
+        <div class="meta-pills">
+          <span class="meta-pill">Archaeology</span>
+          <span class="meta-pill">2026</span>
+          <span class="meta-pill">Romania</span>
+        </div>
+        <a href="#" class="cta-btn-inv">Explore Collection →</a>
+      </div>
+    </div>
+
+    <!-- Side list -->
+    <div>
+      <div style="margin-bottom:14px; font-size:13px; font-weight:700; color:#3a5068;">Other Recent Collections</div>
+      <div class="side-list">
+        <a href="#" class="side-item">
+          <div class="side-item-img">
+            <svg viewBox="0 0 56 56" width="56" xmlns="http://www.w3.org/2000/svg">
+              <rect width="56" height="56" fill="#eef6fb" rx="6"/>
+              <text x="28" y="33" text-anchor="middle" font-size="9" fill="#0a5d83" font-weight="bold">ODeeg</text>
+            </svg>
+          </div>
+          <div class="side-item-text">
+            <h4>ODEEG Collections Data</h4>
+            <p>go!digital programme 2016, Austria…</p>
+          </div>
+          <div class="side-item-arrow">›</div>
+        </a>
+        <a href="#" class="side-item">
+          <div class="side-item-img">
+            <svg viewBox="0 0 56 56" width="56" xmlns="http://www.w3.org/2000/svg">
+              <rect width="56" height="56" fill="#eef6fb" rx="6"/>
+              <text x="28" y="33" text-anchor="middle" font-size="9" fill="#0a5d83" font-weight="bold">Glaser</text>
+            </svg>
+          </div>
+          <div class="side-item-text">
+            <h4>Glaser Abklatsche (2015-2016)</h4>
+            <p>3D Scans of selected Squeezes…</p>
+          </div>
+          <div class="side-item-arrow">›</div>
+        </a>
+        <a href="#" class="side-item">
+          <div class="side-item-img">
+            <svg viewBox="0 0 56 56" width="56" xmlns="http://www.w3.org/2000/svg">
+              <rect width="56" height="56" fill="#eef6fb" rx="6"/>
+              <text x="28" y="33" text-anchor="middle" font-size="8" fill="#0a5d83" font-weight="bold">travel!</text>
+            </svg>
+          </div>
+          <div class="side-item-text">
+            <h4>travel!digital Collection</h4>
+            <p>Early German travel guides on non-European countries…</p>
+          </div>
+          <div class="side-item-arrow">›</div>
+        </a>
+        <a href="#" class="side-item">
+          <div class="side-item-img">
+            <svg viewBox="0 0 56 56" width="56" xmlns="http://www.w3.org/2000/svg">
+              <rect width="56" height="56" fill="#eef6fb" rx="6"/>
+              <text x="28" y="33" text-anchor="middle" font-size="8" fill="#0a5d83" font-weight="bold">ARCHE</text>
+            </svg>
+          </div>
+          <div class="side-item-text">
+            <h4>Another Collection Title</h4>
+            <p>Short description preview of this collection…</p>
+          </div>
+          <div class="side-item-arrow">›</div>
+        </a>
+        <div style="margin-top:8px; text-align:right;">
+          <a href="#" style="font-size:12px; font-weight:700; color:#0a5d83; text-decoration:none;">View all collections →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider" style="margin: 0 40px;"></div>
+
+<!-- ══ CONCEPT C ═════════════════════════════════════════════════════ -->
+<div class="concept">
+  <div class="concept-title">Concept C — Magazine Grid</div>
+  <p class="section-label">Collections</p>
+
+  <div class="magazine-grid">
+    <!-- Featured large (newest) -->
+    <div class="mag-feature">
+      <div class="mag-feature-image">
+        <div class="mag-badge">✦ Latest Addition</div>
+        <svg viewBox="0 0 200 180" width="180" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="90" r="75" fill="white" opacity="0.6"/>
+          <text x="100" y="100" text-anchor="middle" font-size="24" fill="#0a5d83" font-weight="bold">ARCHE</text>
+        </svg>
+      </div>
+      <div class="mag-feature-body">
+        <div class="label">Archaeology · 2026</div>
+        <h2>Troesmis. Römisches Legionslager – Munizipium</h2>
+        <p>Archäologische Erforschung eines der größten antiken und byzantinischen Zentren an der unteren Donau mittels modernster Methoden der Fernerkundung, geophysikalischer Prospektion und digitaler Kartographie.</p>
+        <div class="tags">
+          <span class="tag">Remote Sensing</span>
+          <span class="tag">GIS</span>
+          <span class="tag">Byzantine</span>
+        </div>
+        <a href="#" class="btn-primary cta">Explore →</a>
+      </div>
+    </div>
+
+    <!-- Top-right small -->
+    <div class="mag-small">
+      <div class="mag-small-image">
+        <svg viewBox="0 0 120 90" width="90" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="90" fill="#eef6fb" rx="6"/>
+          <text x="60" y="50" text-anchor="middle" font-size="13" fill="#0a5d83" font-weight="bold">ODeeg</text>
+        </svg>
+      </div>
+      <div class="mag-small-body">
+        <h3>ODEEG Collections Data</h3>
+        <p>The ODEEG project has been funded by the go!digital programme 2016, Austria, and is connected to the wide…</p>
+        <a href="#">More →</a>
+      </div>
+    </div>
+
+    <!-- Bottom-right small -->
+    <div class="mag-small">
+      <div class="mag-small-image">
+        <svg viewBox="0 0 120 90" width="90" xmlns="http://www.w3.org/2000/svg">
+          <rect width="120" height="90" fill="#eef6fb" rx="6"/>
+          <text x="60" y="50" text-anchor="middle" font-size="11" fill="#0a5d83" font-weight="bold">Glaser</text>
+        </svg>
+      </div>
+      <div class="mag-small-body">
+        <h3>Glaser Abklatsche (2015–2016)</h3>
+        <p>3D Scans of selected Squeezes from the Glaser Collection at the archive of the Austrian Academy…</p>
+        <a href="#">More →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

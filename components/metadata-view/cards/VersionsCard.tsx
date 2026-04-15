@@ -4,7 +4,7 @@ import React, { useCallback, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { useTranslation } from "react-i18next";
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import VersionsBlock from "../default-blocks/VersionsBlock";
+import VersionsBlock from "../default-blocks-example/VersionsBlock";
 
 type Status = "pending" | "empty" | "has";
 
