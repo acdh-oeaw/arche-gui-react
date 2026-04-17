@@ -38,7 +38,7 @@ export function LocaleSwitcher(): ReactNode {
 							{separator}
 
 							<span className="sr-only">{t("current-locale", { locale: label })}</span>
-							<span aria-hidden={true} className="cursor-default font-strong">
+							<span aria-hidden={true} className="locale-active cursor-default font-strong">
 								{language.toUpperCase()}
 							</span>
 						</Fragment>
@@ -48,7 +48,7 @@ export function LocaleSwitcher(): ReactNode {
 				const children = (
 					<Fragment>
 						<span className="sr-only">{t("switch-locale-to", { locale: label })}</span>
-						<span aria-hidden={true}>{language.toUpperCase()}</span>
+						<span aria-hidden={true} className="locale-link-text">{language.toUpperCase()}</span>
 					</Fragment>
 				);
 

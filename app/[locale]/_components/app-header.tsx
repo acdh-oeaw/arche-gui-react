@@ -157,7 +157,7 @@ export function AppHeader(): ReactNode {
 					/>
 					<button
 						aria-label={t("navigation.hero.search")}
-						className="h-10 rounded-r-full bg-[#3B89AD] px-6 text-white"
+						className="h-10 rounded-r-full bg-arche-acc-dark-blue px-6 text-white hover:bg-arche-acc-dark-blue-hover"
 						type="submit"
 					>
 						<svg

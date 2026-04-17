@@ -41,14 +41,14 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 				<span className="sr-only">{navigation.home.label}</span>
 			</NavLink>
 
-			<ul className="ml-auto flex flex-wrap justify-end text-small" role="list">
+			<ul className="ml-auto flex flex-wrap justify-end p-2 text-small" role="list">
 				{Object.entries(navigation).map(([id, item]) => {
 					switch (item.type) {
 						case "action": {
 							return (
 								<li key={id}>
 									<Button
-										className="interactive inline-flex px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay"
+										className="header-nav-link"
 										onPress={item.onAction}
 									>
 										{item.label}
@@ -61,7 +61,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<NavLink
-										className="interactive inline-flex px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline current:select-overlay-bottom pressed:press-overlay"
+										className="header-nav-link"
 										href={item.href}
 									>
 										{item.label}
@@ -88,7 +88,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<MenuTrigger>
-										<Button className="group interactive inline-flex items-center gap-x-2 px-4 py-6 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline pressed:press-overlay">
+										<Button className="header-nav-link">
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}

@@ -135,7 +135,7 @@ export function AppFooter(): ReactNode {
 								placeholder={t("menu.helpdesk.items.search")}
 								type="search"
 							/>
-							<button className="rounded-r-md bg-[#3B89AD] p-2" type="submit">
+							<button className="btn btn-arche-blue" type="submit">
 								<Image
 									alt="Search"
 									className="h-4 w-4"

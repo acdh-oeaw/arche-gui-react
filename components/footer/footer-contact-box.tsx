@@ -14,7 +14,7 @@ function FooterContactBox() {
 							<p className="cta-item">{t("menu.contact_box.description")}</p>
 						</div>
 						<a
-							className="w-fit rounded-md bg-[#3B89AD] px-6 py-2 text-white"
+							className="btn btn-arche-blue"
 							href="mailto:arche@oeaw.ac.at"
 						>
 							{t("menu.contact_box.button_label")}
