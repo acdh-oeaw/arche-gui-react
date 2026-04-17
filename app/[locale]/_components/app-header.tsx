@@ -120,7 +120,7 @@ export function AppHeader(): ReactNode {
 					navigation={navigation}
 				/>
 
-				<div className="flex items-center gap-x-6">
+				<div className="flex items-center gap-x-6 pt-2">
 					<LocaleSwitcher />
 				</div>
 			</div>
