@@ -7,8 +7,7 @@
 	--color-arche-gray: rgb(91, 89, 91, 100%);
 	--color-arche-red: rgb(220, 53, 69, 100%);
 	--color-arche-new-blue: rgb(136, 219, 223, 100%);
-	--color-arche-light-blue: rgb(225, 237, 243, 100%);
-	--color-arche-link-color: rgb(79, 140, 165, 100%);
+	--color-arche-link-color: rgb(0, 84, 128, 100%);
 	--color-arche-acc-light-blue: rgb(237, 242, 247);
 	--color-arche-acc-font-color: rgb(77, 77, 77);
 	--color-arche-acc-font-color-second: rgb(26, 26, 26);
@@ -36,10 +35,8 @@
 	--arche-btn-blue-hover: rgb(59, 137, 173, 80%);
 	--arche-smokey-white: rgb(248, 249, 250);
 	--arche-green: rgb(88, 188, 193);
-	--arche-light-blue: rgb(225, 237, 243);
 	--arche-medium-blue: rgb(71, 150, 181);
 	--arche-medium-blue-hover: rgb(59, 137, 173);
-	--arche-dark-blue: rgb(0, 102, 153);
 	--light-gray: rgb(225, 225, 225);
 	--light-blue: rgb(238, 245, 248);
 	--gray: rgb(88, 86, 88);
@@ -139,8 +136,8 @@ code {
 
 .header-nav-link {
 	display: inline-flex;
-	align-items: center;
 	gap: 0.25rem;
+	align-items: center;
 	padding-right: 0.5rem;
 	padding-left: 0.5rem;
 	color: var(--color-arche-acc-font-color);
@@ -180,9 +177,9 @@ code {
 	width: 100%;
 	height: 5px;
 	background-color: var(--arche-acc-dark-blue);
-	transform-origin: left;
-	transform: scaleX(0);
 	transition: transform 0.3s ease;
+	transform: scaleX(0);
+	transform-origin: left;
 }
 
 a:hover .locale-link-text::before {
@@ -216,7 +213,7 @@ a:hover .locale-link-text::before {
 }
 
 .section-header-title-small {
-	color: rgb(0, 102, 153, 100%) !important;
+	color: rgb(0, 84, 128, 100%) !important;
 	font-weight: 700 !important;
 	font-style: normal !important;
 	font-size: 16px !important;
@@ -228,7 +225,7 @@ a:hover .locale-link-text::before {
 }
 
 .section-header-title {
-	color: rgb(51, 51, 51, 100%) !important;
+	color: rgb(77, 77, 77, 100%) !important;
 	font-weight: 700 !important;
 	font-style: normal !important;
 	font-size: 32px !important;
@@ -251,7 +248,7 @@ a:hover .locale-link-text::before {
 	padding-right: 0 !important;
 	padding-bottom: 3rem;
 	padding-left: 0 !important;
-	background-image: url("/browser/images/common/resource_bottom_bubble.svg");
+	background-image: url("/browser/images/common/resource_bottom_bubble_acc.svg");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -264,7 +261,7 @@ a:hover .locale-link-text::before {
 	padding-bottom: 150px;
 	padding-left: 0 !important;
 	background-color: rgb(248, 249, 250, 100%);
-	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -325,7 +322,9 @@ a:hover .locale-link-text::before {
 .metadata-main-content {
 	max-width: 1320px;
 	margin-bottom: 50px;
+	padding-right: 0;
 	padding-bottom: 50px;
+	padding-left: 0;
 }
 
 .meatdata-view-top-hr {
@@ -512,7 +511,7 @@ a:hover .locale-link-text::before {
 	right: 0;
 	bottom: 0;
 	z-index: 0;
-	background-image: url("/browser/images/common/bottom-right-cloud.png");
+	background-image: url("/browser/images/common/bottom-right-cloud.svg");
 
 	/* Replace with your bottom logo */
 	background-size: cover;
@@ -522,7 +521,7 @@ a:hover .locale-link-text::before {
 	right: 0;
 	bottom: 0;
 	z-index: 0;
-	background-image: url("/browser/images/common/bottom-right-cloud.png");
+	background-image: url("/browser/images/common/bottom-right-cloud.svg");
 
 	/* Replace with your bottom logo */
 	background-size: cover;
@@ -535,14 +534,14 @@ a:hover .locale-link-text::before {
 	padding-right: 0 !important;
 	padding-bottom: 150px;
 	padding-left: 0 !important;
-	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
 
 .deposition-agreement-container {
 	padding-bottom: 150px;
-	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
 	background-position: bottom;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -583,13 +582,13 @@ summary {
 }
 
 details[open] summary {
-	background-color: rgb(71, 150, 181, 100%) !important;
+	background-color: rgb(0, 84, 128, 100%) !important;
 }
 
 .static-pages {
 	min-height: 500px;
 	padding-bottom: 100px;
-	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
 	background-position: bottom;
 	background-size: 100% auto;
 	background-repeat: no-repeat;

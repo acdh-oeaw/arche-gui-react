@@ -10,7 +10,7 @@ export function AppFooter(): ReactNode {
 	const tH = useTranslations("AppHeader");
 
 	return (
-		<footer className="arche-footer flex flex-col items-center bg-[#069] text-sm text-white">
+		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
 			<div className="grid grid-cols-6 gap-4">
 				<div className="col-span-4 col-start-2">
 					<div className="w-full">

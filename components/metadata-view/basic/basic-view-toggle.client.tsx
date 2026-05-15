@@ -261,7 +261,7 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 			</section>
 
 			<section
-				className={isExpertView ? "hidden" : "grid grid-cols-1 gap-6 p-6 lg:grid-cols-12"}
+				className={isExpertView ? "hidden" : "grid grid-cols-1 gap-6 pt-6 lg:grid-cols-12"}
 				id="metadata-content"
 			>
 				<div className={sideContent != null ? "lg:col-span-9" : "lg:col-span-12"}>{basicContent}</div>

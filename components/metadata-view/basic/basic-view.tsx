@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
+import CardsBlock from "@/components/metadata-view/CardsBlock";
 import { CitationBlock } from "@/components/metadata-view/default-blocks/citation-block";
 import { NewVersionBlock } from "@/components/metadata-view/default-blocks/new-version-block";
 import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/see-also-block";
@@ -81,14 +82,9 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 				id={metadata.getId()}
 				language={language}
 				sideContent={
-					<>
-						<div>SIDE BOXES</div>
-						<div>Title Image ---- for TopCollection only</div>
-						<div>
-							MAP --- If Place/acdh:hasSpatialCoverage is filled out then show a box with a map and
-							the Places (acdh:hasWkt, acdh:hasLatitude/acdh:hasLongitude)
-						</div>
-					</>
+					<CardsBlock metadata={ metadata}  />
+
+
 				}
 				translations={{
 					basic_view: t("metaview.basic_view"),

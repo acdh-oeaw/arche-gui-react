@@ -1,62 +1,69 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function TitleImageCard({
-  id,
-  onFound,
-}: {
-  id: string | number; // accept both
-  onFound?: (hasImage: boolean) => void;
-}) {
-  const [src, setSrc] = useState<string | null>(null);
+import { Image } from '@/components/image';
 
-  // Build once per id to avoid re-fetch loops if parent re-renders
-  const url = useMemo(() => {
-    // If NEXT_PUBLIC_THUMBNAILS_URL already contains a query like '?id=',
-    // keep concatenation consistent with your backend expectations.
-    const base = process.env.NEXT_PUBLIC_THUMBNAILS_URL ?? '';
-    return `${base}${id}&width=400`;
-  }, [id]);
+type Status = 'loading' | 'found' | 'not-found';
+
+export default function TitleImageCard({ url }: Readonly<{ url: string }>) {
+  const [status, setStatus] = useState<Status>('loading');
 
   useEffect(() => {
     let active = true;
 
     async function checkImage() {
+      if (!url) {
+        setStatus('not-found');
+        return;
+      }
+
       try {
         const res = await fetch(url, { method: 'HEAD' });
         if (!active) return;
 
         if (res.ok) {
-          setSrc(url);
-          onFound?.(true);
+          setStatus('found');
         } else {
-          setSrc(null);
-          onFound?.(false);
+          setStatus('not-found');
         }
       } catch {
         if (active) {
-          setSrc(null);
-          onFound?.(false);
+          setStatus('not-found');
         }
       }
     }
 
-    checkImage();
+    void checkImage();
     return () => {
       active = false;
     };
-  }, [url, onFound]);
+  }, [url]);
 
-  if (!src) return null;
+  if (status === 'not-found') return null;
+
+  if (status === 'loading') {
+    return (
+      <div className="flex h-32 w-full items-center justify-center rounded-[8px] border border-[#E1E1E1]">
+        <Image
+          alt="Loading..."
+          className="h-12 w-auto"
+          height={47}
+          src="/browser/images/arche_logo_flip_47px.gif"
+          unoptimized={true}
+          width={47}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="border border-[#E1E1E1] rounded-[8px] w-full flex justify-center">
+    <div className="flex w-full justify-center rounded-[8px] border border-[#E1E1E1]">
       <img
-        src={src}
-        alt={`Preview ${id}`}
-        className="max-h-32 w-auto object-contain rounded"
+        alt="Preview"
+        className="max-h-32 w-auto rounded object-contain"
         loading="lazy"
+        src={url}
       />
     </div>
   );
