@@ -43,9 +43,7 @@ function LicenseDataCard({ data }: Readonly<{ data: Record<string, Array<CardVal
         <div className="flex flex-col gap-6 border-t border-[#E1EDF3] p-3">
           {Object.entries(data).map(([key, list]) => {
             if (!Array.isArray(list) || list.length === 0) return null;
-						console.log("here");
-						console.log(key);
-						console.log(list);
+
             return (
               <div key={key}>
                 <b>{t(key)}:</b>

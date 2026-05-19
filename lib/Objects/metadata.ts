@@ -89,7 +89,8 @@ export class Metadata {
 		const SKOS_CONCEPT = "http://www.w3.org/2004/02/skos/core#Concept";
 		const SKOS_CONCEPT_SCHEME = "http://www.w3.org/2004/02/skos/core#ConceptScheme";
 
-		const prop = v.property as Record<string, string>;
+		const prop = v.property as Record<string, string> | undefined;
+		if (!prop) return v;
 		const propValue = prop[this.mainLang];
 		if (propValue !== SKOS_CONCEPT && propValue !== SKOS_CONCEPT_SCHEME) {
 			return v;
@@ -599,7 +600,7 @@ export class Metadata {
 		return this.#fetchCardsData(props);
 	}
 
-	getArrangement() {
+	getArrangement(): Record<string, any> {
 		if (this.getAcdhType()?.includes("TopCollection")) {
 			const props: Record<string, string> = {
 				"acdh:hasArrangement": "Arrangement",

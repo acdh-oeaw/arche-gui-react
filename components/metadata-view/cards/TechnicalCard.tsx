@@ -1,33 +1,38 @@
 'use client';
-import React from 'react';
-import { useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from "next-intl";
+import React, { useState } from 'react';
 
-const TechnicalCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
-  const [isOpen, setIsOpen] = useState(true);
-  const { t } = useTranslation();
+import { Button } from '@/components/ui/button';
 
-  return (
-    <div className="border border-[#E1E1E1] rounded-[8px] w-full">
-      {/* Header */}
-      <div className="flex px-[24px] py-[10px] items-center gap-[10px] self-stretch bg-[#FAFAFA] ">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex justify-between items-center px-4 py-3 focus:outline-none"
-        >
-          <span className="facet-title">{t('technical_info')}</span>
-          {isOpen ? (
-            <ChevronUpIcon className="h-5 w-5 text-gray-600" />
-          ) : (
-            <ChevronDownIcon className="h-5 w-5 text-gray-600" />
-          )}
-        </button>
-      </div>
+function TechnicalCard ({ data }: Readonly<{ data: Record<string, Array<CardValue>> }>) {
+	const [isOpen, setIsOpen] = useState(true);
+	 const t = useTranslations("AppContent.metaview");
+
+	return (
+		<div className="w-full rounded-[8px] border border-[#E1E1E1]">
+			{/* Header */}
+			<div className="flex items-center gap-2.5 self-stretch bg-[#FAFAFA] px-6 py-2.5 ">
+				<Button
+					className="w-full border-0 bg-transparent px-4 py-3 shadow-none!"
+					onClick={() => { setIsOpen(!isOpen); }}
+					type="button"
+				>
+					<div className="flex w-full items-center justify-between">
+						<span className="facet-title">{t('technical_info')}</span>
+						{isOpen ? (
+							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+						) : (
+							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+						)}
+					</div>
+				</Button>
+			</div>
+
 
       {/* Content */}
       {isOpen && (
-        <div className="flex flex-col p-[12px] gap-[24px] border-t border-[#E1EDF3]">
+        <div className="flex flex-col gap-6 border-t border-[#E1EDF3] p-3">
           {Object.entries(data).map(([key, list]) => {
             if (!Array.isArray(list) || list.length === 0) return null;
 
@@ -47,8 +52,8 @@ const TechnicalCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
                       <div key={idx}>
                         <a
                           href={val.externalUrl}
-                          target="_blank"
                           rel="noopener noreferrer"
+                          target="_blank"
                         >
                           {val.value}
                         </a>

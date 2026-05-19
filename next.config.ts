@@ -16,6 +16,10 @@ const config: Config = {
 				protocol: "https",
 				hostname: thumbnailHostname,
 			},
+			{
+				protocol: "https",
+				hostname: "shared.acdh.oeaw.ac.at",
+			},
 		],
 	},
 	// cacheComponents: true,

@@ -1,39 +1,55 @@
 'use client';
-import React from 'react';
-import { useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import { useTranslation } from 'react-i18next';
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 
-const FundingDataCard = ({
+import { Image } from "@/components/image";
+import { Button } from '@/components/ui/button';
+
+interface CardValue {
+  value: string;
+  externalUrl?: string;
+  type?: string;
+  id?: string | number;
+}
+
+interface LogoValue {
+  value: string;
+}
+
+export function FundingDataCard({
   data = {},
-  logos = {},
-}: {
-  data?: Record<string, any[]>;
-  logos?: Record<string, any[]>;
-}) => {
+  logos = [],
+}: Readonly<{
+  data?: Record<string, Array<CardValue>>;
+  logos?: Array<LogoValue>;
+}>) {
   const [isOpen, setIsOpen] = useState(true);
-  const { t } = useTranslation();
+  const t = useTranslations("AppContent.metaview");
 
   return (
-    <div className="border border-[#E1E1E1] rounded-[8px] w-full">
+    <div className="w-full rounded-[8px] border border-[#E1E1E1]">
       {/* Header */}
-      <div className="flex px-[24px] py-[10px] items-center gap-[10px] self-stretch bg-[#FAFAFA] ">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex justify-between items-center px-4 py-3 focus:outline-none"
+      <div className="flex items-center gap-2.5 self-stretch bg-[#FAFAFA] px-6 py-2.5">
+        <Button
+          className="w-full border-0 bg-transparent px-4 py-3 shadow-none!"
+          onClick={() => { setIsOpen(!isOpen); }}
+          type="button"
         >
-          <span className="facet-title">{t('funding')}</span>
-          {isOpen ? (
-            <ChevronUpIcon className="h-5 w-5 text-gray-600" />
-          ) : (
-            <ChevronDownIcon className="h-5 w-5 text-gray-600" />
-          )}
-        </button>
+          <div className="flex w-full items-center justify-between">
+            <span className="facet-title">{t('funding')}</span>
+            {isOpen ? (
+              <ChevronUpIcon className="h-5 w-5 text-gray-600" />
+            ) : (
+              <ChevronDownIcon className="h-5 w-5 text-gray-600" />
+            )}
+          </div>
+        </Button>
       </div>
 
       {/* Content */}
       {isOpen && (
-        <div className="flex flex-col p-[12px] gap-[24px] border-t border-[#E1EDF3]">
+        <div className="flex flex-col gap-6 border-t border-[#E1EDF3] p-3">
           {Object.entries(data).map(([key, list]) => {
             if (!Array.isArray(list) || list.length === 0) return null;
 
@@ -41,20 +57,20 @@ const FundingDataCard = ({
               <div key={key}>
                 <b>{t(key)}:</b>
                 <br />
-                {list.map((val, idx) => {
+                {list.map((val) => {
                   const content = (
-                    <span style={{ whiteSpace: 'pre-line' }}>
-                      {val.value ?? ''}
+                    <span className="whitespace-pre-line">
+                      {val.value}
                     </span>
                   );
 
                   if (val.externalUrl) {
                     return (
-                      <div key={idx}>
+                      <div key={val.externalUrl}>
                         <a
                           href={val.externalUrl}
-                          target="_blank"
                           rel="noopener noreferrer"
+                          target="_blank"
                         >
                           {val.value}
                         </a>
@@ -65,8 +81,8 @@ const FundingDataCard = ({
 
                   if (val.type === 'REL' && val.id != null) {
                     return (
-                      <div key={idx}>
-                        <a href={`/browser/metadata/${val.id}`} id="archeHref">
+                      <div key={String(val.id)}>
+                        <a href={`/browser/metadata/${String(val.id)}`}>
                           {val.value}
                         </a>
                         <br />
@@ -74,9 +90,8 @@ const FundingDataCard = ({
                     );
                   }
 
-                  // default branch (Twig's `nl2br`)
                   return (
-                    <div key={idx}>
+                    <div key={val.value}>
                       {content}
                       <br />
                     </div>
@@ -86,23 +101,23 @@ const FundingDataCard = ({
             );
           })}
 
-          {Object.entries(logos).map(([key, logo]) => {
-            if (logo && typeof logo === 'object' && logo.value) {
-              return (
-                <img
-                  key={key}
-                  src={logo.value}
-                  alt={`logo-${key}`}
-                  className="w-full max-h-[72px] object-contain object-left"
-                />
-              );
-            }
-            return null; // nothing if no value
+          {logos.map((logo) => {
+            if (!logo.value) return null;
+            return (
+              <Image
+								key={logo.value}
+								alt="funder-logo"
+								className="max-h-[72px] w-full object-contain object-left"
+                height={72}
+                src={logo.value}
+                width={100}
+              />
+            );
           })}
         </div>
       )}
     </div>
   );
-};
+}
 
 export default FundingDataCard;
