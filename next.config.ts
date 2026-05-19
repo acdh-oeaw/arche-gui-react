@@ -5,9 +5,19 @@ import createI18nPlugin from "next-intl/plugin";
 
 import { env } from "@/config/env.config";
 
+const thumbnailHostname = new URL(env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL).hostname;
+
 const config: Config = {
 	allowedDevOrigins: ["127.0.0.1"],
 	basePath: "/browser",
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: thumbnailHostname,
+			},
+		],
+	},
 	// cacheComponents: true,
 	/** Compression should be handled by nginx reverse proxy. */
 	compress: false,

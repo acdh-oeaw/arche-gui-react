@@ -6,7 +6,7 @@ import { Image } from '@/components/image';
 
 type Status = 'loading' | 'found' | 'not-found';
 
-export default function TitleImageCard({ url }: Readonly<{ url: string }>) {
+export function TitleImageCard({ url }: Readonly<{ url: string }>) {
   const [status, setStatus] = useState<Status>('loading');
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function TitleImageCard({ url }: Readonly<{ url: string }>) {
 
   if (status === 'loading') {
     return (
-      <div className="flex h-32 w-full items-center justify-center rounded-[8px] border border-[#E1E1E1]">
+      <div className="flex h-[200px] w-full items-center justify-center rounded-[8px] border border-[#E1E1E1]">
         <Image
           alt="Loading..."
           className="h-12 w-auto"
@@ -58,12 +58,15 @@ export default function TitleImageCard({ url }: Readonly<{ url: string }>) {
   }
 
   return (
-    <div className="flex w-full justify-center rounded-[8px] border border-[#E1E1E1]">
-      <img
+    <div className="flex h-[200px] w-full justify-center rounded-[8px] border border-[#E1E1E1]">
+      <Image
         alt="Preview"
-        className="max-h-32 w-auto rounded object-contain"
+        className="h-full w-auto rounded object-contain"
+        height={200}
         loading="lazy"
         src={url}
+        style={{ width: "auto" }}
+        width={100}
       />
     </div>
   );

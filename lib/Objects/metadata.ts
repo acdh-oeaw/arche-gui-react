@@ -1,4 +1,10 @@
 // lib/Objects/metadata.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 export type AnyObj = Record<string, any>;
 
 // audio categories
@@ -21,15 +27,11 @@ type ResourceItem =
 			value?: string;
 			accessrestriction?: string;
 			vocabsid?: string | number;
+			externalUrl?: string;
 			[k: string]: any;
 	  }
 	| Record<string, any>;
 
-function addExternalURLIfNeeded<T extends AnyObj>(v: T): T {
-	// PHP: if (isset($v['property'])) { $this->addExternalURL($v); }
-	// You can augment here if needed (e.g., build a clickable URL from `property`).
-	return v;
-}
 
 export class Metadata {
 	private data: Record<string, any>;
@@ -66,9 +68,9 @@ export class Metadata {
 				// 3️⃣ Now handle array vs. single object
 				const store = (val: any) => {
 					if (Array.isArray(val)) {
-						this.properties[prop] = val.map(addExternalURLIfNeeded);
+						this.properties[prop] = val.map((item: AnyObj) => { return this.#addExternalURL(item); });
 					} else if (val && typeof val === "object") {
-						const item = addExternalURLIfNeeded(val);
+						const item = this.#addExternalURL(val as AnyObj);
 						if (item?.type === "REL") {
 							if (!Array.isArray(this.properties[prop])) this.properties[prop] = [];
 							this.properties[prop].push(item);
@@ -83,12 +85,45 @@ export class Metadata {
 		}
 	}
 
+	#addExternalURL(v: AnyObj): AnyObj {
+		const SKOS_CONCEPT = "http://www.w3.org/2004/02/skos/core#Concept";
+		const SKOS_CONCEPT_SCHEME = "http://www.w3.org/2004/02/skos/core#ConceptScheme";
+
+		const prop = v.property as Record<string, string>;
+		const propValue = prop[this.mainLang];
+		if (propValue !== SKOS_CONCEPT && propValue !== SKOS_CONCEPT_SCHEME) {
+			return v;
+		}
+
+		const identifiers = v.identifiers as Array<string> | undefined;
+		if (!Array.isArray(identifiers) || identifiers.length === 0) {
+			return v;
+		}
+
+		const excludedPatterns = [
+			process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? '',
+			'https://id.acdh.oeaw.ac.at',
+			'https://vocabs.acdh.oeaw.ac.at/rest/',
+			'.acdh.oeaw.ac.at/api/',
+			'arche-curation.',
+			'arche-dev.',
+		];
+
+		for (const identifier of identifiers) {
+			if (excludedPatterns.every((pattern) => { return !identifier.includes(pattern); })) {
+				v.externalUrl = identifier;
+			}
+		}
+
+		return v;
+	}
+
 	isPublic(): boolean {
 		const accessress = this.getAccessRestriction();
 		/*
 		 * If there is no accessrestriction, then it is a collection
 		 */
-		if (!accessress || Object.keys(accessress).length === 0) {
+		if (Object.keys(accessress).length === 0) {
 			return true;
 		}
 
@@ -98,7 +133,7 @@ export class Metadata {
 		return false;
 	}
 
-	getDownloadCardAccess(): bool {
+	getDownloadCardAccess(): boolean {
 		return this.isPublic();
 	}
 
@@ -239,15 +274,18 @@ export class Metadata {
 
 		if (this.data?.["acdh:hasAccessRestriction"]) {
 			const accessress = this.data?.["acdh:hasAccessRestriction"];
-			for (const [k, v] of Object.entries(accessress)) {
+			for (const [_k, v] of Object.entries(accessress as Record<string, Record<string, any>>)) {
 				if (v[this.mainLang]) {
 					result.id = v[this.mainLang].id;
 					result.title = v[this.mainLang].value;
 					result.accessrestriction = v[this.mainLang].value;
 				} else {
-					result.id = Object.keys(v)[0].id;
-					result.title = Object.keys(v)[0].value;
-					result.accessrestriction = Object.keys(v)[0].value;
+					const firstKey = Object.keys(v)[0];
+					if (firstKey !== undefined) {
+						result.id = v[firstKey]?.id ?? "";
+						result.title = v[firstKey]?.value;
+						result.accessrestriction = v[firstKey]?.value;
+					}
 				}
 			}
 		}
@@ -300,15 +338,15 @@ export class Metadata {
 		const first = propData[firstKey];
 
 		// If there's a value for the current language
-		if (propData[this.language]) {
-			return propData[this.language];
+		if (propData[this.mainLang]) {
+			return propData[this.mainLang];
 		}
 		// Else, if there's a value for 'und'
 		else if (propData.und) {
 			return propData.und;
 		}
 		// Else, if the keys are integers, return the whole array
-		else if (typeof firstKey === "string" && !isNaN(Number(firstKey))) {
+		else if (typeof firstKey === "string" && !Number.isNaN(Number(firstKey))) {
 			return propData;
 		}
 		// Else, return the first element wrapped in an array
@@ -347,7 +385,7 @@ export class Metadata {
 
 	getAcdhTypeNiceFormat(): string | null {
 		const full = this.getAcdhType();
-		return full.replace("https://vocabs.acdh.oeaw.ac.at/schema#", "") || full;
+		return full?.replace("https://vocabs.acdh.oeaw.ac.at/schema#", "") ?? full;
 	}
 
 	getShortDescription(): string {
@@ -358,13 +396,13 @@ export class Metadata {
 		const dateString = this.properties["acdh:hasAvailableDate"]?.[0]?.value || "";
 		const date = new Date(dateString);
 
-		if (isNaN(date.getTime())) return ""; // Invalid date check
+		if (Number.isNaN(date.getTime())) return ""; // Invalid date check
 
 		const day = String(date.getDate()).padStart(2, "0");
 		const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-indexed
 		const year = date.getFullYear();
 
-		return `${day} ${month} ${year}`;
+		return `${day} ${month} ${String(year)}`;
 	}
 
 	getPidOrAcdhIdentifier(): string | null {
@@ -513,7 +551,7 @@ export class Metadata {
 	getPlaceAddress(): Record<string, any> {
 		const props: Record<string, string> = {
 			"acdh:hasAddressLine1": "Address Line 1",
-			"acdh:hasAddressLine2 ": "Address Line 2",
+			"acdh:hasAddressLine2": "Address Line 2",
 			"acdh:hasPostcode": "Postcode",
 			"acdh:hasCity": "City",
 			"acdh:hasRegion": "Region",
@@ -525,7 +563,7 @@ export class Metadata {
 	getOrganisationAddressBlock(): Record<string, any> {
 		const props: Record<string, string> = {
 			"acdh:hasAddressLine1": "Address Line 1",
-			"acdh:hasAddressLine2 ": "Address Line 2",
+			"acdh:hasAddressLine2": "Address Line 2",
 			"acdh:hasPostcode": "Postcode",
 			"acdh:hasCity": "City",
 			"acdh:hasRegion": "Region",
@@ -555,7 +593,7 @@ export class Metadata {
 	getPlaceDescription(): Record<string, any> {
 		const props: Record<string, string> = {
 			"acdh:hasDescription": "Description",
-			"acdh:hasPart ": "Part(s)",
+			"acdh:hasPart": "Part(s)",
 			"acdh:isPartOf": "Is part of",
 		};
 		return this.#fetchCardsData(props);
@@ -570,7 +608,7 @@ export class Metadata {
 		}
 	}
 
-	getTechnicalData() {
+	getTechnicalData(): Record<string, any> {
 		let props: Record<string, string> = {};
 		const lower = this.getAcdhType()?.toLowerCase();
 
