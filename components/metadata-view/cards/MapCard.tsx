@@ -37,8 +37,8 @@ export default function MapCard({
         const s = document.createElement('script');
         s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
         s.async = true;
-        s.onload = () => resolve();
-        s.onerror = () => reject(new Error('Failed to load Leaflet CDN'));
+        s.onload = () => { resolve(); };
+        s.onerror = () => { reject(new Error('Failed to load Leaflet CDN')); };
         document.head.appendChild(s);
       });
     };
@@ -102,8 +102,8 @@ export default function MapCard({
     }, 0);
   };
 
-  const toPairsFromNumbers = (nums: number[]) => {
-    const pairs: [number, number][] = [];
+  const toPairsFromNumbers = (nums: Array<number>) => {
+    const pairs: Array<[number, number]> = [];
     for (let i = 0; i + 1 < nums.length; i += 2) {
       const lon = nums[i],
         lat = nums[i + 1]; // inputs assumed lon,lat
@@ -144,17 +144,17 @@ export default function MapCard({
     return null;
   };
 
-  const parsePolygon = (s: string): [number, number][][] => {
+  const parsePolygon = (s: string): Array<Array<[number, number]>> => {
     try {
       const obj = JSON.parse(s);
       if (obj?.type === 'Polygon' && Array.isArray(obj.coordinates)) {
-        return obj.coordinates.map((ring: any[]) =>
-          ring.map(([lon, lat]: number[]) => [lat, lon])
+        return obj.coordinates.map((ring: Array<any>) =>
+          {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
         );
       }
       if (Array.isArray(obj)) {
-        return obj.map((ring: any[]) =>
-          ring.map(([lon, lat]: number[]) => [lat, lon])
+        return obj.map((ring: Array<any>) =>
+          {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
         );
       }
     } catch {}
@@ -163,25 +163,25 @@ export default function MapCard({
     return pairs.length ? [pairs] : [];
   };
 
-  const parseMultiPolygon = (s: string): [number, number][][][] => {
+  const parseMultiPolygon = (s: string): Array<Array<Array<[number, number]>>> => {
     try {
       const obj = JSON.parse(s);
       if (obj?.type === 'MultiPolygon' && Array.isArray(obj.coordinates)) {
-        return obj.coordinates.map((poly: any[]) =>
-          poly.map((ring: any[]) =>
-            ring.map(([lon, lat]: number[]) => [lat, lon])
-          )
+        return obj.coordinates.map((poly: Array<any>) =>
+          {return poly.map((ring: Array<any>) =>
+            {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
+          )}
         );
       }
       if (Array.isArray(obj)) {
-        return obj.map((poly: any[]) =>
-          poly.map((ring: any[]) =>
-            ring.map(([lon, lat]: number[]) => [lat, lon])
-          )
+        return obj.map((poly: Array<any>) =>
+          {return poly.map((ring: Array<any>) =>
+            {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
+          )}
         );
       }
     } catch {}
-    const polys: [number, number][][][] = [];
+    const polys: Array<Array<Array<[number, number]>>> = [];
     const groups = s
       .replace(/^\s*MULTIPOLYGON\s*/i, '')
       .match(/\(\([^()]+\)\)/g);
@@ -201,11 +201,11 @@ export default function MapCard({
     const map = mapRef.current!;
 
     // Remove overlays (keep base)
-    const toRemove: any[] = [];
+    const toRemove: Array<any> = [];
     map.eachLayer((layer: any) => {
       if (!layer.getAttribution) toRemove.push(layer);
     });
-    toRemove.forEach((l) => map.removeLayer(l));
+    toRemove.forEach((l) => {return map.removeLayer(l)});
 
     try {
       const kind = String(mapType || '')
@@ -257,7 +257,7 @@ export default function MapCard({
   };
 
   return (
-    <div className="relative w-[300px] h-[300px]">
+    <div className="relative h-[300px] w-[300px]">
       <div ref={divRef} className="h-full w-full rounded-md border shadow" />
       {err && (
         <div className="absolute inset-x-2 top-2 rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs text-red-700 shadow">

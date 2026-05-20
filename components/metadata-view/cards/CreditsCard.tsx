@@ -17,16 +17,16 @@ export function CreditsDataCard({ data }: Readonly<{ data: Record<string, Array<
 	const t = useTranslations("AppContent.metaview");
 
 	return (
-		<div className="w-full rounded-[8px] border border-[#E1E1E1]">
-			{/* Header */}
-			<div className="flex items-center gap-2.5 self-stretch bg-[#FAFAFA] px-6 py-2.5">
-				<Button
-					className="w-full border-0 bg-transparent px-4 py-3 shadow-none!"
-					onClick={() => { setIsOpen(!isOpen); }}
-					type="button"
-				>
-					<div className="flex w-full items-center justify-between">
-						<span className="facet-title">{t('credits')}</span>
+		<div className="facet-card w-full rounded-[8px] ">
+      {/* Header */}
+      <div className="facet-card-header ">
+        <Button
+          className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
+          onClick={() => { setIsOpen(!isOpen); }}
+          type="button"
+        >
+          <div className="flex w-full items-center justify-between">
+            <span className="facet-card-title">{t('credits')}</span>
 						{isOpen ? (
 							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
 						) : (
@@ -38,7 +38,7 @@ export function CreditsDataCard({ data }: Readonly<{ data: Record<string, Array<
 
 			{/* Content */}
 			{isOpen && (
-				<div className="flex flex-col gap-[24px] border-t border-[#E1EDF3] p-[12px]">
+				<div className="facet-card-content flex flex-col gap-6">
 					{Object.entries(data).map(([key, list]) => {
 						if (!Array.isArray(list) || list.length === 0) return null;
 

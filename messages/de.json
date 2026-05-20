@@ -23,7 +23,7 @@
 			"search": "Suche",
 			"property": "Eigenschaft",
 			"values": "Wert(e)",
-			"newer_version_text":"Die Ressource hat eine neuere Version!",
+			"newer_version_text": "Die Ressource hat eine neuere Version!",
 			"newer_version_url_text": "Klicken Sie hier für die neuere Version.",
 			"summary": "Summary",
 			"research_discipline": "Research Discipline",
@@ -39,11 +39,8 @@
 			"see_also": "Siehe auch",
 			"url": "URL",
 			"related_project": "Verwandtes Projekt",
-			"identifier": "Identifier",
-			"licensing_and_access": "Licensing & Access",
-			"available_since": "Verfügbar seit",
-			"expert_view": "Expertenansicht",
 			"identifier": "Identifikator",
+			"licensing_and_access": "Licensing & Access",
 			"discover_resources": "Ressourcen entdecken",
 			"hero_browse_resources_text": "Durchsuchen Sie die vielfältigen Ressourcen in ARCHE",
 			"menu_discover": "Entdecken",
@@ -111,7 +108,21 @@
 			"view_and_share": "View and Share",
 			"Funder": "Funder",
 			"Binary Size": "Binäre Größe",
-			"Life Cycle Status": "Life Cycle Status"
+			"Life Cycle Status": "Life Cycle Status",
+			"File Size": "Dateigröße",
+			"File format": "Dateiformat",
+			"Category": "Kategorie",
+			"ARCHE Login": "ARCHE Login",
+			"Federated Login": "Föderierter Login",
+			"You are logged in as": "Sie sind angemeldet als",
+			"Logout": "Abmelden",
+			"You are not authorized to download this data!": "Sie sind nicht berechtigt, diese Daten herunterzuladen!",
+			"download_file": "Datei herunterladen",
+			"download_collection_script": "Sammlungs-Skript herunterladen",
+			"download_metadata": "Metadaten herunterladen",
+			"Resource is not public! Please login to download!": "Diese Ressource ist nicht öffentlich! Bitte melden Sie sich an.",
+			"rdf_viewer": "RDF Viewer",
+			"versions": "Versions"
 		}
 	},
 	"AppFooter": {
@@ -255,7 +266,8 @@
 				"subtitle": "Browse the various resources on ARCHE ",
 				"search": "Search"
 			},
-			"label": "Primary"
+			"label": "Primary",
+			"general_arche_description": "ARCHE"
 		}
 	},
 	"ColorSchemeSwitcher": {

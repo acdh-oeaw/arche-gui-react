@@ -2,12 +2,16 @@ import { useTranslations } from "next-intl";
 import React, { type ReactNode } from 'react'
 
 import { CreditsDataCard } from "@/components/metadata-view/cards/CreditsCard";
+import { DownloadCard } from "@/components/metadata-view/cards/DownloadCard";
 import FundingDataCard from "@/components/metadata-view/cards/FundingDataCard";
 import IdentifierCard from "@/components/metadata-view/cards/IdentifierCard";
 import LicenseDataCard from "@/components/metadata-view/cards/LicenseDataCard";
 import MapCard from "@/components/metadata-view/cards/MapCard";
+import { ResourceTechnicalCard } from "@/components/metadata-view/cards/ResourceMetaTechnicalCard";
 import TechnicalCard from "@/components/metadata-view/cards/TechnicalCard";
 import { TitleImageCard } from '@/components/metadata-view/cards/TitleImageCard'
+import { VersionsCard } from "@/components/metadata-view/cards/VersionsCard";
+import { ViewShareCard } from "@/components/metadata-view/cards/ViewShareCard";
 import { env } from "@/config/env.config";
 import { Metadata, type Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
@@ -27,19 +31,11 @@ function CardsBlock(props: Readonly<MetadataProps>): ReactNode {
 	const fundingData = metadata.getFundingData();
 	const fundingLogos = metadata.getFundingLogos();
 	const isSpatialCoverage = metadata.getDataByProperty("acdh:hasSpatialCoverage");
-	const collectionPropArr = {
-		'acdh:hasLifeCycleStatus': 'Life Cycle Status', 'acdh:hasExtent': 'Extent',
-		'acdh:hasNumberOfItems': 'Number Of Items', 'acdh:hasBinarySize': 'Binary Size'
-	};
-	const resourcePropArr = {
-		'acdh:hasCategory': 'Category', 'acdh:hasFormat': 'File format',
-		'acdh:hasBinarySize': 'File Size', 'acdh:hasExtent': 'Extent'
-	}
-	const technicalData = metadata.getTechnicalData();
-	//const resourceData = metadata.getResource
 
-	console.log("Type");
-	console.log(acdhType);
+	const technicalData = metadata.getTechnicalData();
+
+
+
 
 	if (resourceMapType === 'multipolygon') {
     mapData = metadata.getMapPolygon();
@@ -78,8 +74,30 @@ function CardsBlock(props: Readonly<MetadataProps>): ReactNode {
 				<TechnicalCard data={technicalData} />
 			)}
 
+			{Object.keys(technicalData).length > 0 &&  (acdhType.includes('#Resource') || acdhType.includes('#Metadata') ) && (
+				<ResourceTechnicalCard data={technicalData} />
+			)}
 
 
+			<DownloadCard data={{
+				id: metadata.getId(),
+				binarySize: metadata.getBinarySize(),
+				acdhType: metadata.getAcdhType(),
+				downloadCardAccess: metadata.getDownloadCardAccess(),
+				archeApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? '',
+				appBaseUrl: (env as Record<string, string>).NEXT_PUBLIC_APP_BASE_URL ?? '',
+			}} />
+
+
+			<ViewShareCard data={{
+				id: metadata.getId(),
+				acdhType: metadata.getAcdhType(),
+				archeApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? '',
+				appBaseUrl: (env as Record<string, string>).NEXT_PUBLIC_APP_BASE_URL ?? '',
+			}} />
+
+
+			<div>Versions card should be implemented</div>
 
 
 

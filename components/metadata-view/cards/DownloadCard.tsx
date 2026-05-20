@@ -1,41 +1,53 @@
 'use client';
-import React from 'react';
-import Image from 'next/image';
-import { useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+
+import { Image } from "@/components/image";
+import { Button } from '@/components/ui/button';
 import downloadIcon from '@/public/images/icons/dl_icon.png';
 
-const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
+interface DownloadData {
+  id: string;
+  binarySize: number;
+  acdhType: string | null;
+  downloadCardAccess: boolean;
+  archeApiUrl: string;
+  appBaseUrl: string;
+}
+
+export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
   const [isOpen, setIsOpen] = useState(true);
-  const { t } = useTranslation();
-  let isDownloadEnabled = true;
+  const t = useTranslations("AppContent.metaview");
   const isPublic = data.downloadCardAccess;
 
   return (
-    <div className="border border-[#E1E1E1] rounded-[8px] w-full">
+    <div className="facet-card w-full rounded-[8px]">
       {/* Header */}
-      <div className="flex px-[24px] py-[10px] items-center gap-[10px] self-stretch bg-[#FAFAFA] ">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex justify-between items-center px-4 py-3 focus:outline-none"
+      <div className="facet-card-header">
+        <Button
+          className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
+          onClick={() => { setIsOpen(!isOpen); }}
+          type="button"
         >
-          <span className="facet-title">{t('Download')}</span>
-          {isOpen ? (
-            <ChevronUpIcon className="h-5 w-5 text-gray-600" />
-          ) : (
-            <ChevronDownIcon className="h-5 w-5 text-gray-600" />
-          )}
-        </button>
+          <div className="flex w-full items-center justify-between">
+            <span className="facet-card-title">{t('download')}</span>
+            {isOpen ? (
+              <ChevronUpIcon className="h-5 w-5 text-gray-600" />
+            ) : (
+              <ChevronDownIcon className="h-5 w-5 text-gray-600" />
+            )}
+          </div>
+        </Button>
       </div>
 
       {/* Content */}
       {isOpen && (
-        <div className="flex flex-col p-[12px] gap-[4px] border-t border-[#E1EDF3]">
-          {isPublic === false && (
+        <div className="flex flex-col gap-1 border-t border-[#E1EDF3] p-3">
+          {!isPublic && (
             <div
+              className="relative w-full rounded-md border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
               role="alert"
-              class="relative w-full rounded-md border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
             >
               {t('Resource is not public! Please login to download!')}
             </div>
@@ -44,8 +56,8 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
           <div className="hidden" id="download-not-logged">
             <div className="w-full pt-2">
               <a
-                href={`"/api/user?redirect=${process.env.NEXT_PUBLIC_GUI_URL}`}
-                className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline"
+                className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+                href={`/api/user?redirect=${data.appBaseUrl}`}
                 rel="nofollow"
               >
                 {t('ARCHE Login')}
@@ -53,8 +65,8 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
             </div>
             <div className="w-full pt-2">
               <a
-                href={`"/Shibboleth.sso/Login?target=${process.env.NEXT_PUBLIC_GUI_URL}`}
-                className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline"
+                className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+                href={`/Shibboleth.sso/Login?target=${data.appBaseUrl}`}
                 rel="nofollow"
               >
                 {t('Federated Login')}
@@ -65,16 +77,16 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
           <div className="hidden" id="download-logged">
             <div className="w-full">
               <div
-                role="alert"
                 className="relative w-full rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
+                role="alert"
               >
                 <div>
                   {t('You are logged in as')}:
-                  <span id="user-logged-text"></span>
+                  <span id="user-logged-text" />
                 </div>
                 <div className="pt-2">
-                  <div className="w-full gui-https-logout">
-                    <span className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline">
+                  <div className="w-full">
+                    <span className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline">
                       {t('Logout')}
                     </span>
                   </div>
@@ -85,15 +97,15 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
 
           <div className="hidden" id="download-not-authorized">
             <div className="w-full">
-              <div className="alert alert-warning">
+              <div className="w-full rounded-md border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800">
                 <div>{t('You are not authorized to download this data!')}</div>
                 <div>
                   {t('You are logged in as')}:
-                  <span id="user-logged-not-auth-text"></span>
+                  <span id="user-logged-not-auth-text" />
                 </div>
                 <div className="pt-2">
-                  <div className="w-full gui-https-logout">
-                    <span className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline">
+                  <div className="w-full">
+                    <span className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline">
                       {t('Logout')}
                     </span>
                   </div>
@@ -102,42 +114,43 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
             </div>
           </div>
 
-          <div className="W-full " id="download-resource-section">
+          <div className="w-full" id="download-resource-section">
             {data.binarySize > 0 && (
-              <div className="w-full flex flex-col pt-2 pb-2">
+              <div className="flex w-full flex-col pt-2 pb-2">
                 <a
-                  href={`${process.env.NEXT_PUBLIC_BASE_API}/${data.id}`}
-                  className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline"
+                  className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+                  href={`${data.appBaseUrl}/${data.id}`}
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {t('Download File')}
-
+                  {t('download_file')}
                   <Image
-                    src={downloadIcon}
-                    alt={t('Download File')}
-                    width={16}
+                    alt={t('download_file')}
+                    className="h-4 w-4"
                     height={16}
-                    className="w-4 h-4"
+                    src={downloadIcon}
+                    width={16}
                   />
                 </a>
               </div>
             )}
 
-            {(data.acdhType?.includes('TopCollection') ||
+            {(data.acdhType?.includes('TopCollection') ??
               data.acdhType?.includes('Collection')) && (
-              <div className="w-full flex flex-col pt-2 pb-2">
+              <div className="flex w-full flex-col pt-2 pb-2">
                 <a
-                  href={`${process.env.NEXT_PUBLIC_GUI_URL}/dissemination/collection_download_script/${data.id}`}
-                  className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline"
+                  className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+                  href={`${data.appBaseUrl}/dissemination/collection_download_script/${data.id}`}
+                  rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {t('Download Collection Script')}
+                  {t('download_collection_script')}
                   <Image
-                    src={downloadIcon}
-                    alt={t('Download Collection Script')}
-                    width={16}
+                    alt={t('download_collection_script')}
+                    className="h-4 w-4"
                     height={16}
-                    className="w-4 h-4"
+                    src={downloadIcon}
+                    width={16}
                   />
                 </a>
               </div>
@@ -147,18 +160,18 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
           <div className="w-full" id="download-metadata-section">
             <div className="w-full pt-2 pb-2">
               <a
-                href={`${process.env.NEXT_PUBLIC_BASE_API}/${data.id}/metadata?format=text/turtle&readMode=relatives&parentProperty=https%3A%2F%2Fvocabs.acdh.oeaw.ac.at%2Fschema%23isPartOf`}
-                className="btn-arche-blue inline-flex items-center gap-2 pb-2 pt-2 pl-2 pr-2 text-white no-underline hover:no-underline"
+                className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+                href={`${data.archeApiUrl}/${data.id}/metadata?format=text/turtle&readMode=relatives&parentProperty=https%3A%2F%2Fvocabs.acdh.oeaw.ac.at%2Fschema%23isPartOf`}
+                rel="noopener noreferrer"
                 target="_blank"
               >
-                {t('Download Metadata')}
-
+                {t('download_metadata')}
                 <Image
-                  src={downloadIcon}
-                  alt={t('Download Metadata')}
-                  width={16}
+                  alt={t('download_metadata')}
+                  className="h-4 w-4"
                   height={16}
-                  className="w-4 h-4"
+                  src={downloadIcon}
+                  width={16}
                 />
               </a>
             </div>
@@ -167,5 +180,5 @@ const DownloadCard = ({ data = {} }: { data?: Record<string, any[]> }) => {
       )}
     </div>
   );
-};
-export default DownloadCard;
+}
+

@@ -1,10 +1,10 @@
 {
-	"description": "ACDH Application template",
-	"title": "ACDH App",
+	"description": "ARCHE Application template",
+	"title": "ARCHE App",
 	"manifest": {
-		"description": "ACDH Application template",
-		"name": "ACDH App",
-		"short-name": "ACDH App"
+		"description": "ARCHE Application template",
+		"name": "ARCHE",
+		"short-name": "ARCHE"
 	},
 	"social": [
 		{

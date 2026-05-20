@@ -11,6 +11,7 @@ export const localePrefix = {
 
 export const routing = defineRouting({
 	defaultLocale,
+	localeDetection: false,
 	/**
 	 * For GDPR-conformance, the locale cookie is stored as a session cookie, which expires when
 	 * the browser is closed. When using an explicit cookie consent banner, the cookie expiration

@@ -12,16 +12,16 @@ function IdentifierCard({ data }: Readonly<{ data: string }>) {
   const t = useTranslations("AppContent.metaview");
 
   return (
-    <div className="w-full rounded-[8px] border border-[#E1E1E1]">
-			{/* Header */}
-			 <div className="flex items-center gap-2.5 self-stretch bg-[#FAFAFA] px-6 py-2.5 ">
-							<Button
-								className="w-full border-0 bg-transparent px-4 py-3 shadow-none!"
-								onClick={() => { setIsOpen(!isOpen); }}
-								type="button"
-							>
-								<div className="flex w-full items-center justify-between">
-									<span className="facet-title">{t('identifier')}</span>
+   <div className="facet-card w-full rounded-[8px] ">
+      {/* Header */}
+      <div className="facet-card-header ">
+        <Button
+          className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
+          onClick={() => { setIsOpen(!isOpen); }}
+          type="button"
+        >
+          <div className="flex w-full items-center justify-between">
+            <span className="facet-card-title">{t('identifier')}</span>
 									{isOpen ? (
 										<ChevronUpIcon className="h-5 w-5 text-gray-600" />
 									) : (
@@ -34,7 +34,7 @@ function IdentifierCard({ data }: Readonly<{ data: string }>) {
 
       {/* Content */}
       {isOpen && (
-        <div className="flex gap-[24px] border-t border-[#E1EDF3] p-[12px]">
+        <div className="facet-card-content flex gap-6">
           <a className="break-all" href={data} rel="noreferrer" target="_blank">
             {data}
           </a>

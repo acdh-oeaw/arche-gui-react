@@ -23,7 +23,7 @@
 			"search": "Search",
 			"property": "Property",
 			"values": "Value(s)",
-			"newer_version_text":"The resource has a newer version!",
+			"newer_version_text": "The resource has a newer version!",
 			"newer_version_url_text": "Click here for the newer version.",
 			"summary": "Summary",
 			"research_discipline": "Research Discipline",
@@ -39,7 +39,7 @@
 			"see_also": "See Also",
 			"url": "URL",
 			"related_project": "Related Project",
-  		"identifier": "Identifier",
+			"identifier": "Identifier",
 			"discover_resources": "Discover resources",
 			"hero_browse_resources_text": "Browse the various resources on ARCHE",
 			"menu_discover": "Discover",
@@ -109,7 +109,22 @@
 			"view_and_share": "View and Share",
 			"Funder": "Funder",
 			"Binary Size": "Binary Size",
-			"Life Cycle Status": "Life Cycle Status"
+			"Life Cycle Status": "Life Cycle Status",
+			"File Size": "File Size",
+			"File format": "File format",
+			"Category": "Category",
+			"ARCHE Login": "ARCHE Login",
+			"Federated Login": "Federated Login",
+			"You are logged in as": "You are logged in as",
+			"Logout": "Logout",
+			"You are not authorized to download this data!": "You are not authorized to download this data!",
+			"download_file": "Download File",
+			"download_collection_script": "Download Collection Script",
+			"download_metadata": "Download Metadata",
+			"Resource is not public! Please login to download!": "Resource is not public! Please login to download!",
+			"rdf_viewer": "RDF Viewer",
+			"versions": "Versions"
+
 		}
 	},
 	"AppFooter": {
@@ -253,7 +268,8 @@
 				"subtitle": "Browse the various resources on ARCHE ",
 				"search": "Search"
 			},
-			"label": "Primary"
+			"label": "Primary",
+			"general_arche_description": "ARCHE"
 		}
 	},
 	"ColorSchemeSwitcher": {

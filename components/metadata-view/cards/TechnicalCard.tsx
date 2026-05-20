@@ -1,38 +1,48 @@
 'use client';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from "next-intl";
-import React, { useState } from 'react';
+import { useState } from "react";
 
 import { Button } from '@/components/ui/button';
+import { formatBytes } from '@/lib/helpers/ArcheHelpers';
 
-function TechnicalCard ({ data }: Readonly<{ data: Record<string, Array<CardValue>> }>) {
-	const [isOpen, setIsOpen] = useState(true);
-	 const t = useTranslations("AppContent.metaview");
+interface CardValue {
+  value: string;
+  externalUrl?: string;
+  type?: string;
+  id?: string | number;
+}
 
-	return (
-		<div className="w-full rounded-[8px] border border-[#E1E1E1]">
-			{/* Header */}
-			<div className="flex items-center gap-2.5 self-stretch bg-[#FAFAFA] px-6 py-2.5 ">
-				<Button
-					className="w-full border-0 bg-transparent px-4 py-3 shadow-none!"
-					onClick={() => { setIsOpen(!isOpen); }}
-					type="button"
-				>
-					<div className="flex w-full items-center justify-between">
-						<span className="facet-title">{t('technical_info')}</span>
-						{isOpen ? (
-							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
-						) : (
-							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
-						)}
-					</div>
-				</Button>
-			</div>
+const BINARY_SIZE_KEYS = new Set(['File Size', 'Binary Size']);
 
+
+export function TechnicalCard({ data }: Readonly<{ data: Record<string, Array<CardValue>> }>) {
+  const [isOpen, setIsOpen] = useState(true);
+  const t = useTranslations("AppContent.metaview");
+
+  return (
+    <div className="facet-card w-full rounded-[8px] ">
+      {/* Header */}
+      <div className="facet-card-header ">
+        <Button
+          className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
+          onClick={() => { setIsOpen(!isOpen); }}
+          type="button"
+        >
+          <div className="flex w-full items-center justify-between">
+            <span className="facet-card-title">{t('technical_info')}</span>
+            {isOpen ? (
+              <ChevronUpIcon className="h-5 w-5 text-gray-600" />
+            ) : (
+              <ChevronDownIcon className="h-5 w-5 text-gray-600" />
+            )}
+          </div>
+        </Button>
+      </div>
 
       {/* Content */}
       {isOpen && (
-        <div className="flex flex-col gap-6 border-t border-[#E1EDF3] p-3">
+        <div className="facet-card-content flex flex-col gap-6">
           {Object.entries(data).map(([key, list]) => {
             if (!Array.isArray(list) || list.length === 0) return null;
 
@@ -40,22 +50,24 @@ function TechnicalCard ({ data }: Readonly<{ data: Record<string, Array<CardValu
               <div key={key}>
                 <b>{t(key)}:</b>
                 <br />
-                {list.map((val, idx) => {
+                {list.map((val) => {
+                  const displayValue = BINARY_SIZE_KEYS.has(key)
+                    ? formatBytes(val.value)
+                    : val.value;
+
                   const content = (
-                    <span style={{ whiteSpace: 'pre-line' }}>
-                      {val.value ?? ''}
-                    </span>
+                    <span className="whitespace-pre-line">{displayValue}</span>
                   );
 
                   if (val.externalUrl) {
                     return (
-                      <div key={idx}>
+                      <div key={val.externalUrl}>
                         <a
                           href={val.externalUrl}
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          {val.value}
+                          {displayValue}
                         </a>
                         <br />
                       </div>
@@ -64,18 +76,17 @@ function TechnicalCard ({ data }: Readonly<{ data: Record<string, Array<CardValu
 
                   if (val.type === 'REL' && val.id != null) {
                     return (
-                      <div key={idx}>
-                        <a href={`/browser/metadata/${val.id}`} id="archeHref">
-                          {val.value}
+                      <div key={String(val.id)}>
+                        <a href={`/browser/metadata/${String(val.id)}`}>
+                          {displayValue}
                         </a>
                         <br />
                       </div>
                     );
                   }
 
-                  // default branch (Twig's `nl2br`)
                   return (
-                    <div key={idx}>
+                    <div key={val.value}>
                       {content}
                       <br />
                     </div>
@@ -88,5 +99,6 @@ function TechnicalCard ({ data }: Readonly<{ data: Record<string, Array<CardValu
       )}
     </div>
   );
-};
+}
+
 export default TechnicalCard;

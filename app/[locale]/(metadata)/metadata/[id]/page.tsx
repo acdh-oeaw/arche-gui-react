@@ -24,16 +24,15 @@ export async function generateMetadata(
 	_parent: ResolvingMetadata,
 ): Promise<NextMetadata> {
 	const { params } = props;
-
 	const { id, locale } = await params;
-	const t = await getTranslations({ locale, namespace: "StaticPages" });
+	const t = await getTranslations({ locale, namespace: "AppHeader" });
+	const language = getIntlLanguage(locale);
+	const archeMetadata = await getData(id, "expert", language);
 
-	const metadata: NextMetadata = {
-		title: `${t("items.about-arche.title")} ${id}`,
-		description: t("items.about-arche.description"),
+	return {
+		title: archeMetadata.getTitle(),
+		description: t("navigation.general_arche_description"),
 	};
-
-	return metadata;
 }
 
 export default async function MetadataPage(props: Readonly<MetadataPageProps>): Promise<ReactNode> {
