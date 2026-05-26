@@ -40,6 +40,13 @@ export async function getJsonData(params: Readonly<ApiParams>): Promise<unknown>
 
 }
 
+export async function getBlocksApiData(url: string): Promise<unknown> {
+
+	const res = await fetch(url, { cache: "no-store" });
+	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+	return (await res.json()) as unknown;
+}
+
 export async function getData(id: string, page: string, lang: string): Promise<Metadata> {
 	const jsonData = await getJsonData({ id:id, page:page, language: lang });
 	return new Metadata(jsonData as JSON, lang);

@@ -63,7 +63,7 @@ export function TitleImageCard({ url }: Readonly<{ url: string }>) {
         alt="Preview"
         className="h-full w-auto rounded object-contain"
         height={200}
-        loading="lazy"
+        loading="eager"
         src={url}
         style={{ width: "auto" }}
         width={100}

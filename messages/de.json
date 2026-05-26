@@ -122,7 +122,8 @@
 			"download_metadata": "Metadaten herunterladen",
 			"Resource is not public! Please login to download!": "Diese Ressource ist nicht öffentlich! Bitte melden Sie sich an.",
 			"rdf_viewer": "RDF Viewer",
-			"versions": "Versions"
+			"versions": "Versions",
+			"loading": "Wird geladen..."
 		}
 	},
 	"AppFooter": {

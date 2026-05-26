@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import React, { type ReactNode } from "react";
 
 import DisplayField from "@/components/helper/display-field";
-import { SummaryBlockDescription } from "@/components/metadata-view/default-blocks/summary-block-description";
+import { SummaryBlockDescription } from "@/components/metadata-view/default-blocks/SummaryBlockDescription";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface MetadataProps {

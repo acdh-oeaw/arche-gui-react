@@ -92,7 +92,7 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 	return (
 		<div className="space-y-3">
 			<h4 className="mb-0">{"Cite Collection"}</h4>
-			<div className="basic-inside-content-div">
+			<div className="cite-container">
 				<div className="">
 					{isLoading ? (
 						<ArcheLoader label="Loading citation..." size={32} />

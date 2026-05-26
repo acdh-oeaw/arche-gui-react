@@ -3,11 +3,11 @@ import type { ReactNode } from "react";
 
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
 import CardsBlock from "@/components/metadata-view/CardsBlock";
-import { CitationBlock } from "@/components/metadata-view/default-blocks/citation-block";
-import { NewVersionBlock } from "@/components/metadata-view/default-blocks/new-version-block";
-import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/see-also-block";
-import SummaryBlock from "@/components/metadata-view/default-blocks/summary-block";
-import TitleBlock from "@/components/metadata-view/default-blocks/title-block";
+import { CitationBlock } from "@/components/metadata-view/default-blocks/CitationBlock";
+import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
+import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
+import SummaryBlock from "@/components/metadata-view/default-blocks/SummaryBlock";
+import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 

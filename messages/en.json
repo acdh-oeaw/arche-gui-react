@@ -123,8 +123,8 @@
 			"download_metadata": "Download Metadata",
 			"Resource is not public! Please login to download!": "Resource is not public! Please login to download!",
 			"rdf_viewer": "RDF Viewer",
-			"versions": "Versions"
-
+			"versions": "Versions",
+			"loading": "Loading..."
 		}
 	},
 	"AppFooter": {

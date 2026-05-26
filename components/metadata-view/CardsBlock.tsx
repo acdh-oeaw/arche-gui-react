@@ -97,7 +97,7 @@ function CardsBlock(props: Readonly<MetadataProps>): ReactNode {
 			}} />
 
 
-			<div>Versions card should be implemented</div>
+			<VersionsCard id={metadata.getId()} />
 
 
 

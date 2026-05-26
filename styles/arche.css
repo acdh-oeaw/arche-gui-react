@@ -879,3 +879,14 @@ details p {
 	word-break: normal;
 	overflow-wrap: anywhere;
 }
+
+.cite-container {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: flex-start;
+	align-self: stretch;
+	padding: 24px;
+	border-radius: 12px;
+	background-color: rgb(237 242 247);
+}
