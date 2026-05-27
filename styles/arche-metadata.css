@@ -1,0 +1,27 @@
+.metadata-title {
+	color: var(--color-arche-acc-headings);
+	font-weight: 700;
+	font-style: normal;
+	font-size: 24px;
+	font-family:  Lato, sans-serif;
+	line-height: normal;
+}
+
+.metadata-alt-title {
+	color: var(--color-arche-acc-headings);
+	font-weight: 400;
+	font-style: normal;
+	font-size: 16px;
+	font-family:  Lato, sans-serif;
+	line-height: normal;
+}
+
+.metadata-view-block-title {
+	color: var(--color-arche-acc-headings);
+	font-weight: 700;
+	font-style: normal;
+	font-size: 20px;
+	font-family:  Lato, sans-serif;
+	line-height: normal;
+}
+

@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import React, { type ReactNode } from 'react'
 
 import { CreditsDataCard } from "@/components/metadata-view/cards/CreditsCard";
@@ -13,37 +12,49 @@ import { TitleImageCard } from '@/components/metadata-view/cards/TitleImageCard'
 import { VersionsCard } from "@/components/metadata-view/cards/VersionsCard";
 import { ViewShareCard } from "@/components/metadata-view/cards/ViewShareCard";
 import { env } from "@/config/env.config";
+import { getSpatialCoordinates } from "@/lib/api/ArcheSymfonyApi";
 import { Metadata, type Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface MetadataProps {
 	metadata: ParsedMetadata;
 }
 
-function CardsBlock(props: Readonly<MetadataProps>): ReactNode {
+async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 	const { metadata } = props;
-	const t = useTranslations("AppContent.metaview");
 	let mapData = '';
-	const resourceMapType = metadata.getMapType();
+	let resourceMapType = metadata.getMapType();
 
 	const acdhType = metadata.getAcdhType();
 	const licenseData = metadata.getLicenseData();
 	const creditsData = metadata.getCreditsData();
 	const fundingData = metadata.getFundingData();
 	const fundingLogos = metadata.getFundingLogos();
-	const isSpatialCoverage = metadata.getDataByProperty("acdh:hasSpatialCoverage");
-
+	const spatialCoverageId = metadata.getSpatialId();
 	const technicalData = metadata.getTechnicalData();
 
 
-
-
 	if (resourceMapType === 'multipolygon') {
-    mapData = metadata.getMapPolygon();
-  } else if (resourceMapType === 'polygon') {
-    mapData = metadata.getMapPolygon();
-  } else if (resourceMapType === 'coordinates') {
-    mapData = metadata.getMapCoordinates();
+		mapData = metadata.getMapPolygon();
+	} else if (resourceMapType === 'polygon') {
+		mapData = metadata.getMapPolygon();
+	} else if (resourceMapType === 'coordinates') {
+		mapData = metadata.getMapCoordinates();
+	} else if (spatialCoverageId) {
+
+		const spatialUrl = `${env.NEXT_PUBLIC_ARCHE_SYMFONY_API as string}getCoordinates/${spatialCoverageId}`;
+
+		try {
+			const spatial = await getSpatialCoordinates(spatialUrl);
+			mapData = spatial.coordinates;
+			console.log("MAPDATA");
+			console.log(mapData);
+			resourceMapType = spatial.mapType;
+		} catch {
+			// spatial coordinates unavailable, mapData stays empty
+		}
 	}
+
+
 
 	return (
 		<div className="flex flex-col gap-5">
@@ -51,7 +62,7 @@ function CardsBlock(props: Readonly<MetadataProps>): ReactNode {
 
 			<TitleImageCard url={`${env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL as string}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API as string}/${metadata.getId()}&width=400`} />
 
-			{mapData &&( acdhType.includes('#Place') ||  isSpatialCoverage )&& (
+			{mapData &&( acdhType.includes('#Place') ||  spatialCoverageId )&& (
 					<MapCard data={mapData} mapType={resourceMapType} />
       )}
 

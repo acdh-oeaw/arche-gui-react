@@ -235,25 +235,12 @@ export class Metadata {
 		return "";
 	}
 
-	getSpatialCoordinates(): Array<string> {
-		const spatial =
-			this.data?.["acdh:hasSpatialCoverage"]?.[this.mainId]?.[this.mainLang]?.[0]?.value;
+	getSpatialId(): string {
+		const spatialCoverage = this.data?.["acdh:hasSpatialCoverage"];
+		if (!spatialCoverage || typeof spatialCoverage !== "object") return "";
 
-		if (spatial) {
-			//we have to do a second api query to get the resource properties from the spatial id resource
-		}
-
-		/*
-    if (isset($this->properties['acdh:hasSpatialCoverage'])) {
-            $spatialId = isset($this->properties['acdh:hasSpatialCoverage'][0]['id']) ? $this->properties['acdh:hasSpatialCoverage'][0]['id'] : "";
-
-            if (!empty($spatialId)) {
-                $class = new \Drupal\arche_core_gui\Object\SpatialMapData();
-                return $class->getData($this->getRepoBaseUrl().'/api/getCoordinates/' . $spatialId);
-            }
-        }
-        return [];*/
-		return [];
+		const firstKey = Object.keys(spatialCoverage)[0];
+		return firstKey ?? "";
 	}
 
 	getBinarySize(): number {

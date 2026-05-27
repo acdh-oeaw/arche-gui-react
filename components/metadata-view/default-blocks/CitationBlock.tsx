@@ -91,9 +91,9 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 
 	return (
 		<div className="space-y-3">
-			<h4 className="mb-0">{"Cite Collection"}</h4>
+			<h3 className="metadata-view-block-title">{"Cite Collection"}</h3>
 			<div className="cite-container">
-				<div className="">
+				<div className="mt-4">
 					{isLoading ? (
 						<ArcheLoader label="Loading citation..." size={32} />
 					) : error != null ? (

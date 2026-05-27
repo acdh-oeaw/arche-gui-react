@@ -17,7 +17,7 @@ import { env } from "@/config/env.config";
 import { AnalyticsScript } from "@/lib/analytics-script";
 import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
-import { type IntlLocale, isValidLocale, locales } from "@/lib/i18n/locales";
+import { type IntlLocale, isValidLocale, locales, timeZone } from "@/lib/i18n/locales";
 import { getMetadata } from "@/lib/i18n/metadata";
 
 interface LocaleLayoutProps {
@@ -129,7 +129,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 				 */}
 				<Translations locale={locale} />
 
-				<Providers locale={locale} messages={clientMessages}>
+				<Providers locale={locale} messages={clientMessages} timeZone={timeZone}>
 					<AnalyticsScript
 						baseUrl={env.NEXT_PUBLIC_MATOMO_BASE_URL}
 						id={env.NEXT_PUBLIC_MATOMO_ID}

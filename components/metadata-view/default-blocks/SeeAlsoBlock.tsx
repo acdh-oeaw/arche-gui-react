@@ -21,7 +21,7 @@ export function SeeAlsoBlock(props: Readonly<MetadataProps>): ReactNode {
 	return (
 		<div className="w-full pb-5 lg:flex-row">
 			<div className="flex w-full gap-5 pt-5">
-				<h5>{t('see_also')}</h5>
+				<h3 className="metadata-view-block-title">{t("see_also")}</h3>
 			</div>
 
 			<div className="w-full pt-5">

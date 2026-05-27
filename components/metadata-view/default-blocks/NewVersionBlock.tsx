@@ -69,14 +69,16 @@ export function NewVersionBlock({ id, language, translations: t }: Readonly<Vers
 
 	if (error != null || items.length === 0) {
 			return null;
-		}
+	}
+
 
 		return (
 			<div className="flex flex-wrap items-center gap-2">
-				{items.map((item: VersionEntry, index: number) => {
+				{items.filter((item) => { return Number(item.id) !== Number(id); }).map((item: VersionEntry, index: number) => {
+
 					return (
 						<div key={item.id ?? index} className="w-full rounded-lg bg-rose-100 px-6 py-4 text-center text-slate-700">
-							{t.newer_version_text}{" "}
+							{t.newer_version_text}
 							<Link className="text-blue-500 hover:underline" href={`/browser/metadata/${item.id ?? ""}`}>
 								{t.newer_version_url_text}
 							</Link>

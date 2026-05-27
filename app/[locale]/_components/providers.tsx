@@ -10,16 +10,18 @@ interface ProvidersProps {
 	children: ReactNode;
 	locale: IntlLocale;
 	messages: Partial<IntlMessages>;
+	timeZone: string;
 }
 
 export function Providers(props: Readonly<ProvidersProps>): ReactNode {
-	const { children, locale, messages } = props;
+	const { children, locale, messages, timeZone } = props;
 
 	return (
 		<NextIntlClientProvider
 			getMessageFallback={({ key }) => { return `Translation missing: ${key}`; }}
 			locale={locale}
 			messages={messages}
+			timeZone={timeZone}
 		>
 			<AriaProviders locale={locale}>{children}</AriaProviders>
 		</NextIntlClientProvider>

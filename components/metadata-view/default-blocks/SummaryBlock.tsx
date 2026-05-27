@@ -25,7 +25,7 @@ function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 	return (
 		<div className="flex w-full flex-col gap-5 pt-5" id="av-summary">
 			<div className="w-full">
-				<h5>{t("summary")}</h5>
+				<h3 className="metadata-view-block-title">{t("summary")}</h3>
 			</div>
 			<ul className="list-inside list-disc space-y-2">
 				{/* Research Discipline */}

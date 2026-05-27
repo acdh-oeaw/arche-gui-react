@@ -11,8 +11,8 @@ function TitleBlock(props: Readonly<TitleBlockProps>): ReactNode {
 
 	return (
 		<div>
-			<h4>{metadata.getTitle()}</h4>
-			<h5>{metadata.getAlternativeTitle()}</h5>
+			<h2 className="metadata-title">{metadata.getTitle()}</h2>
+			<p className="metadata-alt-title">{metadata.getAlternativeTitle()}</p>
 		</div>
 	);
 }
