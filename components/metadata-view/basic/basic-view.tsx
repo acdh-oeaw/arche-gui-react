@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
+import { MetadataTabs } from "@/components/metadata-view/basic/MetadataTabs";
 import CardsBlock from "@/components/metadata-view/CardsBlock";
 import { CitationBlock } from "@/components/metadata-view/default-blocks/CitationBlock";
 import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
@@ -59,14 +60,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						<SeeAlsoBlock metadata={metadata} ></SeeAlsoBlock>
 
 
-						<div>TABS</div>
-						<div>
-							<ul>
-								<li>Collection Content</li>
-								<li>Associated Collections and Resources</li>
-								<li>Publications</li>tube
-							</ul>
-						</div>
+						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()}/>
 
 						<div>
 							VIEWER

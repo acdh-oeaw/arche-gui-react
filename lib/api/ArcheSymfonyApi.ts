@@ -38,6 +38,7 @@ export async function getData(id: string, page: string, lang: string): Promise<M
 }
 
 
+/* Get the SpatialCoverage coordinates for the map */
 export interface SpatialResult {
 	coordinates: string;
 	mapType: string;
