@@ -1,10 +1,10 @@
 "use client";
 
 import { ChevronRightIcon, DocumentIcon, FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid";
-import { useLocale } from "next-intl";
+import { useLocale,useTranslations  } from "next-intl";
 import { useEffect, useState } from "react";
 
-import { getCollectionContent, type CollectionContentResult } from "@/lib/api/CollectionContentApi";
+import { type CollectionContentResult,getCollectionContent } from "@/lib/api/CollectionContentApi";
 
 interface CollectionContentBlockProps {
   id: string;
@@ -22,12 +22,12 @@ function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
   const [expanded, setExpanded] = useState(false);
   const [children, setChildren] = useState<Array<CollectionContentResult>>([]);
   const [loading, setLoading] = useState(false);
-
+	const t = useTranslations("AppContent.metaview");
   async function handleExpandClick() {
     if (!expanded && children.length === 0 && item.children) {
       setLoading(true);
       try {
-        const data = await getCollectionContent(apiUrl, item.id, lang);
+        const data = await getCollectionContent(`${apiUrl}child-tree`, item.id, lang);
         setChildren(data);
       } finally {
         setLoading(false);
@@ -45,7 +45,7 @@ function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
         {/* Expand arrow — only for directories with children */}
         {item.dir && item.children ? (
           <button
-            className="shrink-0 text-gray-400 transition-transform hover:text-gray-600"
+            className="tab-table-url"
             onClick={() => { void handleExpandClick(); }}
             style={{ transform: expanded ? "rotate(90deg)" : "rotate(0deg)" }}
             type="button"
@@ -67,7 +67,7 @@ function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
 
         {/* Title — always a link */}
         <a
-          className="text-sm font-semibold hover:underline"
+          className="tab-table-url"
           href={`/browser/metadata/${item.id}`}
         >
           {item.title}
@@ -94,13 +94,13 @@ export function CollectionContentBlock({ id, apiUrl }: Readonly<CollectionConten
   const [loading, setLoading] = useState(true);
   const locale = useLocale();
   const lang = locale.split("-")[0] ?? "en";
-
+const t = useTranslations("AppContent.metaview");
   useEffect(() => {
     const controller = new AbortController();
 
     async function fetchItems() {
-      try {
-        const data = await getCollectionContent(apiUrl, id, lang, controller.signal);
+			try {
+				const data = await getCollectionContent(`${apiUrl}child-tree`, id, lang, controller.signal);
         if (!controller.signal.aborted) setItems(data);
       } catch {
         if (!controller.signal.aborted) setItems([]);
@@ -114,11 +114,11 @@ export function CollectionContentBlock({ id, apiUrl }: Readonly<CollectionConten
   }, [id, lang, apiUrl]);
 
   if (loading) {
-    return <div className="py-4 text-sm text-gray-400">{"Loading..."}</div>;
+    return <div className="py-4 text-sm text-gray-400">{t("loading")}</div>;
   }
 
   if (items.length === 0) {
-    return <div className="py-4 text-sm text-gray-400">{"No content available."}</div>;
+    return <div className="py-4 text-sm text-gray-400">{t("no_content_available")}</div>;
   }
 
   return (

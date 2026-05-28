@@ -25,3 +25,9 @@
 	line-height: normal;
 }
 
+.tab-table-url {
+	color: var(--color-arche-acc-font-color);
+	font-weight: 700;
+	font-size: 12px;
+}
+

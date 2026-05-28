@@ -48,10 +48,10 @@ export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionP
 
 	return (
 		<div className="mt-4">
-			<p className="whitespace-pre-line">{visibleText}</p>
+			<p className="whitespace-pre-line">{visibleText}
 			{isLong ? (
 				<button
-					className="mt-1 text-blue-600 underline"
+					className="btn-url-arche-blue"
 					onClick={() => {
 						setIsExpanded((prev) => {
 							return !prev;
@@ -60,8 +60,10 @@ export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionP
 					type="button"
 				>
 					{isExpanded ? showLessLabel : showMoreLabel}
-				</button>
-			) : null}
+					</button>
+
+				) : null}
+				</p>
 		</div>
 	);
 }

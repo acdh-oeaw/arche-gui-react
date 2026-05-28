@@ -1,10 +1,14 @@
 "use client";
-
+import { useTranslations } from "next-intl";
 import { type ReactNode, useState } from "react";
 
+import { AssociatedCollectionsBlock } from "@/components/metadata-view/default-blocks/tabs/AssociatedCollectionsBlock";
 import { CollectionContentBlock } from "@/components/metadata-view/default-blocks/tabs/CollectionContentBlock";
+import { PublicationsBlock } from "@/components/metadata-view/default-blocks/tabs/PublicationsBlock";
 
 const COLLECTION_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
+const RPR_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
+const PUBLICATIONS_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 
 interface TabConfig {
   label: string;
@@ -18,40 +22,25 @@ interface MetadataTabsProps {
 }
 
 export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProps>) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const type = acdhType.toLowerCase();
+	const [activeIndex, setActiveIndex] = useState(0);
+	const type = acdhType.toLowerCase();
+	const t = useTranslations("AppContent.metaview");
 
-  const allTabs: Array<TabConfig> = [
-    {
-      label: "Collection Content",
+	const allTabs: Array<TabConfig> = [
+		{
+			label: t("collection_content"),
       types: COLLECTION_TYPES,
 			content: <CollectionContentBlock apiUrl={apiUrl} id={id} />,
     },
     {
-      label: "Associated Collections and Resources",
-      types: COLLECTION_TYPES,
-      content: (
-        <div className="py-4 text-sm text-gray-600">
-          <p>{"Resources and collections associated with this item."}</p>
-          <ul className="mt-3 list-disc pl-5">
-            <li>{"Associated Collection A"}</li>
-            <li>{"Associated Resource B"}</li>
-          </ul>
-        </div>
-      ),
+      label: t("associated_collections_and_resources"),
+      types: RPR_TYPES,
+			content: <AssociatedCollectionsBlock apiUrl={apiUrl} id={id} />,
     },
-    {
-      label: "Publications",
-      types: ["resource"],
-      content: (
-        <div className="py-4 text-sm text-gray-600">
-          <p>{"Publications that reference or are derived from this resource."}</p>
-          <ul className="mt-3 list-disc pl-5">
-            <li>{"Example Publication 2024"}</li>
-            <li>{"Example Journal Article"}</li>
-          </ul>
-        </div>
-      ),
+		{
+			label: t("publications"),
+      types: PUBLICATIONS_TYPES,
+			content: <PublicationsBlock apiUrl={apiUrl} id={id} />,
     },
   ];
 

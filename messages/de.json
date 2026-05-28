@@ -33,7 +33,7 @@
 			"era": "Era",
 			"methods": "Methods",
 			"methods_description": "Methods Description",
-			"show_more": "Show more",
+			"show_more": "Continue reading...",
 			"show_less": "Show less",
 			"note": "Note",
 			"see_also": "Siehe auch",
@@ -123,7 +123,11 @@
 			"Resource is not public! Please login to download!": "Diese Ressource ist nicht öffentlich! Bitte melden Sie sich an.",
 			"rdf_viewer": "RDF Viewer",
 			"versions": "Versions",
-			"loading": "Wird geladen..."
+			"loading": "Wird geladen...",
+			"collection_content": "Collection Content",
+			"associated_collections_and_resources": "Associated Collections and Resources",
+			"publications": "Publications",
+			"no_content_available": "No content available"
 		}
 	},
 	"AppFooter": {

@@ -15,8 +15,41 @@ export async function getCollectionContent(
   lang: string,
   signal?: AbortSignal,
 ): Promise<Array<CollectionContentResult>> {
-  const url = `${apiUrl}child-tree/${id}/${lang}`;
+  const url = `${apiUrl}/${id}/${lang}`;
   const res = await fetch(url, { cache: "no-store", signal });
   if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
   return (await res.json()) as Array<CollectionContentResult>;
+}
+
+
+export interface PublicationsDTRow {
+  id: string;
+  acdhid: string;
+  property: string;
+  title: string;
+  type: string;
+  customCitation: string;
+  [key: string]: string;
+}
+
+export interface PublicationsDTResult {
+  aaData: Array<PublicationsDTRow>;
+  iTotalRecords: string;
+  iTotalDisplayRecords: string;
+  draw: number;
+  cols: Array<string>;
+  order: string;
+  orderby: number;
+}
+
+export async function getPublicationsDTContent(
+  apiUrl: string,
+  id: string,
+  lang: string,
+  signal?: AbortSignal,
+): Promise<PublicationsDTResult> {
+  const url = `${apiUrl}/${id}/${lang}`;
+  const res = await fetch(url, { cache: "no-store", signal });
+  if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+  return (await res.json()) as PublicationsDTResult;
 }
