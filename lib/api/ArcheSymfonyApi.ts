@@ -3,6 +3,14 @@ import { createUrl } from "@acdh-oeaw/lib";
 import { env } from "@/config/env.config";
 import { Metadata } from "@/lib/objects/metadata";
 
+const TIMEOUT_MS = 60_000;
+
+function createSignal(externalSignal?: AbortSignal): AbortSignal {
+	const timeoutSignal = AbortSignal.timeout(TIMEOUT_MS);
+	if (!externalSignal) return timeoutSignal;
+	return AbortSignal.any([externalSignal, timeoutSignal]);
+}
+
 interface ApiParams {
   readonly id: string;
   readonly page: string;
@@ -21,13 +29,13 @@ function createApiUrl(id: string, page: string, lang: string): URL {
 export async function getJsonData(params: Readonly<ApiParams>): Promise<unknown> {
 	const { id, page, language, signal } = params;
 	const apiUrl = createApiUrl(id, page, language);
-	const res = await fetch(apiUrl, { cache: "no-store", signal });
+	const res = await fetch(apiUrl, { cache: "no-store", signal: createSignal(signal) });
 	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
 	return (await res.json()) as unknown;
 }
 
 export async function getBlocksApiData(url: string): Promise<unknown> {
-	const res = await fetch(url, { cache: "no-store" });
+	const res = await fetch(url, { cache: "no-store", signal: createSignal() });
 	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
 	return (await res.json()) as unknown;
 }
@@ -37,7 +45,6 @@ export async function getData(id: string, page: string, lang: string): Promise<M
 	return new Metadata(jsonData as JSON, lang);
 }
 
-
 /* Get the SpatialCoverage coordinates for the map */
 export interface SpatialResult {
 	coordinates: string;
@@ -45,14 +52,13 @@ export interface SpatialResult {
 }
 
 export async function getSpatialCoordinates(url: string, lang = "en"): Promise<SpatialResult> {
-	const res = await fetch(url, { cache: "no-store" });
+	const res = await fetch(url, { cache: "no-store", signal: createSignal() });
 	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
 
 	const items = await res.json() as Array<Record<string, unknown>>;
 	if (!Array.isArray(items) || items.length === 0) return { coordinates: "", mapType: "" };
 
 	function extractValue(field: unknown, spatialId: string): string | null {
-
 		if (field == null || typeof field !== "object") return null;
 		const byId = (field as Record<string, unknown>)[spatialId];
 		if (byId == null || typeof byId !== "object") return null;
@@ -73,8 +79,8 @@ export async function getSpatialCoordinates(url: string, lang = "en"): Promise<S
 			if (lower.includes("polygon")) return { coordinates: wkt, mapType: "polygon" };
 		}
 
-			const lat = extractValue(item["acdh:hasLatitude"], spatialId);
-			const lon = extractValue(item["acdh:hasLongitude"], spatialId);
+		const lat = extractValue(item["acdh:hasLatitude"], spatialId);
+		const lon = extractValue(item["acdh:hasLongitude"], spatialId);
 		if (lat != null && lon != null) {
 			return { coordinates: `[${lat},${lon}]`, mapType: "coordinates" };
 		}
@@ -82,4 +88,3 @@ export async function getSpatialCoordinates(url: string, lang = "en"): Promise<S
 
 	return { coordinates: "", mapType: "" };
 }
-

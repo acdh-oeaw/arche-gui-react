@@ -4,6 +4,7 @@ import { ChevronRightIcon, DocumentIcon, FolderIcon, FolderOpenIcon } from "@her
 import { useLocale,useTranslations  } from "next-intl";
 import { useEffect, useState } from "react";
 
+import { ArcheLoader } from "@/components/ui/arche-loader";
 import { type CollectionContentResult,getCollectionContent } from "@/lib/api/CollectionContentApi";
 
 interface AssociatedCollectionsBlockProps {
@@ -115,7 +116,7 @@ export function AssociatedCollectionsBlock({ id, apiUrl }: Readonly<AssociatedCo
 	}, [id, lang, apiUrl]);
 
 	if (loading) {
-		return <div className="py-4 text-sm text-gray-400">{t("loading")}</div>;
+		return <div className="flex justify-center py-6"><ArcheLoader label={t("loading")} /></div>;
 	}
 
 	if (items.length === 0) {

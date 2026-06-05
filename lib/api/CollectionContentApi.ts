@@ -1,3 +1,11 @@
+const TIMEOUT_MS = 60_000;
+
+function createSignal(externalSignal?: AbortSignal): AbortSignal {
+  const timeoutSignal = AbortSignal.timeout(TIMEOUT_MS);
+  if (!externalSignal) return timeoutSignal;
+  return AbortSignal.any([externalSignal, timeoutSignal]);
+}
+
 export interface CollectionContentResult {
   id: string;
   class: string;
@@ -16,11 +24,10 @@ export async function getCollectionContent(
   signal?: AbortSignal,
 ): Promise<Array<CollectionContentResult>> {
   const url = `${apiUrl}/${id}/${lang}`;
-  const res = await fetch(url, { cache: "no-store", signal });
+  const res = await fetch(url, { cache: "no-store", signal: createSignal(signal) });
   if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
   return (await res.json()) as Array<CollectionContentResult>;
 }
-
 
 export interface PublicationsDTRow {
   id: string;
@@ -49,7 +56,7 @@ export async function getPublicationsDTContent(
   signal?: AbortSignal,
 ): Promise<PublicationsDTResult> {
   const url = `${apiUrl}/${id}/${lang}`;
-  const res = await fetch(url, { cache: "no-store", signal });
+  const res = await fetch(url, { cache: "no-store", signal: createSignal(signal) });
   if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
   return (await res.json()) as PublicationsDTResult;
 }

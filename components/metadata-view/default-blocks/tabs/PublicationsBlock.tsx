@@ -4,6 +4,7 @@ import { ChevronDownIcon, ChevronUpDownIcon, ChevronUpIcon } from "@heroicons/re
 import { useLocale, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 
+import { ArcheLoader } from "@/components/ui/arche-loader";
 import { getPublicationsDTContent, type PublicationsDTResult, type PublicationsDTRow } from "@/lib/api/CollectionContentApi";
 
 interface PublicationsBlockProps {
@@ -111,7 +112,7 @@ export function PublicationsBlock({ id, apiUrl }: Readonly<PublicationsBlockProp
   }
 
   if (loading) {
-    return <div className="py-4 text-sm text-gray-400">{t("loading")}</div>;
+    return <div className="flex justify-center py-6"><ArcheLoader label={t("loading")} /></div>;
   }
 
   if (!result || result.aaData.length === 0) {
