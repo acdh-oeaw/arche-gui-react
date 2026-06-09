@@ -43,7 +43,7 @@ export function ViewShareCard({ data }: Readonly<{ data: ShareData }>) {
 
       {/* Content */}
       {isOpen && (
-        <div className="flex flex-col gap-[24px] border-t border-[#E1EDF3] p-[12px]">
+        <div className="flex flex-col gap-6 border-t border-[#E1EDF3] p-3">
           <div className="w-full" id="download-metadata-section">
             <div className="w-full pt-2 pb-2">
               <a

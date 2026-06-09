@@ -243,12 +243,37 @@ export class Metadata {
 		return firstKey ?? "";
 	}
 
-	getBinarySize(): number {
-		const category = this.getAcdhType()?.toLowerCase();
+	isTEI(): boolean {
+
+		if (!this.isPublic()) {
+			return false;
+			}
+
+		const category = this.getAcdhCategory()?.toLowerCase();
+
+		if (category.includes("xml/tei")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	getBinarySizeGeneral(): number {
+		const size = this.data?.["acdh:hasBinarySize"]?.[this.mainId]?.[this.mainLang]?.[0]?.value;
 		if (
-			category.includes("resource") ||
-			category.includes("oldresource") ||
-			category.includes("dataset")
+			size
+		) {
+			return size;
+		}
+		return 0;
+	}
+
+	getBinarySize(): number {
+		const acdhtype = this.getAcdhType()?.toLowerCase();
+		if (
+			acdhtype.includes("resource") ||
+			acdhtype.includes("oldresource") ||
+			acdhtype.includes("dataset")
 		) {
 			const size = this.data?.["acdh:hasBinarySize"]?.[this.mainId]?.[this.mainLang]?.[0]?.value;
 			return size;

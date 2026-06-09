@@ -62,7 +62,7 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
               className={[
                 "px-4 py-2 text-sm font-medium transition-colors focus:outline-none",
                 isActive
-                  ? "border-b-2 border-[color:var(--color-arche-acc-dark-blue)] text-[color:var(--color-arche-acc-dark-blue)]"
+                  ? "border-b-2 border-(--color-arche-acc-dark-blue) text-(--color-arche-acc-dark-blue)"
                   : "text-gray-500 hover:text-gray-700",
               ].join(" ")}
               onClick={() => { setActiveIndex(index); }}

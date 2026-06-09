@@ -49,6 +49,9 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 			<div className="w-full">
 				<h3 className="metadata-view-block-title">{t("summary")}</h3>
 			</div>
+
+			{(hasKey("acdh:hasRelatedDiscipline") || hasKey("acdh:hasSubject") || hasKey("acdh:hasSpatialCoverage") || coverageDateText ||
+				hasKey("acdh:hasTemporalCoverage") || hasKey("acdh:hasAppliedMethod") || hasKey("acdh:hasAppliedMethodDescription")) && (
 			<ul className="list-inside list-disc space-y-2">
 				{hasKey("acdh:hasRelatedDiscipline") && (
 					<li>
@@ -105,6 +108,7 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 					</li>
 				)}
 			</ul>
+			)}
 
 			{hasKey("acdh:hasDescription") && (
 				<SummaryBlockDescription
@@ -116,7 +120,7 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 			)}
 
 			{hasKey("acdh:hasNote") && (
-				<ul className="mt-4 list-inside list-disc">
+				<ul className="list-inside list-disc">
 					<li>
 						<strong>{t("note")}:</strong>{" "}
 						{metaProps["acdh:hasNote"]?.[0]?.value}

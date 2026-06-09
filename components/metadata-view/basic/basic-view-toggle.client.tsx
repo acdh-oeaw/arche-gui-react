@@ -239,7 +239,7 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 	}
 
 	return (
-		<>
+		<div>
 			<section className="grid grid-cols-1 gap-6 lg:grid-cols-12">
 				<div className="lg:col-span-12">
 					<div className="flex flex-wrap items-center justify-between gap-3">
@@ -264,8 +264,10 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 				className={isExpertView ? "hidden" : "grid grid-cols-1 gap-6 pt-6 lg:grid-cols-12"}
 				id="metadata-content"
 			>
-				<div className={sideContent != null ? "lg:col-span-9" : "lg:col-span-12"}>{basicContent}</div>
-				{sideContent != null ? <aside className="space-y-3 lg:col-span-3">{sideContent}</aside> : null}
+
+					<div className={sideContent != null ? "lg:col-span-9" : "lg:col-span-12"}>{basicContent}</div>
+						{sideContent != null ? <div className="space-y-3 lg:col-span-3">{sideContent}</div> : null}
+
 			</section>
 
 			<section
@@ -411,6 +413,6 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 				</div>
 				{sideContent != null ? <aside className="space-y-3 lg:col-span-3">{sideContent}</aside> : null}
 			</section>
-		</>
+		</div>
 	);
 }

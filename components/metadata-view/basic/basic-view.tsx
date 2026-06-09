@@ -9,6 +9,7 @@ import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVe
 import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
 import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
+import { TEIBlock } from "@/components/metadata-view/dissemination/TEIBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
@@ -20,11 +21,15 @@ interface BasicViewProps {
 export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 	const { metadata, language = "en" } = props;
 	const t = useTranslations("AppContent");
+
+	console.log("TEI");
+	console.log(metadata.isTEI());
+
+	console.log("URL");
+	console.log(`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`);
+
 	return (
-		<div className="metadata-main-content mx-auto w-full px-3">
-
-
-
+		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
 			<BasicViewToggle
 				basicContent={
 					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-6">
@@ -63,7 +68,40 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()}/>
 
 						<div>
-							VIEWER
+
+						{metadata.isTEI() && metadata.getBinarySizeGeneral() < 500000 && (
+							<TEIBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`} />
+						)}
+
+
+							{/*
+
+{% if data.isPDF() %}
+                    {{ include(arche_core_gui_path ~ '/templates/disseminations/metadata-pdf-viewer.html.twig', {'data': data} ) }}
+                {% endif %}
+
+                {% if data.isIIIF() %}
+                    {% set thumbnailHidden = 'd-none' %}
+                    {{ include(arche_core_gui_path ~ '/templates/disseminations/metadata-iiif-viewer.html.twig', {'data': data} ) }}
+                {% endif %}
+
+                {% if data.isAudio() %}
+                    {{ include(arche_core_gui_path ~ '/templates/disseminations/metadata-audio-viewer.html.twig', {'data': data} ) }}
+                {% endif%}
+
+                {% if data.isGLB3DObject() %}
+                    {{ include(arche_core_gui_path ~ '/templates/disseminations/metadata-glb-3d-viewer.html.twig', {'data': data}) }}
+                {% elseif data.is3DObject() %}
+                    {{ include(arche_core_gui_path ~ '/templates/disseminations/metadata-3d-viewer.html.twig' ) }}
+                {% endif%}
+
+
+                {% if data.isTEI() and data.getBinarySize() < 500000 %}
+                    {{ include(arche_core_gui_path ~ '/templates/disseminations/metadata-tei-viewer.html.twig', {'teiUrl': data.getRepoUrl() } ) }}
+                {% endif%}
+
+							*/}
+
 							<ul>
 								<li>IIIF Viewer</li>
 								<li>PDF Viewer</li>

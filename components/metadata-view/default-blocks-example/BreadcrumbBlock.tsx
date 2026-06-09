@@ -97,11 +97,11 @@ if (!controller.signal.aborted) {
 						{!isLast && item.id != null ? (
 							<Link href={`/metadata/${encodeURIComponent(item.id)}`}>{item.label}</Link>
 						) : (
-							<p className="breadcrumb-text">{item.label}</p>
+							<Link href={`/metadata/${encodeURIComponent(item.id)}`}>{item.label}</Link>
 						)}
 						{!isLast ? (
 							<p aria-hidden="true" className="breadcrumb-text">
-								{">"}
+								{"\\"}
 							</p>
 						) : null}
 					</li>

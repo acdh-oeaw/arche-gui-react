@@ -128,7 +128,8 @@
 			"collection_content": "Collection Content",
 			"associated_collections_and_resources": "Associated Collections and Resources",
 			"publications": "Publications",
-			"no_content_available": "No content available"
+			"no_content_available": "No content available",
+			"tei_document": "TEI Document"
 
 		}
 	},
