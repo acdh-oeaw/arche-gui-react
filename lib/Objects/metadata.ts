@@ -243,6 +243,26 @@ export class Metadata {
 		return firstKey ?? "";
 	}
 
+	isPDF(): boolean {
+		let isPDF = false;
+
+    if (!this.isPublic()) {
+			return false;
+		}
+
+		const format = this.getFormat()?.toLowerCase();
+
+		if (format === 'application/pdf') {
+			isPDF = true;
+		}
+
+		if (this.getBinarySizeGeneral() > 0 && isPDF) {
+			return true;
+		}
+
+		return false;
+	}
+
 	isTEI(): boolean {
 
 		if (!this.isPublic()) {

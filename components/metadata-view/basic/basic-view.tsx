@@ -9,6 +9,7 @@ import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVe
 import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
 import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
+import PdfBlock from "@/components/metadata-view/dissemination/PdfBlock";
 import { TEIBlock } from "@/components/metadata-view/dissemination/TEIBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
@@ -71,6 +72,10 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 
 						{metadata.isTEI() && metadata.getBinarySizeGeneral() < 500000 && (
 							<TEIBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`} />
+							)}
+
+							{metadata.isPDF()  && (
+							<PdfBlock />
 						)}
 
 
