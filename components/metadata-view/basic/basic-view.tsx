@@ -23,12 +23,6 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 	const { metadata, language = "en" } = props;
 	const t = useTranslations("AppContent");
 
-	console.log("TEI");
-	console.log(metadata.isTEI());
-
-	console.log("URL");
-	console.log(`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`);
-
 	return (
 		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
 			<BasicViewToggle
@@ -75,7 +69,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							)}
 
 							{metadata.isPDF()  && (
-							<PdfBlock />
+							<PdfBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`}/>
 						)}
 
 

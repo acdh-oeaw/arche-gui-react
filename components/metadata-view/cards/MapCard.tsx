@@ -1,28 +1,67 @@
-// components/LeafletMiniMap.tsx
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
 
+interface LeafletLayer {
+  getAttribution?: () => string;
+  addTo: (map: LeafletMap) => LeafletLayer;
+  getBounds: () => LeafletBounds;
+}
+
+interface LeafletBounds {
+  pad: (amount: number) => LeafletBounds;
+}
+
+interface LeafletMap {
+  remove: () => void;
+  setView: (center: [number, number], zoom: number) => LeafletMap;
+  fitBounds: (bounds: LeafletBounds) => void;
+  invalidateSize: () => void;
+  eachLayer: (callback: (layer: LeafletLayer) => void) => void;
+  removeLayer: (layer: LeafletLayer) => void;
+}
+
+interface LeafletLib {
+  map: (container: HTMLElement, options: Record<string, unknown>) => LeafletMap;
+  tileLayer: (url: string, options: Record<string, unknown>) => LeafletLayer;
+  marker: (latlng: [number, number]) => LeafletLayer;
+  polygon: (latlngs: Array<Array<[number, number]>>, options?: Record<string, unknown>) => LeafletLayer;
+  multiPolygon: (latlngs: Array<Array<Array<[number, number]>>>, options?: Record<string, unknown>) => LeafletLayer;
+}
+
 declare global {
   interface Window {
-    L?: any;
+    L?: LeafletLib;
   }
 }
 
-export default function MapCard({
-  data,
-  mapType,
-}: {
+interface GeoJSONPointObject {
+  lon?: number; longitude?: number;
+  lat?: number; latitude?: number; altitude?: number;
+}
+
+interface GeoJSONPolygon {
+  type: string;
+  coordinates: Array<Array<[number, number]>>;
+}
+
+interface GeoJSONMultiPolygon {
+  type: string;
+  coordinates: Array<Array<Array<[number, number]>>>;
+}
+
+interface MapCardProps {
   data: string;
-  mapType: 'coordinates' | 'polygon' | 'multipolygon' | string;
-}) {
+  mapType: string;
+}
+
+export function MapCard({ data, mapType }: Readonly<MapCardProps>) {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<any>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  // Load Leaflet from CDN (CSS+JS) once
   useEffect(() => {
-    let cancelled = false;
+    const guard = { cancelled: false };
 
     const ensureLeaflet = async () => {
       if (!document.getElementById('leaflet-css')) {
@@ -43,34 +82,33 @@ export default function MapCard({
       });
     };
 
-    (async () => {
+    void (async () => {
       try {
         await ensureLeaflet();
-        if (!cancelled) initMap();
-      } catch (e: any) {
-        if (!cancelled) setErr(e?.message || 'Leaflet init failed');
+        if (!guard.cancelled) initMap();
+      } catch (e: unknown) {
+        if (!guard.cancelled) setErr(e instanceof Error ? e.message : 'Leaflet init failed');
       }
     })();
 
     return () => {
-      cancelled = true;
+      guard.cancelled = true;
       try {
-        mapRef.current?.remove?.();
-      } catch {}
+        mapRef.current?.remove();
+      } catch {
+        // ignore cleanup errors
+      }
       mapRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Re-draw when inputs change (after map exists)
   useEffect(() => {
     if (!window.L || !mapRef.current) return;
     setErr(null);
     drawGeometry();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, mapType]);
-
-  // --- helpers ----
 
   const initMap = () => {
     if (!divRef.current || !window.L) return;
@@ -83,7 +121,7 @@ export default function MapCard({
 
     const map = L.map(divRef.current, {
       zoomControl: true,
-      center: [48.2082, 16.3738], // default (Vienna)
+      center: [48.2082, 16.3738],
       zoom: 6,
     });
 
@@ -94,10 +132,8 @@ export default function MapCard({
 
     mapRef.current = map;
 
-    // Ensure correct sizing in collapsible containers
     setTimeout(() => {
       map.invalidateSize();
-      // IMPORTANT: draw once right after map is ready
       drawGeometry();
     }, 0);
   };
@@ -105,39 +141,36 @@ export default function MapCard({
   const toPairsFromNumbers = (nums: Array<number>) => {
     const pairs: Array<[number, number]> = [];
     for (let i = 0; i + 1 < nums.length; i += 2) {
-      const lon = nums[i],
-        lat = nums[i + 1]; // inputs assumed lon,lat
-      if (Number.isFinite(lat) && Number.isFinite(lon)) pairs.push([lat, lon]); // Leaflet [lat,lon]
+      const lon = nums[i];
+      const lat = nums[i + 1];
+      if (Number.isFinite(lat) && Number.isFinite(lon)) pairs.push([lat, lon]);
     }
     return pairs;
   };
 
-  // Auto-detect [lat,lon] vs [lon,lat]
   const parsePoint = (str: string): [number, number] | null => {
     try {
-      const obj = JSON.parse(str);
-      if (Array.isArray(obj) && obj.length >= 2) {
-        const a = Number(obj[0]),
-          b = Number(obj[1]);
+      const parsed: unknown = JSON.parse(str);
+      if (Array.isArray(parsed) && parsed.length >= 2) {
+        const a = Number(parsed[0]);
+        const b = Number(parsed[1]);
         if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
-        // If first looks like latitude and second like longitude, keep order
-        if (Math.abs(a) <= 90 && Math.abs(b) <= 180) return [a, b]; // [lat,lon]
-        return [b, a]; // [lon,lat] -> [lat,lon]
+        if (Math.abs(a) <= 90 && Math.abs(b) <= 180) return [a, b];
+        return [b, a];
       }
-      if (
-        obj &&
-        (obj.lon ?? obj.longitude) != null &&
-        (obj.lat ?? obj.latitude ?? obj.altitude) != null
-      ) {
-        const lon = Number(obj.lon ?? obj.longitude);
-        const lat = Number(obj.lat ?? obj.latitude ?? obj.altitude);
+      if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const pt = parsed as GeoJSONPointObject;
+        const lon = Number(pt.lon ?? pt.longitude);
+        const lat = Number(pt.lat ?? pt.latitude ?? pt.altitude);
         return Number.isFinite(lat) && Number.isFinite(lon) ? [lat, lon] : null;
       }
-    } catch {}
+    } catch {
+      // ignore parse errors, fall through to regex
+    }
     const nums = str.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
     if (nums.length >= 2) {
-      const a = nums[0],
-        b = nums[1];
+      const a = nums[0];
+      const b = nums[1];
       if (Math.abs(a) <= 90 && Math.abs(b) <= 180) return [a, b];
       return [b, a];
     }
@@ -146,18 +179,24 @@ export default function MapCard({
 
   const parsePolygon = (s: string): Array<Array<[number, number]>> => {
     try {
-      const obj = JSON.parse(s);
-      if (obj?.type === 'Polygon' && Array.isArray(obj.coordinates)) {
-        return obj.coordinates.map((ring: Array<any>) =>
-          {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
-        );
+      const parsed: unknown = JSON.parse(s);
+      if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const obj = parsed as Record<string, unknown>;
+        if (obj.type === 'Polygon' && Array.isArray(obj.coordinates)) {
+          const geo = parsed as GeoJSONPolygon;
+          return geo.coordinates.map((ring) => {
+            return ring.map(([lon, lat]) => { return [lat, lon] as [number, number]; });
+          });
+        }
       }
-      if (Array.isArray(obj)) {
-        return obj.map((ring: Array<any>) =>
-          {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
-        );
+      if (Array.isArray(parsed)) {
+        return (parsed as Array<Array<[number, number]>>).map((ring) => {
+          return ring.map(([lon, lat]) => { return [lat, lon] as [number, number]; });
+        });
       }
-    } catch {}
+    } catch {
+      // ignore parse errors, fall through to regex
+    }
     const nums = s.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
     const pairs = toPairsFromNumbers(nums);
     return pairs.length ? [pairs] : [];
@@ -165,22 +204,28 @@ export default function MapCard({
 
   const parseMultiPolygon = (s: string): Array<Array<Array<[number, number]>>> => {
     try {
-      const obj = JSON.parse(s);
-      if (obj?.type === 'MultiPolygon' && Array.isArray(obj.coordinates)) {
-        return obj.coordinates.map((poly: Array<any>) =>
-          {return poly.map((ring: Array<any>) =>
-            {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
-          )}
-        );
+      const parsed: unknown = JSON.parse(s);
+      if (parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const obj = parsed as Record<string, unknown>;
+        if (obj.type === 'MultiPolygon' && Array.isArray(obj.coordinates)) {
+          const geo = parsed as GeoJSONMultiPolygon;
+          return geo.coordinates.map((poly) => {
+            return poly.map((ring) => {
+              return ring.map(([lon, lat]) => { return [lat, lon] as [number, number]; });
+            });
+          });
+        }
       }
-      if (Array.isArray(obj)) {
-        return obj.map((poly: Array<any>) =>
-          {return poly.map((ring: Array<any>) =>
-            {return ring.map(([lon, lat]: Array<number>) => {return [lat, lon]})}
-          )}
-        );
+      if (Array.isArray(parsed)) {
+        return (parsed as Array<Array<Array<[number, number]>>>).map((poly) => {
+          return poly.map((ring) => {
+            return ring.map(([lon, lat]) => { return [lat, lon] as [number, number]; });
+          });
+        });
       }
-    } catch {}
+    } catch {
+      // ignore parse errors, fall through to WKT regex
+    }
     const polys: Array<Array<Array<[number, number]>>> = [];
     const groups = s
       .replace(/^\s*MULTIPOLYGON\s*/i, '')
@@ -197,20 +242,17 @@ export default function MapCard({
 
   const drawGeometry = () => {
     if (!window.L || !mapRef.current) return;
-    const L = window.L!;
-    const map = mapRef.current!;
+    const L = window.L;
+    const map = mapRef.current;
 
-    // Remove overlays (keep base)
-    const toRemove: Array<any> = [];
-    map.eachLayer((layer: any) => {
+    const toRemove: Array<LeafletLayer> = [];
+    map.eachLayer((layer) => {
       if (!layer.getAttribution) toRemove.push(layer);
     });
-    toRemove.forEach((l) => {return map.removeLayer(l)});
+    toRemove.forEach((l) => { map.removeLayer(l); });
 
     try {
-      const kind = String(mapType || '')
-        .trim()
-        .toLowerCase();
+      const kind = mapType.trim().toLowerCase();
 
       if (kind === 'coordinates') {
         const pt = parsePoint(data);
@@ -225,11 +267,7 @@ export default function MapCard({
       if (kind === 'polygon') {
         const rings = parsePolygon(data);
         if (rings.length) {
-          const layer = L.polygon(rings, {
-            color: '#2563eb',
-            weight: 2,
-            fillOpacity: 0.2,
-          }).addTo(map);
+          const layer = L.polygon(rings, { color: '#2563eb', weight: 2, fillOpacity: 0.2 }).addTo(map);
           map.fitBounds(layer.getBounds().pad(0.1));
           return;
         }
@@ -239,11 +277,7 @@ export default function MapCard({
       if (kind === 'multipolygon') {
         const polys = parseMultiPolygon(data);
         if (polys.length) {
-          const layer = L.multiPolygon(polys, {
-            color: '#16a34a',
-            weight: 2,
-            fillOpacity: 0.2,
-          }).addTo(map);
+          const layer = L.multiPolygon(polys, { color: '#16a34a', weight: 2, fillOpacity: 0.2 }).addTo(map);
           map.fitBounds(layer.getBounds().pad(0.1));
           return;
         }
@@ -251,13 +285,13 @@ export default function MapCard({
       }
 
       throw new Error('Unknown mapType');
-    } catch (e: any) {
-      setErr(e?.message || 'Failed to render geometry');
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : 'Failed to render geometry');
     }
   };
 
   return (
-    <div className="relative h-[300px] w-[300px]">
+    <div className="relative h-[300px]">
       <div ref={divRef} className="h-full w-full rounded-md border shadow" />
       {err && (
         <div className="absolute inset-x-2 top-2 rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs text-red-700 shadow">
@@ -267,3 +301,4 @@ export default function MapCard({
     </div>
   );
 }
+

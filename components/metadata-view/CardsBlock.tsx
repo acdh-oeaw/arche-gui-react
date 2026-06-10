@@ -5,7 +5,7 @@ import { DownloadCard } from "@/components/metadata-view/cards/DownloadCard";
 import FundingDataCard from "@/components/metadata-view/cards/FundingDataCard";
 import IdentifierCard from "@/components/metadata-view/cards/IdentifierCard";
 import LicenseDataCard from "@/components/metadata-view/cards/LicenseDataCard";
-import MapCard from "@/components/metadata-view/cards/MapCard";
+import { MapCard } from "@/components/metadata-view/cards/MapCard";
 import { ResourceTechnicalCard } from "@/components/metadata-view/cards/ResourceMetaTechnicalCard";
 import TechnicalCard from "@/components/metadata-view/cards/TechnicalCard";
 import { TitleImageCard } from '@/components/metadata-view/cards/TitleImageCard'
@@ -97,6 +97,7 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 				downloadCardAccess: metadata.getDownloadCardAccess(),
 				archeApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? '',
 				appBaseUrl: (env as Record<string, string>).NEXT_PUBLIC_APP_BASE_URL ?? '',
+				appBaseApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? ''
 			}} />
 
 

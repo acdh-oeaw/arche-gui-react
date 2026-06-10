@@ -13,7 +13,9 @@ interface DownloadData {
   acdhType: string | null;
   downloadCardAccess: boolean;
   archeApiUrl: string;
-  appBaseUrl: string;
+	appBaseUrl: string;
+	appBaseApiUrl: string;
+
 }
 
 export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
@@ -119,7 +121,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
               <div className="flex w-full flex-col pt-2 pb-2">
                 <a
                   className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
-                  href={`${data.appBaseUrl}/${data.id}`}
+                  href={`${data.appBaseApiUrl}/${data.id}`}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
