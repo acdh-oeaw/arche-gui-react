@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon } from '@heroicons/react/24/solid';
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from 'react';
 
 interface PdfViewport {
@@ -54,7 +55,9 @@ export function PdfBlock({ url }: Readonly<PdfBlockProps>) {
   const [totalPages, setTotalPages] = useState(0);
   const [scale, setScale] = useState(1.0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
+	const t = useTranslations("AppContent.metaview");
+
 
   // Load pdf.js from CDN and fetch the document
   useEffect(() => {
@@ -159,7 +162,7 @@ export function PdfBlock({ url }: Readonly<PdfBlockProps>) {
 
   return (
     <div className="w-full">
-      {/* Toolbar */}
+			{/* Toolbar */}
       <div className="flex items-center gap-2 rounded-t-md border border-b-0 border-gray-200 bg-gray-50 px-3 py-2">
         <button
           className="rounded p-1 hover:bg-gray-200 disabled:opacity-40"

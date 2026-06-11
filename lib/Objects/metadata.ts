@@ -243,6 +243,35 @@ export class Metadata {
 		return firstKey ?? "";
 	}
 
+	isGlb3D(): boolean {
+		let category = false;
+		let format = false;
+
+		if (!this.isPublic()) {
+			return false;
+		}
+
+		const acdhCategory = this.getAcdhCategory()?.toLowerCase() ?? '';
+
+		if (acdhCategory.includes("3d data") || acdhCategory.includes("3d-daten")) {
+			category = true;
+		}
+
+
+		const acdhFormat = this.getFormat()?.toLowerCase() ?? '';
+
+		if (acdhFormat === 'model/gltf-binary') {
+			format = true;
+		}
+
+		if (this.getBinarySizeGeneral() > 0 && format && category) {
+			return true;
+		}
+
+		return false;
+	}
+
+
 	isPDF(): boolean {
 		let isPDF = false;
 

@@ -9,6 +9,7 @@ import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVe
 import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
 import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
+import { GLBBlock } from "@/components/metadata-view/dissemination/GLBBlock";
 import PdfBlock from "@/components/metadata-view/dissemination/PdfBlock";
 import { TEIBlock } from "@/components/metadata-view/dissemination/TEIBlock";
 import { env } from "@/config/env.config";
@@ -73,6 +74,13 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						)}
 
 
+							{metadata.isGlb3D()  && (
+							<GLBBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`}/>
+						)}
+
+
+
+
 							{/*
 
 {% if data.isPDF() %}
@@ -103,7 +111,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 
 							<ul>
 								<li>IIIF Viewer</li>
-								<li>PDF Viewer</li>
+
 								<li> 3D viewer</li>
 							</ul>
 						</div>
