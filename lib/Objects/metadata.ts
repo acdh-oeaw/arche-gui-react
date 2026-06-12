@@ -243,6 +243,25 @@ export class Metadata {
 		return firstKey ?? "";
 	}
 
+	isPly3D(): boolean {
+		let category = false;
+  	if (!this.isPublic()) {
+			return false;
+		}
+
+		const acdhCategory = this.getAcdhCategory()?.toLowerCase() ?? '';
+
+		if (acdhCategory.includes("3d data") || acdhCategory.includes("3d-daten")) {
+			category = true;
+		}
+
+		if (this.getBinarySizeGeneral() > 0 && category) {
+			return true;
+		}
+
+  	return false;
+	}
+
 	isGlb3D(): boolean {
 		let category = false;
 		let format = false;
@@ -271,6 +290,44 @@ export class Metadata {
 		return false;
 	}
 
+	isIIIF(): boolean {
+		if (!this.isPublic()) {
+			return false;
+		}
+
+		let acdhCategory = false;
+		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
+
+		if (category.includes("image") || category.includes("bild") ) {
+			acdhCategory = true;
+		}
+
+		const format = this.getFormat()?.toLowerCase();
+		if (format !== undefined && (IIIF_FORMATS as ReadonlyArray<string>).includes(format) && acdhCategory) {
+			return true;
+		}
+
+		return false;
+	}
+
+	isAudio(): boolean {
+		if (!this.isPublic()) {
+			return false;
+		}
+
+		let acdhCategory = false;
+		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
+
+		if ((AUDIO_CATEGORIES as ReadonlyArray<string>).includes(category) ) {
+			acdhCategory =  true;
+		}
+
+		if (this.getBinarySizeGeneral() > 0 && acdhCategory) {
+			return true;
+		}
+
+		return false;
+	}
 
 	isPDF(): boolean {
 		let isPDF = false;
@@ -298,7 +355,7 @@ export class Metadata {
 			return false;
 			}
 
-		const category = this.getAcdhCategory()?.toLowerCase();
+		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
 
 		if (category.includes("xml/tei")) {
 			return true;

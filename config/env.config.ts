@@ -26,6 +26,7 @@ const result = createEnv({
 		private(environment) {
 			const schema = v.object({
 				NEXT_PUBLIC_CITATION_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_IIIF_URL: v.pipe(v.string(), v.url()),
 				BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 				BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 				CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
@@ -85,7 +86,7 @@ const result = createEnv({
 		NEXT_PUBLIC_ARCHE_CORE_API: process.env.NEXT_PUBLIC_ARCHE_CORE_API,
 		NEXT_PUBLIC_CITATION_URL:
 			process.env.NEXT_PUBLIC_CITATION_URL ?? process.env.NEXT_PUBLIC_ARCHE_CITATION_URL,
-		NEXT_PUBLIC_ARCHE_CITATION_URL: process.env.NEXT_PUBLIC_ARCHE_CITATION_URL,
+		NEXT_PUBLIC_IIIF_URL: process.env.NEXT_PUBLIC_ARCHE_IIIF_URL ?? process.env.NEXT_PUBLIC_IIIF_URL,
 		BUILD_MODE: process.env.BUILD_MODE,
 		BUNDLE_ANALYZER: process.env.BUNDLE_ANALYZER,
 		CI: process.env.CI,

@@ -55,6 +55,9 @@ importers:
       next-intl:
         specifier: ^4.3.4
         version: 4.5.8(@swc/helpers@0.5.17)(next@16.0.7(patch_hash=de17907a43a1b46b5534a9628cc7b229f5c0cce5a5f7b19baa0dde85ba1b7624)(@babel/core@7.28.5)(@playwright/test@1.57.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)(typescript@5.9.3)
+      openseadragon:
+        specifier: ^6.0.2
+        version: 6.0.2
       react:
         specifier: ^19.2.1
         version: 19.2.1
@@ -103,7 +106,7 @@ importers:
         version: 3.0.3(@acdh-oeaw/eslint-config@2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       '@acdh-oeaw/eslint-config-tailwindcss':
         specifier: ^3.0.3
-        version: 3.0.3(@acdh-oeaw/eslint-config@2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3))(tailwindcss@4.1.17)
+        version: 3.0.3(@acdh-oeaw/eslint-config@2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(tailwindcss@4.1.17)(typescript@5.9.3)
       '@acdh-oeaw/prettier-config':
         specifier: ^2.0.1
         version: 2.0.1(prettier@3.7.4)
@@ -131,6 +134,9 @@ importers:
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
+      '@types/openseadragon':
+        specifier: ^6.0.0
+        version: 6.0.0
       '@types/react':
         specifier: ^19.2.7
         version: 19.2.7
@@ -1729,6 +1735,10 @@ packages:
   '@types/node@24.10.1':
     resolution: {integrity: sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ==}
 
+  '@types/openseadragon@6.0.0':
+    resolution: {integrity: sha512-tmwZFanLT8NNyiDiQhkVCPdTFhSvMcDVOFLYdzyZAEnjxGgeTMu8pvV2CFRXddAAUKLo16Q45AW58IpLur8kpQ==}
+    deprecated: This is a stub types definition. openseadragon provides its own type definitions, so you do not need this installed.
+
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
@@ -2455,11 +2465,15 @@ packages:
     peerDependencies:
       eslint: '>=5.0.0'
 
-  eslint-plugin-tailwindcss@4.0.0-beta.0:
-    resolution: {integrity: sha512-WWCajZgQu38Sd67ZCl2W6i3MRzqB0d+H8s4qV9iB6lBJbsDOIpIlj6R1Fj2FXkoWErbo05pZnZYbCGIU9o/DsA==}
-    engines: {node: '>=18.12.0'}
+  eslint-plugin-tailwindcss@4.0.0-alpha.6:
+    resolution: {integrity: sha512-aAO8RGvI/9Nl1x7wkhOn77Hil+Ab1LQ/zX8cJKHeu5JeTRD06HAjvCHPCsqVeGCQB5bClgZKpphvksoQhOQsaA==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
-      tailwindcss: ^3.4.0 || ^4.0.0
+      tailwindcss: ^4.0.0
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   eslint-scope@8.4.0:
     resolution: {integrity: sha512-sNXOfKCn74rt8RICKMvJS7XKV/Xk9kA7DyJr8mJik3S7Cwgy3qlkkmyS2uQB3jiJg6VNdZd/pDBJu0nvG2NlTg==}
@@ -3274,6 +3288,9 @@ packages:
     resolution: {integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==}
     hasBin: true
 
+  openseadragon@6.0.2:
+    resolution: {integrity: sha512-WNPPQWp9sHunyzkV9J2yhfxnSfDF9CfBsE6unmkdxh1uTWzFcueMvBPhmuZdY7M1v/ffJ3NdaF3Qq3jogphIbA==}
+
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
@@ -3358,6 +3375,12 @@ packages:
   postcss-html@1.8.0:
     resolution: {integrity: sha512-5mMeb1TgLWoRKxZ0Xh9RZDfwUUIqRrcxO2uXO+Ezl1N5lqpCiSU5Gk6+1kZediBfBHFtPCdopr2UZ2SgUsKcgQ==}
     engines: {node: ^12 || >=14}
+
+  postcss-nested@7.0.2:
+    resolution: {integrity: sha512-5osppouFc0VR9/VYzYxO03VaDa3e8F23Kfd6/9qcZTUI8P58GIYlArOET2Wq0ywSl2o2PjELhYOFI4W7l5QHKw==}
+    engines: {node: '>=18.0'}
+    peerDependencies:
+      postcss: ^8.2.14
 
   postcss-resolve-nested-selector@0.1.6:
     resolution: {integrity: sha512-0sglIs9Wmkzbr8lQwEyIzlDOOC9bGmfVKcJTaxv3vMmd3uo4o4DerC3En0bnmgceeql9BfC8hRkp7cg0fjdVqw==}
@@ -4010,12 +4033,15 @@ snapshots:
       - supports-color
       - typescript
 
-  '@acdh-oeaw/eslint-config-tailwindcss@3.0.3(@acdh-oeaw/eslint-config@2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3))(tailwindcss@4.1.17)':
+  '@acdh-oeaw/eslint-config-tailwindcss@3.0.3(@acdh-oeaw/eslint-config@2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(tailwindcss@4.1.17)(typescript@5.9.3)':
     dependencies:
       '@acdh-oeaw/eslint-config': 2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3)
-      eslint-plugin-tailwindcss: 4.0.0-beta.0(tailwindcss@4.1.17)
+      eslint-plugin-tailwindcss: 4.0.0-alpha.6(eslint@9.39.1(jiti@2.6.1))(tailwindcss@4.1.17)(typescript@5.9.3)
     transitivePeerDependencies:
+      - eslint
+      - supports-color
       - tailwindcss
+      - typescript
 
   '@acdh-oeaw/eslint-config@2.0.11(@eslint/config-helpers@0.4.2)(@typescript-eslint/utils@8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.1(jiti@2.6.1))(globals@16.5.0)(typescript@5.9.3)':
     dependencies:
@@ -5873,6 +5899,10 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
 
+  '@types/openseadragon@6.0.0':
+    dependencies:
+      openseadragon: 6.0.2
+
   '@types/react-dom@19.2.3(@types/react@19.2.7)':
     dependencies:
       '@types/react': 19.2.7
@@ -6792,13 +6822,19 @@ snapshots:
     dependencies:
       eslint: 9.39.1(jiti@2.6.1)
 
-  eslint-plugin-tailwindcss@4.0.0-beta.0(tailwindcss@4.1.17):
+  eslint-plugin-tailwindcss@4.0.0-alpha.6(eslint@9.39.1(jiti@2.6.1))(tailwindcss@4.1.17)(typescript@5.9.3):
     dependencies:
-      fast-glob: 3.3.3
+      '@typescript-eslint/utils': 8.48.1(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       postcss: 8.5.6
+      postcss-nested: 7.0.2(postcss@8.5.6)
       synckit: 0.11.11
       tailwind-api-utils: 1.0.3(tailwindcss@4.1.17)
       tailwindcss: 4.1.17
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - eslint
+      - supports-color
 
   eslint-scope@8.4.0:
     dependencies:
@@ -7606,6 +7642,8 @@ snapshots:
 
   opener@1.5.2: {}
 
+  openseadragon@6.0.2: {}
+
   optionator@0.9.4:
     dependencies:
       deep-is: 0.1.4
@@ -7688,6 +7726,11 @@ snapshots:
       js-tokens: 9.0.1
       postcss: 8.5.6
       postcss-safe-parser: 6.0.0(postcss@8.5.6)
+
+  postcss-nested@7.0.2(postcss@8.5.6):
+    dependencies:
+      postcss: 8.5.6
+      postcss-selector-parser: 7.1.1
 
   postcss-resolve-nested-selector@0.1.6: {}
 
