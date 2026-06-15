@@ -18,6 +18,12 @@ export function SeeAlsoBlock(props: Readonly<MetadataProps>): ReactNode {
 		return Array.isArray(metadata.properties[key]) && metadata.properties[key].length > 0;
 	};
 
+		const hasListContent = hasKey("acdh:hasUrl") || hasKey("acdh:hasRelatedProject");
+
+
+
+	if (!hasListContent) return null;
+
 	return (
 		<div className="w-full pb-5 lg:flex-row">
 			<div className="flex w-full gap-5 pt-5">

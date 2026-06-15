@@ -44,14 +44,20 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 		}
 	}
 
+	const hasListContent = hasKey("acdh:hasRelatedDiscipline") || hasKey("acdh:hasSubject") || hasKey("acdh:hasSpatialCoverage") || Boolean(coverageDateText) ||
+		hasKey("acdh:hasTemporalCoverage") || hasKey("acdh:hasAppliedMethod") || hasKey("acdh:hasAppliedMethodDescription");
+
+	const hasContent = hasListContent || hasKey("acdh:hasDescription") || hasKey("acdh:hasNote");
+
+	if (!hasContent) return null;
+
 	return (
 		<div className="flex w-full flex-col gap-5 pt-5" id="av-summary">
 			<div className="w-full">
 				<h3 className="metadata-view-block-title">{t("summary")}</h3>
 			</div>
 
-			{(hasKey("acdh:hasRelatedDiscipline") || hasKey("acdh:hasSubject") || hasKey("acdh:hasSpatialCoverage") || coverageDateText ||
-				hasKey("acdh:hasTemporalCoverage") || hasKey("acdh:hasAppliedMethod") || hasKey("acdh:hasAppliedMethodDescription")) && (
+			{hasListContent && (
 			<ul className="list-inside list-disc space-y-2">
 				{hasKey("acdh:hasRelatedDiscipline") && (
 					<li>

@@ -46,8 +46,6 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 		try {
 			const spatial = await getSpatialCoordinates(spatialUrl);
 			mapData = spatial.coordinates;
-			console.log("MAPDATA");
-			console.log(mapData);
 			resourceMapType = spatial.mapType;
 		} catch {
 			// spatial coordinates unavailable, mapData stays empty

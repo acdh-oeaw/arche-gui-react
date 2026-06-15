@@ -17,6 +17,7 @@ import { PdfBlock } from "@/components/metadata-view/dissemination/PdfBlock";
 import { TEIBlock } from "@/components/metadata-view/dissemination/TEIBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
+import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/PreviousNextBlock";
 
 interface BasicViewProps {
 	metadata: ParsedMetadata;
@@ -49,6 +50,8 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						/>
 
 						<hr className="meatdata-view-top-hr"></hr>
+
+						<PreviousNextBlock url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()} rootId={metadata.getRootId()}></PreviousNextBlock>
 
 						<TitleBlock metadata={metadata}></TitleBlock>
 

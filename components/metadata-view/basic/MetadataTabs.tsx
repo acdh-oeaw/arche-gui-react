@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 
 import { AssociatedCollectionsBlock } from "@/components/metadata-view/default-blocks/tabs/AssociatedCollectionsBlock";
 import { CollectionContentBlock } from "@/components/metadata-view/default-blocks/tabs/CollectionContentBlock";
@@ -11,6 +11,7 @@ const RPR_TYPES = ["topcollection", "collection", "resource", "oldresource", "me
 const PUBLICATIONS_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 
 interface TabConfig {
+  key: string;
   label: string;
   types: Array<string>;
   content: ReactNode;
@@ -19,64 +20,101 @@ interface TabConfig {
 interface MetadataTabsProps {
   id: string;
   acdhType: string;
+  apiUrl: string;
 }
 
 export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProps>) {
-	const [activeIndex, setActiveIndex] = useState(0);
+	const [activeKey, setActiveKey] = useState<string | null>(null);
+	const [emptyTabs, setEmptyTabs] = useState<Record<string, boolean>>({});
 	const type = acdhType.toLowerCase();
 	const t = useTranslations("AppContent.metaview");
 
+	const handleEmpty = useCallback((key: string, isEmpty: boolean) => {
+		setEmptyTabs((prev) => {
+			if (prev[key] === isEmpty) return prev;
+			return { ...prev, [key]: isEmpty };
+		});
+	}, []);
+
+	const handleCollectionContentEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("collection_content", isEmpty);
+	}, [handleEmpty]);
+
+	const handleAssociatedCollectionsEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("associated_collections_and_resources", isEmpty);
+	}, [handleEmpty]);
+
+	const handlePublicationsEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("publications", isEmpty);
+	}, [handleEmpty]);
+
 	const allTabs: Array<TabConfig> = [
 		{
+			key: "collection_content",
 			label: t("collection_content"),
       types: COLLECTION_TYPES,
-			content: <CollectionContentBlock apiUrl={apiUrl} id={id} />,
+			content: <CollectionContentBlock apiUrl={apiUrl} id={id} onEmpty={handleCollectionContentEmpty} />,
     },
     {
+      key: "associated_collections_and_resources",
       label: t("associated_collections_and_resources"),
       types: RPR_TYPES,
-			content: <AssociatedCollectionsBlock apiUrl={apiUrl} id={id} />,
+			content: <AssociatedCollectionsBlock apiUrl={apiUrl} id={id} onEmpty={handleAssociatedCollectionsEmpty} />,
     },
 		{
+			key: "publications",
 			label: t("publications"),
       types: PUBLICATIONS_TYPES,
-			content: <PublicationsBlock apiUrl={apiUrl} id={id} />,
+			content: <PublicationsBlock apiUrl={apiUrl} id={id} onEmpty={handlePublicationsEmpty} />,
     },
   ];
 
-  const visibleTabs = allTabs.filter((tab) => { return tab.types.includes(type); });
+  const eligibleTabs = allTabs.filter((tab) => { return tab.types.includes(type); });
 
-  if (visibleTabs.length === 0) return null;
+  if (eligibleTabs.length === 0) return null;
 
-  const safeIndex = activeIndex >= visibleTabs.length ? 0 : activeIndex;
+  const visibleTabs = eligibleTabs.filter((tab) => { return !emptyTabs[tab.key]; });
+
+	const currentKey = visibleTabs.some((tab) => { return tab.key === activeKey; })
+		? activeKey
+		: visibleTabs[0]?.key ?? null;
 
   return (
     <div className="w-full">
       {/* Tab headers */}
-      <div className="flex border-b border-gray-200">
-        {visibleTabs.map((tab, index) => {
-          const isActive = index === safeIndex;
-          return (
-            <button
-              key={tab.label}
-              className={[
-                "px-4 py-2 text-sm font-medium transition-colors focus:outline-none",
-                isActive
-                  ? "border-b-2 border-(--color-arche-acc-dark-blue) text-(--color-arche-acc-dark-blue)"
-                  : "text-gray-500 hover:text-gray-700",
-              ].join(" ")}
-              onClick={() => { setActiveIndex(index); }}
-              type="button"
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
+			{visibleTabs.length > 0 && (
+				<div className="flex border-b border-gray-200">
+					{visibleTabs.map((tab) => {
+						const isActive = tab.key === currentKey;
+						return (
+							<button
+								key={tab.key}
+								className={[
+									"px-4 py-2 text-sm font-medium transition-colors focus:outline-none",
+									isActive
+										? "border-b-2 border-(--color-arche-acc-dark-blue) text-(--color-arche-acc-dark-blue)"
+										: "text-gray-500 hover:text-gray-700",
+								].join(" ")}
+								onClick={() => { setActiveKey(tab.key); }}
+								type="button"
+							>
+								{tab.label}
+							</button>
+						);
+					})}
+				</div>
+			)}
 
       {/* Tab content */}
       <div className="mt-2">
-        {visibleTabs[safeIndex]?.content}
+				{eligibleTabs.map((tab) => {
+					const isActive = tab.key === currentKey;
+					return (
+						<div key={tab.key} className={isActive ? "" : "hidden"}>
+							{tab.content}
+						</div>
+					);
+				})}
       </div>
     </div>
   );

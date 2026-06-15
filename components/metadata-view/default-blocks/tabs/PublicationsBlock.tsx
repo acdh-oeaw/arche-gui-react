@@ -10,6 +10,7 @@ import { getPublicationsDTContent, type PublicationsDTResult, type PublicationsD
 interface PublicationsBlockProps {
   id: string;
   apiUrl: string;
+  onEmpty?: (isEmpty: boolean) => void;
 }
 
 const PAGE_SIZES = [10, 25, 50];
@@ -39,7 +40,7 @@ function formatCellValue(col: string, value: string, row: PublicationsDTRow): Re
   return value;
 }
 
-export function PublicationsBlock({ id, apiUrl }: Readonly<PublicationsBlockProps>) {
+export function PublicationsBlock({ id, apiUrl, onEmpty }: Readonly<PublicationsBlockProps>) {
   const [result, setResult] = useState<PublicationsDTResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -73,6 +74,10 @@ export function PublicationsBlock({ id, apiUrl }: Readonly<PublicationsBlockProp
     void fetchData();
     return () => { controller.abort(); };
   }, [id, lang, apiUrl]);
+
+  useEffect(() => {
+    if (!loading) onEmpty?.(!result || result.aaData.length === 0);
+  }, [loading, result, onEmpty]);
 
   const visibleCols = useMemo(() => {
     if (!result) return [];

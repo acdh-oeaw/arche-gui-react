@@ -421,6 +421,22 @@ export class Metadata {
 		return "";
 	}
 
+	getRootId(): string {
+		const items = this.properties["acdh:isPartOf"];
+
+		if (Array.isArray(items)) {
+			for (const v of items) {
+				if (v?.id) {
+					return v.id;
+				}
+			}
+		} else if (items?.id) {
+			return items.id;
+		}
+
+		return "";
+	}
+
 	getTitle(): string | null {
 		const titleNode = this.properties["acdh:hasTitle"];
 

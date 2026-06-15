@@ -131,8 +131,9 @@
 			"no_content_available": "No content available",
 			"tei_document": "TEI Document",
 			"viewer_3d": "3D Viewer",
-			"reset_view": "Reset view"
-
+			"reset_view": "Reset view",
+			"previous_item": "Previous",
+			"next_item": "Next"
 		}
 	},
 	"AppFooter": {

@@ -10,6 +10,7 @@ import { type CollectionContentResult,getCollectionContent } from "@/lib/api/Col
 interface AssociatedCollectionsBlockProps {
 	id: string;
 	apiUrl: string;
+	onEmpty?: (isEmpty: boolean) => void;
 }
 
 interface TreeRowProps {
@@ -90,7 +91,7 @@ const t = useTranslations("AppContent.metaview");
 	);
 }
 
-export function AssociatedCollectionsBlock({ id, apiUrl }: Readonly<AssociatedCollectionsBlockProps>) {
+export function AssociatedCollectionsBlock({ id, apiUrl, onEmpty }: Readonly<AssociatedCollectionsBlockProps>) {
 	const [items, setItems] = useState<Array<CollectionContentResult>>([]);
 	const [loading, setLoading] = useState(true);
 	const locale = useLocale();
@@ -114,6 +115,10 @@ export function AssociatedCollectionsBlock({ id, apiUrl }: Readonly<AssociatedCo
 		void fetchItems();
 		return () => { controller.abort(); };
 	}, [id, lang, apiUrl]);
+
+	useEffect(() => {
+		if (!loading) onEmpty?.(items.length === 0);
+	}, [loading, items, onEmpty]);
 
 	if (loading) {
 		return <div className="flex justify-center py-6"><ArcheLoader label={t("loading")} /></div>;
