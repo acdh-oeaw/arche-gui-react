@@ -4,7 +4,7 @@ import { CreditsDataCard } from "@/components/metadata-view/cards/CreditsCard";
 import { DownloadCard } from "@/components/metadata-view/cards/DownloadCard";
 import FundingDataCard from "@/components/metadata-view/cards/FundingDataCard";
 import IdentifierCard from "@/components/metadata-view/cards/IdentifierCard";
-import LicenseDataCard from "@/components/metadata-view/cards/LicenseDataCard";
+import { LicenseDataCard } from "@/components/metadata-view/cards/LicenseDataCard";
 import { MapCard } from "@/components/metadata-view/cards/MapCard";
 import { ResourceTechnicalCard } from "@/components/metadata-view/cards/ResourceMetaTechnicalCard";
 import TechnicalCard from "@/components/metadata-view/cards/TechnicalCard";

@@ -9,7 +9,7 @@ import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVe
 import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
 import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
-import { PLYBlock } from "@/components/metadata-view/dissemination/3DBlock";
+import { PLYBlock } from "@/components/metadata-view/dissemination/PLYBlock";
 import { AudioBlock } from "@/components/metadata-view/dissemination/AudioBlock";
 import { GLBBlock } from "@/components/metadata-view/dissemination/GLBBlock";
 import { IIIFBlock } from "@/components/metadata-view/dissemination/IIIFBlock";
@@ -73,9 +73,13 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							{metadata.isPDF()  && (
 							<PdfBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`}/>
 							)}
+							{/* <IIIFBlock url={`${env.NEXT_PUBLIC_IIIF_URL}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}&mode=image`} /> */}
+
 
 							{metadata.isIIIF()  && (
-							<IIIFBlock url={`${env.NEXT_PUBLIC_IIIF_URL}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}&mode=image`}/>
+
+								< IIIFBlock url="https://arche-iiifmanifest.acdh.oeaw.ac.at/?id=https://arche.acdh.oeaw.ac.at/api/7967&mode=image" />
+
 							)}
 
 							{metadata.isAudio()  && (

@@ -26,8 +26,13 @@ export function IIIFBlock({ url }: Readonly<IIIFBlockProps>) {
 
         viewer = OSD({
           element: container,
-          tileSources: `${url}/info.json`,
-          showNavigationControl: false,
+          prefixUrl: 'https://unpkg.com/openseadragon@6.0.2/build/openseadragon/images/',
+          sequenceMode: false,
+          showNavigator: true,
+          navigatorPosition: 'BOTTOM_LEFT',
+          showSequenceControl: false,
+          showRotationControl: true,
+          tileSources: [{ type: 'image', url, buildPyramid: false } as unknown as string],
           animationTime: 0.5,
           blendTime: 0.1,
           constrainDuringPan: true,
