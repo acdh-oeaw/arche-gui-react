@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { getPublicationsDTContent, type PublicationsDTResult, type PublicationsDTRow } from "@/lib/api/CollectionContentApi";
+import { getPublicationsDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionContentApi";
 
 interface PublicationsBlockProps {
   id: string;
@@ -22,7 +22,7 @@ function formatColLabel(col: string): string {
     .trim();
 }
 
-function formatCellValue(col: string, value: string, row: PublicationsDTRow): ReactNode {
+function formatCellValue(col: string, value: string, row: DTRow): ReactNode {
   if (col === "title") {
     return (
       <a className="text-[color:var(--color-arche-link-color)] hover:underline" href={`/browser/metadata/${row.id}`}>
@@ -41,7 +41,7 @@ function formatCellValue(col: string, value: string, row: PublicationsDTRow): Re
 }
 
 export function PublicationsBlock({ id, apiUrl, onEmpty }: Readonly<PublicationsBlockProps>) {
-  const [result, setResult] = useState<PublicationsDTResult | null>(null);
+  const [result, setResult] = useState<DTResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [sortCol, setSortCol] = useState<string>("");

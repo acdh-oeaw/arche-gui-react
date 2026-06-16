@@ -29,7 +29,7 @@ export async function getCollectionContent(
   return (await res.json()) as Array<CollectionContentResult>;
 }
 
-export interface PublicationsDTRow {
+export interface DTRow {
   id: string;
   acdhid: string;
   property: string;
@@ -39,8 +39,8 @@ export interface PublicationsDTRow {
   [key: string]: string;
 }
 
-export interface PublicationsDTResult {
-  aaData: Array<PublicationsDTRow>;
+export interface DTResult {
+  aaData: Array<DTRow>;
   iTotalRecords: string;
   iTotalDisplayRecords: string;
   draw: number;
@@ -54,9 +54,39 @@ export async function getPublicationsDTContent(
   id: string,
   lang: string,
   signal?: AbortSignal,
-): Promise<PublicationsDTResult> {
+): Promise<DTResult> {
   const url = `${apiUrl}/${id}/${lang}`;
   const res = await fetch(url, { cache: "no-store", signal: createSignal(signal) });
   if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
-  return (await res.json()) as PublicationsDTResult;
+  return (await res.json()) as DTResult;
 }
+
+export interface SpatialDTParams {
+  start?: number;
+  length?: number;
+  search?: string;
+  draw?: number;
+}
+
+export async function getSpatialCoverageDTContent(
+  apiUrl: string,
+  id: string,
+  lang: string,
+  params?: SpatialDTParams,
+  signal?: AbortSignal,
+): Promise<DTResult> {
+  const qs = new URLSearchParams();
+  if (params?.draw !== undefined) qs.set("draw", String(params.draw));
+  if (params?.start !== undefined) qs.set("start", String(params.start));
+  if (params?.length !== undefined) qs.set("length", String(params.length));
+  if (params?.search) qs.set("search[value]", params.search);
+  const query = qs.toString();
+  const url = `${apiUrl}/${id}/${lang}${query ? `?${query}` : ""}`;
+  const res = await fetch(url, { cache: "no-store", signal: createSignal(signal) });
+  if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+  return (await res.json()) as DTResult;
+}
+
+
+
+

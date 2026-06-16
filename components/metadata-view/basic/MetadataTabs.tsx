@@ -5,6 +5,7 @@ import { type ReactNode, useCallback, useState } from "react";
 import { AssociatedCollectionsBlock } from "@/components/metadata-view/default-blocks/tabs/AssociatedCollectionsBlock";
 import { CollectionContentBlock } from "@/components/metadata-view/default-blocks/tabs/CollectionContentBlock";
 import { PublicationsBlock } from "@/components/metadata-view/default-blocks/tabs/PublicationsBlock";
+import { SpatialCoverageBlock } from "@/components/metadata-view/default-blocks/tabs/SpatialCoverageBlock";
 
 const COLLECTION_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 const RPR_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
@@ -48,6 +49,10 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 		handleEmpty("publications", isEmpty);
 	}, [handleEmpty]);
 
+	const handleSpatialCoverageEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("place", isEmpty);
+	}, [handleEmpty]);
+
 	const allTabs: Array<TabConfig> = [
 		{
 			key: "collection_content",
@@ -70,9 +75,9 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 		{
 			key: "place",
 			label: t("spatial_coverage_of"),
-      types: PUBLICATIONS_TYPES,
-			content: <PublicationsBlock apiUrl={apiUrl} id={id} onEmpty={handlePublicationsEmpty} />,
-    },
+			types: ["place"],
+			content: <SpatialCoverageBlock apiUrl={apiUrl} id={id} onEmpty={handleSpatialCoverageEmpty} />,
+		},
   ];
 
   const eligibleTabs = allTabs.filter((tab) => { return tab.types.includes(type); });
