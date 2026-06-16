@@ -66,6 +66,12 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 			label: t("publications"),
       types: PUBLICATIONS_TYPES,
 			content: <PublicationsBlock apiUrl={apiUrl} id={id} onEmpty={handlePublicationsEmpty} />,
+		},
+		{
+			key: "place",
+			label: t("spatial_coverage_of"),
+      types: PUBLICATIONS_TYPES,
+			content: <PublicationsBlock apiUrl={apiUrl} id={id} onEmpty={handlePublicationsEmpty} />,
     },
   ];
 

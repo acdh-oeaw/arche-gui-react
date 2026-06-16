@@ -6,10 +6,19 @@ import React, { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 
-function IdentifierCard({ data }: Readonly<{ data: string }>) {
+interface IdentifierItem {
+  value: string;
+  [key: string]: unknown;
+}
+
+function IdentifierCard({ data }: Readonly<{ data: string | Array<IdentifierItem> }>) {
 
   const [isOpen, setIsOpen] = useState(true);
   const t = useTranslations("AppContent.metaview");
+
+  const urls: Array<string> = typeof data === 'string'
+    ? [data]
+    : data.map((item) => item.value).filter(Boolean);
 
   return (
    <div className="facet-card w-full rounded-[8px] ">
@@ -34,10 +43,12 @@ function IdentifierCard({ data }: Readonly<{ data: string }>) {
 
       {/* Content */}
       {isOpen && (
-        <div className="facet-card-content flex gap-6">
-          <a className="break-all" href={data} rel="noreferrer" target="_blank">
-            {data}
-          </a>
+        <div className="facet-card-content flex flex-col gap-2">
+          {urls.map((url) => (
+            <a className="break-all" href={url} key={url} rel="noreferrer" target="_blank">
+              {url}
+            </a>
+          ))}
         </div>
       )}
     </div>

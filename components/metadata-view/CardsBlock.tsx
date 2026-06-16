@@ -24,7 +24,7 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 	let mapData = '';
 	let resourceMapType = metadata.getMapType();
 
-	const acdhType = metadata.getAcdhType();
+	const acdhType = metadata.getAcdhType() ?? '';
 	const licenseData = metadata.getLicenseData();
 	const creditsData = metadata.getCreditsData();
 	const fundingData = metadata.getFundingData();
@@ -60,11 +60,18 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 
 			<TitleImageCard url={`${env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL as string}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API as string}/${metadata.getId()}&width=400`} />
 
-			{mapData &&( acdhType.includes('#Place') ||  spatialCoverageId )&& (
+			{mapData &&( !acdhType.includes('#Place') ||  spatialCoverageId )&& (
 					<MapCard data={mapData} mapType={resourceMapType} />
       )}
 
-			<IdentifierCard data={metadata.getPidOrAcdhIdentifier()}></IdentifierCard>
+			{acdhType.includes('#Place') ? (
+				<IdentifierCard data={metadata.getPlaceIds()} />
+			) : (
+				metadata.getPidOrAcdhIdentifier() != null && (
+					<IdentifierCard data={metadata.getPidOrAcdhIdentifier()!} />
+				)
+			)}
+
 
 			{Object.keys(licenseData).length > 0 && (
         <LicenseDataCard data={licenseData} />

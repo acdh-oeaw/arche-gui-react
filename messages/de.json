@@ -132,7 +132,9 @@
 			"viewer_3d": "3D Viewer",
 			"reset_view": "Reset view",
 			"previous_item": "Previous",
-			"next_item": "Next"
+			"next_item": "Next",
+			"spatial_coverage_of":"Spatial coverage of",
+			"map": "Karte"
 		}
 	},
 	"AppFooter": {
@@ -289,8 +291,13 @@
 		}
 	},
 	"Error": {
+		"apology": "Wir bitten um Entschuldigung für die Unannehmlichkeiten.",
+		"contact-us": "Kontakt",
+		"description": "Auch wenn wir uns bemühen, unseren Namespace übersichtlich und dauerhaft zu halten, kann es vorkommen, dass ein Link nicht mehr funktioniert.",
 		"something-went-wrong": "Etwas ist schief gelaufen!",
-		"try-again": "Erneut versuchen"
+		"title": "Entschuldigung, hier gibt es nichts zu sehen!",
+		"try-again": "Erneut versuchen",
+		"visit-website": "ACDH-Website besuchen"
 	},
 	"StaticPages": {
 		"items": {

@@ -133,7 +133,9 @@
 			"viewer_3d": "3D Viewer",
 			"reset_view": "Reset view",
 			"previous_item": "Previous",
-			"next_item": "Next"
+			"next_item": "Next",
+			"spatial_coverage_of":"Spatial coverage of",
+			"map": "Map"
 		}
 	},
 	"AppFooter": {
@@ -290,8 +292,13 @@
 		}
 	},
 	"Error": {
+		"apology": "We apologize for the inconvenience.",
+		"contact-us": "Contact us",
+		"description": "Even though we do our best to keep our namespace tidy and persistent, there might still be a broken link here and there.",
 		"something-went-wrong": "Something went wrong!",
-		"try-again": "Try again"
+		"title": "Sorry, there's nothing in here!",
+		"try-again": "Try again",
+		"visit-website": "Visit ACDH website"
 	},
 	"StaticPages": {
 		"items": {

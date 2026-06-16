@@ -235,6 +235,27 @@ export class Metadata {
 		return "";
 	}
 
+	getPlaceIds(): Array<{ value: string; [key: string]: unknown }> {
+		const identifiers = this.properties["acdh:hasIdentifier"];
+		if (!Array.isArray(identifiers) || identifiers.length === 0) return [];
+
+		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? '';
+
+		const filtered = identifiers.filter((v) => {
+			const value = v?.value;
+			if (typeof value !== "string") return false;
+			const matchesBase = baseUrl !== '' && value.includes(baseUrl);
+			const matchesAcdh = value.includes('https://id.acdh.oeaw.ac.at');
+			return !matchesBase && !matchesAcdh;
+		});
+
+		if (filtered.length === 0) {
+			return identifiers[0] != null ? [identifiers[0]] : [];
+		}
+
+		return filtered;
+	}
+
 	getSpatialId(): string {
 		const spatialCoverage = this.data?.["acdh:hasSpatialCoverage"];
 		if (!spatialCoverage || typeof spatialCoverage !== "object") return "";
@@ -375,7 +396,7 @@ export class Metadata {
 	}
 
 	getBinarySize(): number {
-		const acdhtype = this.getAcdhType()?.toLowerCase();
+		const acdhtype = this.getAcdhType()?.toLowerCase() ?? '';
 		if (
 			acdhtype.includes("resource") ||
 			acdhtype.includes("oldresource") ||
@@ -695,6 +716,8 @@ export class Metadata {
 		return this.#fetchCardsData(props);
 	}
 
+
+
 	getOrganisationAddressBlock(): Record<string, any> {
 		const props: Record<string, string> = {
 			"acdh:hasAddressLine1": "Address Line 1",
@@ -741,7 +764,10 @@ export class Metadata {
 			};
 			return this.#fetchBlocksData(props);
 		}
+
+		return {};
 	}
+
 
 	getTechnicalData(): Record<string, any> {
 		let props: Record<string, string> = {};
@@ -767,6 +793,8 @@ export class Metadata {
 
 		return this.#fetchCardsData(props);
 	}
+
+
 
 	getProjectDetailsData() {
 		const props: Record<string, string> = {
