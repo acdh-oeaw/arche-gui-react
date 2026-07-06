@@ -134,7 +134,8 @@
 			"previous_item": "Previous",
 			"next_item": "Next",
 			"spatial_coverage_of":"Spatial coverage of",
-			"map": "Karte"
+			"map": "Karte",
+			"arrangement": "Arrangement"
 		}
 	},
 	"AppFooter": {

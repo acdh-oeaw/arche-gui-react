@@ -47,7 +47,7 @@ export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionP
 	const visibleText = isExpanded || !isLong ? normalizedText : `${shortText}…`;
 
 	return (
-		<div className="mt-4">
+		<div className="">
 			<p className="whitespace-pre-line">{visibleText}
 			{isLong ? (
 				<button

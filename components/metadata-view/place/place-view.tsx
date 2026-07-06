@@ -52,7 +52,7 @@ export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
 		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
 			<BasicViewToggle
 				basicContent={
-					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-6">
+					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
 							<div>
 

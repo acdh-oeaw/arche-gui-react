@@ -31,3 +31,14 @@
 	font-size: 12px;
 }
 
+#av-summary .list-inside {
+	padding-left:1rem;
+	line-height: 1.5;
+
+	li {
+		margin-bottom: 0;
+		line-height: 1.5;
+	}
+}
+
+

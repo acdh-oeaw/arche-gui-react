@@ -39,7 +39,7 @@ const t = useTranslations("AppContent.metaview");
 	}
 
 	return (
-		<div>
+		<div className="w-full">
 			<div
 				className="flex items-center gap-2 border-b border-gray-200 px-3 py-2"
 				style={{ paddingLeft: `${String((depth * 16) + 12)}px` }}

@@ -50,12 +50,12 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 	const hasContent = hasListContent || hasKey("acdh:hasDescription") || hasKey("acdh:hasNote");
 
 	if (!hasContent) return null;
-
+	console.log(metaProps["acdh:hasRelatedDiscipline"]);
 	return (
 		<div className="flex w-full flex-col gap-5 pt-5" id="av-summary">
-			<div className="w-full">
+
 				<h3 className="metadata-view-block-title">{t("summary")}</h3>
-			</div>
+
 
 			{hasListContent && (
 			<ul className="list-inside list-disc space-y-2">
@@ -64,6 +64,7 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 						<DisplayField
 							items={metaProps["acdh:hasRelatedDiscipline"]}
 							title={t("research_discipline")}
+
 						/>
 					</li>
 				)}

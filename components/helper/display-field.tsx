@@ -5,7 +5,8 @@ import { Link } from "@/components/link";
 
 interface Props {
   title: string;
-  items: Record<string, string>;
+	items: Array<Record<string, string>>;
+
 }
 
 function DisplayField({ title, items }: Props) {
@@ -16,7 +17,12 @@ function DisplayField({ title, items }: Props) {
 
       {items.flatMap((item, index) => {
         const element =
-          item.type === 'REL' ? (
+					item.externalUrl ? (
+						<Link key={index} href={item.externalUrl}>
+							{item.title ?? item.value}
+						</Link>
+					) : item.type === 'REL' ? (
+
             <Link key={index} href={`/metadata/${item.id}`}>
               {item.value}
             </Link>

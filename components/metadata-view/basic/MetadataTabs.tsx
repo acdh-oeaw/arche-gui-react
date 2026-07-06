@@ -117,11 +117,11 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 			)}
 
       {/* Tab content */}
-      <div className="mt-2">
+      <div className="basic-inside-content-div mt-2">
 				{eligibleTabs.map((tab) => {
 					const isActive = tab.key === currentKey;
 					return (
-						<div key={tab.key} className={isActive ? "" : "hidden"}>
+						<div key={tab.key} className={isActive ? "w-full" : "hidden"}>
 							{tab.content}
 						</div>
 					);

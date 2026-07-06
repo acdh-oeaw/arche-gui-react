@@ -134,7 +134,8 @@
 			"reset_view": "Reset view",
 			"previous_item": "Previous",
 			"next_item": "Next",
-			"spatial_coverage_of":"Spatial coverage of"
+			"spatial_coverage_of":"Spatial coverage of",
+			"arrangement": "Arrangement"
 		}
 	},
 	"AppFooter": {

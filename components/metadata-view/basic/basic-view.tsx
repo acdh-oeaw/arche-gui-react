@@ -18,6 +18,8 @@ import { TEIBlock } from "@/components/metadata-view/dissemination/TEIBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/PreviousNextBlock";
+import { ArrangementBlock } from "@/components/metadata-view/default-blocks/ArrangementBlock";
+
 
 interface BasicViewProps {
 	metadata: ParsedMetadata;
@@ -32,7 +34,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
 			<BasicViewToggle
 				basicContent={
-					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-6">
+					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
 							<div>
 								{t("metaview.available_since")}&nbsp;
@@ -62,7 +64,10 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						/>
 
 
-						<SummaryBlock  metadata={metadata} ></SummaryBlock>
+						<SummaryBlock metadata={metadata} ></SummaryBlock>
+
+
+						<ArrangementBlock metadata={metadata}/>
 
 						<SeeAlsoBlock metadata={metadata} ></SeeAlsoBlock>
 
