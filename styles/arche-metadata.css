@@ -41,4 +41,37 @@
 	}
 }
 
+#place-map-block .list-inside {
+	padding-left:1rem;
+	line-height: 1.5;
+
+	li {
+		margin-bottom: 0;
+		line-height: 1.5;
+	}
+}
+
+.metadata-table-pager {
+display: flex;
+gap: 0.75rem;
+justify-content: space-between;
+align-items: center;
+padding: 10px;
+border-radius: 5px;
+background-color: rgb(255 255 255);
+}
+
+.metadata-table-bottom-pager {
+	display: flex;
+gap: 0.75rem;
+justify-content: space-between;
+align-items: center;
+padding: 10px;
+border-radius: 5px;
+background-color: rgb(255 255 255);
+
+ span {
+	margin-bottom: 0;
+ }
+}
 

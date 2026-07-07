@@ -6,10 +6,12 @@ import { AssociatedCollectionsBlock } from "@/components/metadata-view/default-b
 import { CollectionContentBlock } from "@/components/metadata-view/default-blocks/tabs/CollectionContentBlock";
 import { PublicationsBlock } from "@/components/metadata-view/default-blocks/tabs/PublicationsBlock";
 import { SpatialCoverageBlock } from "@/components/metadata-view/default-blocks/tabs/SpatialCoverageBlock";
+import { ProjectAssociatedBlock } from "@/components/metadata-view/default-blocks/tabs/ProjectAssociatedBlock";
 
 const COLLECTION_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 const RPR_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 const PUBLICATIONS_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
+const PROJECT_TYPES = ["project"];
 
 interface TabConfig {
   key: string;
@@ -28,6 +30,8 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 	const [activeKey, setActiveKey] = useState<string | null>(null);
 	const [emptyTabs, setEmptyTabs] = useState<Record<string, boolean>>({});
 	const type = acdhType.toLowerCase();
+	console.log("META TYPE: ");
+	console.log(type);
 	const t = useTranslations("AppContent.metaview");
 
 	const handleEmpty = useCallback((key: string, isEmpty: boolean) => {
@@ -51,6 +55,10 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 
 	const handleSpatialCoverageEmpty = useCallback((isEmpty: boolean) => {
 		handleEmpty("place", isEmpty);
+	}, [handleEmpty]);
+
+	const handleProjectEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("project", isEmpty);
 	}, [handleEmpty]);
 
 	const allTabs: Array<TabConfig> = [
@@ -77,6 +85,12 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 			label: t("spatial_coverage_of"),
 			types: ["place"],
 			content: <SpatialCoverageBlock apiUrl={apiUrl} id={id} onEmpty={handleSpatialCoverageEmpty} />,
+		},
+		{
+			key: "project",
+			label: t("associated_collections"),
+			types: ["project"],
+			content: <ProjectAssociatedBlock apiUrl={apiUrl} id={id} onEmpty={handleProjectEmpty} />,
 		},
   ];
 

@@ -14,6 +14,7 @@ import { ViewShareCard } from "@/components/metadata-view/cards/ViewShareCard";
 import { env } from "@/config/env.config";
 import { getSpatialCoordinates } from "@/lib/api/ArcheSymfonyApi";
 import { Metadata, type Metadata as ParsedMetadata } from "@/lib/objects/metadata";
+import { ProjectDetailsCard } from '@/components/metadata-view/cards/ProjectDetailsCard';
 
 interface MetadataProps {
 	metadata: ParsedMetadata;
@@ -80,6 +81,12 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 			{Object.keys(creditsData).length > 0 && (
         <CreditsDataCard data={creditsData} />
 			)}
+
+			{mapData &&( !acdhType.includes('#Project')  )&& (
+					<ProjectDetailsCard data={mapData}  />
+      )}
+
+
 
 			{Object.keys(fundingData).length > 0 && (
         <FundingDataCard data={fundingData} logos={fundingLogos}/>

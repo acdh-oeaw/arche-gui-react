@@ -130,7 +130,7 @@ export function PublicationsBlock({ id, apiUrl, onEmpty }: Readonly<Publications
   return (
     <div className="mt-2 flex flex-col gap-3">
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-3">
+      <div className="metadata-table-pager">
         <div className="flex items-center gap-2 text-sm text-gray-600">
           {"Show"}
           <select
@@ -196,7 +196,7 @@ export function PublicationsBlock({ id, apiUrl, onEmpty }: Readonly<Publications
       </div>
 
       {/* Footer */}
-      <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-gray-600">
+      <div className="metadata-table-bottom-pager">
         <span>
           {sorted.length === 0
             ? "No results"

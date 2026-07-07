@@ -130,7 +130,7 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 	return (
 		<div className="mt-2 flex flex-col gap-3">
 			{/* Toolbar */}
-			<div className="flex items-center justify-between gap-3">
+			<div className="metadata-table-pager">
 				<div className="flex items-center gap-2 text-sm text-gray-600">
 					{t("show")}
 					<select
@@ -196,7 +196,7 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 			</div>
 
 			{/* Footer */}
-			<div className="flex flex-wrap items-center justify-between gap-2 text-sm text-gray-600">
+			<div className="metadata-table-bottom-pager">
 				<span>
 					{totalRecords === 0
 						? "No results"

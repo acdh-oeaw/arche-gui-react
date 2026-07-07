@@ -335,7 +335,7 @@ a:hover .locale-link-text::before {
 }
 
 .meatdata-view-top-hr {
-	color: rgb(51, 51, 51);
+	color: rgb(51, 51, 51, 25%);
 }
 
 .expert-dt-wrapper {

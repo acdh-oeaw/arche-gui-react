@@ -135,7 +135,10 @@
 			"previous_item": "Previous",
 			"next_item": "Next",
 			"spatial_coverage_of":"Spatial coverage of",
-			"arrangement": "Arrangement"
+			"arrangement": "Arrangement",
+			"data_collection_date": "Data Collection Date",
+			"associated_collections":"Associated Collections",
+			"project_details": "Project details"
 		}
 	},
 	"AppFooter": {

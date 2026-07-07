@@ -27,9 +27,9 @@ export default function PlaceMapBlock(props: Readonly<PlaceMapBlockProps>): Reac
 			<h3 className="metadata-view-block-title">{t("map")}</h3>
 
 			{coordEntries.length > 0 && (
-				<ul className="flex flex-col gap-2">
+				<ul className="list-inside list-disc space-y-2">
 					{coordEntries.map(([label, items]) => (
-						<li key={label} className="flex items-baseline gap-2">
+						<li key={label} className="">
 							<span className="mb-0!">{label}:</span>
 							<span className="mb-0!">
 								{items.map((item) => item.value).join(", ")}

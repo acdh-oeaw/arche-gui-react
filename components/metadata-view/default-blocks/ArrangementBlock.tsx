@@ -25,8 +25,7 @@ export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
 
 	const hasContent = hasKey("acdh:hasArrangement");
 	const ArrangementData = metadata.getDataByProperty("acdh:hasArrangement");
-	console.log("hasContent");
-	console.log(ArrangementData);
+
 	if (!hasContent) return null;
 
 	return (

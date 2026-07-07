@@ -383,7 +383,7 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 									</tbody>
 								</table>
 							</div>
-							<div className="flex items-center justify-between gap-3 text-small">
+							<div className="metadata-table-pager">
 								<div>{`Page ${String(activePage)} of ${String(totalPages)}`}</div>
 								<div className="inline-flex items-center gap-2">
 									<button

@@ -50,7 +50,7 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 	const hasContent = hasListContent || hasKey("acdh:hasDescription") || hasKey("acdh:hasNote");
 
 	if (!hasContent) return null;
-	console.log(metaProps["acdh:hasRelatedDiscipline"]);
+
 	return (
 		<div className="flex w-full flex-col gap-5 pt-5" id="av-summary">
 
