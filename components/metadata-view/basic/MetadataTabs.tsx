@@ -7,6 +7,9 @@ import { CollectionContentBlock } from "@/components/metadata-view/default-block
 import { PublicationsBlock } from "@/components/metadata-view/default-blocks/tabs/PublicationsBlock";
 import { SpatialCoverageBlock } from "@/components/metadata-view/default-blocks/tabs/SpatialCoverageBlock";
 import { ProjectAssociatedBlock } from "@/components/metadata-view/default-blocks/tabs/ProjectAssociatedBlock";
+import { InvolvedTableBlock } from "@/components/metadata-view/default-blocks/tabs/InvolvedTableBlock";
+import { MembersTableBlock } from "@/components/metadata-view/default-blocks/tabs/MembersTableBlock";
+import { ContributedTableBlock } from "@/components/metadata-view/default-blocks/tabs/ContributedTableBlock";
 
 const COLLECTION_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 const RPR_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
@@ -30,8 +33,7 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 	const [activeKey, setActiveKey] = useState<string | null>(null);
 	const [emptyTabs, setEmptyTabs] = useState<Record<string, boolean>>({});
 	const type = acdhType.toLowerCase();
-	console.log("META TYPE: ");
-	console.log(type);
+
 	const t = useTranslations("AppContent.metaview");
 
 	const handleEmpty = useCallback((key: string, isEmpty: boolean) => {
@@ -59,6 +61,13 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 
 	const handleProjectEmpty = useCallback((isEmpty: boolean) => {
 		handleEmpty("project", isEmpty);
+	}, [handleEmpty]);
+
+		const handleMembersEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("members", isEmpty);
+		}, [handleEmpty]);
+	const handleInvolvedEmpty = useCallback((isEmpty: boolean) => {
+		handleEmpty("involved", isEmpty);
 	}, [handleEmpty]);
 
 	const allTabs: Array<TabConfig> = [
@@ -92,6 +101,27 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 			types: ["project"],
 			content: <ProjectAssociatedBlock apiUrl={apiUrl} id={id} onEmpty={handleProjectEmpty} />,
 		},
+
+		{
+			key: "members",
+			label: t("has_members"),
+			types: ["organisation"],
+			content: <MembersTableBlock apiUrl={apiUrl} id={id} onEmpty={handleMembersEmpty} />,
+		},
+
+		{
+			key: "involved",
+			label: t("involved_in"),
+			types: ["organisation"],
+			content: <InvolvedTableBlock apiUrl={apiUrl} id={id} onEmpty={handleInvolvedEmpty} />,
+		},
+
+		{
+			key: "contributed",
+			label: t("contributed_to"),
+			types: ["person"],
+			content: <ContributedTableBlock apiUrl={apiUrl} id={id} onEmpty={handleInvolvedEmpty} />,
+		},
   ];
 
   const eligibleTabs = allTabs.filter((tab) => { return tab.types.includes(type); });
@@ -103,6 +133,11 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 	const currentKey = visibleTabs.some((tab) => { return tab.key === activeKey; })
 		? activeKey
 		: visibleTabs[0]?.key ?? null;
+
+	console.log("visible tabs");
+	console.log(visibleTabs);
+
+	if (visibleTabs.length === 0) { return null;  }
 
   return (
     <div className="w-full">

@@ -26,13 +26,14 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 	let resourceMapType = metadata.getMapType();
 
 	const acdhType = metadata.getAcdhType() ?? '';
+
 	const licenseData = metadata.getLicenseData();
 	const creditsData = metadata.getCreditsData();
 	const fundingData = metadata.getFundingData();
 	const fundingLogos = metadata.getFundingLogos();
 	const spatialCoverageId = metadata.getSpatialId();
 	const technicalData = metadata.getTechnicalData();
-
+	const projectDetailsData = metadata.getProjectDetailsData();
 
 	if (resourceMapType === 'multipolygon') {
 		mapData = metadata.getMapPolygon();
@@ -67,6 +68,8 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 
 			{acdhType.includes('#Place') ? (
 				<IdentifierCard data={metadata.getPlaceIds()} />
+			) : acdhType.includes('#Organisation') ? (
+				<IdentifierCard data={metadata.getNonAcdhIdentifiers()} />
 			) : (
 				metadata.getPidOrAcdhIdentifier() != null && (
 					<IdentifierCard data={metadata.getPidOrAcdhIdentifier()!} />
@@ -82,8 +85,8 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
         <CreditsDataCard data={creditsData} />
 			)}
 
-			{mapData &&( !acdhType.includes('#Project')  )&& (
-					<ProjectDetailsCard data={mapData}  />
+			{( acdhType.includes('#Project') &&  Object.keys(projectDetailsData).length > 0)&& (
+					<ProjectDetailsCard data={metadata.getProjectDetailsData()}  />
       )}
 
 

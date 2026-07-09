@@ -8,6 +8,7 @@
 }
 
 .metadata-alt-title {
+	margin-bottom: 0;
 	color: var(--color-arche-acc-headings);
 	font-weight: 400;
 	font-style: normal;
@@ -42,6 +43,16 @@
 }
 
 #place-map-block .list-inside {
+	padding-left:1rem;
+	line-height: 1.5;
+
+	li {
+		margin-bottom: 0;
+		line-height: 1.5;
+	}
+}
+
+#contact-details-div  .list-inside {
 	padding-left:1rem;
 	line-height: 1.5;
 

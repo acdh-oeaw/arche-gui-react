@@ -7,6 +7,6 @@ export function ProjectDetailsCard({ data }: Readonly<{ data: Record<string, Arr
 	const t = useTranslations("AppContent.metaview");
 
 	return (
-		<CardTemplate cardTitle={t('technical_info')} data={data} />
+		<CardTemplate cardTitle={t('project_details')} data={data} />
 	);
 }

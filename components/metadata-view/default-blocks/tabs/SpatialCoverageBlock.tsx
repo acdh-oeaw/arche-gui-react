@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { getSpatialCoverageDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionContentApi";
+import { getSpatialDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionContentApi";
 
 interface SpatialCoverageBlockProps {
 	id: string;
@@ -71,7 +71,7 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 
 		async function fetchData() {
 			try {
-				const data = await getSpatialCoverageDTContent(
+				const data = await getSpatialDTContent(
 					`${apiUrl}spatialDT`,
 					id,
 					lang,

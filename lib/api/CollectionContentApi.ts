@@ -68,6 +68,78 @@ export interface SpatialDTParams {
   draw?: number;
 }
 
+export async function getMembersDTContent(
+  apiUrl: string,
+  id: string,
+  lang: string,
+  params?: SpatialDTParams,
+  signal?: AbortSignal,
+): Promise<DTResult> {
+  const url = `${apiUrl}/${id}/${lang}`;
+  const body = new URLSearchParams();
+  if (params?.draw !== undefined) body.set("draw", String(params.draw));
+  if (params?.start !== undefined) body.set("start", String(params.start));
+  if (params?.length !== undefined) body.set("length", String(params.length));
+  if (params?.search) body.set("sSearch", params.search);
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+    cache: "no-store",
+    signal: createSignal(signal),
+  });
+  if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+  return (await res.json()) as DTResult;
+}
+
+export async function getInvolvedDTContent(
+  apiUrl: string,
+  id: string,
+  lang: string,
+  params?: SpatialDTParams,
+  signal?: AbortSignal,
+): Promise<DTResult> {
+  const url = `${apiUrl}/${id}/${lang}`;
+  const body = new URLSearchParams();
+  if (params?.draw !== undefined) body.set("draw", String(params.draw));
+  if (params?.start !== undefined) body.set("start", String(params.start));
+  if (params?.length !== undefined) body.set("length", String(params.length));
+  if (params?.search) body.set("sSearch", params.search);
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+    cache: "no-store",
+    signal: createSignal(signal),
+  });
+  if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+  return (await res.json()) as DTResult;
+}
+
+export async function getSpatialDTContent(
+  apiUrl: string,
+  id: string,
+  lang: string,
+  params?: SpatialDTParams,
+  signal?: AbortSignal,
+): Promise<DTResult> {
+  const url = `${apiUrl}/${id}/${lang}`;
+  const body = new URLSearchParams();
+  if (params?.draw !== undefined) body.set("draw", String(params.draw));
+  if (params?.start !== undefined) body.set("start", String(params.start));
+  if (params?.length !== undefined) body.set("length", String(params.length));
+  if (params?.search) body.set("sSearch", params.search);
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+    cache: "no-store",
+    signal: createSignal(signal),
+  });
+  if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+  return (await res.json()) as DTResult;
+}
+
 export async function getSpatialCoverageDTContent(
   apiUrl: string,
   id: string,

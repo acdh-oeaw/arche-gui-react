@@ -2,7 +2,7 @@
 
 import { type ReactNode, useMemo, useState } from "react";
 
-import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks-example/BreadcrumbBlock";
+import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/BreadcrumbBlock";
 
 export interface MetaviewTranslations {
 	basic_view: string;

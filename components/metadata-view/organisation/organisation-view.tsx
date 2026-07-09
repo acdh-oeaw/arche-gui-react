@@ -1,31 +1,85 @@
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
+import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
+import { MetadataTabs } from "@/components/metadata-view/basic/MetadataTabs";
+import CardsBlock from "@/components/metadata-view/CardsBlock";
+import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
+import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
+import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
+import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/PreviousNextBlock";
+import { MemberBlock } from "@/components/metadata-view/organisation/MemberBlock";
+import { ContactDetailsBlock } from "@/components/metadata-view/organisation/ContactDetailsBlock";
 
-interface OrganisationViewProps {
+
+
+interface BasicViewProps {
 	metadata: ParsedMetadata;
+	language?: string;
 }
 
-export function OrganisationView(props: Readonly<OrganisationViewProps>): ReactNode {
-	const { metadata } = props;
-
-	const formatted = JSON.stringify(
-		{
-			title: metadata.getTitle(),
-			addressBlock: metadata.getOrganisationAddressBlock(),
-			memberBlock: metadata.getOrganisationMemberBlock(),
-			technicalData: metadata.getTechnicalData(),
-		},
-		null,
-		2,
-	);
+export function OrganisationView(props: Readonly<BasicViewProps>): ReactNode {
+	const { metadata, language = "en" } = props;
+	const t = useTranslations("AppContent");
 
 	return (
-		<section className="space-y-3">
-			<h2>{"Organisation"}</h2>
-			<pre className="overflow-x-auto rounded-2 border border-stroke-strong bg-fill-weaker p-4 text-small">
-				{formatted}
-			</pre>
-		</section>
+		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
+			<BasicViewToggle
+				basicContent={
+					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
+						<div className="flex flex-wrap items-center justify-between gap-3">
+							<div>
+
+							</div>
+							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
+						</div>
+						<NewVersionBlock
+							id={metadata.getId()}
+							language={language}
+							translations={{
+								newer_version_text: t("metaview.newer_version_text"),
+								newer_version_url_text: t("metaview.newer_version_url_text"),
+							}}
+						/>
+
+						<hr className="meatdata-view-top-hr"></hr>
+
+						<PreviousNextBlock url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()} rootId={metadata.getRootId()}></PreviousNextBlock>
+
+						<TitleBlock metadata={metadata}></TitleBlock>
+
+						<MemberBlock metadata={metadata} />
+
+						<ContactDetailsBlock metadata={metadata} />
+
+						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()}/>
+
+						<div>
+
+
+
+						</div>
+					</div>
+				}
+				expertData={metadata.getExpertTableData()}
+				id={metadata.getId()}
+				language={language}
+				sideContent={
+					<CardsBlock metadata={ metadata}  />
+
+
+				}
+				translations={{
+					basic_view: t("metaview.basic_view"),
+					expert_view: t("metaview.expert_view"),
+					show: t("metaview.show"),
+					entries: t("metaview.entries"),
+					search: t("metaview.search"),
+					property: t("metaview.property"),
+					values: t("metaview.values"),
+				}}
+			/>
+		</div>
 	);
 }

@@ -138,7 +138,21 @@
 			"arrangement": "Arrangement",
 			"data_collection_date": "Data Collection Date",
 			"associated_collections":"Associated Collections",
-			"project_details": "Project details"
+			"project_details": "Project details",
+			"Project Start Date": "Project Start Date",
+			"Project End Date": "Project End Date",
+			"member_of": "Member of",
+			"contact_details": "Contact Details",
+			"address": "Address",
+			"postcode": "Postcode",
+			"city": "City",
+			"region": "Region",
+			"country": "Country",
+			"email": "Email",
+			"has_members": "Has members",
+			"involved_in": "Involved In",
+			"personal_title": "Personal Title",
+			"contributed_to": "Contributed to"
 		}
 	},
 	"AppFooter": {

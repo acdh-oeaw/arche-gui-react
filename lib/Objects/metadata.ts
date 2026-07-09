@@ -256,6 +256,21 @@ export class Metadata {
 		return filtered;
 	}
 
+	getNonAcdhIdentifiers(): Array<{ value: string; [key: string]: unknown }> {
+		const identifiers = this.properties["acdh:hasIdentifier"];
+		if (!Array.isArray(identifiers) || identifiers.length === 0) return [];
+
+		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? '';
+
+		return identifiers.filter((v) => {
+			const value = v?.value;
+			if (typeof value !== "string") return false;
+			const matchesBase = baseUrl !== '' && value.includes(baseUrl);
+			const matchesOeaw = value.includes('oeaw.ac.at');
+			return !matchesBase && !matchesOeaw;
+		});
+	}
+
 	getSpatialId(): string {
 		const spatialCoverage = this.data?.["acdh:hasSpatialCoverage"];
 		if (!spatialCoverage || typeof spatialCoverage !== "object") return "";
