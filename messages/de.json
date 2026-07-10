@@ -10,6 +10,12 @@
 		},
 		"title": "Über das Projekt"
 	},
+	"DiscoverPage": {
+		"meta": {
+			"title": "Browser Arche Collections and Resources"
+		},
+		"title": "Browser Arche Collections and Resources"
+	},
 	"AppContent": {
 		"general": {
 			"loading": "Laden"

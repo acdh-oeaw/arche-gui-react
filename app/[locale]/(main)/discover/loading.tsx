@@ -1,0 +1,17 @@
+import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
+
+import { ArcheLoader } from "@/components/ui/arche-loader";
+import { MainContent } from "@/components/ui/main-content";
+
+export default function DiscoverLoading(): ReactNode {
+	const t = useTranslations("Loading");
+
+	return (
+		<MainContent className="layout-grid">
+			<section className="grid place-content-center place-items-center py-16 xs:py-24">
+				<ArcheLoader label={t("loading")} />
+			</section>
+		</MainContent>
+	);
+}
