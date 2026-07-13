@@ -2,9 +2,10 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
+import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { Facet, FacetValue } from "@/lib/types/discover";
 
 interface DiscoverFacetsProps {
@@ -59,14 +60,114 @@ function FacetCard({
 	);
 }
 
+function TagInput({
+	activeValues,
+	allValues,
+	onAdd,
+	onRemove,
+}: {
+	activeValues: string[];
+	allValues: Array<FacetValue>;
+	onAdd: (value: string) => void;
+	onRemove: (value: string) => void;
+}) {
+	const [isOpen, setIsOpen] = useState(false);
+	const [filter, setFilter] = useState("");
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	const available = allValues.filter(
+		(v) => v.value !== null && !activeValues.includes(v.value ?? ""),
+	);
+	const filtered = filter
+		? available.filter((v) =>
+				shortenUri(v.label).toLowerCase().includes(filter.toLowerCase()),
+			)
+		: available;
+
+	return (
+		<div className="relative">
+			<div
+				className="flex min-h-[38px] cursor-text flex-wrap gap-1 rounded border border-gray-300 px-2 py-1 focus-within:ring-1 focus-within:ring-blue-500"
+				onClick={() => {
+					inputRef.current?.focus();
+					setIsOpen(true);
+				}}
+			>
+				{activeValues.map((val) => {
+					const found = allValues.find((v) => v.value === val);
+					const label = found?.label ? shortenUri(found.label) : shortenUri(val);
+					const count = found?.count;
+					return (
+						<span
+							key={val}
+							className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800"
+						>
+							{label}
+							{count !== undefined ? ` (${count})` : ""}
+							<button
+								className="ml-0.5 hover:text-blue-600"
+								onClick={(e) => {
+									e.stopPropagation();
+									onRemove(val);
+								}}
+								type="button"
+							>
+								×
+							</button>
+						</span>
+					);
+				})}
+				<input
+					ref={inputRef}
+					className="min-w-20 flex-1 bg-transparent text-sm outline-none"
+					onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+					onChange={(e) => setFilter(e.target.value)}
+					onFocus={() => setIsOpen(true)}
+					placeholder={activeValues.length === 0 ? "Select types..." : ""}
+					value={filter}
+				/>
+			</div>
+			{isOpen && filtered.length > 0 && (
+				<div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-48 overflow-y-auto rounded border border-gray-200 bg-white shadow-lg">
+					{filtered.map((v) => (
+						<button
+							key={v.value}
+							className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-gray-50"
+							onClick={() => {
+								if (v.value) onAdd(v.value);
+								setFilter("");
+								inputRef.current?.focus();
+							}}
+							type="button"
+						>
+							<span>{shortenUri(v.label)}</span>
+							<span className="text-xs text-gray-400">({v.count})</span>
+						</button>
+					))}
+				</div>
+			)}
+		</div>
+	);
+}
+
 export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	const sp = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
-	const { navigate } = useDiscoverNav();
+	const { isPending, navigate } = useDiscoverNav();
 
 	const [q, setQ] = useState(sp.get("q") ?? "");
 	const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+	const [localFacets, setLocalFacets] = useState<Record<string, string[]>>(() => {
+		const init: Record<string, string[]> = {};
+		for (const key of Object.keys(facets)) {
+			const vals = sp.getAll(`facets[${key}][]`);
+			if (vals.length > 0) init[key] = vals;
+		}
+		return init;
+	});
+	const [includeBinaries, setIncludeBinaries] = useState(sp.get("includeBinaries") === "1");
+	const [linkNamedEntities, setLinkNamedEntities] = useState(sp.get("linkNamedEntities") !== "0");
 	const [continuousState, setContinuousState] = useState<
 		Record<string, { min: string; max: string }>
 	>(() => {
@@ -82,8 +183,31 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		return state;
 	});
 
+	// Sync all local state from URL (handles back/forward navigation)
+	useEffect(() => {
+		setQ(sp.get("q") ?? "");
+		const synced: Record<string, string[]> = {};
+		for (const key of Object.keys(facets)) {
+			const vals = sp.getAll(`facets[${key}][]`);
+			if (vals.length > 0) synced[key] = vals;
+		}
+		setLocalFacets(synced);
+		setIncludeBinaries(sp.get("includeBinaries") === "1");
+		setLinkNamedEntities(sp.get("linkNamedEntities") !== "0");
+		const contState: Record<string, { min: string; max: string }> = {};
+		for (const [key, facet] of Object.entries(facets)) {
+			if (facet.type === "continuous") {
+				contState[key] = {
+					max: sp.get(`facets[${key}][max]`) ?? "",
+					min: sp.get(`facets[${key}][min]`) ?? "",
+				};
+			}
+		}
+		setContinuousState(contState);
+	}, [sp]); // eslint-disable-line react-hooks/exhaustive-deps
+
 	function getActiveValues(property: string): string[] {
-		return sp.getAll(`facets[${property}][]`);
+		return localFacets[property] ?? [];
 	}
 
 	function toggleCollapse(key: string) {
@@ -91,55 +215,70 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	}
 
 	function toggleFacetValue(property: string, value: string) {
-		const params = new URLSearchParams(sp.toString());
-		const key = `facets[${property}][]`;
-		const existing = params.getAll(key);
-		params.delete(key);
-		const next = existing.includes(value)
-			? existing.filter((v) => v !== value)
-			: [...existing, value];
-		for (const v of next) params.append(key, v);
-		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		setLocalFacets((prev) => {
+			const existing = prev[property] ?? [];
+			const next = existing.includes(value)
+				? existing.filter((v) => v !== value)
+				: [...existing, value];
+			if (next.length === 0) {
+				const { [property]: _removed, ...rest } = prev;
+				return rest;
+			}
+			return { ...prev, [property]: next };
+		});
 	}
 
 	function handleSearch() {
 		const params = new URLSearchParams(sp.toString());
 		params.set("q", q);
+		// Clear existing facets and replace with local state
+		for (const key of [...params.keys()]) {
+			if (key.startsWith("facets[")) params.delete(key);
+		}
+		for (const [prop, values] of Object.entries(localFacets)) {
+			for (const v of values) params.append(`facets[${prop}][]`, v);
+		}
 		for (const [prop, vals] of Object.entries(continuousState)) {
 			if (vals.min) params.set(`facets[${prop}][min]`, vals.min);
 			else params.delete(`facets[${prop}][min]`);
 			if (vals.max) params.set(`facets[${prop}][max]`, vals.max);
 			else params.delete(`facets[${prop}][max]`);
 		}
+		params.set("includeBinaries", includeBinaries ? "1" : "0");
+		params.set("linkNamedEntities", linkNamedEntities ? "1" : "0");
 		params.set("page", "1");
 		navigate(() => router.push(`${pathname}?${params.toString()}`));
 	}
 
 	function handleReset() {
-		const params = new URLSearchParams(sp.toString());
-		for (const key of [...params.keys()]) {
-			if (key.startsWith("facets[")) params.delete(key);
-		}
-		params.delete("q");
-		params.set("page", "1");
 		setQ("");
+		setLocalFacets({});
 		setContinuousState({});
+		setIncludeBinaries(false);
+		setLinkNamedEntities(true);
+		const params = new URLSearchParams();
+		params.set("q", "");
+		params.set("preferredLang", sp.get("preferredLang") ?? "en");
+		params.set("includeBinaries", "0");
+		params.set("linkNamedEntities", "1");
+		params.set("page", "1");
 		navigate(() => router.push(`${pathname}?${params.toString()}`));
 	}
 
 	function toggleBoolParam(paramKey: string) {
-		const params = new URLSearchParams(sp.toString());
-		params.set(paramKey, params.get(paramKey) === "1" ? "0" : "1");
-		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		if (paramKey === "includeBinaries") setIncludeBinaries((prev) => !prev);
+		else if (paramKey === "linkNamedEntities") setLinkNamedEntities((prev) => !prev);
 	}
 
-	const includeBinaries = sp.get("includeBinaries") === "1";
-	const linkNamedEntities = sp.get("linkNamedEntities") !== "0";
-
 	return (
-		<div className="flex flex-col gap-3">
+		<div className="relative flex flex-col gap-3">
+			{isPending && (
+				<div className="absolute inset-0 z-10 rounded bg-white/70">
+					<div className="flex justify-center pt-6">
+						<ArcheLoader />
+					</div>
+				</div>
+			)}
 			{/* Search input */}
 			<div className="flex gap-2">
 				<input
@@ -153,7 +292,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					value={q}
 				/>
 				<button
-					className="rounded bg-[color:var(--color-arche-acc-dark-blue)] px-3 py-2 text-white hover:opacity-90"
+					className="rounded bg-(--color-arche-acc-dark-blue) px-3 py-2 text-white hover:opacity-90"
 					onClick={handleSearch}
 					type="button"
 				>
@@ -178,7 +317,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							tooltip={facet.tooltip?.[lang]}
 						>
 							<button
-								className="w-full rounded bg-[color:var(--color-arche-acc-dark-blue)] py-2 text-sm text-white hover:opacity-90"
+								className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
 								type="button"
 							>
 								Map
@@ -231,9 +370,6 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				if (!Array.isArray(facet.values) || facet.values.length === 0) return null;
 
 				const activeValues = getActiveValues(key);
-				const inactiveValues = (facet.values as Array<FacetValue>).filter(
-					(v) => v.value !== null && !activeValues.includes(v.value ?? ""),
-				);
 
 				return (
 					<FacetCard
@@ -243,74 +379,14 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 						onToggle={() => toggleCollapse(key)}
 						tooltip={facet.tooltip?.[lang]}
 					>
-						{/* Active value chips */}
-						{activeValues.length > 0 && (
-							<div className="mb-2 flex flex-wrap gap-1">
-								{activeValues.map((val) => {
-									const found = (facet.values as Array<FacetValue>).find(
-										(v) => v.value === val,
-									);
-									const chipLabel = found?.label
-										? shortenUri(found.label)
-										: shortenUri(val);
-									const count = found?.count;
-									return (
-										<button
-											key={val}
-											className="flex items-center gap-1 rounded-full border border-[color:var(--color-arche-acc-dark-blue)] px-2 py-0.5 text-xs text-[color:var(--color-arche-acc-dark-blue)] hover:bg-blue-50"
-											onClick={() => toggleFacetValue(key, val)}
-											type="button"
-										>
-											<span>×</span>
-											<span>
-												{chipLabel}
-												{count !== undefined ? ` (${count})` : ""}
-											</span>
-										</button>
-									);
-								})}
-							</div>
-						)}
-
-						{/* Object type: select dropdown */}
-						{facet.type === "object" && inactiveValues.length > 0 && (
-							<select
-								className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
-								onChange={(e) => {
-									if (e.target.value) toggleFacetValue(key, e.target.value);
-								}}
-								value=""
-							>
-								<option value="">Select an option</option>
-								{inactiveValues.map((v) => (
-									<option key={v.value} value={v.value ?? ""}>
-										{shortenUri(v.label)} ({v.count})
-									</option>
-								))}
-							</select>
-						)}
-
-						{/* Literal type: checkbox list */}
-						{facet.type === "literal" && inactiveValues.length > 0 && (
-							<div className="flex max-h-48 flex-col gap-1 overflow-y-auto">
-								{inactiveValues.map((v) => (
-									<label
-										key={v.value}
-										className="flex cursor-pointer items-center gap-2 text-sm"
-									>
-										<input
-											checked={false}
-											onChange={() => {
-												if (v.value) toggleFacetValue(key, v.value);
-											}}
-											type="checkbox"
-										/>
-										<span>
-											{shortenUri(v.label)} ({v.count})
-										</span>
-									</label>
-								))}
-							</div>
+						{/* All value-based facets: tag input */}
+						{(facet.type === "literal" || facet.type === "object") && (
+							<TagInput
+								activeValues={activeValues}
+								allValues={facet.values as Array<FacetValue>}
+								onAdd={(val) => toggleFacetValue(key, val)}
+								onRemove={(val) => toggleFacetValue(key, val)}
+							/>
 						)}
 					</FacetCard>
 				);
@@ -351,14 +427,14 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				Reset filters
 			</button>
 			<button
-				className="w-full rounded bg-[color:var(--color-arche-acc-dark-blue)] py-2 text-sm text-white hover:opacity-90"
+				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
 				onClick={handleSearch}
 				type="button"
 			>
 				Search
 			</button>
 			<button
-				className="w-full rounded bg-[color:var(--color-arche-acc-dark-blue)] py-2 text-sm text-white hover:opacity-90"
+				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
 				type="button"
 			>
 				Add to CLARIN Virtual Collection

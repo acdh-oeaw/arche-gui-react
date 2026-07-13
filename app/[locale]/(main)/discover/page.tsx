@@ -63,7 +63,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 	}
 
 	return (
-		<MainContent className="layout-grid content-start">
+		<MainContent className="layout-grid content-start pb-20">
 			<DiscoverNavProvider>
 				<div className="flex w-full gap-6 p-6">
 					<section className="w-[30%] shrink-0">

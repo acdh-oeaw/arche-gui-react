@@ -83,14 +83,16 @@ export function DiscoverResults({
 		<div className="relative flex flex-col gap-4">
 			{/* Loading overlay */}
 			{isPending && (
-				<div className="absolute inset-0 z-10 flex items-center justify-center rounded bg-white/70">
-					<ArcheLoader />
+				<div className="absolute inset-0 z-10 rounded bg-white/70">
+					<div className="flex justify-center pt-6">
+						<ArcheLoader />
+					</div>
 				</div>
 			)}
 
 			{/* Pagination header */}
 			<div className="flex flex-wrap items-center justify-between gap-2">
-				<span className="text-sm text-gray-600">{totalCount} Result(s)</span>
+				<span className="text-sm text-gray-600">{Math.max(0, totalCount)} Result(s)</span>
 				<div className="flex items-center gap-1">
 					<button
 						className="rounded border border-gray-300 px-2 py-1 text-sm disabled:opacity-40"
@@ -111,7 +113,7 @@ export function DiscoverResults({
 								className={[
 									"rounded border px-2 py-1 text-sm",
 									p === uiPage
-										? "border-[color:var(--color-arche-acc-dark-blue)] bg-[color:var(--color-arche-acc-dark-blue)] text-white"
+										? "border-(--color-arche-acc-dark-blue) bg-(--color-arche-acc-dark-blue) text-white"
 										: "border-gray-300 hover:bg-gray-50",
 								].join(" ")}
 								onClick={() => goToPage(p)}
@@ -163,11 +165,11 @@ export function DiscoverResults({
 					>
 						<div className="min-w-0 flex-1">
 							<div className="flex items-start gap-1">
-								<span className="mt-0.5 shrink-0 font-bold text-[color:var(--color-arche-acc-dark-blue)]">
+								<span className="mt-0.5 shrink-0 font-bold text-(--color-arche-acc-dark-blue)">
 									+
 								</span>
 								<Link
-									className="font-medium text-[color:var(--color-arche-acc-dark-blue)] hover:underline"
+									className="font-medium text-(--color-arche-acc-dark-blue) hover:underline"
 									href={`/metadata/${String(result.id)}`}
 								>
 									{title}
