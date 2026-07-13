@@ -62,6 +62,10 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 		// API unreachable — render empty state
 	}
 
+	const mapGeoJson = data?.facets
+		? (Object.values(data.facets).find((f) => f.type === "map")?.values as string | undefined) ?? null
+		: null;
+
 	return (
 		<MainContent className="layout-grid content-start pb-20">
 			<DiscoverNavProvider>
@@ -82,6 +86,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 							{data ? (
 								<DiscoverResults
 									lang={lang}
+									mapGeoJson={mapGeoJson}
 									page={data.page}
 									pageSize={data.pageSize}
 									results={data.results}

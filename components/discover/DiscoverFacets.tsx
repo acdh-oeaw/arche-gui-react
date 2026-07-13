@@ -27,6 +27,18 @@ function shortenUri(value: string): string {
 	return value;
 }
 
+function summarizePolygon(wkt: string): string {
+	const nums = wkt.match(/-?\d+\.?\d*/g)?.map(Number) ?? [];
+	if (nums.length < 4) return wkt;
+	const lons: number[] = [];
+	const lats: number[] = [];
+	for (let i = 0; i + 1 < nums.length; i += 2) {
+		lons.push(nums[i] ?? 0);
+		lats.push(nums[i + 1] ?? 0);
+	}
+	return `${Math.min(...lons).toFixed(1)}, ${Math.min(...lats).toFixed(1)} – ${Math.max(...lons).toFixed(1)}, ${Math.max(...lats).toFixed(1)}`;
+}
+
 function FacetCard({
 	children,
 	collapsed,
@@ -154,7 +166,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	const sp = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
-	const { isPending, navigate } = useDiscoverNav();
+	const { isPending, mapPolygon, navigate, setMapPolygon, setShowMap } = useDiscoverNav();
 
 	const [q, setQ] = useState(sp.get("q") ?? "");
 	const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -194,6 +206,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		setLocalFacets(synced);
 		setIncludeBinaries(sp.get("includeBinaries") === "1");
 		setLinkNamedEntities(sp.get("linkNamedEntities") !== "0");
+		setMapPolygon(sp.get("facets[map]") ?? null);
 		const contState: Record<string, { min: string; max: string }> = {};
 		for (const [key, facet] of Object.entries(facets)) {
 			if (facet.type === "continuous") {
@@ -244,6 +257,8 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 			if (vals.max) params.set(`facets[${prop}][max]`, vals.max);
 			else params.delete(`facets[${prop}][max]`);
 		}
+		if (mapPolygon) params.set("facets[map]", mapPolygon);
+		else params.delete("facets[map]");
 		params.set("includeBinaries", includeBinaries ? "1" : "0");
 		params.set("linkNamedEntities", linkNamedEntities ? "1" : "0");
 		params.set("page", "1");
@@ -256,6 +271,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		setContinuousState({});
 		setIncludeBinaries(false);
 		setLinkNamedEntities(true);
+		setMapPolygon(null);
 		const params = new URLSearchParams();
 		params.set("q", "");
 		params.set("preferredLang", sp.get("preferredLang") ?? "en");
@@ -316,8 +332,22 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							onToggle={() => toggleCollapse(key)}
 							tooltip={facet.tooltip?.[lang]}
 						>
+							{mapPolygon && (
+								<div className="mb-2 flex items-center justify-between rounded border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700">
+									<span>{summarizePolygon(mapPolygon)}</span>
+									<button
+										className="ml-2 text-gray-400 hover:text-red-500"
+										onClick={() => setMapPolygon(null)}
+										title="Remove drawn area"
+										type="button"
+									>
+										🗑
+									</button>
+								</div>
+							)}
 							<button
 								className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
+								onClick={() => setShowMap(true)}
 								type="button"
 							>
 								Map

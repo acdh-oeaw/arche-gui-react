@@ -5,11 +5,13 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
+import { DiscoverMap } from "@/components/discover/DiscoverMap";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { DiscoverResult } from "@/lib/types/discover";
 
 interface DiscoverResultsProps {
 	lang: string;
+	mapGeoJson: string | null;
 	page: number; // 0-based from API
 	pageSize: number;
 	results: DiscoverResult[];
@@ -51,6 +53,7 @@ function buildPageButtons(current: number, total: number): Array<number | "…">
 
 export function DiscoverResults({
 	lang,
+	mapGeoJson,
 	page,
 	pageSize,
 	results,
@@ -60,7 +63,7 @@ export function DiscoverResults({
 	const sp = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
-	const { isPending, navigate } = useDiscoverNav();
+	const { isPending, navigate, showMap } = useDiscoverNav();
 
 	const uiPage = page + 1;
 	const pageCount = Math.max(1, Math.ceil(totalCount / pageSize));
@@ -81,6 +84,9 @@ export function DiscoverResults({
 
 	return (
 		<div className="relative flex flex-col gap-4">
+			{/* Spatial coverage map */}
+			{showMap && mapGeoJson && <DiscoverMap geoJson={mapGeoJson} />}
+
 			{/* Loading overlay */}
 			{isPending && (
 				<div className="absolute inset-0 z-10 rounded bg-white/70">
