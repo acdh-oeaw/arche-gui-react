@@ -298,7 +298,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 			{/* Search input */}
 			<div className="flex gap-2">
 				<input
-					className="min-w-0 flex-1 rounded border border-gray-300 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+					className="smartsearch-input"
 					onChange={(e) => setQ(e.target.value)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") handleSearch();
@@ -368,7 +368,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 						>
 							<div className="flex items-center gap-2">
 								<input
-									className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
+									className="smartsearch-input-select"
 									onChange={(e) =>
 										setContinuousState((prev) => ({
 											...prev,
@@ -381,7 +381,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 								/>
 								<span className="shrink-0 text-gray-400">–</span>
 								<input
-									className="w-full rounded border border-gray-300 px-2 py-1 text-sm"
+									className="smartsearch-input-select"
 									onChange={(e) =>
 										setContinuousState((prev) => ({
 											...prev,

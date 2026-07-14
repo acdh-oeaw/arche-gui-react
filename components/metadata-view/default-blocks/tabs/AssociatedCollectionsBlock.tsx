@@ -22,7 +22,7 @@ interface TreeRowProps {
 
 function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
 	const [expanded, setExpanded] = useState(false);
-	const [children, setChildren] = useState<Array<AssociatedCollectionsBlockProps>>([]);
+	const [children, setChildren] = useState<Array<CollectionContentResult>>([]);
 	const [loading, setLoading] = useState(false);
 const t = useTranslations("AppContent.metaview");
 	async function handleExpandClick() {

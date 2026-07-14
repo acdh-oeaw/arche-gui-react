@@ -26,7 +26,8 @@ export async function getCollectionContent(
   const url = `${apiUrl}/${id}/${lang}`;
   const res = await fetch(url, { cache: "no-store", signal: createSignal(signal) });
   if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
-  return (await res.json()) as Array<CollectionContentResult>;
+  const json: unknown = await res.json();
+  return Array.isArray(json) ? (json as Array<CollectionContentResult>) : [];
 }
 
 export interface DTRow {
