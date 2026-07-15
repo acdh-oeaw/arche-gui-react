@@ -483,13 +483,23 @@ a:hover .locale-link-text::before {
 	}
 }
 
+.smartsearch-pager {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 0.5rem;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e1edf3;
+}
+
 .smartsearch-result-row {
 	display: flex;
 	flex-direction: row;
 	gap: 16px;
 	align-items: center;
 	padding: 24px;
-	border-bottom: 1px solid #e1edf3;
+	border-bottom: 1px solid rgb(225 237 243);
 }
 
 .smartsearch-list-title {
@@ -521,8 +531,8 @@ a:hover .locale-link-text::before {
 	height: fit-content;
 	padding: 4px 8px;
 	border-radius: 12px;
-	background-color: #585658;
-	color: #fff;
+	background-color: rgb(88 86 88);
+	color: rgb(255 255 255);
 	font-weight: 700;
 	font-style: normal;
 	font-size: 12px;
@@ -573,62 +583,62 @@ width: 100%;
 }
 
 .btn-toolbar-public {
-  background-color: #0B654E;
-  color: #fff;
+  background-color: rgb(11 101 78);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-academic {
-  background-color: #8A4200;
-  color: #fff;
+  background-color: rgb(138 66 0);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-restricted {
-  background-color: #A71111;
-  color: #fff;
+  background-color: rgb(167 17 17);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-public-academic {
-  background: #0b654e;
-  background: linear-gradient(90deg, #0B654E 20%, #8A4200 80%);
-  color: #fff;
+  background: rgb(11 101 78);
+  background: linear-gradient(90deg, rgb(11 101 78) 20%, rgb(138 66 0) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-academic-public {
-  background: #ff9f43;
-  background: linear-gradient(90deg, #8A4200 20%, #0B654E 80%);
-  color: #fff;
+  background: rgb(138 66 0);
+  background: linear-gradient(90deg, rgb(138 66 0) 20%, rgb(11 101 78) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-public-restricted {
-  background: #0b654e;
-  background: linear-gradient(90deg, #0B654E 20%, #A71111 80%);
-  color: #fff;
+  background: rgb(11 101 78);
+  background: linear-gradient(90deg, rgb(11 101 78) 20%, rgb(167 17 17) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-restricted-public {
-  background: #ee5253;
-  background: linear-gradient(90deg, #A71111 20%, #0B654E 80%);
-  color: #fff;
+  background: rgb(167 17 17);
+  background: linear-gradient(90deg, rgb(167 17 17) 20%, rgb(11 101 78) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-academic-restricted {
-  background: #ff9f43;
-  background: linear-gradient(90deg, #ff9f43 0%, #ee5253 100%);
-  color: #fff;
+  background: rgb(138 66 0);
+  background: linear-gradient(90deg, rgb(138 66 0) 0%, rgb(167 17 17) 100%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-restricted-academic {
-  background: #ee5253;
-  background: linear-gradient(90deg, #A71111 20%, #8A4200 80%);
-  color: #fff;
+  background: rgb(167 17 17);
+  background: linear-gradient(90deg, rgb(167 17 17) 20%, rgb(138 66 0) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-green, .btn-toolbar-green.no-btn:hover {
   gap: 8px;
   padding: 4px 8px;
   border-radius: 12px;
-  background: #58BCC1;
-  color: #fff;
+  background: rgb(88 188 193);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-public-academic-restricted {

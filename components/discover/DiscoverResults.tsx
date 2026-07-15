@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverMap } from "@/components/discover/DiscoverMap";
+import { DiscoverResultPagers } from "@/components/discover/DiscoverResultPagers";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { DiscoverResult } from "@/lib/types/discover";
 
@@ -49,22 +49,6 @@ function getAccessClass(accessRestriction: string): string {
 	return `btn-toolbar btn-toolbar-${ordered.join("-")}`;
 }
 
-function buildPageButtons(current: number, total: number): Array<number | "…"> {
-	if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
-	const pages = new Set<number>();
-	pages.add(1);
-	pages.add(total);
-	for (let i = Math.max(1, current - 2); i <= Math.min(total, current + 2); i++) pages.add(i);
-	const sorted = [...pages].sort((a, b) => a - b);
-	const result: Array<number | "…"> = [];
-	for (let i = 0; i < sorted.length; i++) {
-		const cur = sorted[i];
-		const prev = sorted[i - 1];
-		if (prev !== undefined && cur !== undefined && cur - prev > 1) result.push("…");
-		if (cur !== undefined) result.push(cur);
-	}
-	return result;
-}
 
 interface ResultCardProps {
 	result: DiscoverResult;
@@ -77,6 +61,7 @@ function ResultCard({ result, lang, thumbnailBaseUrl }: Readonly<ResultCardProps
 	const title = getLangValue(result.title, lang);
 	const description = result.description ? getLangValue(result.description, lang) : "";
 	const classLabel = result.class[0] ? shortenUri(result.class[0]) : "";
+	// we have to force the only EN lang to check the values inside the function
 	const accessRestriction = result.accessRestrictionSummary
 		? getLangValue(result.accessRestrictionSummary, "en")
 		: "";
@@ -142,27 +127,7 @@ export function DiscoverResults({
 	thumbnailBaseUrl,
 	totalCount,
 }: DiscoverResultsProps) {
-	const sp = useSearchParams();
-	const router = useRouter();
-	const pathname = usePathname();
-	const { isPending, navigate, showMap } = useDiscoverNav();
-
-	const uiPage = page + 1;
-	const pageCount = Math.max(1, Math.ceil(totalCount / pageSize));
-	const pageButtons = buildPageButtons(uiPage, pageCount);
-
-	function goToPage(newPage: number) {
-		const params = new URLSearchParams(sp.toString());
-		params.set("page", String(newPage));
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
-	}
-
-	function changePageSize(newSize: string) {
-		const params = new URLSearchParams(sp.toString());
-		params.set("pageSize", newSize);
-		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
-	}
+	const { isPending, showMap } = useDiscoverNav();
 
 	return (
 		<div className="relative flex flex-col gap-4">
@@ -179,59 +144,7 @@ export function DiscoverResults({
 			)}
 
 			{/* Pagination header */}
-			<div className="flex flex-wrap items-center justify-between gap-2">
-				<span className="text-sm text-gray-600">{Math.max(0, totalCount)} Result(s)</span>
-				<div className="flex items-center gap-1">
-					<button
-						className="rounded border border-gray-300 px-2 py-1 text-sm disabled:opacity-40"
-						disabled={uiPage <= 1}
-						onClick={() => goToPage(uiPage - 1)}
-						type="button"
-					>
-						‹
-					</button>
-					{pageButtons.map((p, i) =>
-						p === "…" ? (
-							<span key={`ellipsis-${String(i)}`} className="px-1 text-sm text-gray-400">
-								…
-							</span>
-						) : (
-							<button
-								key={p}
-								className={[
-									"rounded border px-2 py-1 text-sm",
-									p === uiPage
-										? "border-(--color-arche-acc-dark-blue) bg-(--color-arche-acc-dark-blue) text-white"
-										: "border-gray-300 hover:bg-gray-50",
-								].join(" ")}
-								onClick={() => goToPage(p)}
-								type="button"
-							>
-								{p}
-							</button>
-						),
-					)}
-					<button
-						className="rounded border border-gray-300 px-2 py-1 text-sm disabled:opacity-40"
-						disabled={uiPage >= pageCount}
-						onClick={() => goToPage(uiPage + 1)}
-						type="button"
-					>
-						›
-					</button>
-					<select
-						className="ml-2 rounded border border-gray-300 px-2 py-1 text-sm"
-						onChange={(e) => changePageSize(e.target.value)}
-						value={String(pageSize)}
-					>
-						{["10", "20", "50"].map((s) => (
-							<option key={s} value={s}>
-								{s}
-							</option>
-						))}
-					</select>
-				</div>
-			</div>
+			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />
 
 			{/* Result cards */}
 			{results.length === 0 && (
@@ -245,6 +158,9 @@ export function DiscoverResults({
 					thumbnailBaseUrl={thumbnailBaseUrl}
 				/>
 			))}
+
+			{/* Pagination footer */}
+			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />
 		</div>
 	);
 }
