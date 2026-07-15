@@ -31,6 +31,7 @@ export async function generateMetadata(
 export default async function Discover(props: Readonly<DiscoverPageProps>): Promise<ReactNode> {
 	const { locale } = await props.params;
 	const sp = await props.searchParams;
+	const t = await getTranslations({ locale, namespace: "AppContent" });
 
 	setRequestLocale(locale);
 
@@ -75,8 +76,8 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 							{data?.facets ? (
 								<DiscoverFacets facets={data.facets} lang={lang} />
 							) : (
-								<div className="rounded border border-gray-200 p-4 text-sm text-gray-400">
-									Filters unavailable
+								<div className="rounded border border-red-200 p-4 text-sm text-red-400">
+									{ t("smartsearch.filters_unavailable")}
 								</div>
 							)}
 						</Suspense>
@@ -94,8 +95,8 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 									totalCount={data.totalCount}
 								/>
 							) : (
-								<div className="py-8 text-center text-sm text-gray-400">
-									No results available. Please check the API connection.
+								<div className="py-8 text-center  border-red-200 text-sm text-red-400">
+										{ t("smartsearch.no_results_available_please_check_the_api_connection")}
 								</div>
 							)}
 						</Suspense>

@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { Facet, FacetValue } from "@/lib/types/discover";
+import { useMessages, useTranslations } from "next-intl";
 
 interface DiscoverFacetsProps {
 	facets: Record<string, Facet>;
@@ -53,7 +54,8 @@ function FacetCard({
 	children: ReactNode;
 }) {
 	return (
-		<div className="rounded border border-gray-200 bg-white shadow-sm">
+		<div className="facet-card w-full rounded-[8px] ">
+			<div className="facet-card-header">
 			<button
 				className="flex w-full items-center justify-between px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
 				onClick={onToggle}
@@ -62,9 +64,10 @@ function FacetCard({
 			>
 				<span>{label}</span>
 				<span className="text-gray-400">{collapsed ? "▼" : "▲"}</span>
-			</button>
+				</button>
+				</div>
 			{!collapsed && (
-				<div className="border-t border-gray-100 px-3 py-3">
+				<div className="facet-card-content flex flex-col gap-2">
 					{children}
 				</div>
 			)}
@@ -131,7 +134,7 @@ function TagInput({
 				})}
 				<input
 					ref={inputRef}
-					className="min-w-20 flex-1 bg-transparent text-sm outline-none"
+					className="smartsearch-inside-input"
 					onBlur={() => setTimeout(() => setIsOpen(false), 150)}
 					onChange={(e) => setFilter(e.target.value)}
 					onFocus={() => setIsOpen(true)}
@@ -167,6 +170,18 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 	const { isPending, mapPolygon, navigate, setMapPolygon, setShowMap } = useDiscoverNav();
+
+	const t = useTranslations("AppContent");
+	const messages = useMessages();
+
+	function getFacetLabel(propKey: string, fallback: string): string {
+		const hashIndex = propKey.lastIndexOf("#");
+		const lookupKey = hashIndex !== -1 ? propKey.slice(hashIndex + 1) : propKey;
+		const labels = (messages?.AppContent as { smartsearch?: { facetLabels?: Record<string, string> } })
+			?.smartsearch?.facetLabels;
+		if (labels?.[lookupKey]) return t(`smartsearch.facetLabels.${lookupKey}`);
+		return fallback;
+	}
 
 	const [q, setQ] = useState(sp.get("q") ?? "");
 	const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -296,7 +311,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				</div>
 			)}
 			{/* Search input */}
-			<div className="flex gap-2">
+			<div className="flex">
 				<input
 					className="smartsearch-input"
 					onChange={(e) => setQ(e.target.value)}
@@ -308,7 +323,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					value={q}
 				/>
 				<button
-					className="rounded bg-(--color-arche-acc-dark-blue) px-3 py-2 text-white hover:opacity-90"
+					className="h-10 rounded-r-full bg-arche-acc-dark-blue px-6 text-white hover:bg-arche-acc-dark-blue-hover"
 					onClick={handleSearch}
 					type="button"
 				>
@@ -321,6 +336,8 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 			{/* Facet cards */}
 			{Object.entries(facets).map(([key, facet]) => {
+				console.log("KEY:");
+				console.log(key);
 				if (facet.type === "matchProperty" || facet.type === "linkProperty") return null;
 
 				if (facet.type === "map") {
@@ -328,7 +345,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 						<FacetCard
 							key={key}
 							collapsed={!!collapsed[key]}
-							label={facet.label}
+							label={getFacetLabel(key, facet.label)}
 							onToggle={() => toggleCollapse(key)}
 							tooltip={facet.tooltip?.[lang]}
 						>
@@ -362,7 +379,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 						<FacetCard
 							key={key}
 							collapsed={!!collapsed[key]}
-							label={facet.label}
+							label={getFacetLabel(key, facet.label)}
 							onToggle={() => toggleCollapse(key)}
 							tooltip={facet.tooltip?.[lang]}
 						>
@@ -405,7 +422,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					<FacetCard
 						key={key}
 						collapsed={!!collapsed[key]}
-						label={facet.label}
+						label={getFacetLabel(key, facet.label)}
 						onToggle={() => toggleCollapse(key)}
 						tooltip={facet.tooltip?.[lang]}
 					>
@@ -425,7 +442,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 			{/* Extended Search */}
 			<FacetCard
 				collapsed={!!collapsed["__extended"]}
-				label="Extended Search"
+				label={t("smartsearch.facetLabels.extended_search")}
 				onToggle={() => toggleCollapse("__extended")}
 			>
 				<div className="flex flex-col gap-2">
@@ -435,7 +452,8 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							onChange={() => toggleBoolParam("includeBinaries")}
 							type="checkbox"
 						/>
-						Search in file content
+						{t("smartsearch.search_in_file_content")}
+
 					</label>
 					<label className="flex cursor-pointer items-center gap-2 text-sm">
 						<input
@@ -443,7 +461,8 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							onChange={() => toggleBoolParam("linkNamedEntities")}
 							type="checkbox"
 						/>
-						Follow named entities
+						{t("smartsearch.follow_named_entitites")}
+
 					</label>
 				</div>
 			</FacetCard>
@@ -454,20 +473,23 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				onClick={handleReset}
 				type="button"
 			>
-				Reset filters
+				{t("smartsearch.reset_filters")}
+
 			</button>
 			<button
 				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
 				onClick={handleSearch}
 				type="button"
 			>
-				Search
+				{t("smartsearch.search")}
+
 			</button>
 			<button
 				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
 				type="button"
 			>
-				Add to CLARIN Virtual Collection
+				{t("smartsearch.add_to_clarin")}
+
 			</button>
 		</div>
 	);

@@ -20,6 +20,28 @@
 		"general": {
 			"loading": "Loading"
 		},
+		"smartsearch": {
+			"filters_unavailable": "Filters unavailable",
+			"no_results_available_please_check_the_api_connection": "No results available. Please check the API connection",
+			"add_to_clarin": "Add to CLARIN Virtual Collection",
+			"search": "Search",
+			"reset_filters": "Reset filters",
+			"follow_named_entitites": "Follow named entities",
+			"search_in_file_content": "Search in file content",
+
+			"facetLabels": {
+				"type": "Type",
+				"spatial": "Spatial Coverage",
+				"map": "Spatial Coverage",
+				"dateContent": "Temporal coverage",
+				"hasRelatedDiscipline": "Research Discipline",
+				"hasCategory": "Category",
+				"hasLicense": "License",
+				"hasAccessRestriction": "Acccess Restriction",
+				"extended_search": "Extended Search."
+
+			}
+		},
 		"metaview": {
 			"available_since": "Available since",
 			"basic_view": "Basic View",
