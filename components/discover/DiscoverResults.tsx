@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverMap } from "@/components/discover/DiscoverMap";
@@ -34,6 +35,20 @@ function getLangValue(data: Record<string, string>, lang: string): string {
 	return data[lang] ?? data["en"] ?? data["de"] ?? Object.values(data)[0] ?? "";
 }
 
+const ACCESS_KEYWORDS = ["public", "academic", "restricted"] as const;
+
+/* We need to display a nice colored div for the accessrestrictions */
+function getAccessClass(accessRestriction: string): string {
+	const lower = accessRestriction.toLowerCase();
+	const ordered = ACCESS_KEYWORDS
+		.map((k) => ({ key: k, index: lower.indexOf(k) }))
+		.filter(({ index }) => index !== -1)
+		.sort((a, b) => a.index - b.index)
+		.map(({ key }) => key);
+	if (ordered.length === 0) return "";
+	return `btn-toolbar btn-toolbar-${ordered.join("-")}`;
+}
+
 function buildPageButtons(current: number, total: number): Array<number | "…"> {
 	if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
 	const pages = new Set<number>();
@@ -49,6 +64,73 @@ function buildPageButtons(current: number, total: number): Array<number | "…">
 		if (cur !== undefined) result.push(cur);
 	}
 	return result;
+}
+
+interface ResultCardProps {
+	result: DiscoverResult;
+	lang: string;
+	thumbnailBaseUrl: string;
+}
+
+function ResultCard({ result, lang, thumbnailBaseUrl }: Readonly<ResultCardProps>) {
+	const [thumbOk, setThumbOk] = useState(!!thumbnailBaseUrl);
+	const title = getLangValue(result.title, lang);
+	const description = result.description ? getLangValue(result.description, lang) : "";
+	const classLabel = result.class[0] ? shortenUri(result.class[0]) : "";
+	const accessRestriction = result.accessRestrictionSummary
+		? getLangValue(result.accessRestrictionSummary, "en")
+		: "";
+	const accessSummary = result.accessRestrictionSummary
+		? getLangValue(result.accessRestrictionSummary, lang)
+		: "";
+	const thumbnailUrl = thumbnailBaseUrl
+		? `${thumbnailBaseUrl}/?width=120&height=120&id=${encodeURIComponent(result.url)}`
+		: "";
+
+	const accessClass = getAccessClass(accessRestriction);
+
+	return (
+		<div className="smartsearch-result-row">
+			<div className={thumbOk ? "w-[80%] min-w-0" : "w-full min-w-0"}>
+				<div className="flex items-start gap-1">
+					<span className="mt-0.5 shrink-0 font-bold text-(--color-arche-acc-dark-blue)">+</span>
+					<Link
+						className="smartsearch-list-title"
+						href={`/metadata/${String(result.id)}`}
+					>
+						{title}
+					</Link>
+				</div>
+				{description && (
+					<p className="mt-2 line-clamp-3 text-sm text-gray-600">{description}</p>
+				)}
+				<div className="mt-3 flex flex-wrap gap-2">
+					{classLabel && (
+						<span className="smartsearch-btn-toolbar-gray">
+							{classLabel}
+						</span>
+					)}
+					{accessSummary && (
+						<span className={accessClass}>
+							{accessSummary}
+						</span>
+					)}
+				</div>
+			</div>
+			{thumbOk && (
+				<div className="relative h-[100px] w-[20%] shrink-0 overflow-hidden rounded">
+					<Image
+						alt=""
+						className="smartsearch-list-image"
+						fill
+						onError={() => setThumbOk(false)}
+						src={thumbnailUrl}
+						unoptimized
+					/>
+				</div>
+			)}
+		</div>
+	);
 }
 
 export function DiscoverResults({
@@ -155,63 +237,14 @@ export function DiscoverResults({
 			{results.length === 0 && (
 				<p className="py-8 text-center text-sm text-gray-400">No results found.</p>
 			)}
-			{results.map((result) => {
-				const title = getLangValue(result.title, lang);
-				const description = result.description ? getLangValue(result.description, lang) : "";
-				const classLabel = result.class[0] ? shortenUri(result.class[0]) : "";
-				const accessSummary = result.accessRestrictionSummary
-					? getLangValue(result.accessRestrictionSummary, lang)
-					: "";
-				const thumbnailUrl = `${thumbnailBaseUrl}/?width=120&height=120&id=${encodeURIComponent(result.url)}`;
-
-				return (
-					<div
-						key={result.id}
-						className="flex gap-4 rounded border border-gray-200 bg-white p-4 shadow-sm"
-					>
-						<div className="min-w-0 flex-1">
-							<div className="flex items-start gap-1">
-								<span className="mt-0.5 shrink-0 font-bold text-(--color-arche-acc-dark-blue)">
-									+
-								</span>
-								<Link
-									className="font-medium text-(--color-arche-acc-dark-blue) hover:underline"
-									href={`/metadata/${String(result.id)}`}
-								>
-									{title}
-								</Link>
-							</div>
-							{description && (
-								<p className="mt-2 line-clamp-3 text-sm text-gray-600">{description}</p>
-							)}
-							<div className="mt-3 flex flex-wrap gap-2">
-								{classLabel && (
-									<span className="rounded bg-gray-700 px-2 py-0.5 text-xs text-white">
-										{classLabel}
-									</span>
-								)}
-								{accessSummary && (
-									<span className="rounded bg-green-600 px-2 py-0.5 text-xs text-white">
-										{accessSummary}
-									</span>
-								)}
-							</div>
-						</div>
-						<div className="relative h-[100px] w-[100px] shrink-0 overflow-hidden rounded bg-gray-100">
-							<Image
-								alt=""
-								className="object-cover"
-								fill
-								onError={(e) => {
-									(e.target as HTMLImageElement).style.display = "none";
-								}}
-								src={thumbnailUrl}
-								unoptimized
-							/>
-						</div>
-					</div>
-				);
-			})}
+			{results.map((result) => (
+				<ResultCard
+					key={result.id}
+					lang={lang}
+					result={result}
+					thumbnailBaseUrl={thumbnailBaseUrl}
+				/>
+			))}
 		</div>
 	);
 }

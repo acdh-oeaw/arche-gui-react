@@ -70,7 +70,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 	return (
 		<MainContent className="layout-grid content-start pb-20">
 			<DiscoverNavProvider>
-				<div className="flex w-full gap-6 p-6">
+				<div className="flex w-full gap-6 pt-6">
 					<section className="w-[30%] shrink-0">
 						<Suspense fallback={<ArcheLoader className="py-8" />}>
 							{data?.facets ? (
@@ -85,6 +85,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 					<section className="min-w-0 flex-1">
 						<Suspense fallback={<ArcheLoader className="py-8" />}>
 							{data ? (
+								<div className="flex gap-4 rounded border border-gray-200 bg-white p-4 shadow-sm">
 								<DiscoverResults
 									lang={lang}
 									mapGeoJson={mapGeoJson}
@@ -93,7 +94,8 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 									results={data.results}
 									thumbnailBaseUrl={thumbnailBaseUrl}
 									totalCount={data.totalCount}
-								/>
+									/>
+									</div>
 							) : (
 								<div className="py-8 text-center  border-red-200 text-sm text-red-400">
 										{ t("smartsearch.no_results_available_please_check_the_api_connection")}

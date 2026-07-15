@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { Facet, FacetValue } from "@/lib/types/discover";
-import { useMessages, useTranslations } from "next-intl";
+import { useLocale, useMessages, useTranslations } from "next-intl";
 
 interface DiscoverFacetsProps {
 	facets: Record<string, Facet>;
@@ -173,6 +173,8 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 	const t = useTranslations("AppContent");
 	const messages = useMessages();
+	const locale = useLocale();
+	const localeLang = locale.split("-")[0] ?? "en";
 
 	function getFacetLabel(propKey: string, fallback: string): string {
 		const hashIndex = propKey.lastIndexOf("#");
@@ -209,6 +211,16 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		}
 		return state;
 	});
+
+	// Sync preferredLang param when site locale changes
+	useEffect(() => {
+		const currentLang = sp.get("preferredLang");
+		if (currentLang !== localeLang) {
+			const params = new URLSearchParams(sp.toString());
+			params.set("preferredLang", localeLang);
+			router.replace(`${pathname}?${params.toString()}`);
+		}
+	}, [localeLang]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Sync all local state from URL (handles back/forward navigation)
 	useEffect(() => {

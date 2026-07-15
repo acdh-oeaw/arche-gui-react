@@ -53,6 +53,7 @@
 	--arche-acc-public-green: rgb(11, 101, 78);
 	--arche-acc-restricted-red: rgb(167, 17, 17);
 	--arche-acc-academic: rgb(138, 66, 0);
+	--arche-acc-dark-blue-smart-title: rgb(10, 106, 155);
 	--arche-acc-dark-blue-hover: rgb(10, 106, 155);
 	--arche-acc-light-cyan: rgb(136, 219, 223);
 }
@@ -482,6 +483,27 @@ a:hover .locale-link-text::before {
 	}
 }
 
+.smartsearch-result-row {
+	display: flex;
+	flex-direction: row;
+	gap: 16px;
+	align-items: center;
+	padding: 24px;
+	border-bottom: 1px solid #e1edf3;
+}
+
+.smartsearch-list-title {
+	color: var(--arche-acc-dark-blue-smart-title);
+	font-weight: 700;
+	font-size: 1.25rem;
+
+}
+
+.smartsearch-list-image {
+	object-fit: contain;
+	object-position: center;
+}
+
 .smartsearch-input {
 	width: 100%;
 	height: 2.5rem;
@@ -493,6 +515,19 @@ a:hover .locale-link-text::before {
 	line-height: 1.75rem;
 	border-start-start-radius: 9999px;
 	border-end-start-radius: 9999px;
+}
+
+.smartsearch-btn-toolbar-gray {
+	height: fit-content;
+	padding: 4px 8px;
+	border-radius: 12px;
+	background-color: #585658;
+	color: #fff;
+	font-weight: 700;
+	font-style: normal;
+	font-size: 12px;
+	line-height: 16px;
+	text-align: center;
 }
 
 .smartsearch-inside-input {
@@ -523,6 +558,83 @@ width: 100%;
 
 .smartsearch-input:focus {
 	outline: none;
+}
+
+.btn-toolbar {
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 12px;
+  font-family: Lato, Roboto, Helvetica, sans-serif !important;
+  line-height: 16px;
+  text-align: center;
+}
+
+.btn-toolbar-public {
+  background-color: #0B654E;
+  color: #fff;
+}
+
+.btn-toolbar-academic {
+  background-color: #8A4200;
+  color: #fff;
+}
+
+.btn-toolbar-restricted {
+  background-color: #A71111;
+  color: #fff;
+}
+
+.btn-toolbar-public-academic {
+  background: #0b654e;
+  background: linear-gradient(90deg, #0B654E 20%, #8A4200 80%);
+  color: #fff;
+}
+
+.btn-toolbar-academic-public {
+  background: #ff9f43;
+  background: linear-gradient(90deg, #8A4200 20%, #0B654E 80%);
+  color: #fff;
+}
+
+.btn-toolbar-public-restricted {
+  background: #0b654e;
+  background: linear-gradient(90deg, #0B654E 20%, #A71111 80%);
+  color: #fff;
+}
+
+.btn-toolbar-restricted-public {
+  background: #ee5253;
+  background: linear-gradient(90deg, #A71111 20%, #0B654E 80%);
+  color: #fff;
+}
+
+.btn-toolbar-academic-restricted {
+  background: #ff9f43;
+  background: linear-gradient(90deg, #ff9f43 0%, #ee5253 100%);
+  color: #fff;
+}
+
+.btn-toolbar-restricted-academic {
+  background: #ee5253;
+  background: linear-gradient(90deg, #A71111 20%, #8A4200 80%);
+  color: #fff;
+}
+
+.btn-toolbar-green, .btn-toolbar-green.no-btn:hover {
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: #58BCC1;
+  color: #fff;
+}
+
+.btn-toolbar-public-academic-restricted {
+  background: rgb(11 101 78);
+  background: linear-gradient(90deg, rgb(11 101 78) 0%, rgb(138 66 0) 50%, rgb(167 17 17) 100%);
+  color: rgb(255 255 255);
 }
 
 .background-image-div,
