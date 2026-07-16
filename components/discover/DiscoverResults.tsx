@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverMap } from "@/components/discover/DiscoverMap";
@@ -50,13 +51,42 @@ function getAccessClass(accessRestriction: string): string {
 }
 
 
+interface SearchInPanelProps {
+	searchInIds: string[];
+	titleMap: Map<string, string>;
+	onRemove: (id: string) => void;
+}
+
+function SearchInPanel({ searchInIds, titleMap, onRemove }: Readonly<SearchInPanelProps>) {
+	if (searchInIds.length === 0) return null;
+	return (
+		<div className="smartsearch-searchin-panel">
+			<span className="smartsearch-searchin-label">Searching within:</span>
+			{searchInIds.map((id) => (
+				<span key={id} className="smartsearch-searchin-chip">
+					{titleMap.get(id) ?? id}
+					<button
+						className="smartsearch-searchin-remove"
+						onClick={() => onRemove(id)}
+						type="button"
+					>
+						×
+					</button>
+				</span>
+			))}
+		</div>
+	);
+}
+
 interface ResultCardProps {
 	result: DiscoverResult;
 	lang: string;
 	thumbnailBaseUrl: string;
+	isSearchedIn: boolean;
+	onToggleSearchIn: () => void;
 }
 
-function ResultCard({ result, lang, thumbnailBaseUrl }: Readonly<ResultCardProps>) {
+function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSearchIn }: Readonly<ResultCardProps>) {
 	const [thumbOk, setThumbOk] = useState(!!thumbnailBaseUrl);
 	const title = getLangValue(result.title, lang);
 	const description = result.description ? getLangValue(result.description, lang) : "";
@@ -78,7 +108,14 @@ function ResultCard({ result, lang, thumbnailBaseUrl }: Readonly<ResultCardProps
 		<div className="smartsearch-result-row">
 			<div className={thumbOk ? "w-[80%] min-w-0" : "w-full min-w-0"}>
 				<div className="flex items-start gap-1">
-					<span className="mt-0.5 shrink-0 font-bold text-(--color-arche-acc-dark-blue)">+</span>
+					<button
+						className={`search-in-btn${isSearchedIn ? " search-in-btn--active" : ""}`}
+						onClick={onToggleSearchIn}
+						title={isSearchedIn ? "Remove from search scope" : "Search within this resource"}
+						type="button"
+					>
+						{isSearchedIn ? "−" : "+"}
+					</button>
 					<Link
 						className="smartsearch-list-title"
 						href={`/metadata/${String(result.id)}`}
@@ -127,10 +164,54 @@ export function DiscoverResults({
 	thumbnailBaseUrl,
 	totalCount,
 }: DiscoverResultsProps) {
-	const { isPending, showMap } = useDiscoverNav();
+	const sp = useSearchParams();
+	const router = useRouter();
+	const pathname = usePathname();
+	const { isPending, showMap, navigate } = useDiscoverNav();
+
+	const searchInIds = sp.getAll("searchIn[]");
+	const searchInSet = new Set(searchInIds);
+	const titleMap = new Map(results.map((r) => [String(r.id), getLangValue(r.title, lang)]));
+
+	function buildCleanParams(): URLSearchParams {
+		const params = new URLSearchParams();
+		params.set("q", "");
+		params.set("preferredLang", sp.get("preferredLang") ?? "en");
+		params.set("includeBinaries", "0");
+		params.set("linkNamedEntities", "1");
+		params.set("page", "1");
+		params.set("pageSize", String(pageSize));
+		params.set("noCache", "0");
+		return params;
+	}
+
+	function toggleSearchIn(id: number) {
+		const idStr = String(id);
+		if (searchInSet.has(idStr)) {
+			// Remove: keep existing params, just drop this ID
+			const params = new URLSearchParams(sp.toString());
+			params.delete("searchIn[]");
+			for (const v of searchInIds.filter((v) => v !== idStr)) params.append("searchIn[]", v);
+			params.set("page", "1");
+			navigate(() => router.push(`${pathname}?${params.toString()}`));
+		} else {
+			// Add: reset URL to clean format with only this resource
+			const params = buildCleanParams();
+			params.append("searchIn[]", idStr);
+			navigate(() => router.push(`${pathname}?${params.toString()}`));
+		}
+	}
+
+	function removeSearchIn(id: string) {
+		const params = new URLSearchParams(sp.toString());
+		params.delete("searchIn[]");
+		for (const v of searchInIds.filter((v) => v !== id)) params.append("searchIn[]", v);
+		params.set("page", "1");
+		navigate(() => router.push(`${pathname}?${params.toString()}`));
+	}
 
 	return (
-		<div className="relative flex flex-col gap-4">
+		<div className="w-full relative flex flex-col gap-4">
 			{/* Spatial coverage map */}
 			{showMap && mapGeoJson && <DiscoverMap geoJson={mapGeoJson} />}
 
@@ -143,17 +224,24 @@ export function DiscoverResults({
 				</div>
 			)}
 
+			{/* SearchIn scope indicator */}
+			<SearchInPanel searchInIds={searchInIds} titleMap={titleMap} onRemove={removeSearchIn} />
+
 			{/* Pagination header */}
 			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />
 
 			{/* Result cards */}
 			{results.length === 0 && (
-				<p className="py-8 text-center text-sm text-gray-400">No results found.</p>
+				<div className="w-full">
+					<p className="py-8 text-center text-sm text-gray-400">No results found.</p>
+					</div>
 			)}
 			{results.map((result) => (
 				<ResultCard
 					key={result.id}
+					isSearchedIn={searchInSet.has(String(result.id))}
 					lang={lang}
+					onToggleSearchIn={() => toggleSearchIn(result.id)}
 					result={result}
 					thumbnailBaseUrl={thumbnailBaseUrl}
 				/>

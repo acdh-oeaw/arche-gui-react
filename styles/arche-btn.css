@@ -124,3 +124,22 @@ a.btn-arche-blue:hover {
 	text-decoration: none;
 }
 
+.search-in-btn {
+	width: 26px;
+	height: 26px;
+	margin-right: 10px;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: var(--color-arche-acc-dark-blue);
+	color: white;
+	font-weight: 700;
+	font-style: normal;
+	font-size: 12px;
+	line-height: 16px;
+	text-align: center;
+}
+
+.search-in-btn:hover {
+	background-color: var(--arche-acc-dark-blue-hover);
+
+}
