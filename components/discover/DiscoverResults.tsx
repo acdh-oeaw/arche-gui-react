@@ -14,6 +14,7 @@ import type { DiscoverResult } from "@/lib/types/discover";
 interface DiscoverResultsProps {
 	lang: string;
 	mapGeoJson: string | null;
+	messages: string | unknown[];
 	page: number; // 0-based from API
 	pageSize: number;
 	results: DiscoverResult[];
@@ -158,6 +159,7 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 export function DiscoverResults({
 	lang,
 	mapGeoJson,
+	messages,
 	page,
 	pageSize,
 	results,
@@ -210,6 +212,7 @@ export function DiscoverResults({
 		navigate(() => router.push(`${pathname}?${params.toString()}`));
 	}
 
+
 	return (
 		<div className="w-full relative flex flex-col gap-4">
 			{/* Spatial coverage map */}
@@ -231,11 +234,24 @@ export function DiscoverResults({
 			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />
 
 			{/* Result cards */}
-			{results.length === 0 && (
-				<div className="w-full">
-					<p className="py-8 text-center text-sm text-gray-400">No results found.</p>
+			{results.length === 0 && (() => {
+				const msg = typeof messages === "string"
+					? messages
+					: Array.isArray(messages) && messages.length > 0
+						? messages.map((m) => String(m)).join(" ")
+						: "";
+				return (
+					<div className="w-full">
+						{msg
+							? <div
+									className="p-5 m-5 bg-amber-400"
+									dangerouslySetInnerHTML={{ __html: msg }}
+								/>
+							: <p className="p-5 m-5 bg-amber-400 text-center text-sm text-gray-400">No results found.</p>
+						}
 					</div>
-			)}
+				);
+			})()}
 			{results.map((result) => (
 				<ResultCard
 					key={result.id}

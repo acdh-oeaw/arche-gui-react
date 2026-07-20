@@ -20,6 +20,56 @@
 		"general": {
 			"loading": "Loading"
 		},
+		"staticHeaders" : {
+			"deposition-process": {
+				"title": "Deposit Resources",
+				"description": "Learn more about data submission"
+			},
+			"deposition-agreement": {
+				"title": "Deposition Agreement",
+				"description": "Read the terms of our deposition agreement before submitting resources."
+			},
+			"faq": {
+				"title": "FAQ",
+				"description": "Frequently asked questions about depositing and accessing resources."
+			},
+			"filenames-formats": {
+				"title": "Filenames, Formats, and Metadata",
+				"description": "Prepare data correctly"
+			},
+			"further-guidance": {
+				"title": "Further Guidance",
+				"description": "For consolidation"
+			},
+			"technical-setup": {
+				"title": "Technical Setup",
+				"description": "Software components, client libraries, dissemination services and storage procedures"
+			},
+			"api-access": {
+				"title": "API Access",
+				"description": "Interfaces for programmatic search and query of ARCHE data"
+			},
+			"collection-policy": {
+				"title": "Collection Policy",
+				"description": "Scope of collections, evaluation, and storage duration"
+			},
+			"preservation-policy": {
+				"title": "Preservation Policy",
+				"description": "Archiving, maintenance and risk management"
+			},
+			"privacy-policy": {
+				"title": "Privacy Policy",
+				"description": "Protective measures for personal data"
+			},
+			"terms-of-use": {
+				"title": "Terms of Use",
+				"description": "Conditions for the deposit, access, and use of data"
+			},
+			"about-arche": {
+				"title": "About ARCHE",
+				"description": "Learn more about our services"
+			}
+		},
 		"smartsearch": {
 			"filters_unavailable": "Filters unavailable",
 			"no_results_available_please_check_the_api_connection": "No results available. Please check the API connection",

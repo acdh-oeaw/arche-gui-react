@@ -20,6 +20,56 @@
 		"general": {
 			"loading": "Laden"
 		},
+		"staticHeaders" : {
+			"deposition-process": {
+				"title": "Ressourcen einreichen",
+				"description": "Erfahren Sie mehr über die Dateneinreichung"
+			},
+			"deposition-agreement": {
+				"title": "Datenübergabevertrag",
+				"description": "Rechtliche Vereinbarung zwischen ARCHE und Datengebenden"
+			},
+			"faq": {
+				"title": "FAQ",
+				"description": "Antworten auf häufig gestellte Fragen und Praxishinweise für Datengebende"
+			},
+			"filenames-formats": {
+				"title": "Dateinamen, Formate und Metadaten",
+				"description": "Daten richtig vorbereiten"
+			},
+			"further-guidance": {
+				"title": "Weiterführende Informationen",
+				"description": "Zur Vertiefung"
+			},
+			"technical-setup": {
+				"title": "Technischer Aufbau (Nur EN)",
+				"description": "Softwarekomponenten, Client-Bibliotheken, Verbreitungsservices und Speicherverfahren"
+			},
+			"api-access": {
+				"title": "API-Zugriff (Nur EN)",
+				"description": "Schnittstellen für die programmgesteuerte Suche und Abfrage der ARCHE-Daten"
+			},
+			"collection-policy": {
+				"title": "Sammlungsstrategie",
+				"description": "Sammlungsbereich, Evaluation und Speicherdauer"
+			},
+			"preservation-policy": {
+				"title": "Konservierungsrichtlinien",
+				"description": "Archivierung, Wartung und Risikomanagement"
+			},
+			"privacy-policy": {
+				"title": "Datenschutzbestimmungen",
+				"description": "Schutzmaßnahmen für personenbezogene Daten"
+			},
+			"terms-of-use": {
+				"title": "Nutzungsbedingungen (nur EN)",
+				"description": "Bedingungen für die Hinterlegung, den Zugang und die Verwendung von Daten"
+			},
+			"about-arche": {
+				"title": "Über ARCHE",
+				"description": "Erfahren Sie mehr über unsere Services"
+			}
+		},
 		"smartsearch": {
 			"filters_unavailable": "Filters unavailable",
 			"no_results_available_please_check_the_api_connection": "No results available. Please check the API connection",

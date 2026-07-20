@@ -89,6 +89,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 								<DiscoverResults
 									lang={lang}
 									mapGeoJson={mapGeoJson}
+									messages={data.messages}
 									page={data.page}
 									pageSize={data.pageSize}
 									results={data.results}

@@ -134,8 +134,7 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 		? activeKey
 		: visibleTabs[0]?.key ?? null;
 
-	console.log("visible tabs");
-	console.log(visibleTabs);
+
 
 	if (visibleTabs.length === 0) { return null;  }
 

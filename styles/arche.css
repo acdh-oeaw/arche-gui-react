@@ -513,8 +513,8 @@ a:hover .locale-link-text::before {
 	border-radius: 4px;
 	background-color: rgb(13 71 161);
 	color: rgb(255 255 255);
-	font-size: 1.125rem;
 	font-weight: 700;
+	font-size: 1.125rem;
 	line-height: 1;
 	cursor: pointer;
 }
@@ -524,7 +524,7 @@ a:hover .locale-link-text::before {
 }
 
 .search-in-btn:hover {
-	opacity: 0.85;
+	opacity: 85%;
 }
 
 .smartsearch-searchin-panel {
@@ -540,8 +540,8 @@ a:hover .locale-link-text::before {
 
 .smartsearch-searchin-label {
 	color: rgb(11 101 78);
-	font-size: 0.875rem;
 	font-weight: 600;
+	font-size: 0.875rem;
 }
 
 .smartsearch-searchin-chip {
@@ -891,7 +891,7 @@ details p {
 }
 
 .facet-card-content {
-	padding: 12px;
+	padding: 10px 24px;
 	border-radius: 0 0 8px 8px;
 }
 

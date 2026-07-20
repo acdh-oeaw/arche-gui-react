@@ -57,12 +57,12 @@ function FacetCard({
 		<div className="facet-card w-full rounded-[8px] ">
 			<div className="facet-card-header">
 			<button
-				className="flex w-full items-center justify-between px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+				className="flex w-full items-center justify-between  text-sm font-bold text-gray-700  hover:bg-gray-50"
 				onClick={onToggle}
 				title={tooltip}
 				type="button"
 			>
-				<span>{label}</span>
+				<span className="!font-bold">{label}</span>
 				<span className="text-gray-400">{collapsed ? "▼" : "▲"}</span>
 				</button>
 				</div>
@@ -189,8 +189,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 	const [localFacets, setLocalFacets] = useState<Record<string, string[]>>(() => {
 		const init: Record<string, string[]> = {};
-		for (const key of Object.keys(facets)) {
-			const vals = sp.getAll(`facets[${key}][]`);
+		for (const [key, facet] of Object.entries(facets)) {
+			const propKey = facet.property || key;
+			const vals = sp.getAll(`facets[${propKey}][]`);
 			if (vals.length > 0) init[key] = vals;
 		}
 		return init;
@@ -203,9 +204,10 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		const state: Record<string, { min: string; max: string }> = {};
 		for (const [key, facet] of Object.entries(facets)) {
 			if (facet.type === "continuous") {
+				const propKey = facet.property || key;
 				state[key] = {
-					max: sp.get(`facets[${key}][max]`) ?? "",
-					min: sp.get(`facets[${key}][min]`) ?? "",
+					max: sp.get(`facets[${propKey}][max]`) ?? "",
+					min: sp.get(`facets[${propKey}][min]`) ?? "",
 				};
 			}
 		}
@@ -226,8 +228,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	useEffect(() => {
 		setQ(sp.get("q") ?? "");
 		const synced: Record<string, string[]> = {};
-		for (const key of Object.keys(facets)) {
-			const vals = sp.getAll(`facets[${key}][]`);
+		for (const [key, facet] of Object.entries(facets)) {
+			const propKey = facet.property || key;
+			const vals = sp.getAll(`facets[${propKey}][]`);
 			if (vals.length > 0) synced[key] = vals;
 		}
 		setLocalFacets(synced);
@@ -237,9 +240,10 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		const contState: Record<string, { min: string; max: string }> = {};
 		for (const [key, facet] of Object.entries(facets)) {
 			if (facet.type === "continuous") {
+				const propKey = facet.property || key;
 				contState[key] = {
-					max: sp.get(`facets[${key}][max]`) ?? "",
-					min: sp.get(`facets[${key}][min]`) ?? "",
+					max: sp.get(`facets[${propKey}][max]`) ?? "",
+					min: sp.get(`facets[${propKey}][min]`) ?? "",
 				};
 			}
 		}
@@ -276,13 +280,15 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 			if (key.startsWith("facets[")) params.delete(key);
 		}
 		for (const [prop, values] of Object.entries(localFacets)) {
-			for (const v of values) params.append(`facets[${prop}][]`, v);
+			const propKey = facets[prop]?.property || prop;
+			for (const v of values) params.append(`facets[${propKey}][]`, v);
 		}
 		for (const [prop, vals] of Object.entries(continuousState)) {
-			if (vals.min) params.set(`facets[${prop}][min]`, vals.min);
-			else params.delete(`facets[${prop}][min]`);
-			if (vals.max) params.set(`facets[${prop}][max]`, vals.max);
-			else params.delete(`facets[${prop}][max]`);
+			const propKey = facets[prop]?.property || prop;
+			if (vals.min) params.set(`facets[${propKey}][min]`, vals.min);
+			else params.delete(`facets[${propKey}][min]`);
+			if (vals.max) params.set(`facets[${propKey}][max]`, vals.max);
+			else params.delete(`facets[${propKey}][max]`);
 		}
 		if (mapPolygon) params.set("facets[map]", mapPolygon);
 		else params.delete("facets[map]");
@@ -348,8 +354,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 			{/* Facet cards */}
 			{Object.entries(facets).map(([key, facet]) => {
-				console.log("KEY:");
-				console.log(key);
+
 				if (facet.type === "matchProperty" || facet.type === "linkProperty") return null;
 
 				if (facet.type === "map") {
