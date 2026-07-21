@@ -1,49 +1,101 @@
+
+.btn {
+	display: inline-block;
+	vertical-align: middle;
+	padding: 0.375rem 0.75rem;
+	border: 1px solid transparent;
+	border-radius: 0.375rem;
+	background-color: transparent;
+	color: inherit;
+	font-weight: 400;
+	font-size: 1rem;
+	font-family: inherit;
+	line-height: 1.5;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	user-select: none;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+
+.btn-toolbar {
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 12px;
+  font-family: Lato, Roboto, Helvetica, sans-serif !important;
+  line-height: 16px;
+  text-align: center;
+}
+
 .btn-toolbar-public {
-	background-color: rgb(29 209 161 / 100%);
-	color: rgb(255 255 255 / 100%);
+  background-color: rgb(11 101 78);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-academic {
-	background-color: rgb(255 159 67 / 100%);
-	color: rgb(255 255 255 / 100%);
+  background-color: rgb(138 66 0);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-restricted {
-	background-color: rgb(238 82 83 / 100%);
-	color: rgb(255 255 255 / 100%);
+  background-color: rgb(167 17 17);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-public-academic {
-	background: rgb(29 209 161 / 100%);
-	background: linear-gradient(90deg, rgb(29 209 161 / 100%) 0%, rgb(255 159 67 / 100%) 100%);
-	color: rgb(255 255 255 / 100%);
+  background: rgb(11 101 78);
+  background: linear-gradient(90deg, rgb(11 101 78) 20%, rgb(138 66 0) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-academic-public {
-	background: rgb(255 159 67 / 100%);
-	background: linear-gradient(90deg, rgb(255 159 67 / 100%) 0%, rgb(29 209 161 / 100%) 100%);
-	color: rgb(255 255 255 / 100%);
+  background: rgb(138 66 0);
+  background: linear-gradient(90deg, rgb(138 66 0) 20%, rgb(11 101 78) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-public-restricted {
-	background: linear-gradient(90deg, rgb(29 209 161 / 100%) 0%, rgb(238 82 83 / 100%) 100%);
-	color: rgb(255 255 255 / 100%);
+  background: rgb(11 101 78);
+  background: linear-gradient(90deg, rgb(11 101 78) 20%, rgb(167 17 17) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-restricted-public {
-	background: linear-gradient(90deg, rgb(238 82 83 / 100%) 0%, rgb(29 209 161 / 100%) 100%);
-	color: rgb(255 255 255 / 100%);
+  background: rgb(167 17 17);
+  background: linear-gradient(90deg, rgb(167 17 17) 20%, rgb(11 101 78) 80%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-academic-restricted {
-	background: linear-gradient(90deg, rgb(255 159 67 / 100%) 0%, rgb(238 82 83 / 100%) 100%);
-	color: rgb(255 255 255 / 100%);
+  background: rgb(138 66 0);
+  background: linear-gradient(90deg, rgb(138 66 0) 0%, rgb(167 17 17) 100%);
+  color: rgb(255 255 255);
 }
 
 .btn-toolbar-restricted-academic {
-	background: linear-gradient(90deg, rgb(238 82 83 / 100%) 0%, rgb(255 159 67 / 100%) 100%);
-	color: rgb(255 255 255 / 100%);
+  background: rgb(167 17 17);
+  background: linear-gradient(90deg, rgb(167 17 17) 20%, rgb(138 66 0) 80%);
+  color: rgb(255 255 255);
 }
+
+.btn-toolbar-green, .btn-toolbar-green.no-btn:hover {
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background: rgb(88 188 193);
+  color: rgb(255 255 255);
+}
+
+.btn-toolbar-public-academic-restricted {
+  background: rgb(11 101 78);
+  background: linear-gradient(90deg, rgb(11 101 78) 0%, rgb(138 66 0) 50%, rgb(167 17 17) 100%);
+  color: rgb(255 255 255);
+}
+
 
 .btn-arche-blue {
 	gap: 8px;
@@ -131,7 +183,7 @@ a.btn-arche-blue:hover {
 	padding: 5px;
 	border-radius: 5px;
 	background-color: var(--color-arche-acc-dark-blue);
-	color: white;
+	color: rgb(255 255 255);
 	font-weight: 700;
 	font-style: normal;
 	font-size: 12px;
@@ -142,4 +194,10 @@ a.btn-arche-blue:hover {
 .search-in-btn:hover {
 	background-color: var(--arche-acc-dark-blue-hover);
 
+}
+
+.hero-search-button {
+	border-top-right-radius: 50px;
+	border-bottom-right-radius: 50px;
+	background-color: rgb(0 84 128);
 }

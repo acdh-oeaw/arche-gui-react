@@ -128,14 +128,15 @@ export function AppFooter(): ReactNode {
 						<p className="mb-4">{t("menu.helpdesk.items.description")}</p>
 
 						<p className="mb-2 font-bold">{t("menu.helpdesk.items.browse_website")}</p>
-						<form action="/browser/search/node" className="flex" method="get">
+						<form action="/browser/search/node" className="flex" method="get" id="search-block-form">
+							<div className="flex w-full input-group">
 							<input
-								className="w-full rounded-l-md bg-white p-2 text-black"
+								className="w-full bg-white  text-black hero-search-field"
 								name="keys"
 								placeholder={t("menu.helpdesk.items.search")}
 								type="search"
 							/>
-							<button className="btn btn-arche-blue" type="submit">
+							<button className="btn hero-search-button" type="submit">
 								<Image
 									alt="Search"
 									className="h-4 w-4"
@@ -143,7 +144,8 @@ export function AppFooter(): ReactNode {
 									src="/browser/images/common/search_icon.svg"
 									width="32"
 								/>
-							</button>
+								</button>
+								</div>
 						</form>
 
 						<ul className="mt-4 space-y-1">
@@ -160,7 +162,7 @@ export function AppFooter(): ReactNode {
 						© Copyright OEAW |
 						<Link
 							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
-							href="/browser/imprint"
+							href="/imprint"
 						>
 							Imprint
 						</Link>

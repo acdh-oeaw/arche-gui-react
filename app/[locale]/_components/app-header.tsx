@@ -6,6 +6,7 @@ import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Image } from "@/components/image";
 import { createHref } from "@/lib/navigation/create-href";
 import type { NavigationItem } from "@/lib/navigation/navigation";
+import { Link } from "@/components/link";
 
 export function AppHeader(): ReactNode {
 	const t = useTranslations("AppHeader");
@@ -128,7 +129,7 @@ export function AppHeader(): ReactNode {
 				<div className="pointer-events-none absolute -bottom-4 left-[18%] hidden md:block">
 					<Image
 						alt="Dante PC illustration"
-						className="h-48 w-auto"
+						className="w-auto"
 						height="100"
 						src="/browser/images/common/dante_pc.svg"
 						width="100"
@@ -178,16 +179,24 @@ export function AppHeader(): ReactNode {
 				</form>
 
 				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
-					<img
-						alt="Core Trust Seal"
-						className="h-8 w-auto"
-						src="/browser/images/partner-logos/core_trust_seal_64.png"
-					/>
-					<img
-						alt="CLARIN B-centre"
-						className="h-8 w-auto"
-						src="/browser/images/partner-logos/clarin_b_centre_72.png"
-					/>
+					<Link href="https://doi.org/10.34894/SNEQ7T">
+															<Image
+																alt="Core Trust Seal"
+																className="h-8 w-auto"
+																height="64"
+																src="/browser/images/partner-logos/core_trust_seal_64.png"
+																width="64"
+																/>
+															</Link>
+															<Link href="https://doi.org/10.34733/doc-105">
+															<Image
+																alt="CLARIN B-centre"
+																className="h-8 w-auto"
+																height="72"
+																src="/browser/images/partner-logos/clarin_b_centre_72.png"
+																width="72"
+																/>
+																</Link>
 				</div>
 			</div>
 		</header>

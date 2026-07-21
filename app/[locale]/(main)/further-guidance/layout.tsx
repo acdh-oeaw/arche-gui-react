@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
-import { AppHeaderStatic } from "@/app/[locale]/_components/static-headers/app-header-static";
+import { AppHeaderStatic } from "@/app/[locale]/_components/app-header-static";
 import type { IntlLocale } from "@/lib/i18n/locales";
 
 interface DepositionProcessLayoutProps {

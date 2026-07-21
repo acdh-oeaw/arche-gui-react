@@ -6,14 +6,9 @@ import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Image } from "@/components/image";
 import { createHref } from "@/lib/navigation/create-href";
 import type { NavigationItem } from "@/lib/navigation/navigation";
+import { Link } from "@/components/link";
 
-interface AppHeaderStaticProps {
-	title: string;
-	description: string;
-	pdfUrl?: string;
-}
-
-export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHeaderStaticProps>): ReactNode {
+export function AppHeaderDiscover(): ReactNode {
 	const t = useTranslations("AppHeader");
 
 	const label = t("navigation.label");
@@ -134,33 +129,31 @@ export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHead
 
 
 				<div className="max-w-3xl space-y-2">
-					<h1 className="section-header-title">{title}</h1>
-					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
-					{pdfUrl && (
-						<a
-							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2 text-sm text-white hover:opacity-90"
-							href={pdfUrl}
-							rel="noopener noreferrer"
-							target="_blank"
-						>
-							PDF
-						</a>
-					)}
+					<h1 className="section-header-title">{t("navigation.hero.title")}</h1>
+					<p className="text-lg text-text-weak sm:text-xl">{t("navigation.hero.subtitle")}</p>
 				</div>
 
 
 
 				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
-					<img
+					<Link href="https://doi.org/10.34894/SNEQ7T">
+					<Image
 						alt="Core Trust Seal"
 						className="h-8 w-auto"
+						height="64"
 						src="/browser/images/partner-logos/core_trust_seal_64.png"
-					/>
-					<img
+						width="64"
+						/>
+					</Link>
+					<Link href="https://doi.org/10.34733/doc-105">
+					<Image
 						alt="CLARIN B-centre"
 						className="h-8 w-auto"
+						height="72"
 						src="/browser/images/partner-logos/clarin_b_centre_72.png"
-					/>
+						width="72"
+						/>
+						</Link>
 				</div>
 			</div>
 		</header>

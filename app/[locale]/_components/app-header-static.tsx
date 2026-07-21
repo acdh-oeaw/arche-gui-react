@@ -6,8 +6,15 @@ import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Image } from "@/components/image";
 import { createHref } from "@/lib/navigation/create-href";
 import type { NavigationItem } from "@/lib/navigation/navigation";
+import { Link } from "@/components/link";
 
-export function AppHeaderDiscover(): ReactNode {
+interface AppHeaderStaticProps {
+	title: string;
+	description: string;
+	pdfUrl?: string;
+}
+
+export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHeaderStaticProps>): ReactNode {
 	const t = useTranslations("AppHeader");
 
 	const label = t("navigation.label");
@@ -109,7 +116,7 @@ export function AppHeaderDiscover(): ReactNode {
 
 	return (
 		// eslint-disable-next-line tailwindcss/no-custom-classname
-		<header className="background-image-front-div front-header-div w-full border-b border-stroke-weak bg-arche-acc-light-blue">
+		<header className="background-image-front-div front-header-div flex w-full flex-col border-b border-stroke-weak bg-arche-acc-light-blue" style={{ height: "306px" }}>
 			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile
@@ -124,27 +131,53 @@ export function AppHeaderDiscover(): ReactNode {
 					<LocaleSwitcher />
 				</div>
 			</div>
-			<div className="relative flex w-full flex-col items-center gap-y-6 px-4 pt-6 pb-10 text-center">
-
-
-				<div className="max-w-3xl space-y-2">
-					<h1 className="section-header-title">{t("navigation.hero.title")}</h1>
-					<p className="text-lg text-text-weak sm:text-xl">{t("navigation.hero.subtitle")}</p>
+			<div className="relative flex flex-1 w-full flex-col items-center justify-end gap-y-6 px-4 pb-10 text-center">
+				<div className="pointer-events-none absolute -bottom-1 left-[18%] hidden md:block">
+					<Image
+						alt="Dante sitting illustration"
+						className=" w-auto"
+						height="100"
+						src="/browser/images/common/Dante_sit_pc.svg"
+						width="100"
+					/>
 				</div>
 
 
+				<div className="max-w-3xl space-y-2">
+					<h1 className="section-header-title">{title}</h1>
+					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
+					{pdfUrl && (
+						<a
+							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2 text-sm text-white hover:opacity-90"
+							href={pdfUrl}
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							PDF
+						</a>
+					)}
+
 
 				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
-					<img
-						alt="Core Trust Seal"
-						className="h-8 w-auto"
-						src="/browser/images/partner-logos/core_trust_seal_64.png"
-					/>
-					<img
-						alt="CLARIN B-centre"
-						className="h-8 w-auto"
-						src="/browser/images/partner-logos/clarin_b_centre_72.png"
-					/>
+					<Link href="https://doi.org/10.34894/SNEQ7T">
+										<Image
+											alt="Core Trust Seal"
+											className="h-8 w-auto"
+											height="64"
+											src="/browser/images/partner-logos/core_trust_seal_64.png"
+											width="64"
+											/>
+										</Link>
+										<Link href="https://doi.org/10.34733/doc-105">
+										<Image
+											alt="CLARIN B-centre"
+											className="h-8 w-auto"
+											height="72"
+											src="/browser/images/partner-logos/clarin_b_centre_72.png"
+											width="72"
+											/>
+											</Link>
+				</div>
 				</div>
 			</div>
 		</header>

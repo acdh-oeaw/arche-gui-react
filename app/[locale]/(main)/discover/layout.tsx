@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { AppHeaderDiscover} from "@/app/[locale]/_components/static-headers/app-header-discover";
+import { AppHeaderDiscover} from "@/app/[locale]/_components/app-header-discover";
 
 interface DiscoverLayoutProps {
 	children: ReactNode;
