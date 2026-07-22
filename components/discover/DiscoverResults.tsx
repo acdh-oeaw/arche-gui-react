@@ -9,7 +9,7 @@ import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverMap } from "@/components/discover/DiscoverMap";
 import { DiscoverResultPagers } from "@/components/discover/DiscoverResultPagers";
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import type { DiscoverResult } from "@/lib/types/discover";
+import type { DiscoverResult, DiscoverResultParent } from "@/lib/types/discover";
 
 interface DiscoverResultsProps {
 	lang: string;
@@ -35,6 +35,13 @@ function shortenUri(value: string): string {
 
 function getLangValue(data: Record<string, string>, lang: string): string {
 	return data[lang] ?? data["en"] ?? data["de"] ?? Object.values(data)[0] ?? "";
+}
+
+/* Walks the parent chain from topmost ancestor down to the immediate parent. */
+function getParentChain(parent: DiscoverResultParent[] | undefined): DiscoverResultParent[] {
+	const current = parent?.[0];
+	if (!current) return [];
+	return [...getParentChain(current.parent), current];
 }
 
 const ACCESS_KEYWORDS = ["public", "academic", "restricted"] as const;
@@ -104,6 +111,7 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 		: "";
 
 	const accessClass = getAccessClass(accessRestriction);
+	const parentChain = getParentChain(result.parent);
 
 	return (
 		<div className="smartsearch-result-row">
@@ -125,8 +133,53 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 					</Link>
 				</div>
 				{description && (
-					<p className="mt-2 line-clamp-3 text-sm text-gray-600">{description}</p>
+					<p className="mt-2 line-clamp-3">{description}</p>
 				)}
+
+				{result.matchHighlight && (
+					<><span>Highlight:</span><p
+						className="mt-2"
+						dangerouslySetInnerHTML={{ __html: result.matchHighlight }} /></>
+				)}
+
+				{result.matchProperty.length > 0 && (
+					<div className="mt-2 ">
+						Matches in:
+						<div className="ml-5">
+							{result.matchProperty.map((property, index) => {
+								const highlight = result.matchHiglight[index];
+
+								return (
+									<div key={`${property}-${index}`}>
+										{highlight ? (
+											<>
+												{shortenUri(property)}:{" "}
+												<span dangerouslySetInnerHTML={{ __html: highlight }} />
+											</>
+										) : (
+											shortenUri(property)
+										)}
+									</div>
+								);
+							})}
+						</div>
+					</div>
+				)}
+
+				{parentChain.length > 0 && (
+					<div className="mt-2">
+						In:
+						{parentChain.map((parent, index) => (
+							<span key={parent.id}>
+								{index > 0 && " > "}
+								<Link href={`/metadata/${String(parent.id)}`}>
+									{getLangValue(parent.title, lang)}
+								</Link>
+							</span>
+						))}
+					</div>
+				)}
+
 				<div className="mt-3 flex flex-wrap gap-2">
 					{classLabel && (
 						<span className="smartsearch-btn-toolbar-gray">

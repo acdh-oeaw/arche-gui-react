@@ -27,6 +27,10 @@ export const routing = defineRouting({
 			"en-GB": "/",
 			"de-AT": "/",
 		},
+		"/discover": {
+			"en-GB": "/discover",
+			"de-AT": "/discover",
+		},
 		"/about-arche": {
 			"en-GB": "/about-arche",
 			"de-AT": "/ueber-arche",

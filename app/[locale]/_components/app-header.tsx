@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { AppNavigation, AppNavigationMobile } from "@/app/[locale]/_components/app-navigation";
+import { HeroSmartSearch } from "@/app/[locale]/_components/hero-smart-search";
 import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Image } from "@/components/image";
 import { createHref } from "@/lib/navigation/create-href";
@@ -149,34 +150,7 @@ export function AppHeader(): ReactNode {
 					<p className="text-lg text-text-weak sm:text-xl">{t("navigation.hero.subtitle")}</p>
 				</div>
 
-				<form className="flex w-full max-w-xl items-stretch">
-					<input
-						className="h-10 w-full rounded-l-full border border-stroke-weak bg-white px-2 py-1 text-lg text-text-strong placeholder:text-text-weak focus:outline-none"
-						name="q"
-						placeholder={t("navigation.hero.search")}
-						type="search"
-					/>
-					<button
-						aria-label={t("navigation.hero.search")}
-						className="h-10 rounded-r-full bg-arche-acc-dark-blue px-6 text-white hover:bg-arche-acc-dark-blue-hover"
-						type="submit"
-					>
-						<svg
-							className="h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth={2}
-							viewBox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M21 21l-5.5-5.5m2-4.5a7 7 0 11-14 0 7 7 0 0114 0z"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-					</button>
-				</form>
+				<HeroSmartSearch searchLabel={t("navigation.hero.search")} />
 
 				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
 					<Link href="https://doi.org/10.34894/SNEQ7T">

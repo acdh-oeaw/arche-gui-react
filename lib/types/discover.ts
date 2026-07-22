@@ -23,6 +23,12 @@ export interface Facet {
 	classes?: string[];
 }
 
+export interface DiscoverResultParent {
+	id: number;
+	title: Record<string, string>;
+	parent?: DiscoverResultParent[];
+}
+
 export interface DiscoverResult {
 	id: number;
 	matchWeight: string[];
@@ -35,6 +41,8 @@ export interface DiscoverResult {
 	url: string;
 	matchProperty: string[];
 	matchHiglight: string[];
+	matchHighlight?: string;
+	parent?: DiscoverResultParent[];
 }
 
 export interface DiscoverResponse {
