@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
@@ -61,27 +61,56 @@ function getAccessClass(accessRestriction: string): string {
 
 interface SearchInPanelProps {
 	searchInIds: string[];
-	titleMap: Map<string, string>;
+	resultsById: Map<string, DiscoverResult>;
+	lang: string;
 	onRemove: (id: string) => void;
 }
 
-function SearchInPanel({ searchInIds, titleMap, onRemove }: Readonly<SearchInPanelProps>) {
+function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<SearchInPanelProps>) {
 	if (searchInIds.length === 0) return null;
 	return (
 		<div className="smartsearch-searchin-panel">
-			<span className="smartsearch-searchin-label">Searching within:</span>
-			{searchInIds.map((id) => (
-				<span key={id} className="smartsearch-searchin-chip">
-					{titleMap.get(id) ?? id}
-					<button
-						className="smartsearch-searchin-remove"
-						onClick={() => onRemove(id)}
-						type="button"
-					>
-						×
-					</button>
-				</span>
-			))}
+
+			{searchInIds.map((id) => {
+				const result = resultsById.get(id);
+				const title = result ? getLangValue(result.title, lang) : id;
+				const description = result?.description ? getLangValue(result.description, lang) : "";
+				const classLabel = result?.class[0] ? shortenUri(result.class[0]) : "";
+				const accessRestriction = result?.accessRestrictionSummary
+					? getLangValue(result.accessRestrictionSummary, "en")
+					: "";
+				const accessSummary = result?.accessRestrictionSummary
+					? getLangValue(result.accessRestrictionSummary, lang)
+					: "";
+				const accessClass = getAccessClass(accessRestriction);
+
+				return (
+					<div key={id} className="smartsearch-result-row ">
+						<div className="min-w-0 flex-1">
+							<div className="flex items-start gap-1">
+									<button
+									className="search-in-btn smartsearch-searchin-remove"
+									onClick={() => onRemove(id)}
+									type="button"
+								>
+									+
+								</button>
+								<Link className="smartsearch-list-title" href={`/metadata/${id}`}>
+									{title}
+								</Link>
+
+							</div>
+							{description && <p className="mt-2 line-clamp-3">{description}</p>}
+							<div className="mt-3 flex flex-wrap gap-2">
+								{classLabel && (
+									<span className="smartsearch-btn-toolbar-gray">{classLabel}</span>
+								)}
+								{accessSummary && <span className={accessClass}>{accessSummary}</span>}
+							</div>
+						</div>
+					</div>
+				);
+			})}
 		</div>
 	);
 }
@@ -226,7 +255,18 @@ export function DiscoverResults({
 
 	const searchInIds = sp.getAll("searchIn[]");
 	const searchInSet = new Set(searchInIds);
-	const titleMap = new Map(results.map((r) => [String(r.id), getLangValue(r.title, lang)]));
+
+	/* Retain full result data for ids the user has searched within, since those
+	 * resources drop out of `results` once the filtered results are fetched. */
+	const [resultsById, setResultsById] = useState<Map<string, DiscoverResult>>(new Map());
+
+	useEffect(() => {
+		setResultsById((prev) => {
+			const next = new Map(prev);
+			for (const result of results) next.set(String(result.id), result);
+			return next;
+		});
+	}, [results]);
 
 	function buildCleanParams(): URLSearchParams {
 		const params = new URLSearchParams();
@@ -281,7 +321,12 @@ export function DiscoverResults({
 			)}
 
 			{/* SearchIn scope indicator */}
-			<SearchInPanel searchInIds={searchInIds} titleMap={titleMap} onRemove={removeSearchIn} />
+			<SearchInPanel
+				lang={lang}
+				onRemove={removeSearchIn}
+				resultsById={resultsById}
+				searchInIds={searchInIds}
+			/>
 
 			{/* Pagination header */}
 			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />

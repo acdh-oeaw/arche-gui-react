@@ -71,7 +71,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 		<MainContent className="layout-grid content-start pb-20">
 			<DiscoverNavProvider>
 				<div className="flex w-full gap-6 pt-6">
-					<section className="w-[30%] shrink-0">
+					<section className="w-[25%] shrink-0">
 						<Suspense fallback={<ArcheLoader className="py-8" />}>
 							{data?.facets ? (
 								<DiscoverFacets facets={data.facets} lang={lang} />
