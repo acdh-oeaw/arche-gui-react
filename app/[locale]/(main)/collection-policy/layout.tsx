@@ -19,6 +19,7 @@ export default async function CollectionPolicyLayout(props: Readonly<DepositionP
 			<AppHeaderStatic
 				description={t("description")}
 				title={t("title")}
+				pdfUrl="https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/CollectionPolicy/ARCHE_CollectionPolicy.pdf"
 			/>
 			{children}
 		</>

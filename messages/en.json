@@ -27,11 +27,11 @@
 			},
 			"deposition-agreement": {
 				"title": "Deposition Agreement",
-				"description": "Read the terms of our deposition agreement before submitting resources."
+				"description": "Legal agreement between ARCHE and depositors"
 			},
 			"faq": {
 				"title": "FAQ",
-				"description": "Frequently asked questions about depositing and accessing resources."
+				"description": "Answers to frequently asked questions and practical tips for depositors"
 			},
 			"filenames-formats": {
 				"title": "Filenames, Formats, and Metadata",

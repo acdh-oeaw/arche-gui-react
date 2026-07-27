@@ -148,12 +148,12 @@ export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHead
 					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
 					{pdfUrl && (
 						<a
-							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2 text-sm text-white hover:opacity-90"
+							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2  !text-white text-strong hover:opacity-90"
 							href={pdfUrl}
 							rel="noopener noreferrer"
 							target="_blank"
 						>
-							PDF
+							Download PDF
 						</a>
 					)}
 

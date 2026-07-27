@@ -19,6 +19,7 @@ export default async function PreservationPolicyLayout(props: Readonly<Depositio
 			<AppHeaderStatic
 				description={t("description")}
 				title={t("title")}
+				pdfUrl="https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/PreservationPolicy/ARCHE_PreservationPolicy.pdf"
 			/>
 			{children}
 		</>

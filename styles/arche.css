@@ -685,7 +685,7 @@ a:hover .locale-link-text::before {
 
 .background-image-div::after {
 	right: 0;
-	bottom: 0;
+	bottom: -50px;
 	z-index: 0;
 	background-image: url("/browser/images/common/bottom-right-cloud.svg");
 
@@ -695,7 +695,7 @@ a:hover .locale-link-text::before {
 
 .background-image-front-div::after {
 	right: 0;
-	bottom: 0;
+	bottom: -50px;
 	z-index: 0;
 	background-image: url("/browser/images/common/bottom-right-cloud.svg");
 
