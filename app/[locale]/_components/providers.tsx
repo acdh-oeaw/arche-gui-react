@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import type { ReactNode } from "react";
 
 import { AriaProviders } from "@/app/[locale]/_components/aria-providers";
+import { DiscoverReloadProvider } from "@/components/discover/DiscoverReloadProvider";
 import type { IntlLocale } from "@/lib/i18n/locales";
 import type { IntlMessages } from "@/lib/i18n/messages";
 
@@ -23,7 +24,9 @@ export function Providers(props: Readonly<ProvidersProps>): ReactNode {
 			messages={messages}
 			timeZone={timeZone}
 		>
-			<AriaProviders locale={locale}>{children}</AriaProviders>
+			<AriaProviders locale={locale}>
+				<DiscoverReloadProvider>{children}</DiscoverReloadProvider>
+			</AriaProviders>
 		</NextIntlClientProvider>
 	);
 }

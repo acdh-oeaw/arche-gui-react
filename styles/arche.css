@@ -144,6 +144,16 @@ code {
 	overflow-wrap: break-word;
 }
 
+.discover-header-div,
+.metadata-header-div {
+	z-index: 3;
+	height: 306px;
+}
+
+.front-header-div {
+	height: 420px;
+}
+
 .header-nav-link {
 	display: inline-flex;
 	gap: 0.25rem;
@@ -328,6 +338,7 @@ a:hover .locale-link-text::before {
 }
 
 .metadata-main-content {
+	z-index: 3;
 	max-width: 1320px;
 	margin-bottom: 50px;
 	padding-right: 0;

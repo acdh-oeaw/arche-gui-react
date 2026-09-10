@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { HomeStats } from "@/components/home/HomeStats";
 import { CollectionsCarouselEnhancer } from "@/components/ui/collections-carousel-enhancer";
 import { MainContent } from "@/components/ui/main-content";
 import { getStaticPage, getStaticPageFromDisk } from "@/lib/api/static-pages-api";
@@ -49,6 +50,7 @@ export default async function IndexPage(props: Readonly<StaticPageProps>): Promi
 				dangerouslySetInnerHTML={{ __html: html }}
 			/>
 			<CollectionsCarouselEnhancer />
+			<HomeStats lang={lang} />
 		</MainContent>
 	);
 }

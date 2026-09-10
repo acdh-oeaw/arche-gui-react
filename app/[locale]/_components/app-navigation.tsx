@@ -6,6 +6,7 @@ import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import { chain } from "react-aria";
 import { Button, Disclosure, DisclosurePanel, Heading } from "react-aria-components";
 
+import { DiscoverNavLinkPendingReporter } from "@/components/discover/DiscoverNavLinkPendingReporter";
 import { Logo } from "@/components/logo";
 import { NavLink } from "@/components/nav-link";
 import { Drawer, DrawerTrigger, Modal, ModalOverlay } from "@/components/ui/drawer";
@@ -65,6 +66,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 										href={item.href}
 									>
 										{item.label}
+										{id === "home" && <DiscoverNavLinkPendingReporter />}
 									</NavLink>
 								</li>
 							);
@@ -240,6 +242,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																onPress={close}
 															>
 																{item.label}
+																{id === "home" && <DiscoverNavLinkPendingReporter />}
 															</NavLink>
 														</li>
 													);

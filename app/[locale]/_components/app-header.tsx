@@ -126,8 +126,8 @@ export function AppHeader(): ReactNode {
 					<LocaleSwitcher />
 				</div>
 			</div>
-			<div className="relative flex w-full flex-col items-center gap-y-6 px-4 pt-6 pb-10 text-center">
-				<div className="pointer-events-none absolute -bottom-4 left-[18%] hidden md:block">
+			<div className="flex w-full flex-col items-center gap-y-6 px-4 pt-6 pb-10 text-center">
+				<div className="pointer-events-none absolute bottom-[-5px] left-[18%] hidden md:block">
 					<Image
 						alt="Dante PC illustration"
 						className="w-auto"
@@ -136,7 +136,7 @@ export function AppHeader(): ReactNode {
 						width="100"
 					/>
 				</div>
-				<div className="pointer-events-none absolute right-[18%] -bottom-4 hidden md:block">
+				<div className="pointer-events-none absolute right-[18%] bottom-[-5px] hidden md:block">
 					<Image
 						alt="Nora illustration"
 						className="h-48 w-auto"

@@ -467,6 +467,11 @@
 			}
 		}
 	},
+	"HomeStats": {
+		"resources": "Resources",
+		"topCollection": "Top Collections",
+		"totalSize": "Total Size (TB)"
+	},
 	"ImprintPage": {
 		"meta": {
 			"title": "Imprint"

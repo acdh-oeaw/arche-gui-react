@@ -1,11 +1,11 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
-import { Suspense } from "react";
 
 import { DiscoverFacets } from "@/components/discover/DiscoverFacets";
 import { DiscoverNavProvider } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverResults } from "@/components/discover/DiscoverResults";
+import { DiscoverSuspenseBoundary } from "@/components/discover/DiscoverSuspenseBoundary";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import { MainContent } from "@/components/ui/main-content";
 import { toNumber } from "@/lib/helpers/ArcheHelpers";
@@ -28,10 +28,69 @@ export async function generateMetadata(
 	return { title: t("meta.title") };
 }
 
+interface DiscoverContentProps {
+	locale: IntlLocale;
+	url: string;
+	lang: string;
+	thumbnailBaseUrl: string;
+}
+
+async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<ReactNode> {
+	const { locale, url, lang, thumbnailBaseUrl } = props;
+	const t = await getTranslations({ locale, namespace: "AppContent" });
+
+	let data: DiscoverResponse | null = null;
+	try {
+		const res = await fetch(url, { cache: "no-store" });
+		if (res.ok) {
+			data = (await res.json()) as DiscoverResponse;
+		}
+	} catch {
+		// API unreachable — render empty state
+	}
+
+	const mapGeoJson = data?.facets
+		? (Object.values(data.facets).find((f) => f.type === "map")?.values as string | undefined) ?? null
+		: null;
+
+	return (
+		<div className="flex w-full gap-6 pt-6">
+			<section className="w-[25%] shrink-0">
+				{data?.facets ? (
+					<DiscoverFacets facets={data.facets} lang={lang} />
+				) : (
+					<div className="rounded border border-red-200 p-4 text-sm text-red-400">
+						{ t("smartsearch.filters_unavailable")}
+					</div>
+				)}
+			</section>
+			<section className="min-w-0 flex-1">
+				{data ? (
+					<div className="flex gap-4 rounded border border-gray-200 bg-white p-4 shadow-sm">
+						<DiscoverResults
+							lang={lang}
+							mapGeoJson={mapGeoJson}
+							messages={data.messages}
+							page={data.page}
+							pageSize={data.pageSize}
+							results={data.results}
+							thumbnailBaseUrl={thumbnailBaseUrl}
+							totalCount={data.totalCount}
+						/>
+					</div>
+				) : (
+					<div className="py-8 text-center  border-red-200 text-sm text-red-400">
+							{ t("smartsearch.no_results_available_please_check_the_api_connection")}
+					</div>
+				)}
+			</section>
+		</div>
+	);
+}
+
 export default async function Discover(props: Readonly<DiscoverPageProps>): Promise<ReactNode> {
 	const { locale } = await props.params;
 	const sp = await props.searchParams;
-	const t = await getTranslations({ locale, namespace: "AppContent" });
 
 	setRequestLocale(locale);
 
@@ -53,58 +112,15 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 	const url = `${smBaseUrl}/smartsearch/?${apiParams.toString()}`;
 	const thumbnailBaseUrl = process.env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL ?? "";
 
-	let data: DiscoverResponse | null = null;
-	try {
-		const res = await fetch(url, { cache: "no-store" });
-		if (res.ok) {
-			data = (await res.json()) as DiscoverResponse;
-		}
-	} catch {
-		// API unreachable — render empty state
-	}
-
-	const mapGeoJson = data?.facets
-		? (Object.values(data.facets).find((f) => f.type === "map")?.values as string | undefined) ?? null
-		: null;
-
 	return (
 		<MainContent className="layout-grid content-start pb-20">
+
+			{ /* will provide isNavPending value */ }
 			<DiscoverNavProvider>
-				<div className="flex w-full gap-6 pt-6">
-					<section className="w-[25%] shrink-0">
-						<Suspense fallback={<ArcheLoader className="py-8" />}>
-							{data?.facets ? (
-								<DiscoverFacets facets={data.facets} lang={lang} />
-							) : (
-								<div className="rounded border border-red-200 p-4 text-sm text-red-400">
-									{ t("smartsearch.filters_unavailable")}
-								</div>
-							)}
-						</Suspense>
-					</section>
-					<section className="min-w-0 flex-1">
-						<Suspense fallback={<ArcheLoader className="py-8" />}>
-							{data ? (
-								<div className="flex gap-4 rounded border border-gray-200 bg-white p-4 shadow-sm">
-								<DiscoverResults
-									lang={lang}
-									mapGeoJson={mapGeoJson}
-									messages={data.messages}
-									page={data.page}
-									pageSize={data.pageSize}
-									results={data.results}
-									thumbnailBaseUrl={thumbnailBaseUrl}
-									totalCount={data.totalCount}
-									/>
-									</div>
-							) : (
-								<div className="py-8 text-center  border-red-200 text-sm text-red-400">
-										{ t("smartsearch.no_results_available_please_check_the_api_connection")}
-								</div>
-							)}
-						</Suspense>
-					</section>
-				</div>
+				{ /* if the isNavPending is true, then display arche loader  */ }
+				<DiscoverSuspenseBoundary fallback={<ArcheLoader className="py-8" />}>
+					<DiscoverContent lang={lang} locale={locale} thumbnailBaseUrl={thumbnailBaseUrl} url={url} />
+				</DiscoverSuspenseBoundary>
 			</DiscoverNavProvider>
 		</MainContent>
 	);
