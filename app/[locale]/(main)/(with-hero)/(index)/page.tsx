@@ -43,13 +43,16 @@ export default async function IndexPage(props: Readonly<StaticPageProps>): Promi
 
 	return (
 		<MainContent className="content-start">
+			{ /* The TWTokens passes the css classes for the static pages */}
 			<TwTokens />
 			<section
 				className="w-full"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
 			/>
+			{ /* display the carousel on the main page */}
 			<CollectionsCarouselEnhancer />
+			{ /* Display the new animated counter on the home page */}
 			<HomeStats lang={lang} />
 		</MainContent>
 	);

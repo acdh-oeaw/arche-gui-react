@@ -43,19 +43,11 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 	const html = await getImprintHtml(locale);
 
 	return (
-		<MainContent className="layout-grid content-start">
-			<section className="relative layout-subgrid grid gap-y-6 bg-fill-weaker py-16 xs:py-20">
-				<div className="grid max-w-text gap-y-4">
-					<h1 className="font-heading text-heading-1 font-strong text-balance text-text-strong">
-						{t("title")}
-					</h1>
-				</div>
-			</section>
-
+		<MainContent className="layout-grid content-start pb-[70px]">
 			<section
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
-				className="relative layout-subgrid typography content-max-w-text border-t border-stroke-weak py-16 xs:py-20"
+				className="relative layout-subgrid typography content-max-w-text border-t border-stroke-weak "
 			/>
 		</MainContent>
 	);

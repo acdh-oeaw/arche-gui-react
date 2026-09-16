@@ -147,7 +147,7 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 			<div className={thumbOk ? "w-[80%] min-w-0" : "w-full min-w-0"}>
 				<div className="flex items-start gap-1">
 					<button
-						className={`search-in-btn${isSearchedIn ? " search-in-btn--active" : ""}`}
+						className={`search-in-btn${isSearchedIn ? " search-in-btn-active" : ""}`}
 						onClick={onToggleSearchIn}
 						title={isSearchedIn ? "Remove from search scope" : "Search within this resource"}
 						type="button"

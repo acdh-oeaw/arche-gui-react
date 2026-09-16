@@ -435,6 +435,10 @@ a:hover .locale-link-text::before {
 	font-weight: 700;
 }
 
+.table-row-acdh-blue td {
+	background-color: rgb(136, 219, 223);
+}
+
 #expert-content table {
 	background: rgb(255, 255, 255);
 }
@@ -537,7 +541,7 @@ a:hover .locale-link-text::before {
 	cursor: pointer;
 }
 
-.search-in-btn--active {
+.search-in-btn-active {
 	background-color: rgb(11 101 78);
 }
 
@@ -846,9 +850,7 @@ details p {
 	line-height: normal;
 }
 
-.table-row-acdh-blue td {
-	background-color: rgb(136, 219, 223);
-}
+
 
 @layer utilities {
 	/* Hide ALL scrollbars (while keeping scrollable) */
@@ -922,6 +924,16 @@ details p {
 
 	.home-resources-title h5 {
 		text-align: center !important;
+	}
+
+	.home-resources-title {
+		color: var(--color-arche-acc-font-color);
+		font-weight: 700;
+		text-align: center !important;
+	}
+
+	.home-resources-title a:hover {
+		text-decoration: none !important;
 	}
 
 	.home-resources-text {

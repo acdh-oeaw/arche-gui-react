@@ -1,11 +1,13 @@
 "use client";
 
 /* Arche Homepage Stats counter */
-import { Box, Database, FileText } from "lucide-react";
+
 import { animate } from "motion/react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+
+import { DatabaseIcon, ResourceIcon, TopCollectionIcon } from "@/components/home/HomeStatsIcons";
 
 const PORTAL_TARGET_ID = "static-content";
 const COUNT_UP_DURATION_SECONDS = 1.5;
@@ -61,9 +63,9 @@ function StatBox(props: Readonly<StatBoxProps>) {
 
 	return (
 		<div className="flex flex-1 items-center gap-4 rounded-[8px] border border-[#e1e1e1] bg-white p-6">
-			<span className="text-arche-acc-dark-blue shrink-0">{icon}</span>
+			<span className="shrink-0">{icon}</span>
 			<div>
-				<div className="text-2xl font-bold text-[#4d4d4d]">{value}</div>
+				<div className="mb-[5px] text-[34px] leading-none font-bold tracking-[-1px] text-arche-acc-font-color">{value}</div>
 				<div className="text-small tracking-wide text-text-weak uppercase">{label}</div>
 			</div>
 		</div>
@@ -111,11 +113,11 @@ export function HomeStats(props: Readonly<HomeStatsProps>): ReactNode {
 	if (!container || !stat) return null;
 
 	return createPortal(
-		<>
-			<StatBox icon={<Box aria-hidden={true} size={36} />} label={t("topCollection")} value={formatCount(topCollection)} />
-			<StatBox icon={<FileText aria-hidden={true} size={36} />} label={t("resources")} value={formatCount(resources)} />
-			<StatBox icon={<Database aria-hidden={true} size={36} />} label={t("totalSize")} value={formatSize(size)} />
-		</>,
+		<div className="grid w-full grid-cols-1 gap-4 pb-10 sm:grid-cols-3">
+			<StatBox icon={<TopCollectionIcon className="size-9" />} label={t("topCollection")} value={formatCount(topCollection)} />
+			<StatBox icon={<ResourceIcon className="size-9" />} label={t("resources")} value={formatCount(resources)} />
+			<StatBox icon={<DatabaseIcon className="size-9" />} label={t("totalSize")} value={formatSize(size)} />
+		</div>,
 		container,
 	);
 }

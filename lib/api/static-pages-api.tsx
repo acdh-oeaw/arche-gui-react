@@ -92,7 +92,7 @@ function escapeHtml(value: string): string {
 
 /**
  * Render a simple carousel HTML from the "topcollections" JSON payload.
- * Expected input shape: { [id: string]: { title, description, identifier, ... } }
+ * input like: { [id: string]: { title, description, identifier, ... } }
  */
 export function renderCollectionsCarousel(
 	data: Record<string, CollectionItem>,

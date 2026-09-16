@@ -1,6 +1,10 @@
+ /* The MAIN API FIlE, this handles the Metadata view Expert view api  call */
+
 import { createUrl } from "@acdh-oeaw/lib";
+import { cache } from "react";
 
 import { env } from "@/config/env.config";
+/* this is the Metadata object which will parse and process the API endpoint results */
 import { Metadata } from "@/lib/objects/metadata";
 
 const TIMEOUT_MS = 60_000;
@@ -40,10 +44,12 @@ export async function getBlocksApiData(url: string): Promise<unknown> {
 	return (await res.json()) as unknown;
 }
 
-export async function getData(id: string, page: string, lang: string): Promise<Metadata> {
+/* because we display the resources title also inside the header, we have to use cache to avoid the
+	duplicated expert view api calls */
+export const getData = cache(async (id: string, page: string, lang: string): Promise<Metadata> => {
 	const jsonData = await getJsonData({ id, page, language: lang });
 	return new Metadata(jsonData as JSON, lang);
-}
+});
 
 /* Get the SpatialCoverage coordinates for the map */
 export interface SpatialResult {

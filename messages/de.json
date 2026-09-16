@@ -68,16 +68,20 @@
 			"about-arche": {
 				"title": "Über ARCHE",
 				"description": "Erfahren Sie mehr über unsere Services"
+			},
+			"accessibility": {
+				"title": "Zugänglichkeit",
+				"description": ""
 			}
 		},
 		"smartsearch": {
-			"filters_unavailable": "Filters unavailable",
-			"no_results_available_please_check_the_api_connection": "No results available. Please check the API connection",
+			"filters_unavailable": "Filter nicht verfügbar",
+			"no_results_available_please_check_the_api_connection": "Keine Ergebnisse verfügbar. Bitte überprüfen Sie die API-Verbindung.",
 			"add_to_clarin": "Add to CLARIN Virtual Collection",
-			"search": "Search",
-			"reset_filters": "Reset filters",
+			"search": "Suchen",
+			"reset_filters": "Filter zurücksetzen",
 			"follow_named_entitites": "Follow named entities",
-			"search_in_file_content": "Search in file content",
+			"search_in_file_content": "Im Dateiinhalt suchen",
 			"facetLabels": {
 				"type": "Typ",
 				"spatial": "Räumliche Abdeckung",
@@ -91,6 +95,7 @@
 			}
 		},
 		"metaview": {
+			"provide_id_metadata_view": "Geben Sie eine ID in der URL an, um Metadaten-Details anzuzeigen",
 			"available_since": "Verfügbar seit",
 			"basic_view": "Basisansicht",
 			"expert_view": "Expertenansicht",
@@ -462,6 +467,11 @@
 				"title": "ARCHE",
 				"url": "/",
 				"description": "ARCHE"
+			},
+			"accessibility": {
+				"title": "Zugänglichkeit",
+				"url": "/accessibility",
+				"description": "Zugänglichkeit"
 			}
 		}
 	},

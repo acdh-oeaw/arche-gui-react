@@ -158,15 +158,15 @@ export function AppFooter(): ReactNode {
 
 				{/* Footer Bottom */}
 				<div className="mt-8 text-center text-sm">
-					<span>
+					<span className="text-white!">
 						© Copyright OEAW |
 						<Link
 							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
 							href="/imprint"
 						>
-							Imprint
+							Imprint &nbsp;
 						</Link>
-						<Link className="underline" href="#" id="footer-versions-btn">
+						<Link  className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline" href="#" id="footer-versions-btn">
 							Software-Versionen
 						</Link>
 					</span>

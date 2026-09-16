@@ -27,8 +27,5 @@ export function DiscoverClient() {
 
   const base = process.env.NEXT_PUBLIC_BASE_BROWSER!;
 
-
-
-
 	return null;
 }

@@ -68,6 +68,10 @@
 			"about-arche": {
 				"title": "About ARCHE",
 				"description": "Learn more about our services"
+			},
+			"accessibility": {
+				"title": "Accessibility",
+				"description": ""
 			}
 		},
 		"smartsearch": {
@@ -93,6 +97,7 @@
 			}
 		},
 		"metaview": {
+			"provide_id_metadata_view": "Provide an ID in the URL to view metadata details",
 			"available_since": "Available since",
 			"basic_view": "Basic View",
 			"expert_view": "Expert view",
@@ -464,6 +469,11 @@
 				"title": "ARCHE",
 				"url": "/",
 				"description": "ARCHE"
+			},
+			"accessibility": {
+				"title": "Accessibility",
+				"url": "/accessibility",
+				"description": "Accessibility"
 			}
 		}
 	},
