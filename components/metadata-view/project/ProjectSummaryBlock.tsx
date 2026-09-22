@@ -77,7 +77,7 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 				{hasKey("acdh:hasRelatedDiscipline") && (
 					<li>
 						<DisplayField
-							items={metaProps["acdh:hasRelatedDiscipline"]}
+							items={metaProps["acdh:hasRelatedDiscipline"] ?? []}
 							title={t("research_discipline")}
 
 						/>
@@ -87,7 +87,7 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 				{hasKey("acdh:hasSubject") && (
 					<li>
 						<DisplayField
-							items={metaProps["acdh:hasSubject"]}
+							items={metaProps["acdh:hasSubject"] ?? []}
 							title={t("subject")}
 						/>
 					</li>
@@ -96,7 +96,7 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 				{hasKey("acdh:hasSpatialCoverage") && (
 					<li>
 						<DisplayField
-							items={metaProps["acdh:hasSpatialCoverage"]}
+							items={metaProps["acdh:hasSpatialCoverage"] ?? []}
 							title={t("spatial_coverage")}
 						/>
 					</li>

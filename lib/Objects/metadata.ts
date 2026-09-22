@@ -37,7 +37,7 @@ export class Metadata {
 	private data: Record<string, any>;
 	private mainId: string;
 	private mainLang: string;
-	private properties: Record<string, any> = {};
+	readonly properties: Record<string, any> = {};
 
 	constructor(data: AnyObj, language: string) {
 		this.data = data.data;
@@ -55,7 +55,7 @@ export class Metadata {
 				if (!bucket || typeof bucket !== "object") continue;
 
 				// 1️⃣ Try preferred language
-				let chosen = bucket[this.mainLang];
+				let chosen = (bucket as Record<string, unknown>)[this.mainLang];
 
 				// 2️⃣ If missing, get the first language bucket
 				if (!chosen) {
@@ -149,7 +149,7 @@ export class Metadata {
 		const format = this.getFormat()?.toLowerCase();
 		const fileName = this.getDataByProperty("acdh:hasFilename")?.[0]?.value ?? "";
 
-		if (AUDIO_CATEGORIES.includes(category)) {
+		if (category !== undefined && (AUDIO_CATEGORIES as ReadonlyArray<string>).includes(category)) {
 			return "audio";
 		}
 
@@ -170,7 +170,7 @@ export class Metadata {
 		}
 
 		if (vocabs?.includes("/image")) {
-			if (IIIF_FORMATS.includes(format)) {
+			if (format !== undefined && (IIIF_FORMATS as ReadonlyArray<string>).includes(format)) {
 				return "image";
 			}
 		}
@@ -452,7 +452,7 @@ export class Metadata {
 	}
 	getParentId(): string {
 		if (this.data?.["acdh:isPartOf"]) {
-			return Object.keys(this.data?.["acdh:isPartOf"])[0];
+			return Object.keys(this.data?.["acdh:isPartOf"])[0] ?? "";
 		}
 		return "";
 	}
@@ -506,7 +506,7 @@ export class Metadata {
 
 		// Get the "first" element (similar to PHP reset())
 		const firstKey = Object.keys(propData)[0];
-		const first = propData[firstKey];
+		const first = propData[firstKey ?? ""];
 
 		// If there's a value for the current language
 		if (propData[this.mainLang]) {
@@ -899,7 +899,7 @@ export class Metadata {
 		const proto = Object.getPrototypeOf(this);
 		const methodNames = Object.getOwnPropertyNames(proto).filter(
 			(name) =>
-				{return typeof this[name] === "function" &&
+				{return typeof (this as Record<string, unknown>)[name] === "function" &&
 				name.startsWith("get") &&
 				name !== "get" && // avoid edge case
 				name !== "toJSON"},
@@ -910,7 +910,7 @@ export class Metadata {
 				.replace(/^get/, "") // remove "get"
 				.replace(/^[A-Z]/, (c) => {return c.toLowerCase()}); // lowercase first letter
 
-			result[key] = this[name]();
+			result[key] = (this as unknown as Record<string, () => unknown>)[name]!();
 		}
 
 		return result;

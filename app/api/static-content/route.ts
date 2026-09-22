@@ -1,13 +1,17 @@
+/* API to call to regenrate the static pages from the github repo */
 import { createUrl } from "@acdh-oeaw/lib";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { env } from "@/config/env.config";
 import {
 	getStaticPage,
+	injectHtmlIntoClassDiv,
 	injectHtmlIntoDiv,
-	renderCollectionsCarousel,
 	writeStaticPageToDisk,
-} from "@/lib/api/static-pages-api";
+} from "@/lib/api/StaticPagesApi";
+import { renderCollectionsCarousel } from "@/lib/helpers/RenderCollectionsCarousel";
+import { renderHomeMainCollection } from "@/lib/helpers/RenderHomeMainCollection";
+
 
 const baseApiUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
 if (baseApiUrl == null || baseApiUrl.length === 0) {
@@ -30,6 +34,7 @@ const LANGS = ["en", "de"] as const;
 
 type Lang = (typeof LANGS)[number];
 
+/* we need a thumbnail service url for the image display */
 function createThumbnailUrl(id: string): URL {
 	const url = createUrl({
 		baseUrl: env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL,
@@ -60,6 +65,8 @@ interface CollectionItem {
 	title: string;
 	description: string;
 	identifier: string;
+	avDate?: string;
+	modifyDate?: string;
 }
 
 async function buildAndSave(page: string, lang: Lang): Promise<void> {
@@ -78,17 +85,26 @@ async function buildAndSave(page: string, lang: Lang): Promise<void> {
 		return;
 	}
 
+	/* get the carousel collections and the single latest-addition collection for the home page */
 	if (page === "home") {
-		const [staticHtml, collections] = await Promise.all([
+		const [staticHtml, collections, mainCollection] = await Promise.all([
 			getStaticPage(page, lang),
-			fetchJson<Record<string, CollectionItem>>(`${BASE_API_URL}/topcollections/10/${lang}`),
+			fetchJson<Record<string, CollectionItem>>(`${BASE_API_URL}/topcollections/50/${lang}`),
+			fetchJson<Record<string, CollectionItem>>(`${BASE_API_URL}/topcollections/1/${lang}`),
 		]);
 		// src="https://arche-thumbnails.acdh.oeaw.ac.at?id=https://arche.acdh.oeaw.ac.at/api/937837&width=350"
 		const carousel = renderCollectionsCarousel(collections, {
 			getImageUrl: createThumbnailUrl,
 			descriptionMaxLength: 0,
 		});
-		const merged = injectHtmlIntoDiv(staticHtml, "collections-container", carousel);
+		const latestAddition = renderHomeMainCollection(mainCollection, {
+			getImageUrl: createThumbnailUrl,
+			descriptionMaxLength: 0,
+			locale: lang,
+		});
+
+		let merged = injectHtmlIntoDiv(staticHtml, "collections-container", carousel);
+		merged = injectHtmlIntoClassDiv(merged, "home-latest-addition", latestAddition);
 
 		await writeStaticPageToDisk(page, lang, merged);
 		return;

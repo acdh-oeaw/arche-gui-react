@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { getMembersDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionContentApi";
+import { getMembersDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionDTContentApi";
 
 interface MembersBlockProps {
 	id: string;

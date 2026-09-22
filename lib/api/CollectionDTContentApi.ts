@@ -1,5 +1,6 @@
 const TIMEOUT_MS = 60_000;
 
+/* This API Handles the collection Tables Content data, like RPR Table, etc */
 function createSignal(externalSignal?: AbortSignal): AbortSignal {
   const timeoutSignal = AbortSignal.timeout(TIMEOUT_MS);
   if (!externalSignal) return timeoutSignal;

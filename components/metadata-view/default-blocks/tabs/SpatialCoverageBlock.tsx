@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { getSpatialDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionContentApi";
+import { getSpatialDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionDTContentApi";
 
 interface SpatialCoverageBlockProps {
 	id: string;

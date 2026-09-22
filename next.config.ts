@@ -26,7 +26,6 @@ const config: Config = {
 	/** Compression should be handled by nginx reverse proxy. */
 	compress: false,
 	experimental: {
-		browserDebugInfoInTerminal: true,
 		globalNotFound: true,
 	},
 	headers() {
@@ -46,6 +45,7 @@ const config: Config = {
 		return Promise.resolve(headers);
 	},
 	logging: {
+		browserToTerminal: true,
 		fetches: {
 			fullUrl: true,
 		},

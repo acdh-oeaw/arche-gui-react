@@ -7,8 +7,8 @@ import { localePrefix } from "@/lib/i18n/routing";
 
 /** @see https://github.com/microsoft/playwright/issues/35162 */
 function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
-		const prefix = localePrefix.prefixes[locale] ?? "";
-
+	return localePrefix.prefixes[locale] + href.pathname;
+}
 
 export class ImprintPage {
 	readonly page: Page;

@@ -1,3 +1,5 @@
+/* These are the Static Pages html css formatting classes */
+
 export default function TwTokens() {
 	return (
 		<div

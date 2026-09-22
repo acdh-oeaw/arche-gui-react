@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { getPublicationsDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionContentApi";
+import { getPublicationsDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionDTContentApi";
 
 interface PublicationsBlockProps {
   id: string;

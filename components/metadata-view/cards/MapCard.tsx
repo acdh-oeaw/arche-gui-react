@@ -2,39 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-interface LeafletLayer {
-  getAttribution?: () => string;
-  addTo: (map: LeafletMap) => LeafletLayer;
-  getBounds: () => LeafletBounds;
-}
-
-interface LeafletBounds {
-  pad: (amount: number) => LeafletBounds;
-}
-
-interface LeafletMap {
-  remove: () => void;
-  setView: (center: [number, number], zoom: number) => LeafletMap;
-  fitBounds: (bounds: LeafletBounds) => void;
-  invalidateSize: () => void;
-  eachLayer: (callback: (layer: LeafletLayer) => void) => void;
-  removeLayer: (layer: LeafletLayer) => void;
-}
-
-interface LeafletLib {
-  map: (container: HTMLElement, options: Record<string, unknown>) => LeafletMap;
-  tileLayer: (url: string, options: Record<string, unknown>) => LeafletLayer;
-  marker: (latlng: [number, number]) => LeafletLayer;
-  polygon: (latlngs: Array<Array<[number, number]>>, options?: Record<string, unknown>) => LeafletLayer;
-  multiPolygon: (latlngs: Array<Array<Array<[number, number]>>>, options?: Record<string, unknown>) => LeafletLayer;
-}
-
-declare global {
-  interface Window {
-    L?: LeafletLib;
-  }
-}
-
 interface GeoJSONPointObject {
   lon?: number; longitude?: number;
   lat?: number; latitude?: number; altitude?: number;
@@ -143,7 +110,9 @@ export function MapCard({ data, mapType }: Readonly<MapCardProps>) {
     for (let i = 0; i + 1 < nums.length; i += 2) {
       const lon = nums[i];
       const lat = nums[i + 1];
-      if (Number.isFinite(lat) && Number.isFinite(lon)) pairs.push([lat, lon]);
+      if (lon !== undefined && lat !== undefined && Number.isFinite(lat) && Number.isFinite(lon)) {
+        pairs.push([lat, lon]);
+      }
     }
     return pairs;
   };
@@ -171,6 +140,7 @@ export function MapCard({ data, mapType }: Readonly<MapCardProps>) {
     if (nums.length >= 2) {
       const a = nums[0];
       const b = nums[1];
+      if (a === undefined || b === undefined) return null;
       if (Math.abs(a) <= 90 && Math.abs(b) <= 180) return [a, b];
       return [b, a];
     }

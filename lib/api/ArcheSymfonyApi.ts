@@ -30,14 +30,7 @@ function createApiUrl(id: string, page: string, lang: string): URL {
 	return url;
 }
 
-export async function getJsonData(params: Readonly<ApiParams>): Promise<unknown> {
-	const { id, page, language, signal } = params;
-	const apiUrl = createApiUrl(id, page, language);
-	const res = await fetch(apiUrl, { cache: "no-store", signal: createSignal(signal) });
-	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
-	return (await res.json()) as unknown;
-}
-
+/* basic API request for the Blocks and Prev. NExt Item */
 export async function getBlocksApiData(url: string): Promise<unknown> {
 	const res = await fetch(url, { cache: "no-store", signal: createSignal() });
 	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
@@ -50,6 +43,15 @@ export const getData = cache(async (id: string, page: string, lang: string): Pro
 	const jsonData = await getJsonData({ id, page, language: lang });
 	return new Metadata(jsonData as JSON, lang);
 });
+
+export async function getJsonData(params: Readonly<ApiParams>): Promise<unknown> {
+	const { id, page, language, signal } = params;
+	const apiUrl = createApiUrl(id, page, language);
+	const res = await fetch(apiUrl, { cache: "no-store", signal: createSignal(signal) });
+	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+	return (await res.json()) as unknown;
+}
+
 
 /* Get the SpatialCoverage coordinates for the map */
 export interface SpatialResult {

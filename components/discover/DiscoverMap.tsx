@@ -4,56 +4,6 @@ import { useEffect, useRef } from "react";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 
-/* ── Minimal Leaflet + leaflet-draw typings ─────────────────────────── */
-
-interface LatLng {
-	lat: number;
-	lng: number;
-}
-
-interface LatLngBounds {
-	getSouthWest: () => LatLng;
-	getNorthEast: () => LatLng;
-	pad: (n: number) => LatLngBounds;
-}
-
-interface LeafletLayer {
-	addTo: (map: LeafletMap) => LeafletLayer;
-	getAttribution?: () => string;
-	getBounds: () => LatLngBounds;
-}
-
-interface LeafletMap {
-	eachLayer: (cb: (layer: LeafletLayer) => void) => void;
-	fitBounds: (bounds: [[number, number], [number, number]] | LatLngBounds) => void;
-	invalidateSize: () => void;
-	on: (event: string, cb: (e: Record<string, unknown>) => void) => void;
-	remove: () => void;
-	removeLayer: (layer: LeafletLayer) => void;
-	setView: (center: [number, number], zoom: number) => LeafletMap;
-}
-
-interface FeatureGroup extends LeafletLayer {
-	addLayer: (layer: LeafletLayer) => void;
-	clearLayers: () => void;
-}
-
-interface LeafletLib {
-	Control: {
-		Draw: new (opts: Record<string, unknown>) => LeafletLayer;
-	};
-	featureGroup: () => FeatureGroup;
-	map: (el: HTMLElement, opts: Record<string, unknown>) => LeafletMap;
-	marker: (latlng: [number, number]) => LeafletLayer;
-	tileLayer: (url: string, opts: Record<string, unknown>) => LeafletLayer;
-}
-
-declare global {
-	interface Window {
-		L?: LeafletLib;
-	}
-}
-
 /* ── Helpers ─────────────────────────────────────────────────────────── */
 
 interface GeoJsonMultiPoint {

@@ -3,9 +3,17 @@ import React from 'react';
 
 import { Link } from "@/components/link";
 
+interface DisplayItem {
+	externalUrl?: string;
+	id?: string | number;
+	title?: string;
+	type?: string;
+	value: string;
+}
+
 interface Props {
   title: string;
-	items: Array<Record<string, string>>;
+	items: Array<DisplayItem>;
 
 }
 

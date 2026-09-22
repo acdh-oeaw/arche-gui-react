@@ -949,12 +949,12 @@ details p {
 	}
 }
 
-/* Collections carousel */
+/* Collections carousel.
+   The prev/next buttons are position:absolute so the track can stay full width;
+   they're overlaid on the track's edges rather than taking up their own grid columns. */
 .collections-carousel {
-	display: grid;
-	grid-template-columns: 48px 1fr 48px;
-	gap: 12px;
-	align-items: center;
+	position: relative;
+	width: 100%;
 }
 
 .collections-carousel-track {
@@ -973,18 +973,40 @@ details p {
 }
 
 .collections-carousel-btn {
+	position: absolute;
+	top: 50%;
+	z-index: 1;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
 	width: 48px;
 	height: 48px;
-	border: 1px solid rgb(0, 0, 0, 15%);
-	border-radius: 999px;
-	background: rgb(255, 255, 255);
 	color: rgb(122, 160, 179);
-	font-size: 32px;
+	font-weight: 700;
+	font-size: 48px;
 	line-height: 1;
 	cursor: pointer;
+	transform: translateY(-50%);
+}
+
+.collections-carousel-btn[data-carousel="prev"] {
+	left: 8px;
+}
+
+.collections-carousel-btn[data-carousel="next"] {
+	right: 8px;
+}
+
+/* On wider screens there's room in the page gutter, so push the buttons out past the
+   cards instead of overlapping them. The carousel/track width itself is unaffected. */
+@media (width >= 1024px) {
+	.collections-carousel-btn[data-carousel="prev"] {
+		left: -64px;
+	}
+
+	.collections-carousel-btn[data-carousel="next"] {
+		right: -64px;
+	}
 }
 
 .collection-card {
@@ -1077,6 +1099,120 @@ details p {
 	text-decoration: none;
 	word-break: normal;
 	overflow-wrap: anywhere;
+}
+
+/* Home page "latest addition" single top collection.
+   The ".home-latest-addition" wrapper lives in the static page template, not in
+   RenderHomeMainCollection.tsx, which only renders its inner content. */
+.home-latest-addition {
+	display: flex;
+	overflow: hidden;
+	border: 1px solid rgb(0, 0, 0, 12%);
+	border-radius: 12px;
+	background: rgb(255, 255, 255);
+	box-shadow: 0 2px 6px rgb(0, 0, 0, 6%);
+}
+
+@media (width < 768px) {
+	.home-latest-addition {
+		flex-direction: column;
+	}
+}
+
+.latest-addition-media {
+	display: flex;
+	flex: 0 0 40%;
+	justify-content: center;
+	align-items: center;
+	min-height: 240px;
+	padding: 24px;
+	background: var(--color-arche-acc-light-blue);
+}
+
+.latest-addition-image {
+	object-fit: contain;
+	width: 100%;
+	height: 100%;
+}
+
+.latest-addition-body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 12px;
+	min-width: 0;
+	padding: 32px;
+}
+
+.latest-addition-modified {
+	margin: 0;
+	color: var(--color-arche-acc-dark-blue);
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: 0.06em;
+}
+
+.latest-addition-title {
+	margin: 0;
+	font-weight: 700;
+	font-size: 24px;
+	word-break: normal;
+	overflow-wrap: anywhere;
+	hyphens: auto;
+}
+
+.latest-addition-description {
+	display: -webkit-box;
+	overflow: hidden;
+	margin: 0;
+	color: rgb(0, 0, 0, 65%);
+	font-size: 15px;
+	line-height: 1.6;
+	word-break: normal;
+	overflow-wrap: anywhere;
+	hyphens: auto;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 5;
+}
+
+.latest-addition-footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: auto;
+	padding-top: 12px;
+}
+
+.latest-addition-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.latest-addition-tag {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: var(--color-arche-gray);
+	color: rgb(255, 255, 255);
+	font-weight: 600;
+	font-size: 12px;
+}
+
+.latest-addition-link {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	padding: 0 20px;
+	border-radius: 8px;
+	background: rgb(10, 93, 131);
+	color: rgb(255, 255, 255);
+	font-weight: 600;
+	text-decoration: none;
 }
 
 .cite-container {

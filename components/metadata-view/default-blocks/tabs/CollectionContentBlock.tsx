@@ -5,7 +5,7 @@ import { useLocale,useTranslations  } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { type CollectionContentResult,getCollectionContent } from "@/lib/api/CollectionContentApi";
+import { type CollectionContentResult,getCollectionContent } from "@/lib/api/CollectionDTContentApi";
 
 interface CollectionContentBlockProps {
   id: string;
