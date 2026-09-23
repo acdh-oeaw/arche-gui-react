@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { formatBytes } from '@/lib/helpers/ArcheHelpers';
+import { formatBytes, sortBySortValue } from '@/lib/helpers/ArcheHelpers';
 
 export interface CardValue {
   cardTitle?: string;
@@ -17,6 +17,7 @@ export interface CardValue {
   downloadCardAccess?: boolean;
   archeApiUrl?: string;
   appBaseUrl?: string;
+  sortValue?: number | string;
 }
 
 export function CardTemplate({
@@ -61,7 +62,7 @@ export function CardTemplate({
               <div key={key}>
                 <b>{t(key as Parameters<typeof t>[0])}:</b>
                 <br />
-                {list.map((val) => {
+                {sortBySortValue(list).map((val) => {
                   const displayValue = binarySizeKeys?.has(key)
                     ? formatBytes(val.value)
                     : val.value;

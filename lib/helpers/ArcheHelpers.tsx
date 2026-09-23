@@ -21,6 +21,30 @@ export function truncateText(value: string, maxLength: number): string {
   return `${truncated}…`;
 }
 
+/**
+ * Sort items by their "sortValue" field, ascending. Items without a sortValue
+ * sort after items that have one. Returns a new array; the input is untouched.
+ * #29125
+ */
+export function sortBySortValue<T extends { sortValue?: number | string }>(items: Array<T>): Array<T> {
+  return [...items].sort((a, b) => {
+    const aVal = a.sortValue;
+    const bVal = b.sortValue;
+    if (aVal == null && bVal == null) return 0;
+    if (aVal == null) return 1;
+    if (bVal == null) return -1;
+    if (aVal < bVal) return -1;
+    if (aVal > bVal) return 1;
+    return 0;
+  });
+}
+
+export function formatYear(value: string | null | undefined): string {
+  if (!value) return '';
+  const year = new Date(value).getFullYear();
+  return Number.isNaN(year) ? '' : String(year);
+}
+
 export function escapeHtml(value: string): string {
   return value
     .replaceAll('&', '&amp;')
@@ -61,10 +85,16 @@ function renderInlineMarkdown(text: string): string {
  * Convert a small, safe subset of markdown (headings, paragraphs, bullet lists,
  * bold/italic/code, links) into HTML. Input is HTML-escaped first, so the output
  * only ever contains the tags this function adds itself — no dependency needed.
+ *
+ * By default, a single line break inside a paragraph is treated like standard
+ * markdown (collapsed into a space); only a blank line starts a new paragraph.
+ * Pass `preserveLineBreaks: true` to instead keep every line break visible
+ * (rendered as `<br />`), for text where single newlines are meaningful.
  */
-export function renderMarkdown(value: string): string {
+export function renderMarkdown(value: string, options?: { preserveLineBreaks?: boolean }): string {
   if (!value) return '';
 
+  const lineJoiner = options?.preserveLineBreaks ? '<br />' : ' ';
   const lines = escapeHtml(value).split(/\r?\n/);
   const blocks: Array<string> = [];
 
@@ -73,7 +103,7 @@ export function renderMarkdown(value: string): string {
 
   const flushParagraph = () => {
     if (paragraphLines.length === 0) return;
-    blocks.push(`<p>${renderInlineMarkdown(paragraphLines.join(' '))}</p>`);
+    blocks.push(`<p>${renderInlineMarkdown(paragraphLines.join(lineJoiner))}</p>`);
     paragraphLines = [];
   };
 

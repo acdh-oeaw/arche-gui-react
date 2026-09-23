@@ -5,12 +5,14 @@ import { useState } from "react";
 
 import { Image } from "@/components/image";
 import { Button } from '@/components/ui/button';
+import { sortBySortValue } from '@/lib/helpers/ArcheHelpers';
 
 interface CardValue {
   value: string;
   externalUrl?: string;
   type?: string;
   id?: string | number;
+  sortValue?: number | string;
 }
 
 interface LogoValue {
@@ -57,7 +59,7 @@ export function FundingDataCard({
               <div key={key}>
                 <b>{t(key)}:</b>
                 <br />
-                {list.map((val) => {
+                {sortBySortValue(list).map((val) => {
                   const content = (
                     <span className="whitespace-pre-line">
                       {val.value}

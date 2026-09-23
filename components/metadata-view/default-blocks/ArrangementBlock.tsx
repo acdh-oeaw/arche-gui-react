@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import React, { type ReactNode } from "react";
 
 import DisplayField from "@/components/helper/display-field";
+import { renderMarkdown } from "@/lib/helpers/ArcheHelpers";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface MetadataProps {
@@ -26,6 +27,7 @@ export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
 	const hasContent = hasKey("acdh:hasArrangement");
 	const ArrangementData = metadata.getDataByProperty("acdh:hasArrangement");
 
+
 	if (!hasContent) return null;
 
 	return (
@@ -36,7 +38,7 @@ export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
 
 			<div className="w-full pt-5 arrangement-content">
 				{ArrangementData?.map((entry, index) => (
-					<div key={index}>{entry.value}</div>
+					<div key={index} dangerouslySetInnerHTML={{ __html: renderMarkdown(entry.value) }} />
 				))}
 			</div>
 		</div>

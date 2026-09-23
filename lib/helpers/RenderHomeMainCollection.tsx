@@ -1,4 +1,4 @@
-import { escapeHtml, renderMarkdown, truncateText } from "@/lib/helpers/ArcheHelpers";
+import { escapeHtml, formatYear, renderMarkdown, truncateText } from "@/lib/helpers/ArcheHelpers";
 
 interface CollectionItem {
 	title: string;
@@ -14,12 +14,6 @@ function formatModifiedLabel(value: string | undefined, locale: string): string 
 	if (Number.isNaN(date.getTime())) return "";
 	const formatted = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(date);
 	return `Modified · ${formatted}`.toUpperCase();
-}
-
-function getYear(value: string | undefined): string {
-	if (!value) return "";
-	const date = new Date(value);
-	return Number.isNaN(date.getTime()) ? "" : String(date.getFullYear());
 }
 
 /**
@@ -54,7 +48,7 @@ export function renderHomeMainCollection(
 	const href = escapeHtml(`/browser/metadata/${id}`);
 	const imgSrc = escapeHtml(String(getImageUrl ? getImageUrl(id) : ""));
 	const modified = escapeHtml(formatModifiedLabel(item.modifyDate, locale));
-	const year = escapeHtml(getYear(item.modifyDate ?? item.avDate));
+	const year = escapeHtml(formatYear(item.modifyDate ?? item.avDate));
 
 	/* the ".home-latest-addition" wrapper already exists in the static page template, so this
 	 * only renders the content that goes inside it */

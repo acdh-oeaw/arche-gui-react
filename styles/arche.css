@@ -1260,3 +1260,11 @@ details p {
 	border-radius: 20px;
 
 }
+
+/* SummaryBlockDescription: renderMarkdown's output is block-level (<p>, headings),
+   but the show more/less button needs to trail right after the text on the same
+   line, like it did when this was plain text inside one <p>. */
+.summary-block-description :where(p, h1, h2, h3, h4, h5, h6) {
+	display: inline;
+	margin: 0;
+}

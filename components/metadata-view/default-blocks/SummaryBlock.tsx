@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import DisplayField from "@/components/helper/display-field";
 import { SummaryBlockDescription } from "@/components/metadata-view/default-blocks/SummaryBlockDescription";
+import { formatYear } from "@/lib/helpers/ArcheHelpers";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface MetadataProps {
@@ -18,14 +19,9 @@ export function SummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 
 	const metaProps = (metadata as unknown as { properties: MetaProps }).properties;
 
+
 	const hasKey = (key: string): boolean => {
 		return Array.isArray(metaProps[key]) && metaProps[key].length > 0;
-	};
-
-	const formatYear = (dateStr: string): string => {
-		if (!dateStr) return "";
-		const year = new Date(dateStr).getFullYear();
-		return Number.isNaN(year) ? "" : String(year);
 	};
 
 	// Compute coverage date before JSX to avoid IIFE in JSX

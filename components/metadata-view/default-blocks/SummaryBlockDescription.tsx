@@ -2,6 +2,8 @@
 
 import { type ReactNode, useMemo, useState } from "react";
 
+import { renderMarkdown } from "@/lib/helpers/ArcheHelpers";
+
 interface SummaryBlockDescriptionProps {
 	readonly maxWords?: number;
 	readonly showLessLabel: string;
@@ -20,15 +22,25 @@ function truncateTextByWords(
 	isLong: boolean;
 	shortText: string;
 } {
-	const words = text.split(/\s+/).filter(Boolean);
+	// Slice the original string at the Nth word's end instead of splitting/rejoining on
+	// whitespace, so line breaks (e.g. the blank line between a markdown heading and the
+	// following paragraph) survive truncation instead of collapsing into a single line.
+	const words = [...text.matchAll(/\S+/g)];
 
 	if (words.length <= maxWords) {
 		return { isLong: false, shortText: text };
 	}
 
+	const lastWord = words[maxWords - 1];
+	if (!lastWord) {
+		return { isLong: false, shortText: text };
+	}
+
+	const endIndex = (lastWord.index ?? 0) + lastWord[0].length;
+
 	return {
 		isLong: true,
-		shortText: words.slice(0, maxWords).join(" "),
+		shortText: text.slice(0, endIndex),
 	};
 }
 
@@ -36,9 +48,11 @@ export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionP
 	const { maxWords = 40, showLessLabel, showMoreLabel, text } = props;
 	const [isExpanded, setIsExpanded] = useState(false);
 
+	/* we "cacheing" the normalizedtext value */
 	const normalizedText = useMemo(() => {
 		return normalizeText(text);
 	}, [text]);
+
 
 	const { isLong, shortText } = useMemo(() => {
 		return truncateTextByWords(normalizedText, maxWords);
@@ -46,24 +60,28 @@ export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionP
 
 	const visibleText = isExpanded || !isLong ? normalizedText : `${shortText}…`;
 
+	const visibleHtml = useMemo(() => {
+		return renderMarkdown(visibleText, { preserveLineBreaks: true });
+	}, [visibleText]);
+
 	return (
 		<div className="">
-			<p className="whitespace-pre-line">{visibleText}
-			{isLong ? (
-				<button
-					className="btn-url-arche-blue"
-					onClick={() => {
-						setIsExpanded((prev) => {
-							return !prev;
-						});
-					}}
-					type="button"
-				>
-					{isExpanded ? showLessLabel : showMoreLabel}
+			<div className="summary-block-description">
+				<span dangerouslySetInnerHTML={{ __html: visibleHtml }} />
+				{isLong ? (
+					<button
+						className="btn-url-arche-blue"
+						onClick={() => {
+							setIsExpanded((prev) => {
+								return !prev;
+							});
+						}}
+						type="button"
+					>
+						{isExpanded ? showLessLabel : showMoreLabel}
 					</button>
-
 				) : null}
-				</p>
+			</div>
 		</div>
 	);
 }
