@@ -150,6 +150,19 @@ code {
 	height: 306px;
 }
 
+.discover-result-description {
+	display: -webkit-box;
+	overflow: hidden;
+	margin: 0;
+	font-size: 15px;
+	line-height: 1.6;
+	word-break: normal;
+	overflow-wrap: anywhere;
+	hyphens: auto;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+}
+
 .front-header-div {
 	height: 420px;
 }
@@ -338,12 +351,31 @@ a:hover .locale-link-text::before {
 }
 
 .metadata-main-content {
+	position: relative;
 	z-index: 3;
 	max-width: 1320px;
 	margin-bottom: 50px;
 	padding-right: 0;
 	padding-bottom: 50px;
 	padding-left: 0;
+}
+
+/* Full-bleed background: .metadata-main-content itself is capped at max-width, so its own
+   background would be clipped to that width too. This pseudo-element breaks out to the full
+   viewport width (100vw) while the actual content box above stays constrained and on top. */
+.metadata-main-content::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: -50px;
+	left: 50%;
+	z-index: -1;
+	width: 100vw;
+	margin-left: -50vw;
+	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
+	background-position: bottom;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
 }
 
 .meta-content-container {
@@ -830,13 +862,18 @@ details p {
 	border-color: rgb(0, 0, 0, 17%);
 	border-bottom: 1px solid rgb(0, 0, 0, 17%);
 	border-radius: 8px 8px 0 0;
-	background-color: rgb(33, 37, 41, 3%);
 
+	/* opaque flattened equivalent of rgb(33, 37, 41, 3%) over white — the previous
+	   translucent color let whatever sits behind the card (e.g. a page background
+	   image) bleed through, making this header look different depending on where
+	   the card happened to land on the page */
+	background-color: rgb(248, 248, 249);
 }
 
 .facet-card-content {
 	padding: 10px 24px;
 	border-radius: 0 0 8px 8px;
+	background-color: rgb(255, 255, 255);
 }
 
 .facet-card-title {

@@ -10,6 +10,7 @@ import { DiscoverMap } from "@/components/discover/DiscoverMap";
 import { DiscoverResultPagers } from "@/components/discover/DiscoverResultPagers";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { DiscoverResult, DiscoverResultParent } from "@/lib/types/discover";
+import { escapeHtml, formatYear, renderMarkdown, truncateText } from "@/lib/helpers/ArcheHelpers";
 
 interface DiscoverResultsProps {
 	lang: string;
@@ -68,13 +69,24 @@ interface SearchInPanelProps {
 
 function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<SearchInPanelProps>) {
 	if (searchInIds.length === 0) return null;
+
+	const descriptionMaxLength =  150;
+
 	return (
 		<div className="smartsearch-searchin-panel">
 
 			{searchInIds.map((id) => {
 				const result = resultsById.get(id);
 				const title = result ? getLangValue(result.title, lang) : id;
-				const description = result?.description ? getLangValue(result.description, lang) : "";
+				const rawDescription = result?.description ? getLangValue(result.description, lang) : "";
+
+				const description = renderMarkdown(
+						descriptionMaxLength > 0
+							? truncateText(rawDescription, descriptionMaxLength)
+							: rawDescription,
+					);
+
+
 				const classLabel = result?.class[0] ? shortenUri(result.class[0]) : "";
 				const accessRestriction = result?.accessRestrictionSummary
 					? getLangValue(result.accessRestrictionSummary, "en")
@@ -100,7 +112,12 @@ function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<Se
 								</Link>
 
 							</div>
-							{description && <p className="mt-2 line-clamp-3">{description}</p>}
+							{description && (
+								<div
+									className="discover-result-description"
+									dangerouslySetInnerHTML={{ __html: description }}
+								/>
+							)}
 							<div className="mt-3 flex flex-wrap gap-2">
 								{classLabel && (
 									<span className="smartsearch-btn-toolbar-gray">{classLabel}</span>
@@ -126,7 +143,15 @@ interface ResultCardProps {
 function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSearchIn }: Readonly<ResultCardProps>) {
 	const [thumbOk, setThumbOk] = useState(!!thumbnailBaseUrl);
 	const title = getLangValue(result.title, lang);
-	const description = result.description ? getLangValue(result.description, lang) : "";
+	const rawDescription = result.description ? getLangValue(result.description, lang) : "";
+	const descriptionMaxLength = 150;
+	const description = renderMarkdown(
+		descriptionMaxLength > 0
+			? truncateText(rawDescription, descriptionMaxLength)
+			: rawDescription,
+	);
+
+
 	const classLabel = result.class[0] ? shortenUri(result.class[0]) : "";
 	// we have to force the only EN lang to check the values inside the function
 	const accessRestriction = result.accessRestrictionSummary
@@ -162,7 +187,10 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 					</Link>
 				</div>
 				{description && (
-					<p className="mt-2 line-clamp-3">{description}</p>
+					<div
+						className="discover-result-description"
+						dangerouslySetInnerHTML={{ __html: description }}
+					/>
 				)}
 
 				{result.matchHighlight && (

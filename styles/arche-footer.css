@@ -135,6 +135,7 @@
 .arche-footer .cta {
 	position: relative;
 	top: -60px;
+	z-index: 10;
 	justify-content: center;
 	align-items: center;
 	max-width: 980px;

@@ -65,7 +65,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 
       {/* Content */}
       {isOpen && (
-        <div className="flex flex-col gap-1 border-t border-[#E1EDF3] p-3">
+        <div className="flex flex-col gap-1 facet-card-content p-3">
           {!isPublic && (
             <div
               className="relative w-full rounded-md border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
