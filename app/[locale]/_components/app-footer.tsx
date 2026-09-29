@@ -1,13 +1,53 @@
+"use client";
+
 import { useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 import FooterContactBox from "@/components/footer/footer-contact-box";
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
+import { ArcheLoader } from "@/components/ui/arche-loader";
+import { env } from "@/config/env.config";
+import {
+	fetchSoftwareVersions,
+	type SoftwareVersionsResponse,
+} from "@/lib/api/SoftwareVersionsApi";
 
 export function AppFooter(): ReactNode {
 	const t = useTranslations("AppFooter");
 	const tH = useTranslations("AppHeader");
+
+	const [isVersionsOpen, setIsVersionsOpen] = useState(false);
+	const [isVersionsLoading, setIsVersionsLoading] = useState(false);
+	const [versionsError, setVersionsError] = useState<string | null>(null);
+	const [versions, setVersions] = useState<SoftwareVersionsResponse | null>(null);
+
+	/* fetch the versions but only one time! */
+	async function handleVersionsClick(): Promise<void> {
+		const nextOpen = !isVersionsOpen;
+		setIsVersionsOpen(nextOpen);
+
+		if (!nextOpen || versions != null || isVersionsLoading) return;
+
+		const baseUrl = env.NEXT_PUBLIC_APP_SM_BASE_URL;
+		if (baseUrl == null || baseUrl.length === 0) {
+			setVersionsError("Software versions API is not configured.");
+			return;
+		}
+
+		setIsVersionsLoading(true);
+		setVersionsError(null);
+		try {
+			const json = await fetchSoftwareVersions(baseUrl);
+			setVersions(json);
+		} catch (fetchError) {
+			setVersionsError(
+				fetchError instanceof Error ? fetchError.message : "Failed to load software versions.",
+			);
+		} finally {
+			setIsVersionsLoading(false);
+		}
+	}
 
 	return (
 		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
@@ -166,14 +206,41 @@ export function AppFooter(): ReactNode {
 						>
 							Imprint &nbsp;
 						</Link>
-						<Link  className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline" href="#" id="footer-versions-btn">
+						<button
+							className="rounded-0.5 border-0 bg-transparent p-0 text-white! outline-transparent hover:underline focus-visible:focus-outline"
+							id="footer-versions-btn"
+							onClick={() => {
+								void handleVersionsClick();
+							}}
+							type="button"
+						>
 							Software-Versionen
-						</Link>
+						</button>
 					</span>
 				</div>
 
-				{/* Optional hidden version info section */}
-				<div className="mt-4 hidden space-x-2 text-center text-xs">arche lib versions</div>
+				{isVersionsOpen && (
+					<div className="mt-4 text-center text-xs">
+						{isVersionsLoading ? (
+							<ArcheLoader label="Loading software versions..." size={24} />
+						) : versionsError != null ? (
+							<p>{versionsError}</p>
+						) : versions != null ? (
+							<ul className="space-x-2">
+								{versions.symfony && (
+									<li className="inline">
+										{versions.symfony.name}: {versions.symfony.version}
+									</li>
+								)}
+								{versions.libraries?.map((library) => (
+									<li className="inline" key={library.name}>
+										{library.name}: {library.version}
+									</li>
+								))}
+							</ul>
+						) : null}
+					</div>
+				)}
 			</div>
 		</footer>
 	);
