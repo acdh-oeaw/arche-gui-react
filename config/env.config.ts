@@ -68,6 +68,9 @@ const result = createEnv({
 					v.integer(),
 					v.minValue(1),
 				),
+				NEXT_PUBLIC_AUTH_LOGIN_COOKIE: v.pipe(v.string(), v.nonEmpty()),
+				NEXT_PUBLIC_PUBLIC_ROLE: v.pipe(v.string(), v.nonEmpty()),
+				NEXT_PUBLIC_AUTH_SSO_HEADER: v.pipe(v.string(), v.nonEmpty()),
 			});
 
 			const result = v.safeParse(schema, environment);
@@ -102,6 +105,9 @@ const result = createEnv({
 		NEXT_PUBLIC_MATOMO_BASE_URL: process.env.NEXT_PUBLIC_MATOMO_BASE_URL,
 		NEXT_PUBLIC_MATOMO_ID: process.env.NEXT_PUBLIC_MATOMO_ID,
 		NEXT_PUBLIC_REDMINE_ID: process.env.NEXT_PUBLIC_REDMINE_ID,
+		NEXT_PUBLIC_AUTH_LOGIN_COOKIE: process.env.NEXT_PUBLIC_AUTH_LOGIN_COOKIE,
+		NEXT_PUBLIC_PUBLIC_ROLE: process.env.NEXT_PUBLIC_PUBLIC_ROLE,
+		NEXT_PUBLIC_AUTH_SSO_HEADER: process.env.NEXT_PUBLIC_AUTH_SSO_HEADER,
 		NEXT_RUNTIME: process.env.NEXT_RUNTIME,
 		NODE_ENV: process.env.NODE_ENV,
 		NEXT_PUBLIC_STATIC_CONTENT_PAGES:

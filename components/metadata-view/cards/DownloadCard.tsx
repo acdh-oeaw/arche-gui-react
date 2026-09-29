@@ -1,10 +1,11 @@
 'use client';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Image } from "@/components/image";
 import { Button } from '@/components/ui/button';
+import { checkUserPermission, type LoginItem } from '@/lib/helpers/ArcheLogin';
 import downloadIcon from '@/public/images/icons/dl_icon.png';
 
 interface DownloadData {
@@ -20,8 +21,27 @@ interface DownloadData {
 
 export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
   const [isOpen, setIsOpen] = useState(true);
+  const [permission, setPermission] = useState<LoginItem | null>(null);
   const t = useTranslations("AppContent.metaview");
   const isPublic = data.downloadCardAccess;
+  const needsLogin = permission?.access === 'login';
+
+
+  // check the user permissions for the resource download possibilities
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      const result = await checkUserPermission(data.id);
+      if (!cancelled) {
+        setPermission(result);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [data.id]);
 
   return (
     <div className="facet-card w-full rounded-[8px]">
@@ -55,26 +75,31 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
             </div>
           )}
 
-          <div className="hidden" id="download-not-logged">
+          {needsLogin && (
+          <div id="download-not-logged">
             <div className="w-full pt-2">
               <a
                 className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
-                href={`/api/user?redirect=${data.appBaseUrl}`}
+                href={`/api/user?redirect=${data.appBaseUrl}/browser/metadata/${data.id}`}
                 rel="nofollow"
               >
                 {t('ARCHE Login')}
-              </a>
+							</a>
+
             </div>
-            <div className="w-full pt-2">
+						<div className="w-full pt-2">
+
               <a
                 className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
-                href={`/Shibboleth.sso/Login?target=${data.appBaseUrl}`}
+                href={`/Shibboleth.sso/Login?target=${data.appBaseUrl}/api/user?redirect=${data.appBaseUrl}/browser/metadata/${data.id}`}
                 rel="nofollow"
-              >
+							>
+
                 {t('Federated Login')}
               </a>
             </div>
           </div>
+          )}
 
           <div className="hidden" id="download-logged">
             <div className="w-full">
@@ -116,6 +141,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
             </div>
           </div>
 
+          {!needsLogin && (
           <div className="w-full" id="download-resource-section">
             {data.binarySize > 0 && (
               <div className="flex w-full flex-col pt-2 pb-2">
@@ -139,7 +165,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 
             {(data.acdhType?.includes('TopCollection') ??
               data.acdhType?.includes('Collection')) && (
-              <div className="flex w-full flex-col pt-2 pb-2">
+              <div className="flex w-full flex-col pt-2 pb-2" id="download-resource-collection-section">
                 <a
                   className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
                   href={`${data.appBaseUrl}/dissemination/collection_download_script/${data.id}`}
@@ -158,6 +184,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
               </div>
             )}
           </div>
+          )}
 
           <div className="w-full" id="download-metadata-section">
             <div className="w-full pt-2 pb-2">
