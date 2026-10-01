@@ -1,20 +1,14 @@
-import { createUrl, removeTrailingSlash } from "@acdh-oeaw/lib";
+import { createUrl } from "@acdh-oeaw/lib";
 
 import { env } from "@/config/env.config";
+import { getPathname, getRootPathname } from "@/e2e/lib/get-pathname";
 import { expect, test } from "@/e2e/lib/test";
-import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
-import { localePrefix } from "@/lib/i18n/routing";
-// import { getPathname } from "@/lib/i18n/navigation";
-
-/** @see https://github.com/microsoft/playwright/issues/35162 */
-function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
-	return localePrefix.prefixes[locale] + href.pathname;
-}
+import { defaultLocale, locales } from "@/lib/i18n/locales";
 
 test.describe("app", () => {
 	if (env.NEXT_PUBLIC_BOTS !== "enabled") {
 		test("should serve a robots.txt which disallows search engine bots", async ({ request }) => {
-			const response = await request.get("/robots.txt");
+			const response = await request.get(getRootPathname("/robots.txt"));
 			const body = await response.body();
 
 			// TODO: use toMatchSnapshot
@@ -26,7 +20,7 @@ test.describe("app", () => {
 		});
 	} else {
 		test("should serve a robots.txt", async ({ request }) => {
-			const response = await request.get("/robots.txt");
+			const response = await request.get(getRootPathname("/robots.txt"));
 			const body = await response.body();
 
 			// TODO: use toMatchSnapshot
@@ -37,7 +31,10 @@ test.describe("app", () => {
 					"",
 					`Host: ${env.NEXT_PUBLIC_APP_BASE_URL}`,
 					`Sitemap: ${String(
-						createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname: "/sitemap.xml" }),
+						createUrl({
+							baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
+							pathname: getRootPathname("/sitemap.xml"),
+						}),
 					)}`,
 					"",
 				].join("\n"),
@@ -46,7 +43,7 @@ test.describe("app", () => {
 	}
 
 	test("should serve a sitemap.xml", async ({ request }) => {
-		const response = await request.get("/sitemap.xml");
+		const response = await request.get(getRootPathname("/sitemap.xml"));
 		const body = await response.body();
 
 		// TODO: use toMatchSnapshot
@@ -62,7 +59,7 @@ test.describe("app", () => {
 				const loc = String(
 					createUrl({
 						baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-						pathname: removeTrailingSlash(getPathname({ href: { pathname }, locale })),
+						pathname: getPathname({ href: { pathname }, locale }),
 					}),
 				);
 
@@ -72,7 +69,7 @@ test.describe("app", () => {
 	});
 
 	test("should serve a webmanifest", async ({ createI18n, request }) => {
-		const response = await request.get("/manifest.webmanifest");
+		const response = await request.get(getRootPathname("/manifest.webmanifest"));
 		const body = await response.body();
 
 		const i18n = await createI18n(defaultLocale);
@@ -99,21 +96,21 @@ test.describe("app", () => {
 	});
 
 	test("should serve a favicon.ico", async ({ request }) => {
-		const response = await request.get("/favicon.ico");
+		const response = await request.get(getRootPathname("/favicon.ico"));
 		const status = response.status();
 
 		expect(status).toEqual(200);
 	});
 
 	test("should serve an svg favicon", async ({ request }) => {
-		const response = await request.get("/icon.svg");
+		const response = await request.get(getRootPathname("/icon.svg"));
 		const status = response.status();
 
 		expect(status).toEqual(200);
 	});
 
 	test("should serve an apple favicon", async ({ request }) => {
-		const response = await request.get("/apple-icon.png");
+		const response = await request.get(getRootPathname("/apple-icon.png"));
 		const status = response.status();
 
 		expect(status).toEqual(200);

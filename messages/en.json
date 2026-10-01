@@ -20,7 +20,7 @@
 		"general": {
 			"loading": "Loading"
 		},
-		"staticHeaders" : {
+		"staticHeaders": {
 			"deposition-process": {
 				"title": "Deposit Resources",
 				"description": "Learn more about data submission"
@@ -82,7 +82,6 @@
 			"reset_filters": "Reset filters",
 			"follow_named_entitites": "Follow named entities",
 			"search_in_file_content": "Search in file content",
-
 			"facetLabels": {
 				"type": "Type",
 				"spatial": "Spatial Coverage",
@@ -93,7 +92,6 @@
 				"hasLicense": "License",
 				"hasAccessRestriction": "Acccess Restriction",
 				"extended_search": "Extended Search."
-
 			}
 		},
 		"metaview": {
@@ -217,10 +215,10 @@
 			"reset_view": "Reset view",
 			"previous_item": "Previous",
 			"next_item": "Next",
-			"spatial_coverage_of":"Spatial coverage of",
+			"spatial_coverage_of": "Spatial coverage of",
 			"arrangement": "Arrangement",
 			"data_collection_date": "Data Collection Date",
-			"associated_collections":"Associated Collections",
+			"associated_collections": "Associated Collections",
 			"project_details": "Project details",
 			"Project Start Date": "Project Start Date",
 			"Project End Date": "Project End Date",
@@ -509,5 +507,16 @@
 			"title": "Page not found"
 		},
 		"title": "Page not found"
+	},
+	"SearchPage": {
+		"meta": {
+			"title": "Search"
+		},
+		"title": "Search results",
+		"search-label": "Search the website",
+		"empty-query": "Enter a search term to search the content of this website.",
+		"no-results": "No pages match “{query}”.",
+		"results-count": "{count, plural, =1 {# page matches} other {# pages match}} “{query}”.",
+		"matches": "{count, plural, =1 {# match} other {# matches}}"
 	}
 }

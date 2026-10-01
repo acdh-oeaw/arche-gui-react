@@ -54,7 +54,7 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 		: null;
 
 	return (
-		<div className="flex w-full gap-6 pt-6">
+		<div className="flex w-full gap-6 pt-6 bg-white">
 			<section className="w-[25%] shrink-0">
 				{data?.facets ? (
 					<DiscoverFacets facets={data.facets} lang={lang} />

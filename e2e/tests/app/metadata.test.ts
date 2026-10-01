@@ -1,17 +1,11 @@
-import { createUrl, removeTrailingSlash } from "@acdh-oeaw/lib";
+import { createUrl } from "@acdh-oeaw/lib";
 import { jsonLdScriptProps } from "react-schemaorg";
 
 import { env } from "@/config/env.config";
+import { getMetadataPathname, getRootPathname } from "@/e2e/lib/get-pathname";
 import { expect, test } from "@/e2e/lib/test";
-import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
+import { defaultLocale, locales } from "@/lib/i18n/locales";
 import { localePrefix } from "@/lib/i18n/routing";
-// import { getPathname } from "@/lib/i18n/navigation";
-
-/** @see https://github.com/microsoft/playwright/issues/35162 */
-function getPathname({ href, locale }: { href: { pathname: string }; locale: IntlLocale }): string {
-	const prefix = localePrefix.prefixes[locale] ?? "";
-	return prefix + href.pathname;
-}
 
 test("should set a canonical url", async ({ createIndexPage }) => {
 	for (const locale of locales) {
@@ -24,7 +18,7 @@ test("should set a canonical url", async ({ createIndexPage }) => {
 			String(
 				createUrl({
 					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-					pathname: removeTrailingSlash(getPathname({ href: { pathname: "/" }, locale })),
+					pathname: getMetadataPathname({ href: { pathname: "/" }, locale }),
 				}),
 			),
 		);
@@ -34,13 +28,13 @@ test("should set a canonical url", async ({ createIndexPage }) => {
 /** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
 test.fixme("should set document title on not-found page", async ({ createI18n, page }) => {
 	const en = await createI18n(defaultLocale);
-	await page.goto("/unknown");
+	await page.goto(getRootPathname("/unknown"));
 	await expect(page).toHaveTitle(
 		[en.t("NotFoundPage.meta.title"), en.messages.metadata.title].join(" | "),
 	);
 
 	const de = await createI18n("de-AT");
-	await page.goto("/de/unknown");
+	await page.goto(getRootPathname("/de/unknown"));
 	await expect(page).toHaveTitle(
 		[de.t("NotFoundPage.meta.title"), de.messages.metadata.title].join(" | "),
 	);
@@ -49,7 +43,7 @@ test.fixme("should set document title on not-found page", async ({ createI18n, p
 /** FIXME: @see https://github.com/vercel/next.js/issues/45620 */
 test.fixme("should disallow indexing of not-found page", async ({ page }) => {
 	for (const pathname of ["/unknown", "/de/unknown"]) {
-		await page.goto(pathname);
+		await page.goto(getRootPathname(pathname));
 
 		const ogTitle = page.locator('meta[name="robots"]');
 		await expect(ogTitle).toHaveAttribute("content", "noindex");
@@ -103,7 +97,7 @@ test("should set page metadata", async ({ createIndexPage }) => {
 			String(
 				createUrl({
 					baseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
-					pathname: removeTrailingSlash(getPathname({ href: { pathname: "/" }, locale })),
+					pathname: getMetadataPathname({ href: { pathname: "/" }, locale }),
 				}),
 			),
 		);

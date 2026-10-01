@@ -107,7 +107,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 			 */
 			suppressHydrationWarning={true}
 		>
-			<body>
+			<body className="bg-white">
 				{/* @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata#json-ld */}
 				<script
 					{...jsonLdScriptProps({

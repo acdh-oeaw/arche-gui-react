@@ -29,7 +29,7 @@ function getCookie(name: string): string | null {
 /* check the logged or not logged user rights and the actual resource rights */
 export async function checkUserPermission(resId: string, aclRead: string = ""): Promise<LoginItem> {
 
-	const actualPage = env.NEXT_PUBLIC_APP_BASE_URL + "/browser/metadata/" + resId;
+	const actualPage = env.NEXT_PUBLIC_APP_BASE_URL + "/metadata/" + resId;
 	console.log("actualpage:");
 	console.log(actualPage);
 	console.log(env.NEXT_PUBLIC_AUTH_LOGIN_COOKIE);
@@ -53,7 +53,7 @@ export async function checkUserPermission(resId: string, aclRead: string = ""): 
  * response, missing username). */
 async function getSsoUsername(): Promise<string | null> {
 	try {
-		const response = await fetch("/api/auth/sso-user", { cache: "no-store" });
+		const response = await fetch("/browser/api/auth/sso-user", { cache: "no-store" });
 		if (!response.ok) return null;
 		const data = (await response.json()) as { username: string | null };
 		return data.username;

@@ -6,6 +6,7 @@ import { type ReactNode, useState } from "react";
 import FooterContactBox from "@/components/footer/footer-contact-box";
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
+import { StaticContentSearchForm } from "@/components/static-content-search-form";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import { env } from "@/config/env.config";
 import {
@@ -168,25 +169,7 @@ export function AppFooter(): ReactNode {
 						<p className="mb-4">{t("menu.helpdesk.items.description")}</p>
 
 						<p className="mb-2 font-bold">{t("menu.helpdesk.items.browse_website")}</p>
-						<form action="/browser/search/node" className="flex" method="get" id="search-block-form">
-							<div className="flex w-full input-group">
-							<input
-								className="w-full bg-white  text-black hero-search-field"
-								name="keys"
-								placeholder={t("menu.helpdesk.items.search")}
-								type="search"
-							/>
-							<button className="btn hero-search-button" type="submit">
-								<Image
-									alt="Search"
-									className="h-4 w-4"
-									height="32"
-									src="/browser/images/common/search_icon.svg"
-									width="32"
-								/>
-								</button>
-								</div>
-						</form>
+						<StaticContentSearchForm searchLabel={t("menu.helpdesk.items.search")} />
 
 						<ul className="mt-4 space-y-1">
 							<li>

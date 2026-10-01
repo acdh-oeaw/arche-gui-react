@@ -5,6 +5,8 @@ import { config as dotenv } from "dotenv";
 import { expand } from "dotenv-expand";
 import isCI from "is-in-ci";
 
+import { basePath } from "@/config/base-path";
+
 /**
  * Reading `.env` files here instead of using `dotenv-cli` so environment variables are
  * available to the vs code plugin as well.
@@ -14,6 +16,13 @@ for (const envFilePath of [".env.test.local", ".env.local", ".env.test", ".env"]
 }
 
 const port = 3000;
+
+/**
+ * Note that this is the bare origin, without `basePath`. Playwright resolves relative urls with
+ * `new URL(pathname, baseURL)`, which discards the path segment of `baseURL` for any pathname
+ * starting with a slash, so appending `basePath` here would have no effect. Instead, tests build
+ * their pathnames with `getPathname` from `@/e2e/lib/get-pathname`, which prepends `basePath`.
+ */
 const baseUrl = `http://localhost:${String(port)}`;
 
 export default defineConfig({
@@ -75,7 +84,13 @@ export default defineConfig({
 	],
 	webServer: {
 		command: "pnpm run start",
-		url: baseUrl,
+		/**
+		 * The app is only served below `basePath`, so the server root responds with 404. Playwright's
+		 * readiness probe only accepts status codes `>= 200 && < 404`, so this must point below the
+		 * prefix, otherwise `reuseExistingServer` never kicks in and playwright tries to start a
+		 * second server, which then fails with `EADDRINUSE`.
+		 */
+		url: baseUrl + basePath,
 		reuseExistingServer: !isCI,
 	},
 });

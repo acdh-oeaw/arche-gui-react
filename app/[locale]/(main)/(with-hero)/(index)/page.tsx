@@ -46,7 +46,7 @@ export default async function IndexPage(props: Readonly<StaticPageProps>): Promi
 			{ /* The TWTokens passes the css classes for the static pages */}
 			<TwTokens />
 			<section
-				className="w-full"
+				className="w-full bg-white"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
 			/>

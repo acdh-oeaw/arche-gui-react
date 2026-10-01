@@ -20,7 +20,7 @@
 		"general": {
 			"loading": "Laden"
 		},
-		"staticHeaders" : {
+		"staticHeaders": {
 			"deposition-process": {
 				"title": "Ressourcen einreichen",
 				"description": "Erfahren Sie mehr über die Dateneinreichung"
@@ -214,11 +214,11 @@
 			"reset_view": "Reset view",
 			"previous_item": "Vorherige",
 			"next_item": "Nächste",
-			"spatial_coverage_of":"Räumliche Abdeckung von",
+			"spatial_coverage_of": "Räumliche Abdeckung von",
 			"map": "Karte",
 			"arrangement": "Arrangement",
 			"data_collection_date": "Datum der Datenerhebung",
-			"associated_collections":"Zugehörige Sammlungen",
+			"associated_collections": "Zugehörige Sammlungen",
 			"project_details": "Projektdetails",
 			"Project Start Date": "Projektbegin",
 			"Project End Date": "ProjektEnde",
@@ -507,5 +507,16 @@
 			"title": "Seite nicht gefunden"
 		},
 		"title": "Seite nicht gefunden"
+	},
+	"SearchPage": {
+		"meta": {
+			"title": "Suche"
+		},
+		"title": "Suchergebnisse",
+		"search-label": "Website durchsuchen",
+		"empty-query": "Geben Sie einen Suchbegriff ein, um den Inhalt dieser Website zu durchsuchen.",
+		"no-results": "Keine Seite enthält „{query}“.",
+		"results-count": "{count, plural, =1 {# Seite enthält} other {# Seiten enthalten}} „{query}“.",
+		"matches": "{count, plural, =1 {# Treffer} other {# Treffer}}"
 	}
 }

@@ -31,6 +31,11 @@ export const routing = defineRouting({
 			"en-GB": "/discover",
 			"de-AT": "/discover",
 		},
+		/** Full-text search across the static content pages. */
+		"/search": {
+			"en-GB": "/search",
+			"de-AT": "/suche",
+		},
 		"/about-arche": {
 			"en-GB": "/about-arche",
 			"de-AT": "/ueber-arche",

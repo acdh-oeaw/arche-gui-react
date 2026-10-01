@@ -144,6 +144,10 @@ code {
 	overflow-wrap: break-word;
 }
 
+#main-content {
+	background-color: white;
+}
+
 .discover-header-div,
 .metadata-header-div {
 	z-index: 3;
