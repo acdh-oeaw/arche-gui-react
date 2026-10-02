@@ -1,8 +1,7 @@
 import type { ComponentPropsWithRef } from "react";
 
 import type { Link } from "@/components/link";
-import { env } from "@/config/env.config";
-import { createFullUrl } from "@/lib/navigation/create-full-url";
+import { APP_ORIGIN, createFullUrl } from "@/lib/navigation/create-full-url";
 import { usePathname } from "@/lib/navigation/navigation";
 
 type LinkProps = ComponentPropsWithRef<typeof Link>;
@@ -32,7 +31,11 @@ export function useNavLink(params: UseNavLinkParams): UseNavLinkReturnValue {
 export function isCurrentPage(href: string | undefined, pathname: string): boolean {
 	const url = createFullUrl({ pathname: href });
 
-	const isCurrent = url.origin === env.NEXT_PUBLIC_APP_BASE_URL && url.pathname === pathname;
+	/**
+	 * `usePathname` from `next-intl` returns the route pathname without `basePath` and without the
+	 * locale prefix, which is exactly what `createFullUrl` produces when resolved against the origin.
+	 */
+	const isCurrent = url.origin === APP_ORIGIN && url.pathname === pathname;
 
 	return isCurrent;
 }

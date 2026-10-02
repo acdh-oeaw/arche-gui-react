@@ -13,6 +13,7 @@ import {
 	fetchSoftwareVersions,
 	type SoftwareVersionsResponse,
 } from "@/lib/api/SoftwareVersionsApi";
+import { withBasePath } from "@/config/base-path";
 
 export function AppFooter(): ReactNode {
 	const t = useTranslations("AppFooter");
@@ -69,7 +70,7 @@ export function AppFooter(): ReactNode {
 								alt="ACDH Logo"
 								className="mb-4 w-full max-w-[64px]"
 								height="100"
-								src="/browser/images/logos/acdh-white-transparent-logo.svg"
+								src={withBasePath("/images/logos/acdh-white-transparent-logo.svg")}
 								width="100"
 							/>
 						</a>
@@ -88,7 +89,7 @@ export function AppFooter(): ReactNode {
 								alt="ÖAW Logo"
 								className=""
 								height="100"
-								src="/browser/images/logos/OEAW_Logo_white.svg"
+								src={withBasePath("/images/logos/OEAW_Logo_white.svg")}
 								width="100"
 							/>
 						</a>
@@ -169,11 +170,21 @@ export function AppFooter(): ReactNode {
 						<p className="mb-4">{t("menu.helpdesk.items.description")}</p>
 
 						<p className="mb-2 font-bold">{t("menu.helpdesk.items.browse_website")}</p>
-						<StaticContentSearchForm searchLabel={t("menu.helpdesk.items.search")} />
+						<StaticContentSearchForm
+							id="search-block-form"
+							searchLabel={t("menu.helpdesk.items.search")}
+						/>
 
 						<ul className="mt-4 space-y-1">
 							<li>
-								<Link href="/browser/user/login">{t("menu.helpdesk.items.log_in")}</Link>
+								{/*
+								 * Not a route of this app - login is served by another application on the same
+								 * domain, so this must bypass `Link`, which would add `basePath` and the locale
+								 * prefix. `data-external-app` marks it as deliberately outside `basePath`.
+								 */}
+								<a data-external-app="" href="/user/login">
+									{t("menu.helpdesk.items.log_in")}
+								</a>
 							</li>
 						</ul>
 					</div>

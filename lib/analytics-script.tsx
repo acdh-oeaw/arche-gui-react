@@ -1,6 +1,5 @@
 "use client";
 
-import { createUrl } from "@acdh-oeaw/lib";
 import type { NextWebVitalsMetric } from "next/app";
 import Script from "next/script";
 import { useReportWebVitals } from "next/web-vitals";
@@ -9,6 +8,7 @@ import { Fragment, type ReactNode, Suspense, useEffect } from "react";
 
 import { env } from "@/config/env.config";
 import type { IntlLocale } from "@/lib/i18n/locales";
+import { createAbsoluteUrl } from "@/lib/navigation/create-absolute-url";
 import { usePathname, useSearchParams } from "@/lib/navigation/navigation";
 
 declare global {
@@ -64,7 +64,7 @@ function PageViewTracker(): ReactNode {
 	const searchParams = useSearchParams();
 
 	useEffect(() => {
-		const url = createUrl({ baseUrl: env.NEXT_PUBLIC_APP_BASE_URL, pathname, searchParams });
+		const url = createAbsoluteUrl(pathname, searchParams);
 		trackPageView(locale, url);
 	}, [locale, pathname, searchParams]);
 

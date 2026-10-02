@@ -135,7 +135,7 @@ test("should serve an open-graph image", async ({ createIndexPage, request }) =>
 
 		const url = await indexPage.page.locator('meta[property="og:image"]').getAttribute("content");
 		const prefix = localePrefix.prefixes[locale] ?? "";
-		expect(url).toContain(`${prefix}/opengraph-image`);
+		expect(url).toContain(`${prefix}/og-image`);
 
 		const response = await request.get(String(url));
 		const status = response.status();

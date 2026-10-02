@@ -1,14 +1,11 @@
 import { join } from "node:path";
 
-import { createUrl } from "@acdh-oeaw/lib";
 import { glob } from "fast-glob";
 import type { MetadataRoute } from "next";
 
-import { env } from "@/config/env.config";
 import { locales } from "@/lib/i18n/locales";
+import { createAbsoluteUrl } from "@/lib/navigation/create-absolute-url";
 import { getPathname } from "@/lib/navigation/navigation";
-
-const baseUrl = env.NEXT_PUBLIC_APP_BASE_URL;
 
 /**
  * Google supports up to 50.000 entries per sitemap file. Apps which need more than that can use
@@ -45,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const entries = locales.flatMap((locale) => {
 		return routes.map((pathname) => {
 			return {
-				url: String(createUrl({ baseUrl, pathname: getPathname({ href: { pathname }, locale }) })),
+				url: String(createAbsoluteUrl(getPathname({ href: { pathname }, locale }))),
 				/**
 				 * Only add `lastmod` when the publication date is actually known.
 				 * Don't use the build date instead.

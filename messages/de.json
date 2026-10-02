@@ -317,31 +317,31 @@
 					"items": {
 						"deposition_process": {
 							"label": "Ressourcen einreichen",
-							"url": "/einreichungsprozess"
+							"url": "/browser/einreichungsprozess"
 						},
 						"deposition_agreement": {
 							"label": "Datenübergabevertrag",
-							"url": "/datenuebergabevertrag"
+							"url": "/browser/datenuebergabevertrag"
 						},
 						"filenames_formats_metadata": {
 							"label": "Dateinamen, Formate und Metadaten",
-							"url": "/dateinamen-formate-metadaten"
+							"url": "/browser/dateinamen-formate-metadaten"
 						},
 						"faq": {
 							"label": "FAQ",
-							"url": "/faq-de"
+							"url": "/browser/faq-de"
 						},
 						"further_guidance": {
 							"label": "Weiterführende Informationen",
-							"url": "/weiterfuehrende-informationen"
+							"url": "/browser/weiterfuehrende-informationen"
 						},
 						"technical_setup": {
 							"label": "Technischer Aufbau",
-							"url": "/technischer-aufbau"
+							"url": "/browser/technischer-aufbau"
 						},
 						"api_access": {
 							"label": "API-Zugriff",
-							"url": "/api-zugriff"
+							"url": "/browser/api-zugriff"
 						}
 					}
 				},
@@ -351,25 +351,25 @@
 					"items": {
 						"collection_policy": {
 							"label": "Sammlungsstrategie",
-							"url": "/sammlungsstrategie"
+							"url": "/browser/sammlungsstrategie"
 						},
 						"preservation_policy": {
 							"label": "Konservierungsrichtlinien",
-							"url": "/konservierungsrichtlinien"
+							"url": "/browser/konservierungsrichtlinien"
 						},
 						"privacy_policy": {
 							"label": "Datenschutzbestimmungen",
-							"url": "/datenschutzbestimmungen"
+							"url": "/browser/datenschutzbestimmungen"
 						},
 						"terms_of_use": {
 							"label": "Nutzungsbedingungen",
-							"url": "/nutzungsbedingungen"
+							"url": "/browser/nutzungsbedingungen"
 						}
 					}
 				},
 				"about_arche": {
 					"label": "Über ARCHE",
-					"url": "/ueber-arche"
+					"url": "/browser/ueber-arche"
 				}
 			},
 			"hero": {

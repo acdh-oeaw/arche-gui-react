@@ -1,5 +1,6 @@
 import React from 'react'
 import { env } from "@/config/env.config";
+import { withBasePath } from "@/config/base-path";
 
 
 export interface LoginItem {
@@ -53,7 +54,7 @@ export async function checkUserPermission(resId: string, aclRead: string = ""): 
  * response, missing username). */
 async function getSsoUsername(): Promise<string | null> {
 	try {
-		const response = await fetch("/browser/api/auth/sso-user", { cache: "no-store" });
+		const response = await fetch(withBasePath("/api/auth/sso-user"), { cache: "no-store" });
 		if (!response.ok) return null;
 		const data = (await response.json()) as { username: string | null };
 		return data.username;

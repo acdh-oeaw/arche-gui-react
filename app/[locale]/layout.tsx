@@ -7,6 +7,7 @@ import { type ReactNode, Suspense } from "react";
 import { LocalizedStringProvider as Translations } from "react-aria-components/i18n";
 import { jsonLdScriptProps } from "react-schemaorg";
 
+import { ColorSchemeSync } from "@/app/[locale]/_components/color-scheme-sync";
 import { Providers } from "@/app/[locale]/_components/providers";
 import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
 import { ServerToast } from "@/components/server-toast";
@@ -19,6 +20,8 @@ import { ColorSchemeScript } from "@/lib/color-scheme-script";
 import * as fonts from "@/lib/fonts";
 import { type IntlLocale, isValidLocale, locales, timeZone } from "@/lib/i18n/locales";
 import { getMetadata } from "@/lib/i18n/metadata";
+import { createAbsoluteUrl } from "@/lib/navigation/create-absolute-url";
+import { getPathname } from "@/lib/navigation/navigation";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
@@ -42,6 +45,21 @@ export async function generateMetadata(
 	const { locale } = await params;
 	const meta = await getMetadata();
 
+	/**
+	 * Declared explicitly instead of relying on the `opengraph-image` file convention.
+	 *
+	 * That convention wins over `openGraph.images` and builds its url by joining `metadataBase` with
+	 * a pathname which already contains `basePath`, so the prefix ends up twice. The image is served
+	 * by the `og-image` route handler instead.
+	 */
+	const openGraphImage = {
+		url: String(createAbsoluteUrl(getPathname({ href: "/og-image", locale }))),
+		width: 1200,
+		height: 630,
+		alt: meta.title,
+		type: "image/png",
+	};
+
 	const metadata: Metadata = {
 		title: {
 			default: meta.title,
@@ -55,11 +73,13 @@ export async function generateMetadata(
 			siteName: meta.title,
 			locale,
 			type: "website",
+			images: [openGraphImage],
 		},
 		twitter: {
 			card: "summary_large_image",
 			creator: meta.social.twitter,
 			site: meta.social.twitter,
+			images: [openGraphImage],
 		},
 		verification: {
 			google: env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
@@ -119,6 +139,7 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 				/>
 
 				<ColorSchemeScript />
+				<ColorSchemeSync locale={locale} />
 
 				{/**
 				 * @see https://react-spectrum.adobe.com/react-aria/ssr.html#optimizing-bundle-size

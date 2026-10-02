@@ -11,6 +11,7 @@ import {
 } from 'react-aria-components';
 
 import { Image } from '@/components/image';
+import { withBasePath } from "@/config/base-path";
 
 type Status = 'loading' | 'found' | 'not-found';
 
@@ -57,7 +58,7 @@ export function TitleImageCard({ url }: Readonly<{ url: string }>) {
           alt="Loading..."
           className="h-12 w-auto"
           height={47}
-          src="/browser/images/arche_logo_flip_47px.gif"
+          src={withBasePath("/images/arche_logo_flip_47px.gif")}
           unoptimized={true}
           width={47}
         />

@@ -2,6 +2,7 @@
 
 import { ChevronDownIcon, MenuIcon, XIcon } from "lucide-react";
 import { PrefetchKind } from "next/dist/client/components/router-reducer/router-reducer-types";
+import { useLocale } from "next-intl";
 import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import { chain } from "react-aria";
 import { Button, Disclosure, DisclosurePanel, Heading } from "react-aria-components";
@@ -14,7 +15,9 @@ import { IconButton } from "@/components/ui/icon-button";
 import { Menu, MenuItem, MenuTrigger } from "@/components/ui/menu";
 import { Popover } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { withBasePath } from "@/config/base-path";
 import {
+	getPathname,
 	type NavigationItem,
 	type NavigationLink,
 	usePathname,
@@ -48,10 +51,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 						case "action": {
 							return (
 								<li key={id}>
-									<Button
-										className="header-nav-link"
-										onPress={item.onAction}
-									>
+									<Button className="header-nav-link" onPress={item.onAction}>
 										{item.label}
 									</Button>
 								</li>
@@ -61,10 +61,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 						case "link": {
 							return (
 								<li key={id}>
-									<NavLink
-										className="header-nav-link"
-										href={item.href}
-									>
+									<NavLink className="header-nav-link" href={item.href}>
 										{item.label}
 										{id === "home" && <DiscoverNavLinkPendingReporter />}
 									</NavLink>
@@ -154,7 +151,18 @@ interface MenuLinkProps extends ComponentPropsWithRef<typeof MenuItem> {
 function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 	const { href, onHoverStart } = props;
 
+	const locale = useLocale();
 	const router = useRouter();
+
+	/**
+	 * `MenuItem` renders a plain anchor, so next.js never sees this href and does not prepend
+	 * `basePath` or the locale prefix the way it does for `Link`. Without resolving it here the
+	 * anchor would point outside the app whenever it is opened in a new tab or copied.
+	 *
+	 * Clicking still goes through the `RouterProvider` in `aria-providers.tsx`, which strips
+	 * `basePath` again before handing the path to the router.
+	 */
+	const resolvedHref = withBasePath(getPathname({ href, locale }));
 
 	/**
 	 * Adds prefetch behavior similar to `next/link`.
@@ -171,6 +179,7 @@ function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 	return (
 		<MenuItem
 			{...props}
+			href={resolvedHref}
 			// @ts-expect-error @see https://github.com/adobe/react-spectrum/issues/7453
 			// eslint-disable-next-line @eslint-react/prefer-destructuring-assignment
 			onFocus={chain(prefetch, props.onFocus)}

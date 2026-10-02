@@ -8,6 +8,7 @@ import { Image } from "@/components/image";
 import { createHref } from "@/lib/navigation/create-href";
 import type { NavigationItem } from "@/lib/navigation/navigation";
 import { Link } from "@/components/link";
+import { withBasePath } from "@/config/base-path";
 
 export function AppHeaderMetadata(): ReactNode {
 	const t = useTranslations("AppHeader");
@@ -142,7 +143,7 @@ export function AppHeaderMetadata(): ReactNode {
 																alt="Core Trust Seal"
 																className="h-8 w-auto"
 																height="64"
-																src="/browser/images/partner-logos/core_trust_seal_64.png"
+																src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
 																width="64"
 																/>
 															</Link>
@@ -151,7 +152,7 @@ export function AppHeaderMetadata(): ReactNode {
 																alt="CLARIN B-centre"
 																className="h-8 w-auto"
 																height="72"
-																src="/browser/images/partner-logos/clarin_b_centre_72.png"
+																src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
 																width="72"
 																/>
 																</Link>

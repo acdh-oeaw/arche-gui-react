@@ -8,6 +8,7 @@ import { type AccessibilityScanner, createAccessibilityScanner } from "@/e2e/lib
 import { createI18n, type I18n, type WithI18n } from "@/e2e/lib/fixtures/i18n";
 import { ImprintPage } from "@/e2e/lib/fixtures/imprint-page";
 import { IndexPage } from "@/e2e/lib/fixtures/index-page";
+import { SearchPage } from "@/e2e/lib/fixtures/search-page";
 import { defaultLocale, type IntlLocale } from "@/lib/i18n/locales";
 
 interface Fixtures {
@@ -18,6 +19,7 @@ interface Fixtures {
 	createI18n: (locale: IntlLocale) => Promise<I18n>;
 	createImprintPage: (locale: IntlLocale) => Promise<WithI18n<{ imprintPage: ImprintPage }>>;
 	createIndexPage: (locale: IntlLocale) => Promise<WithI18n<{ indexPage: IndexPage }>>;
+	createSearchPage: (locale: IntlLocale) => Promise<WithI18n<{ searchPage: SearchPage }>>;
 }
 
 export const test = base.extend<Fixtures>({
@@ -82,6 +84,16 @@ export const test = base.extend<Fixtures>({
 		}
 
 		await use(createIndexPage);
+	},
+
+	async createSearchPage({ page }, use) {
+		async function createSearchPage(locale = defaultLocale) {
+			const i18n = await createI18n(page, locale);
+			const searchPage = new SearchPage(page, locale, i18n);
+			return { i18n, searchPage };
+		}
+
+		await use(createSearchPage);
 	},
 });
 

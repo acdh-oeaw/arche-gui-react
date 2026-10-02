@@ -6,6 +6,7 @@ import { type ReactNode, useEffect } from "react";
 
 import { Image } from "@/components/image";
 import { MainContent } from "@/components/ui/main-content";
+import { withBasePath } from "@/config/base-path";
 
 interface InternalErrorProps {
 	error: Error & { digest?: string };
@@ -33,7 +34,7 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 					alt=""
 					height={234}
 					priority
-					src="/browser/images/404_image.png"
+					src={withBasePath("/images/404_image.png")}
 					width={300}
 				/>
 
@@ -53,7 +54,7 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 					<Image
 						alt="Austrian Centre for Digital Humanities and Cultural Heritage"
 						height={120}
-						src="/browser/images/acdh_logo_with_text.svg"
+						src={withBasePath("/images/acdh_logo_with_text.svg")}
 						width={300}
 					/>
 
