@@ -10,6 +10,7 @@ import { DiscoverMap } from "@/components/discover/DiscoverMap";
 import { DiscoverResultPagers } from "@/components/discover/DiscoverResultPagers";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { DiscoverResult, DiscoverResultParent } from "@/lib/types/discover";
+import { Button } from "@/components/ui/button";
 import { escapeHtml, formatYear, renderMarkdown, truncateText } from "@/lib/helpers/ArcheHelpers";
 
 interface DiscoverResultsProps {

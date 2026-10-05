@@ -193,15 +193,27 @@ export function AppFooter(): ReactNode {
 				{/* Footer Bottom */}
 				<div className="mt-8 text-center text-sm">
 					<span className="text-white!">
-						© Copyright OEAW |
+						© Copyright OEAW | &nbsp;
 						<Link
 							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
 							href="/imprint"
 						>
-							Imprint &nbsp;
+							Imprint | &nbsp;
 						</Link>
+					</span>
+
+					<span>
+					<Link
+							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
+							href="/accessibility"
+						>
+							Accessibility | &nbsp;
+						</Link>
+					</span>
+
+					<span>
 						<button
-							className="rounded-0.5 border-0 bg-transparent p-0 text-white! outline-transparent hover:underline focus-visible:focus-outline"
+							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline text-white"
 							id="footer-versions-btn"
 							onClick={() => {
 								void handleVersionsClick();

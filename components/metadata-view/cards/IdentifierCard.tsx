@@ -4,8 +4,6 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from "next-intl";
 import React, { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-
 interface IdentifierItem {
   value: string;
   [key: string]: unknown;
@@ -24,7 +22,7 @@ function IdentifierCard({ data }: Readonly<{ data: string | Array<IdentifierItem
    <div className="facet-card w-full rounded-[8px] ">
       {/* Header */}
       <div className="facet-card-header ">
-        <Button
+        <button
           className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
           onClick={() => { setIsOpen(!isOpen); }}
           type="button"
@@ -37,7 +35,7 @@ function IdentifierCard({ data }: Readonly<{ data: string | Array<IdentifierItem
 										<ChevronDownIcon className="h-5 w-5 text-gray-600" />
 									)}
 								</div>
-							</Button>
+							</button>
 						</div>
 
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import { CITATION_FORMATS, type CitationFormatValue, fetchCitation } from "@/lib/api/CitationApi";
+import { Button } from "@/components/ui/button";
 
 interface CitationBlockProps {
 	citationBaseUrl: string | null;

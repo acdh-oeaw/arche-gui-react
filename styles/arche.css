@@ -374,7 +374,7 @@ a:hover .locale-link-text::before {
 	bottom: -50px;
 	left: 50%;
 	z-index: -1;
-	width: 100vw;
+	width: 100%;
 	margin-left: -50vw;
 	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-position: bottom;
@@ -1308,4 +1308,8 @@ details p {
 .summary-block-description :where(p, h1, h2, h3, h4, h5, h6) {
 	display: inline;
 	margin: 0;
+}
+
+.imprint-page h2 {
+	color: var(	--color-arche-acc-headings);
 }

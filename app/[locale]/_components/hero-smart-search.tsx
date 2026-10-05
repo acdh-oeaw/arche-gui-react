@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { useRouter } from "@/lib/navigation/navigation";
 
+
 interface HeroSmartSearchProps {
 	searchLabel: string;
 }

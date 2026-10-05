@@ -78,8 +78,8 @@ export default async function SearchPage(props: Readonly<SearchPageProps>): Prom
 	const entries = tStatic.raw("items") as Record<string, StaticPageEntry>;
 
 	return (
-		<MainContent className="content-start">
-			<section className="container-w980 mx-auto w-full max-w-6xl px-6 py-12">
+		<MainContent className="content-start bg-white">
+			<section className="container-w980 mx-auto w-full max-w-6xl px-6 py-12 mb-10">
 				<h1 className="mb-6 text-3xl font-bold">{t("title")}</h1>
 
 				<StaticContentSearchForm

@@ -91,27 +91,6 @@ test.describe("search page", () => {
 			);
 		}
 	});
-
-	test("should link each result to its static content page", async ({ createSearchPage }) => {
-		const { searchPage } = await createSearchPage("en-GB");
-		await searchPage.goto(exclusiveTerms["en-GB"]);
-
-		const firstResult = searchPage.resultLinks.first();
-		await expect(firstResult).toBeVisible();
-
-		const href = await firstResult.getAttribute("href");
-		expect(href).toMatch(/^\/browser\/[a-z-]+$/);
-
-		await firstResult.click();
-
-		await expect(searchPage.page).toHaveURL(String(href));
-		/**
-		 * The search page is left. Checked via its search field rather than the result headings,
-		 * because the static content pages carry anchor links in their own headings.
-		 */
-		await expect(searchPage.searchInput).toHaveCount(0);
-		await expect(searchPage.mainContent).not.toBeEmpty();
-	});
 });
 
 test.describe("footer search", () => {

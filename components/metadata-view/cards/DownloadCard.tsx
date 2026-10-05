@@ -47,7 +47,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
     <div className="facet-card w-full rounded-[8px]">
       {/* Header */}
       <div className="facet-card-header">
-        <Button
+        <button
           className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
           onClick={() => { setIsOpen(!isOpen); }}
           type="button"
@@ -60,7 +60,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
               <ChevronDownIcon className="h-5 w-5 text-gray-600" />
             )}
           </div>
-        </Button>
+        </button>
       </div>
 
       {/* Content */}

@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useMemo, useState } from "react";
-
+import { Button } from "@/components/ui/button";
 import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/BreadcrumbBlock";
 
 export interface MetaviewTranslations {

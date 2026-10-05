@@ -93,7 +93,7 @@ export function VersionsCardClient({ versions, apiBaseUrl }: Readonly<{ versions
     <div className="facet-card w-full rounded-[8px]">
       {/* Header */}
       <div className="facet-card-header">
-        <Button
+        <button
           className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
           onClick={() => { setIsOpen((prev) => { return !prev; }); }}
           type="button"
@@ -104,7 +104,7 @@ export function VersionsCardClient({ versions, apiBaseUrl }: Readonly<{ versions
               ? <ChevronUpIcon className="h-5 w-5 text-gray-600" />
               : <ChevronDownIcon className="h-5 w-5 text-gray-600" />}
           </div>
-        </Button>
+        </button>
       </div>
 
       {/* Content */}

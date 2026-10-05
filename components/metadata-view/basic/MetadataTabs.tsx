@@ -10,6 +10,7 @@ import { ProjectAssociatedBlock } from "@/components/metadata-view/default-block
 import { InvolvedTableBlock } from "@/components/metadata-view/default-blocks/tabs/InvolvedTableBlock";
 import { MembersTableBlock } from "@/components/metadata-view/default-blocks/tabs/MembersTableBlock";
 import { ContributedTableBlock } from "@/components/metadata-view/default-blocks/tabs/ContributedTableBlock";
+import { Button } from "@/components/ui/button";
 
 const COLLECTION_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
 const RPR_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];
