@@ -17,20 +17,17 @@ export async function generateMetadata(
 	props: Readonly<StaticPageProps>,
 	_parent: ResolvingMetadata,
 ): Promise<Metadata> {
-	const { params } = props;
+	const { locale } = await props.params;
+	const t = await getTranslations({ locale, namespace: "AccessibilityPage" });
 
-	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "StaticPages" });
-
-	const metadata: Metadata = {
-		title: t("items.accessibility.title"),
-		description: t("items.accessibility.description"),
+	return {
+		title: t("meta.title"),
 	};
-
-	return metadata;
 }
 
-export default async function AccessibilityPage(props: Readonly<StaticPageProps>): Promise<ReactNode> {
+export default async function AccessibilityPage(
+	props: Readonly<StaticPageProps>,
+): Promise<ReactNode> {
 	const { params } = props;
 
 	const { locale } = await params;

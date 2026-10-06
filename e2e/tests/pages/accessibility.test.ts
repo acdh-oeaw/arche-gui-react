@@ -1,5 +1,5 @@
 import { expect, test } from "@/e2e/lib/test";
-import { getIntlLanguage, locales } from "@/lib/i18n/locales";
+import { locales } from "@/lib/i18n/locales";
 
 test.describe("accessibility page", () => {
 	test("should have document title", async ({ createAccessibilityPage }) => {
@@ -8,23 +8,23 @@ test.describe("accessibility page", () => {
 			await accessibilityPage.goto();
 
 			await expect(accessibilityPage.page).toHaveTitle(
-				[i18n.t("ImprintPage.meta.title"), i18n.messages.metadata.title].join(" | "),
+				[i18n.t("AccessibilityPage.meta.title"), i18n.messages.metadata.title].join(" | "),
 			);
 		}
 	});
 
 	test("should have accessibility text", async ({ createAccessibilityPage }) => {
-		const accessibility = {
-			de: "Zugänglichkeit",
-			en: "Accessibility",
-		};
-
 		for (const locale of locales) {
-			const { accessibilityPage } = await createAccessibilityPage(locale);
+			const { i18n, accessibilityPage } = await createAccessibilityPage(locale);
 			await accessibilityPage.goto();
 
-			const language = getIntlLanguage(locale);
-			await expect(accessibilityPage.page.getByRole("main")).toContainText(accessibility[language]);
+			/**
+			 * Taken from the messages rather than hardcoded, because the german static content says
+			 * "Barrierefreiheit", not the "Zugänglichkeit" used in `StaticPages`.
+			 */
+			await expect(accessibilityPage.page.getByRole("main")).toContainText(
+				i18n.t("AccessibilityPage.title"),
+			);
 		}
 	});
 

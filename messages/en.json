@@ -518,5 +518,11 @@
 		"no-results": "No pages match “{query}”.",
 		"results-count": "{count, plural, =1 {# page matches} other {# pages match}} “{query}”.",
 		"matches": "{count, plural, =1 {# match} other {# matches}}"
+	},
+	"AccessibilityPage": {
+		"meta": {
+			"title": "Accessibility"
+		},
+		"title": "Accessibility"
 	}
 }

@@ -518,5 +518,11 @@
 		"no-results": "Keine Seite enthält „{query}“.",
 		"results-count": "{count, plural, =1 {# Seite enthält} other {# Seiten enthalten}} „{query}“.",
 		"matches": "{count, plural, =1 {# Treffer} other {# Treffer}}"
+	},
+	"AccessibilityPage": {
+		"meta": {
+			"title": "Barrierefreiheit"
+		},
+		"title": "Barrierefreiheit"
 	}
 }
