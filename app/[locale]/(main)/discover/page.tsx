@@ -54,19 +54,19 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 		: null;
 
 	return (
-		<div className="flex w-full gap-6 pt-6 bg-white">
+		<div className="flex w-full gap-6 pt-6">
 			<section className="w-[25%] shrink-0">
 				{data?.facets ? (
 					<DiscoverFacets facets={data.facets} lang={lang} />
 				) : (
-					<div className="rounded border border-red-200 p-4 text-sm text-red-400">
+					<div className="discover-cards-div border border-red-200 p-4 text-sm text-red-400">
 						{ t("smartsearch.filters_unavailable")}
 					</div>
 				)}
 			</section>
 			<section className="min-w-0 flex-1">
 				{data ? (
-					<div className="flex gap-4 rounded border border-gray-200 bg-white p-4 shadow-sm">
+					<div className="flex gap-4 discover-results-div">
 						<DiscoverResults
 							lang={lang}
 							mapGeoJson={mapGeoJson}
@@ -79,7 +79,7 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 						/>
 					</div>
 				) : (
-					<div className="py-8 text-center  border-red-200 text-sm text-red-400">
+					<div className="discover-results-div  border-red-200 text-sm text-red-400">
 							{ t("smartsearch.no_results_available_please_check_the_api_connection")}
 					</div>
 				)}
@@ -113,7 +113,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 	const thumbnailBaseUrl = process.env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL ?? "";
 
 	return (
-		<MainContent className="layout-grid content-start pb-20">
+		<MainContent className="layout-grid content-start pb-20 main-content-bleed">
 
 			{ /* will provide isNavPending value */ }
 			<DiscoverNavProvider>

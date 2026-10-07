@@ -43,7 +43,7 @@ export default async function FilenamesFormatsMetadataPage(
 	const html = cached ?? (await getStaticPage("filenames-formats-metadata", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

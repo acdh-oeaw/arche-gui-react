@@ -38,7 +38,7 @@ export default async function AccessibilityPage(
 	const html = cached ?? (await getStaticPage("accessibility", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

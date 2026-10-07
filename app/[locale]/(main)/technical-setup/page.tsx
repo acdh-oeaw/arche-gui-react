@@ -43,7 +43,7 @@ export default async function TechnicalSetupPage(
 	const html = cached ?? (await getStaticPage("technical-setup", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

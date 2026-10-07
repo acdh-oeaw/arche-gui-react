@@ -42,7 +42,7 @@ export default async function AboutArchePage(props: Readonly<StaticPageProps>): 
 	const html = await getStaticPage("about-arche", lang);
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 			<section
 				className="w-full"

@@ -41,7 +41,7 @@ export default async function ApiAccessPage(props: Readonly<StaticPageProps>): P
 	const html = cached ?? (await getStaticPage("api-access", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

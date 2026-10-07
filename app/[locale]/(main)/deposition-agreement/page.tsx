@@ -43,7 +43,7 @@ export default async function DepositionAgreementsPage(
 	const html = cached ?? (await getStaticPage("deposition-agreement", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

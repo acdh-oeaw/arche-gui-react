@@ -41,7 +41,7 @@ export default async function TermsOfUsePage(props: Readonly<StaticPageProps>): 
 	const html = cached ?? (await getStaticPage("terms-of-use", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

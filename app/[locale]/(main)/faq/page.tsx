@@ -41,7 +41,7 @@ export default async function FAQPage(props: Readonly<StaticPageProps>): Promise
 	const html = cached ?? (await getStaticPage("faq", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

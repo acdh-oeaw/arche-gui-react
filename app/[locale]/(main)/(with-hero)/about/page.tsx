@@ -40,7 +40,7 @@ export default async function AboutPage(props: Readonly<AboutPageProps>): Promis
 
 	/* eslint-disable react/jsx-no-literals */
 	return (
-		<MainContent className="layout-grid content-start">
+		<MainContent className="layout-grid content-start main-content-bleed">
 			<section className="relative layout-subgrid bg-fill-weaker py-16 xs:py-20">
 				<div className="grid max-w-text gap-y-4">
 					<h1 className="font-heading text-heading-1 font-strong text-balance text-text-strong">

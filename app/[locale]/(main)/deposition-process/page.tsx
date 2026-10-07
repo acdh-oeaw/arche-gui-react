@@ -43,7 +43,7 @@ export default async function DepositionProcessPage(
 	const html = cached ?? (await getStaticPage("deposition-process", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

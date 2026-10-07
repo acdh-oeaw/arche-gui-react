@@ -43,7 +43,7 @@ export default async function CollectionPolicyPage(
 	const html = cached ?? (await getStaticPage("collection-policy", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section

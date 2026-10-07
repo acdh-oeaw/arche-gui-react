@@ -43,7 +43,7 @@ export default async function PrivacyPolicyPage(
 	const html = cached ?? (await getStaticPage("privacy-policy", lang));
 
 	return (
-		<MainContent className="content-start">
+		<MainContent className="content-start main-content-bleed">
 			<TwTokens />
 
 			<section
