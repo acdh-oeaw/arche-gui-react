@@ -47,7 +47,7 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 			<section
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
-				className="white-container"
+				className="white-container mb-[100px] mt-[50px]"
 			/>
 		</MainContent>
 	);
