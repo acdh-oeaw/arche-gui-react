@@ -6,32 +6,32 @@ import { getBlocksApiData } from "@/lib/api/ArcheSymfonyApi";
 import { VersionsCardClient } from "./VersionsCardClient";
 
 export interface VersionNode {
-  id: number | string;
+	id: number | string;
 	title: string;
 	dir: boolean;
-  children?: Array<VersionNode>;
+	children?: Array<VersionNode>;
 }
 
 interface VersionsCardProps {
-  id: string;
+	id: string;
 }
 
 export async function VersionsCard({ id }: Readonly<VersionsCardProps>) {
-  const locale = await getLocale();
-  const lang = locale.split('-')[0] ?? 'en';
+	const locale = await getLocale();
+	const lang = locale.split("-")[0] ?? "en";
 
-  let nodes: Array<VersionNode> = [];
-  const apiBaseUrl = (env as Record<string, string>).NEXT_PUBLIC_ARCHE_SYMFONY_API ?? '';
+	let nodes: Array<VersionNode> = [];
+	const apiBaseUrl = (env as Record<string, string>).NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
 
-  try {
-    const url = `${apiBaseUrl}versions-list/${id}/${lang}`;
-    const data = await getBlocksApiData(url) as VersionNode | Array<VersionNode>;
-    nodes = Array.isArray(data) ? data : [data];
-  } catch {
-    return null;
-  }
+	try {
+		const url = `${apiBaseUrl}versions-list/${id}/${lang}`;
+		const data = (await getBlocksApiData(url)) as VersionNode | Array<VersionNode>;
+		nodes = Array.isArray(data) ? data : [data];
+	} catch {
+		return null;
+	}
 
-  if (nodes.length === 0) return null;
+	if (nodes.length === 0) return null;
 
-  return <VersionsCardClient apiBaseUrl={apiBaseUrl} versions={nodes} />;
+	return <VersionsCardClient apiBaseUrl={apiBaseUrl} versions={nodes} />;
 }

@@ -13,15 +13,21 @@ interface PlaceDescriptionBlockProps {
 	data: Record<string, Array<DescriptionItem>>;
 }
 
-export default function PlaceDescriptionBlock(props: Readonly<PlaceDescriptionBlockProps>): ReactNode {
+export default function PlaceDescriptionBlock(
+	props: Readonly<PlaceDescriptionBlockProps>,
+): ReactNode {
 	const { data } = props;
 
 	const t = useTranslations("AppContent.metaview");
 
 	const description = data["Description"]?.[0]?.value;
 	const otherEntries = Object.entries(data)
-		.filter(([key]) => { return key !== "Description"; })
-		.filter(([, items]) => { return items.length > 0; });
+		.filter(([key]) => {
+			return key !== "Description";
+		})
+		.filter(([, items]) => {
+			return items.length > 0;
+		});
 
 	if (!description && otherEntries.length === 0) return null;
 
@@ -43,10 +49,7 @@ export default function PlaceDescriptionBlock(props: Readonly<PlaceDescriptionBl
 							<span className="text-small font-strong text-text-strong">{label}:</span>
 							<span className="text-small text-text-weak">
 								{items.map((item) => (
-									<span
-										key={item.id != null ? String(item.id) : item.value}
-										className="block"
-									>
+									<span key={item.id != null ? String(item.id) : item.value} className="block">
 										{item.id != null ? (
 											<a
 												className="text-text-brand hover:underline"

@@ -1,125 +1,117 @@
-'use client';
+"use client";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Image } from "@/components/image";
-import { Button } from '@/components/ui/button';
-import { sortBySortValue } from '@/lib/helpers/ArcheHelpers';
+import { Button } from "@/components/ui/button";
+import { sortBySortValue } from "@/lib/helpers/ArcheHelpers";
 
 interface CardValue {
-  value: string;
-  externalUrl?: string;
-  type?: string;
-  id?: string | number;
-  sortValue?: number | string;
+	value: string;
+	externalUrl?: string;
+	type?: string;
+	id?: string | number;
+	sortValue?: number | string;
 }
 
 interface LogoValue {
-  value: string;
+	value: string;
 }
 
 export function FundingDataCard({
-  data = {},
-  logos = [],
+	data = {},
+	logos = [],
 }: Readonly<{
-  data?: Record<string, Array<CardValue>>;
-  logos?: Array<LogoValue>;
+	data?: Record<string, Array<CardValue>>;
+	logos?: Array<LogoValue>;
 }>) {
-  const [isOpen, setIsOpen] = useState(true);
-  const t = useTranslations("AppContent.metaview");
+	const [isOpen, setIsOpen] = useState(true);
+	const t = useTranslations("AppContent.metaview");
 
-  return (
-    <div className="facet-card w-full rounded-[8px] ">
-      {/* Header */}
-      <div className="facet-card-header ">
-        <button
-          className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
-          onClick={() => { setIsOpen(!isOpen); }}
-          type="button"
-        >
-          <div className="flex w-full items-center justify-between">
-            <span className="facet-card-title">{t('funding')}</span>
-            {isOpen ? (
-              <ChevronUpIcon className="h-5 w-5 text-gray-600" />
-            ) : (
-              <ChevronDownIcon className="h-5 w-5 text-gray-600" />
-            )}
-          </div>
-        </button>
-      </div>
+	return (
+		<div className="facet-card w-full rounded-[8px] ">
+			{/* Header */}
+			<div className="facet-card-header ">
+				<button
+					className="m-0! w-full border-0 bg-transparent p-0! shadow-none!"
+					onClick={() => {
+						setIsOpen(!isOpen);
+					}}
+					type="button"
+				>
+					<div className="flex w-full items-center justify-between">
+						<span className="facet-card-title">{t("funding")}</span>
+						{isOpen ? (
+							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+						) : (
+							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+						)}
+					</div>
+				</button>
+			</div>
 
-      {/* Content */}
-      {isOpen && (
-        <div className="facet-card-content flex flex-col gap-6 ">
-          {Object.entries(data).map(([key, list]) => {
-            if (!Array.isArray(list) || list.length === 0) return null;
+			{/* Content */}
+			{isOpen && (
+				<div className="facet-card-content flex flex-col gap-6 ">
+					{Object.entries(data).map(([key, list]) => {
+						if (!Array.isArray(list) || list.length === 0) return null;
 
-            return (
-              <div key={key}>
-                <b>{t(key)}:</b>
-                <br />
-                {sortBySortValue(list).map((val) => {
-                  const content = (
-                    <span className="whitespace-pre-line">
-                      {val.value}
-                    </span>
-                  );
+						return (
+							<div key={key}>
+								<b>{t(key)}:</b>
+								<br />
+								{sortBySortValue(list).map((val) => {
+									const content = <span className="whitespace-pre-line">{val.value}</span>;
 
-                  if (val.externalUrl) {
-                    return (
-                      <div key={val.externalUrl}>
-                        <a
-                          href={val.externalUrl}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          {val.value}
-                        </a>
-                        <br />
-                      </div>
-                    );
-                  }
+									if (val.externalUrl) {
+										return (
+											<div key={val.externalUrl}>
+												<a href={val.externalUrl} rel="noopener noreferrer" target="_blank">
+													{val.value}
+												</a>
+												<br />
+											</div>
+										);
+									}
 
-                  if (val.type === 'REL' && val.id != null) {
-                    return (
-                      <div key={String(val.id)}>
-                        <a href={`/browser/metadata/${String(val.id)}`}>
-                          {val.value}
-                        </a>
-                        <br />
-                      </div>
-                    );
-                  }
+									if (val.type === "REL" && val.id != null) {
+										return (
+											<div key={String(val.id)}>
+												<a href={`/browser/metadata/${String(val.id)}`}>{val.value}</a>
+												<br />
+											</div>
+										);
+									}
 
-                  return (
-                    <div key={val.value}>
-                      {content}
-                      <br />
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
+									return (
+										<div key={val.value}>
+											{content}
+											<br />
+										</div>
+									);
+								})}
+							</div>
+						);
+					})}
 
-          {logos.map((logo) => {
-            if (!logo.value) return null;
-            return (
-              <Image
+					{logos.map((logo) => {
+						if (!logo.value) return null;
+						return (
+							<Image
 								key={logo.value}
 								alt="funder-logo"
 								className="max-h-[72px] w-full object-contain object-left"
-                height={72}
-                src={logo.value}
-                width={100}
-              />
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
+								height={72}
+								src={logo.value}
+								width={100}
+							/>
+						);
+					})}
+				</div>
+			)}
+		</div>
+	);
 }
 
 export default FundingDataCard;

@@ -20,18 +20,16 @@ interface PlaceViewProps {
 }
 
 export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
-
 	const { metadata, language = "en" } = props;
 	const t = useTranslations("AppContent");
-	let mapData = '';
+	let mapData = "";
 	let resourceMapType = metadata.getMapType();
 
-
-	if (resourceMapType === 'multipolygon') {
+	if (resourceMapType === "multipolygon") {
 		mapData = metadata.getMapPolygon();
-	} else if (resourceMapType === 'polygon') {
+	} else if (resourceMapType === "polygon") {
 		mapData = metadata.getMapPolygon();
-	} else if (resourceMapType === 'coordinates') {
+	} else if (resourceMapType === "coordinates") {
 		mapData = metadata.getMapCoordinates();
 	}
 
@@ -54,9 +52,7 @@ export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
 				basicContent={
 					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
-							<div>
-
-							</div>
+							<div></div>
 							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
 						</div>
 						<NewVersionBlock
@@ -71,22 +67,27 @@ export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
 						<hr className="meatdata-view-top-hr"></hr>
 
 						<TitleBlock metadata={metadata}></TitleBlock>
-						<PlaceAddressBlock data={ metadata.getPlaceAddress()}></PlaceAddressBlock>
-						<PlaceDescriptionBlock data={ metadata.getPlaceDescription()}></PlaceDescriptionBlock>
+						<PlaceAddressBlock data={metadata.getPlaceAddress()}></PlaceAddressBlock>
+						<PlaceDescriptionBlock data={metadata.getPlaceDescription()}></PlaceDescriptionBlock>
 
-						<PlaceMapBlock coordsData={metadata.getMapCoordinatesBlock()} data={mapData} type={resourceMapType} />
+						<PlaceMapBlock
+							coordsData={metadata.getMapCoordinatesBlock()}
+							data={mapData}
+							type={resourceMapType}
+						/>
 
 						{/* Spatial Coverage of - /browser/api/spatialDT/" + resId + "/" + drupalSettings.arche_core_gui.gui_lang */}
-						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()}/>
-
+						<MetadataTabs
+							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+						/>
 					</div>
 				}
 				expertData={metadata.getExpertTableData()}
 				id={metadata.getId()}
 				language={language}
-				sideContent={
-					<CardsBlock metadata={ metadata}  />
-				}
+				sideContent={<CardsBlock metadata={metadata} />}
 				translations={{
 					basic_view: t("metaview.basic_view"),
 					expert_view: t("metaview.expert_view"),

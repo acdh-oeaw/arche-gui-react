@@ -2,6 +2,39 @@
 
 @import "tailwindcss";
 
+/* The static pages are coming from the github repo over an api call, and the react is savign them
+as a html to the disk under the static-content directory. And because of that the tailwind's
+automatic source detection does not pick them up. This is why we have to add the @sources with the classes */
+@source "../static-content/**/*.html";
+@source inline("{sm:,md:,lg:,xl:,}grid-cols-{1..12}");
+@source inline("{sm:,md:,lg:,xl:,}col-span-{{1..12},full}");
+@source inline("{sm:,md:,lg:,xl:,}col-start-{1..12}");
+@source inline("{sm:,md:,lg:,xl:,}gap-{4,6,8}");
+@source inline("{sm:,md:,lg:,xl:,}{flex,grid,table}");
+@source inline("{sm:,md:,lg:,xl:,}w-{4,5,full}");
+@source inline("{sm:,md:,lg:,xl:,}h-{4,5}");
+@source inline("max-w-none");
+@source inline("justify-center");
+@source inline("text-end");
+@source inline("bg-white");
+@source inline("my-12");
+@source inline("p-[24px]");
+@source inline("m{t,b}-[{30,50,100}px]");
+
+/* The collapsible blocks in the static content rely on these. */
+@source inline("group");
+@source inline("cursor-pointer");
+@source inline("select-none");
+@source inline("overflow-hidden");
+@source inline("max-h-0");
+@source inline("duration-300");
+@source inline("transition-{colors,transform,[max-height]}");
+@source inline("open:bg-blue-50");
+@source inline("open:text-white");
+@source inline("open:max-h-[60vh]");
+@source inline("group-open:rotate-180");
+@source inline("[&::-webkit-details-marker]:hidden");
+
 @plugin "tailwindcss-react-aria-components";
 
 @custom-variant base {

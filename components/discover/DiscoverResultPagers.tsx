@@ -27,7 +27,11 @@ function buildPageButtons(current: number, total: number): Array<number | "…">
 	return result;
 }
 
-export function DiscoverResultPagers({ page, pageSize, totalCount }: Readonly<DiscoverResultPagersProps>) {
+export function DiscoverResultPagers({
+	page,
+	pageSize,
+	totalCount,
+}: Readonly<DiscoverResultPagersProps>) {
 	const sp = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();

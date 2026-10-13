@@ -9,10 +9,15 @@ interface DepositionProcessLayoutProps {
 	params: Promise<{ locale: IntlLocale }>;
 }
 
-export default async function DepositionAgreementLayout(props: Readonly<DepositionProcessLayoutProps>): Promise<ReactNode> {
+export default async function DepositionAgreementLayout(
+	props: Readonly<DepositionProcessLayoutProps>,
+): Promise<ReactNode> {
 	const { children, params } = props;
 	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: "AppContent.staticHeaders.deposition-agreement" });
+	const t = await getTranslations({
+		locale,
+		namespace: "AppContent.staticHeaders.deposition-agreement",
+	});
 
 	return (
 		<>

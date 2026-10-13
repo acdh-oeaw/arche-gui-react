@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { NextIntlClientProvider } from "next-intl";
 import type { ReactNode } from "react";
 
@@ -19,7 +19,9 @@ export function Providers(props: Readonly<ProvidersProps>): ReactNode {
 
 	return (
 		<NextIntlClientProvider
-			getMessageFallback={({ key }) => { return `Translation missing: ${key}`; }}
+			getMessageFallback={({ key }) => {
+				return `Translation missing: ${key}`;
+			}}
 			locale={locale}
 			messages={messages}
 			timeZone={timeZone}

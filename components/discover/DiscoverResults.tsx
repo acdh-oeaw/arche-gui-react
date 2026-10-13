@@ -51,15 +51,13 @@ const ACCESS_KEYWORDS = ["public", "academic", "restricted"] as const;
 /* We need to display a nice colored div for the accessrestrictions */
 function getAccessClass(accessRestriction: string): string {
 	const lower = accessRestriction.toLowerCase();
-	const ordered = ACCESS_KEYWORDS
-		.map((k) => ({ key: k, index: lower.indexOf(k) }))
+	const ordered = ACCESS_KEYWORDS.map((k) => ({ key: k, index: lower.indexOf(k) }))
 		.filter(({ index }) => index !== -1)
 		.sort((a, b) => a.index - b.index)
 		.map(({ key }) => key);
 	if (ordered.length === 0) return "";
 	return `btn-toolbar btn-toolbar-${ordered.join("-")}`;
 }
-
 
 interface SearchInPanelProps {
 	searchInIds: string[];
@@ -71,22 +69,20 @@ interface SearchInPanelProps {
 function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<SearchInPanelProps>) {
 	if (searchInIds.length === 0) return null;
 
-	const descriptionMaxLength =  150;
+	const descriptionMaxLength = 150;
 
 	return (
 		<div className="smartsearch-searchin-panel">
-
 			{searchInIds.map((id) => {
 				const result = resultsById.get(id);
 				const title = result ? getLangValue(result.title, lang) : id;
 				const rawDescription = result?.description ? getLangValue(result.description, lang) : "";
 
 				const description = renderMarkdown(
-						descriptionMaxLength > 0
-							? truncateText(rawDescription, descriptionMaxLength)
-							: rawDescription,
-					);
-
+					descriptionMaxLength > 0
+						? truncateText(rawDescription, descriptionMaxLength)
+						: rawDescription,
+				);
 
 				const classLabel = result?.class[0] ? shortenUri(result.class[0]) : "";
 				const accessRestriction = result?.accessRestrictionSummary
@@ -101,7 +97,7 @@ function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<Se
 					<div key={id} className="smartsearch-result-row ">
 						<div className="min-w-0 flex-1">
 							<div className="flex items-start gap-1">
-									<button
+								<button
 									className="search-in-btn smartsearch-searchin-remove"
 									onClick={() => onRemove(id)}
 									type="button"
@@ -111,7 +107,6 @@ function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<Se
 								<Link className="smartsearch-list-title" href={`/metadata/${id}`}>
 									{title}
 								</Link>
-
 							</div>
 							{description && (
 								<div
@@ -120,9 +115,7 @@ function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<Se
 								/>
 							)}
 							<div className="mt-3 flex flex-wrap gap-2">
-								{classLabel && (
-									<span className="smartsearch-btn-toolbar-gray">{classLabel}</span>
-								)}
+								{classLabel && <span className="smartsearch-btn-toolbar-gray">{classLabel}</span>}
 								{accessSummary && <span className={accessClass}>{accessSummary}</span>}
 							</div>
 						</div>
@@ -141,17 +134,20 @@ interface ResultCardProps {
 	onToggleSearchIn: () => void;
 }
 
-function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSearchIn }: Readonly<ResultCardProps>) {
+function ResultCard({
+	result,
+	lang,
+	thumbnailBaseUrl,
+	isSearchedIn,
+	onToggleSearchIn,
+}: Readonly<ResultCardProps>) {
 	const [thumbOk, setThumbOk] = useState(!!thumbnailBaseUrl);
 	const title = getLangValue(result.title, lang);
 	const rawDescription = result.description ? getLangValue(result.description, lang) : "";
 	const descriptionMaxLength = 150;
 	const description = renderMarkdown(
-		descriptionMaxLength > 0
-			? truncateText(rawDescription, descriptionMaxLength)
-			: rawDescription,
+		descriptionMaxLength > 0 ? truncateText(rawDescription, descriptionMaxLength) : rawDescription,
 	);
-
 
 	const classLabel = result.class[0] ? shortenUri(result.class[0]) : "";
 	// we have to force the only EN lang to check the values inside the function
@@ -180,10 +176,7 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 					>
 						{isSearchedIn ? "−" : "+"}
 					</button>
-					<Link
-						className="smartsearch-list-title"
-						href={`/metadata/${String(result.id)}`}
-					>
+					<Link className="smartsearch-list-title" href={`/metadata/${String(result.id)}`}>
 						{title}
 					</Link>
 				</div>
@@ -195,9 +188,10 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 				)}
 
 				{result.matchHighlight && (
-					<><span>Highlight:</span><p
-						className="mt-2"
-						dangerouslySetInnerHTML={{ __html: result.matchHighlight }} /></>
+					<>
+						<span>Highlight:</span>
+						<p className="mt-2" dangerouslySetInnerHTML={{ __html: result.matchHighlight }} />
+					</>
 				)}
 
 				{result.matchProperty.length > 0 && (
@@ -239,16 +233,8 @@ function ResultCard({ result, lang, thumbnailBaseUrl, isSearchedIn, onToggleSear
 				)}
 
 				<div className="mt-3 flex flex-wrap gap-2">
-					{classLabel && (
-						<span className="smartsearch-btn-toolbar-gray">
-							{classLabel}
-						</span>
-					)}
-					{accessSummary && (
-						<span className={accessClass}>
-							{accessSummary}
-						</span>
-					)}
+					{classLabel && <span className="smartsearch-btn-toolbar-gray">{classLabel}</span>}
+					{accessSummary && <span className={accessClass}>{accessSummary}</span>}
 				</div>
 			</div>
 			{thumbOk && (
@@ -334,7 +320,6 @@ export function DiscoverResults({
 		navigate(() => router.push(`${pathname}?${params.toString()}`));
 	}
 
-
 	return (
 		<div className="w-full relative flex flex-col gap-4">
 			{/* Spatial coverage map */}
@@ -361,24 +346,26 @@ export function DiscoverResults({
 			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />
 
 			{/* Result cards */}
-			{results.length === 0 && (() => {
-				const msg = typeof messages === "string"
-					? messages
-					: Array.isArray(messages) && messages.length > 0
-						? messages.map((m) => String(m)).join(" ")
-						: "";
-				return (
-					<div className="w-full">
-						{msg
-							? <div
-									className="p-5 m-5 bg-amber-400"
-									dangerouslySetInnerHTML={{ __html: msg }}
-								/>
-							: <p className="p-5 m-5 bg-amber-400 text-center text-sm text-gray-400">No results found.</p>
-						}
-					</div>
-				);
-			})()}
+			{results.length === 0 &&
+				(() => {
+					const msg =
+						typeof messages === "string"
+							? messages
+							: Array.isArray(messages) && messages.length > 0
+								? messages.map((m) => String(m)).join(" ")
+								: "";
+					return (
+						<div className="w-full">
+							{msg ? (
+								<div className="p-5 m-5 bg-amber-400" dangerouslySetInnerHTML={{ __html: msg }} />
+							) : (
+								<p className="p-5 m-5 bg-amber-400 text-center text-sm text-gray-400">
+									No results found.
+								</p>
+							)}
+						</div>
+					);
+				})()}
 			{results.map((result) => (
 				<ResultCard
 					key={result.id}

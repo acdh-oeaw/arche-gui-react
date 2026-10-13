@@ -53,7 +53,6 @@ export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionP
 		return normalizeText(text);
 	}, [text]);
 
-
 	const { isLong, shortText } = useMemo(() => {
 		return truncateTextByWords(normalizedText, maxWords);
 	}, [maxWords, normalizedText]);

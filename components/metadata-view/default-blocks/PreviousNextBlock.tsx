@@ -16,14 +16,17 @@ interface NextPrevItem {
 
 export async function PreviousNextBlock({ id, rootId, url }: Readonly<PreviousNextProps>) {
 	const locale = await getLocale();
-	const lang = locale.split('-')[0] ?? 'en';
+	const lang = locale.split("-")[0] ?? "en";
 	const apiUrl = `${url}nextPrevItem/${rootId}/${id}/${lang}`;
 
 	let prevData: NextPrevItem = {};
 	let nextData: NextPrevItem = {};
 
 	try {
-		const data = await getBlocksApiData(apiUrl) as { previous?: NextPrevItem; next?: NextPrevItem };
+		const data = (await getBlocksApiData(apiUrl)) as {
+			previous?: NextPrevItem;
+			next?: NextPrevItem;
+		};
 
 		if (data.previous) {
 			prevData = data.previous;
@@ -41,17 +44,19 @@ export async function PreviousNextBlock({ id, rootId, url }: Readonly<PreviousNe
 			<div className="w-full text-left lg:w-1/2" id="previous-child-url">
 				{prevData.id && (
 					<Link href={`/metadata/${prevData.id}`}>
-						{'<<< '}{prevData.title}
+						{"<<< "}
+						{prevData.title}
 					</Link>
 				)}
 			</div>
 			<div className="w-full text-right lg:w-1/2" id="next-child-url">
 				{nextData.id && (
 					<Link href={`/metadata/${nextData.id}`}>
-						{nextData.title}{' >>>'}
+						{nextData.title}
+						{" >>>"}
 					</Link>
 				)}
 			</div>
 		</div>
-	)
+	);
 }

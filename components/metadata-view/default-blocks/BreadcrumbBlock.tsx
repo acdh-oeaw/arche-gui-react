@@ -6,7 +6,6 @@ import { Link } from "@/components/link";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import { getJsonData } from "@/lib/api/ArcheSymfonyApi";
 
-
 interface BreadcrumbBlockProps {
 	id: string;
 	language: string;
@@ -49,27 +48,29 @@ export function BreadcrumbBlock({ id, language }: Readonly<BreadcrumbBlockProps>
 				setIsLoading(true);
 				setError(null);
 
-				const json = await getJsonData({ id:id, page:"breadcrumb", language: language, signal: controller.signal });
+				const json = await getJsonData({
+					id: id,
+					page: "breadcrumb",
+					language: language,
+					signal: controller.signal,
+				});
 
-
-					setItems(
-						Array.isArray(json)
-							? normalizeBreadcrumbArray(json as Array<Record<string, unknown>>)
-							: [],
-					);
-
+				setItems(
+					Array.isArray(json)
+						? normalizeBreadcrumbArray(json as Array<Record<string, unknown>>)
+						: [],
+				);
 			} catch (fetchError) {
-if (!controller.signal.aborted) {
-						const message =
-							fetchError instanceof Error ? fetchError.message : "Failed to load breadcrumbs.";
-						setError(message);
-						setItems([]);
-					}
-
+				if (!controller.signal.aborted) {
+					const message =
+						fetchError instanceof Error ? fetchError.message : "Failed to load breadcrumbs.";
+					setError(message);
+					setItems([]);
+				}
 			} finally {
-					if (!controller.signal.aborted) {
-						setIsLoading(false);
-					}
+				if (!controller.signal.aborted) {
+					setIsLoading(false);
+				}
 			}
 		}
 

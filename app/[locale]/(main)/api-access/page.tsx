@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
 import { getStaticPage, getStaticPageFromDisk } from "@/lib/api/StaticPagesApi";
-import TwTokens from "@/lib/api/TwTokens";
 import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
 
 interface StaticPageProps {
@@ -42,8 +41,6 @@ export default async function ApiAccessPage(props: Readonly<StaticPageProps>): P
 
 	return (
 		<MainContent className="content-start main-content-bleed">
-			<TwTokens />
-
 			<section
 				className="w-full"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml

@@ -1,4 +1,3 @@
-
 import { useTranslations } from "next-intl";
 import React, { type ReactNode } from "react";
 
@@ -10,9 +9,8 @@ interface MetadataProps {
 }
 
 export function MemberBlock(props: Readonly<MetadataProps>): ReactNode {
-
 	const { metadata } = props;
-		const t = useTranslations("AppContent.metaview");
+	const t = useTranslations("AppContent.metaview");
 
 	const hasKey = (key: string) => {
 		return Array.isArray(metadata.properties[key]) && metadata.properties[key].length > 0;
@@ -20,29 +18,18 @@ export function MemberBlock(props: Readonly<MetadataProps>): ReactNode {
 
 	const hasContent = hasKey("acdh:isMemberOf");
 
-
-
 	if (!hasContent) return null;
 
 	return (
 		<div className="w-full lg:flex-row">
-
 			<div className="w-full">
-
-
-					{hasKey('acdh:isMemberOf') && (
-
-							<DisplayField
-								items={metadata.properties['acdh:isMemberOf']}
-								title={t('member_of')}
-							></DisplayField>
-
-					)}
-
-
+				{hasKey("acdh:isMemberOf") && (
+					<DisplayField
+						items={metadata.properties["acdh:isMemberOf"]}
+						title={t("member_of")}
+					></DisplayField>
+				)}
 			</div>
 		</div>
 	);
-};
-
-
+}

@@ -50,7 +50,8 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 	}
 
 	const mapGeoJson = data?.facets
-		? (Object.values(data.facets).find((f) => f.type === "map")?.values as string | undefined) ?? null
+		? ((Object.values(data.facets).find((f) => f.type === "map")?.values as string | undefined) ??
+			null)
 		: null;
 
 	return (
@@ -60,7 +61,7 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 					<DiscoverFacets facets={data.facets} lang={lang} />
 				) : (
 					<div className="discover-cards-div border border-red-200 p-4 text-sm text-red-400">
-						{ t("smartsearch.filters_unavailable")}
+						{t("smartsearch.filters_unavailable")}
 					</div>
 				)}
 			</section>
@@ -80,7 +81,7 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 					</div>
 				) : (
 					<div className="discover-results-div  border-red-200 text-sm text-red-400">
-							{ t("smartsearch.no_results_available_please_check_the_api_connection")}
+						{t("smartsearch.no_results_available_please_check_the_api_connection")}
 					</div>
 				)}
 			</section>
@@ -114,12 +115,16 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 
 	return (
 		<MainContent className="layout-grid content-start pb-20 main-content-bleed">
-
-			{ /* will provide isNavPending value */ }
+			{/* will provide isNavPending value */}
 			<DiscoverNavProvider>
-				{ /* if the isNavPending is true, then display arche loader  */ }
+				{/* if the isNavPending is true, then display arche loader  */}
 				<DiscoverSuspenseBoundary fallback={<ArcheLoader className="py-8" />}>
-					<DiscoverContent lang={lang} locale={locale} thumbnailBaseUrl={thumbnailBaseUrl} url={url} />
+					<DiscoverContent
+						lang={lang}
+						locale={locale}
+						thumbnailBaseUrl={thumbnailBaseUrl}
+						url={url}
+					/>
 				</DiscoverSuspenseBoundary>
 			</DiscoverNavProvider>
 		</MainContent>

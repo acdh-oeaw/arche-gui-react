@@ -18,14 +18,19 @@ const PAGE_SIZES = [10, 25, 50];
 function formatColLabel(col: string): string {
 	return col
 		.replace(/([A-Z])/g, " $1")
-		.replace(/^./, (s) => { return s.toUpperCase(); })
+		.replace(/^./, (s) => {
+			return s.toUpperCase();
+		})
 		.trim();
 }
 
 function formatCellValue(col: string, value: string, row: DTRow): ReactNode {
 	if (col === "title") {
 		return (
-			<a className="text-[color:var(--color-arche-link-color)] hover:underline" href={`/browser/metadata/${row.id}`}>
+			<a
+				className="text-[color:var(--color-arche-link-color)] hover:underline"
+				href={`/browser/metadata/${row.id}`}
+			>
 				{value}
 			</a>
 		);
@@ -61,7 +66,9 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 			setSearch(pendingSearch);
 			setPage(0);
 		}, 300);
-		return () => { clearTimeout(timer); };
+		return () => {
+			clearTimeout(timer);
+		};
 	}, [pendingSearch]);
 
 	useEffect(() => {
@@ -91,7 +98,9 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 		}
 
 		void fetchData();
-		return () => { controller.abort(); };
+		return () => {
+			controller.abort();
+		};
 	}, [id, lang, apiUrl, page, pageSize, search]);
 
 	useEffect(() => {
@@ -103,12 +112,16 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 
 	const visibleCols = useMemo(() => {
 		if (!result) return [];
-		return result.cols.filter((c) => { return c !== "id" && c !== "acdhid"; });
+		return result.cols.filter((c) => {
+			return c !== "id" && c !== "acdhid";
+		});
 	}, [result]);
 
 	function handleSort(col: string) {
 		if (sortCol === col) {
-			setSortDir((d) => { return d === "asc" ? "desc" : "asc"; });
+			setSortDir((d) => {
+				return d === "asc" ? "desc" : "asc";
+			});
 		} else {
 			setSortCol(col);
 			setSortDir("asc");
@@ -117,7 +130,11 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 	}
 
 	if (loading) {
-		return <div className="flex justify-center py-6"><ArcheLoader label={t("loading")} /></div>;
+		return (
+			<div className="flex justify-center py-6">
+				<ArcheLoader label={t("loading")} />
+			</div>
+		);
 	}
 
 	if (!result || result.aaData.length === 0) {
@@ -135,16 +152,27 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 					{t("show")}
 					<select
 						className="rounded border border-gray-300 px-2 py-1 text-sm"
-						onChange={(e) => { setPageSize(Number(e.target.value)); setPage(0); }}
+						onChange={(e) => {
+							setPageSize(Number(e.target.value));
+							setPage(0);
+						}}
 						value={pageSize}
 					>
-						{PAGE_SIZES.map((s) => { return <option key={s} value={s}>{String(s)}</option>; })}
+						{PAGE_SIZES.map((s) => {
+							return (
+								<option key={s} value={s}>
+									{String(s)}
+								</option>
+							);
+						})}
 					</select>
 					{t("entries")}
 				</div>
 				<input
 					className="rounded border border-gray-300 px-3 py-1 text-sm focus:outline-none"
-					onChange={(e) => { setPendingSearch(e.target.value); }}
+					onChange={(e) => {
+						setPendingSearch(e.target.value);
+					}}
 					placeholder="Search…"
 					type="text"
 					value={pendingSearch}
@@ -162,15 +190,21 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 									<th
 										key={col}
 										className="cursor-pointer select-none px-4 py-2 text-left font-semibold text-gray-700 hover:bg-gray-100"
-										onClick={() => { handleSort(col); }}
+										onClick={() => {
+											handleSort(col);
+										}}
 									>
 										<div className="flex items-center gap-1">
 											{formatColLabel(col)}
-											{isActive
-												? sortDir === "asc"
-													? <ChevronUpIcon className="h-3 w-3 shrink-0 text-gray-500" />
-													: <ChevronDownIcon className="h-3 w-3 shrink-0 text-gray-500" />
-												: <ChevronUpDownIcon className="h-3 w-3 shrink-0 text-gray-400" />}
+											{isActive ? (
+												sortDir === "asc" ? (
+													<ChevronUpIcon className="h-3 w-3 shrink-0 text-gray-500" />
+												) : (
+													<ChevronDownIcon className="h-3 w-3 shrink-0 text-gray-500" />
+												)
+											) : (
+												<ChevronUpDownIcon className="h-3 w-3 shrink-0 text-gray-400" />
+											)}
 										</div>
 									</th>
 								);
@@ -206,13 +240,21 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 					<button
 						className="rounded border border-gray-300 px-2 py-1 disabled:opacity-40"
 						disabled={page === 0}
-						onClick={() => { setPage((p) => { return p - 1; }); }}
+						onClick={() => {
+							setPage((p) => {
+								return p - 1;
+							});
+						}}
 						type="button"
 					>
 						{"‹ Prev"}
 					</button>
-					{Array.from({ length: pageCount }, (_, i) => { return i; })
-						.filter((i) => { return Math.abs(i - page) <= 2; })
+					{Array.from({ length: pageCount }, (_, i) => {
+						return i;
+					})
+						.filter((i) => {
+							return Math.abs(i - page) <= 2;
+						})
 						.map((i) => {
 							return (
 								<button
@@ -223,7 +265,9 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 											? "border-[color:var(--color-arche-acc-dark-blue)] bg-[color:var(--color-arche-acc-dark-blue)] text-white"
 											: "border-gray-300",
 									].join(" ")}
-									onClick={() => { setPage(i); }}
+									onClick={() => {
+										setPage(i);
+									}}
 									type="button"
 								>
 									{String(i + 1)}
@@ -233,7 +277,11 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 					<button
 						className="rounded border border-gray-300 px-2 py-1 disabled:opacity-40"
 						disabled={page >= pageCount - 1}
-						onClick={() => { setPage((p) => { return p + 1; }); }}
+						onClick={() => {
+							setPage((p) => {
+								return p + 1;
+							});
+						}}
 						type="button"
 					>
 						{"Next ›"}

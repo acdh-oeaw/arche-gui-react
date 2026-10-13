@@ -1,4 +1,3 @@
-
 import { useTranslations } from "next-intl";
 import React, { type ReactNode } from "react";
 
@@ -10,19 +9,22 @@ interface MetadataProps {
 }
 
 export function ContactDetailsBlock(props: Readonly<MetadataProps>): ReactNode {
-
 	const { metadata } = props;
-		const t = useTranslations("AppContent.metaview");
+	const t = useTranslations("AppContent.metaview");
 
 	const hasKey = (key: string) => {
 		return Array.isArray(metadata.properties[key]) && metadata.properties[key].length > 0;
 	};
 
-	const hasContent = hasKey("acdh:hasAddressLine1") || hasKey("acdh:hasAddressLine2") || hasKey("acdh:hasPostcode")
-		|| hasKey("acdh:hasCity") || hasKey("acdh:hasRegion") || hasKey("acdh:hasCountry")
-		|| hasKey("acdh:hasEmail") || hasKey("acdh:hasUrl");
-
-
+	const hasContent =
+		hasKey("acdh:hasAddressLine1") ||
+		hasKey("acdh:hasAddressLine2") ||
+		hasKey("acdh:hasPostcode") ||
+		hasKey("acdh:hasCity") ||
+		hasKey("acdh:hasRegion") ||
+		hasKey("acdh:hasCountry") ||
+		hasKey("acdh:hasEmail") ||
+		hasKey("acdh:hasUrl");
 
 	if (!hasContent) return null;
 
@@ -35,82 +37,79 @@ export function ContactDetailsBlock(props: Readonly<MetadataProps>): ReactNode {
 			<div className="w-full pt-5" id="contact-details-div">
 				<ul className="list-inside list-disc space-y-2">
 					{/* hasUrl */}
-					{hasKey('acdh:hasAddressLine1') && (
+					{hasKey("acdh:hasAddressLine1") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasAddressLine1']}
-								title={t('address')}
+								items={metadata.properties["acdh:hasAddressLine1"]}
+								title={t("address")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasAddressLine2') && (
+					{hasKey("acdh:hasAddressLine2") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasAddressLine2']}
-								title={t('address')}
+								items={metadata.properties["acdh:hasAddressLine2"]}
+								title={t("address")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasPostcode') && (
+					{hasKey("acdh:hasPostcode") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasPostcode']}
-								title={t('postcode')}
+								items={metadata.properties["acdh:hasPostcode"]}
+								title={t("postcode")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasCity') && (
+					{hasKey("acdh:hasCity") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasCity']}
-								title={t('city')}
+								items={metadata.properties["acdh:hasCity"]}
+								title={t("city")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasRegion') && (
+					{hasKey("acdh:hasRegion") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasRegion']}
-								title={t('region')}
+								items={metadata.properties["acdh:hasRegion"]}
+								title={t("region")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasCountry') && (
+					{hasKey("acdh:hasCountry") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasCountry']}
-								title={t('country')}
+								items={metadata.properties["acdh:hasCountry"]}
+								title={t("country")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasEmail') && (
+					{hasKey("acdh:hasEmail") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasEmail']}
-								title={t('email')}
+								items={metadata.properties["acdh:hasEmail"]}
+								title={t("email")}
 							></DisplayField>
 						</li>
 					)}
 
-					{hasKey('acdh:hasUrl') && (
+					{hasKey("acdh:hasUrl") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasUrl']}
-								title={t('url')}
+								items={metadata.properties["acdh:hasUrl"]}
+								title={t("url")}
 							></DisplayField>
 						</li>
 					)}
-
 				</ul>
 			</div>
 		</div>
 	);
-};
-
-
+}

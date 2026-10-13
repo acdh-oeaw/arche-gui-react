@@ -1,4 +1,3 @@
-
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
@@ -11,9 +10,7 @@ interface MetadataPageProps {
 	}>;
 }
 
-export default async function MetadataPage(
-	props: Readonly<MetadataPageProps>,
-): Promise<ReactNode> {
+export default async function MetadataPage(props: Readonly<MetadataPageProps>): Promise<ReactNode> {
 	const { params } = props;
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "AppContent.metaview" });
@@ -22,7 +19,9 @@ export default async function MetadataPage(
 
 	return (
 		<MainContent className="metadata-main-content mx-auto w-full px-3 pt-3">
-			<div className="rounded-[10px] bg-red-500 p-5 mb-5 text-center text-2xl text-white">{t("provide_id_metadata_view")}</div>
+			<div className="rounded-[10px] bg-red-500 p-5 mb-5 text-center text-2xl text-white">
+				{t("provide_id_metadata_view")}
+			</div>
 		</MainContent>
 	);
 }

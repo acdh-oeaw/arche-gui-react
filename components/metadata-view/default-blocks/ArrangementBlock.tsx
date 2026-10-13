@@ -1,4 +1,3 @@
-
 import { useTranslations } from "next-intl";
 import React, { type ReactNode } from "react";
 
@@ -10,11 +9,14 @@ interface MetadataProps {
 	metadata: ParsedMetadata;
 }
 
-interface PropEntry { value: string; type?: string; id?: string | number }
+interface PropEntry {
+	value: string;
+	type?: string;
+	id?: string | number;
+}
 type MetaProps = Record<string, Array<PropEntry>>;
 
 export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
-
 	const { metadata } = props;
 	const t = useTranslations("AppContent.metaview");
 
@@ -26,7 +28,6 @@ export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
 
 	const hasContent = hasKey("acdh:hasArrangement");
 	const ArrangementData = metadata.getDataByProperty("acdh:hasArrangement");
-
 
 	if (!hasContent) return null;
 
@@ -43,6 +44,4 @@ export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
 			</div>
 		</div>
 	);
-};
-
-
+}

@@ -56,21 +56,17 @@ function FacetCard({
 	return (
 		<div className="facet-card w-full rounded-[8px] ">
 			<div className="facet-card-header">
-			<button
-				className="flex w-full items-center justify-between  text-sm font-bold text-gray-700  hover:bg-gray-50"
-				onClick={onToggle}
-				title={tooltip}
-				type="button"
-			>
-				<span className="!font-bold">{label}</span>
-				<span className="text-gray-400">{collapsed ? "▼" : "▲"}</span>
+				<button
+					className="flex w-full items-center justify-between  text-sm font-bold text-gray-700  hover:bg-gray-50"
+					onClick={onToggle}
+					title={tooltip}
+					type="button"
+				>
+					<span className="!font-bold">{label}</span>
+					<span className="text-gray-400">{collapsed ? "▼" : "▲"}</span>
 				</button>
-				</div>
-			{!collapsed && (
-				<div className="facet-card-content flex flex-col gap-2">
-					{children}
-				</div>
-			)}
+			</div>
+			{!collapsed && <div className="facet-card-content flex flex-col gap-2">{children}</div>}
 		</div>
 	);
 }
@@ -94,9 +90,7 @@ function TagInput({
 		(v) => v.value !== null && !activeValues.includes(v.value ?? ""),
 	);
 	const filtered = filter
-		? available.filter((v) =>
-				shortenUri(v.label).toLowerCase().includes(filter.toLowerCase()),
-			)
+		? available.filter((v) => shortenUri(v.label).toLowerCase().includes(filter.toLowerCase()))
 		: available;
 
 	return (
@@ -179,8 +173,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	function getFacetLabel(propKey: string, fallback: string): string {
 		const hashIndex = propKey.lastIndexOf("#");
 		const lookupKey = hashIndex !== -1 ? propKey.slice(hashIndex + 1) : propKey;
-		const labels = (messages?.AppContent as { smartsearch?: { facetLabels?: Record<string, string> } })
-			?.smartsearch?.facetLabels;
+		const labels = (
+			messages?.AppContent as { smartsearch?: { facetLabels?: Record<string, string> } }
+		)?.smartsearch?.facetLabels;
 		if (labels?.[lookupKey]) return t(`smartsearch.facetLabels.${lookupKey}`);
 		return fallback;
 	}
@@ -345,7 +340,13 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					onClick={handleSearch}
 					type="button"
 				>
-					<svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+					<svg
+						className="h-4 w-4"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth={2}
+						viewBox="0 0 24 24"
+					>
 						<circle cx="11" cy="11" r="8" />
 						<path d="m21 21-4.35-4.35" strokeLinecap="round" />
 					</svg>
@@ -354,7 +355,6 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 			{/* Facet cards */}
 			{Object.entries(facets).map(([key, facet]) => {
-
 				if (facet.type === "matchProperty" || facet.type === "linkProperty") return null;
 
 				if (facet.type === "map") {
@@ -470,7 +470,6 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							type="checkbox"
 						/>
 						{t("smartsearch.search_in_file_content")}
-
 					</label>
 					<label className="flex cursor-pointer items-center gap-2 text-sm">
 						<input
@@ -479,7 +478,6 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							type="checkbox"
 						/>
 						{t("smartsearch.follow_named_entitites")}
-
 					</label>
 				</div>
 			</FacetCard>
@@ -491,7 +489,6 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				type="button"
 			>
 				{t("smartsearch.reset_filters")}
-
 			</button>
 			<button
 				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
@@ -499,14 +496,12 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				type="button"
 			>
 				{t("smartsearch.search")}
-
 			</button>
 			<button
 				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
 				type="button"
 			>
 				{t("smartsearch.add_to_clarin")}
-
 			</button>
 		</div>
 	);

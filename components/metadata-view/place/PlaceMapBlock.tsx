@@ -18,7 +18,9 @@ export default function PlaceMapBlock(props: Readonly<PlaceMapBlockProps>): Reac
 
 	const t = useTranslations("AppContent.metaview");
 
-	const coordEntries = Object.entries(coordsData).filter(([, items]) => { return items.length > 0; });
+	const coordEntries = Object.entries(coordsData).filter(([, items]) => {
+		return items.length > 0;
+	});
 
 	if (!data || !type) return null;
 
@@ -31,9 +33,7 @@ export default function PlaceMapBlock(props: Readonly<PlaceMapBlockProps>): Reac
 					{coordEntries.map(([label, items]) => (
 						<li key={label} className="">
 							<span className="mb-0!">{label}:</span>
-							<span className="mb-0!">
-								{items.map((item) => item.value).join(", ")}
-							</span>
+							<span className="mb-0!">{items.map((item) => item.value).join(", ")}</span>
 						</li>
 					))}
 				</ul>

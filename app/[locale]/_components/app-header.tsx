@@ -127,7 +127,7 @@ export function AppHeader(): ReactNode {
 					<LocaleSwitcher />
 				</div>
 			</div>
-			<div className="flex w-full flex-col items-center gap-y-6 px-4 pt-6 pb-10 text-center">
+			<div className="header-content">
 				<div className="pointer-events-none absolute bottom-[-5px] left-[18%] hidden md:block">
 					<Image
 						alt="Dante PC illustration"
@@ -155,23 +155,23 @@ export function AppHeader(): ReactNode {
 
 				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
 					<Link href="https://doi.org/10.34894/SNEQ7T">
-															<Image
-																alt="Core Trust Seal"
-																className="h-8 w-auto"
-																height="64"
-																src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
-																width="64"
-																/>
-															</Link>
-															<Link href="https://doi.org/10.34733/doc-105">
-															<Image
-																alt="CLARIN B-centre"
-																className="h-8 w-auto"
-																height="72"
-																src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
-																width="72"
-																/>
-																</Link>
+						<Image
+							alt="Core Trust Seal"
+							className="h-8 w-auto"
+							height="64"
+							src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
+							width="64"
+						/>
+					</Link>
+					<Link href="https://doi.org/10.34733/doc-105">
+						<Image
+							alt="CLARIN B-centre"
+							className="h-8 w-auto"
+							height="72"
+							src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
+							width="72"
+						/>
+					</Link>
 				</div>
 			</div>
 		</header>

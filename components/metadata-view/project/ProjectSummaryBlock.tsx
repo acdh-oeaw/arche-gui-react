@@ -10,7 +10,11 @@ interface MetadataProps {
 	metadata: ParsedMetadata;
 }
 
-interface PropEntry { value: string; type?: string; id?: string | number }
+interface PropEntry {
+	value: string;
+	type?: string;
+	id?: string | number;
+}
 type MetaProps = Record<string, Array<PropEntry>>;
 
 export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
@@ -54,8 +58,15 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 		}
 	}
 
-	const hasListContent = hasKey("acdh:hasRelatedDiscipline") || hasKey("acdh:hasSubject") || hasKey("acdh:hasSpatialCoverage") || Boolean(coverageDateText) ||
-		hasKey("acdh:hasTemporalCoverage") || hasKey("acdh:hasAppliedMethod") || hasKey("acdh:hasAppliedMethodDescription") || Boolean(collectedDateText);
+	const hasListContent =
+		hasKey("acdh:hasRelatedDiscipline") ||
+		hasKey("acdh:hasSubject") ||
+		hasKey("acdh:hasSpatialCoverage") ||
+		Boolean(coverageDateText) ||
+		hasKey("acdh:hasTemporalCoverage") ||
+		hasKey("acdh:hasAppliedMethod") ||
+		hasKey("acdh:hasAppliedMethodDescription") ||
+		Boolean(collectedDateText);
 
 	const hasContent = hasListContent || hasKey("acdh:hasDescription") || hasKey("acdh:hasNote");
 
@@ -63,81 +74,68 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 
 	return (
 		<div className="flex w-full flex-col gap-5 pt-5" id="av-summary">
-
-				<h3 className="metadata-view-block-title">{t("summary")}</h3>
-
+			<h3 className="metadata-view-block-title">{t("summary")}</h3>
 
 			{hasListContent && (
-			<ul className="list-inside list-disc space-y-2">
-				{hasKey("acdh:hasRelatedDiscipline") && (
-					<li>
-						<DisplayField
-							items={metaProps["acdh:hasRelatedDiscipline"] ?? []}
-							title={t("research_discipline")}
-
-						/>
-					</li>
-				)}
-
-				{hasKey("acdh:hasSubject") && (
-					<li>
-						<DisplayField
-							items={metaProps["acdh:hasSubject"] ?? []}
-							title={t("subject")}
-						/>
-					</li>
-				)}
-
-				{hasKey("acdh:hasSpatialCoverage") && (
-					<li>
-						<DisplayField
-							items={metaProps["acdh:hasSpatialCoverage"] ?? []}
-							title={t("spatial_coverage")}
-						/>
-					</li>
-				)}
-
-				{coverageDateText && (
-					<li>
-						<strong>{t("coverage_date")}: </strong>
-						<span>{coverageDateText}</span>
-					</li>
-				)}
-
-				{hasKey("acdh:hasTemporalCoverage") && (
-					<li>
-						<strong>{t("era")}:</strong>{" "}
-						{metaProps["acdh:hasTemporalCoverage"]?.[0]?.value}
-					</li>
-				)}
-
-				{hasKey("acdh:hasAppliedMethod") && (
-					<li>
-						<strong>{t("methods")}:</strong>{" "}
-						{metaProps["acdh:hasAppliedMethod"]?.[0]?.value}
-					</li>
-				)}
-
-				{hasKey("acdh:hasAppliedMethodDescription") && (
-					<li>
-						<strong>{t("methods_description")}:</strong>{" "}
-						{metaProps["acdh:hasAppliedMethodDescription"]?.[0]?.value}
-					</li>
+				<ul className="list-inside list-disc space-y-2">
+					{hasKey("acdh:hasRelatedDiscipline") && (
+						<li>
+							<DisplayField
+								items={metaProps["acdh:hasRelatedDiscipline"] ?? []}
+								title={t("research_discipline")}
+							/>
+						</li>
 					)}
 
-						{collectedDateText && (
-					<li>
-						<strong>{t("data_collection_Date")}: </strong>
-						<span>{coverageDateText}</span>
-					</li>
-				)}
+					{hasKey("acdh:hasSubject") && (
+						<li>
+							<DisplayField items={metaProps["acdh:hasSubject"] ?? []} title={t("subject")} />
+						</li>
+					)}
 
+					{hasKey("acdh:hasSpatialCoverage") && (
+						<li>
+							<DisplayField
+								items={metaProps["acdh:hasSpatialCoverage"] ?? []}
+								title={t("spatial_coverage")}
+							/>
+						</li>
+					)}
 
-			</ul>
+					{coverageDateText && (
+						<li>
+							<strong>{t("coverage_date")}: </strong>
+							<span>{coverageDateText}</span>
+						</li>
+					)}
+
+					{hasKey("acdh:hasTemporalCoverage") && (
+						<li>
+							<strong>{t("era")}:</strong> {metaProps["acdh:hasTemporalCoverage"]?.[0]?.value}
+						</li>
+					)}
+
+					{hasKey("acdh:hasAppliedMethod") && (
+						<li>
+							<strong>{t("methods")}:</strong> {metaProps["acdh:hasAppliedMethod"]?.[0]?.value}
+						</li>
+					)}
+
+					{hasKey("acdh:hasAppliedMethodDescription") && (
+						<li>
+							<strong>{t("methods_description")}:</strong>{" "}
+							{metaProps["acdh:hasAppliedMethodDescription"]?.[0]?.value}
+						</li>
+					)}
+
+					{collectedDateText && (
+						<li>
+							<strong>{t("data_collection_Date")}: </strong>
+							<span>{coverageDateText}</span>
+						</li>
+					)}
+				</ul>
 			)}
-
-
-
 
 			{hasKey("acdh:hasDescription") && (
 				<SummaryBlockDescription
@@ -151,12 +149,10 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 			{hasKey("acdh:hasNote") && (
 				<ul className="list-inside list-disc">
 					<li>
-						<strong>{t("note")}:</strong>{" "}
-						{metaProps["acdh:hasNote"]?.[0]?.value}
+						<strong>{t("note")}:</strong> {metaProps["acdh:hasNote"]?.[0]?.value}
 					</li>
 				</ul>
 			)}
 		</div>
 	);
 }
-

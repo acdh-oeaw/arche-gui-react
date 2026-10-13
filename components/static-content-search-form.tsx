@@ -6,7 +6,6 @@ import { Image } from "@/components/image";
 import { useRouter } from "@/lib/navigation/navigation";
 import { withBasePath } from "@/config/base-path";
 
-
 interface StaticContentSearchFormProps {
 	/** Accessible label and placeholder for the input. */
 	searchLabel: string;

@@ -14,7 +14,6 @@ import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/Pre
 import { ArrangementBlock } from "@/components/metadata-view/default-blocks/ArrangementBlock";
 import { ProjectSummaryBlock } from "@/components/metadata-view/project/ProjectSummaryBlock";
 
-
 interface ProjectViewProps {
 	metadata: ParsedMetadata;
 	language?: string;
@@ -30,9 +29,7 @@ export function ProjectView(props: Readonly<ProjectViewProps>): ReactNode {
 				basicContent={
 					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
-							<div>
-
-							</div>
+							<div></div>
 							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
 						</div>
 						<NewVersionBlock
@@ -46,34 +43,31 @@ export function ProjectView(props: Readonly<ProjectViewProps>): ReactNode {
 
 						<hr className="meatdata-view-top-hr"></hr>
 
-						<PreviousNextBlock url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()} rootId={metadata.getRootId()}></PreviousNextBlock>
+						<PreviousNextBlock
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+							rootId={metadata.getRootId()}
+						></PreviousNextBlock>
 
 						<TitleBlock metadata={metadata}></TitleBlock>
 
-						<ProjectSummaryBlock metadata={metadata} ></ProjectSummaryBlock>
+						<ProjectSummaryBlock metadata={metadata}></ProjectSummaryBlock>
 
+						<SeeAlsoBlock metadata={metadata}></SeeAlsoBlock>
 
-						<SeeAlsoBlock metadata={metadata} ></SeeAlsoBlock>
+						<MetadataTabs
+							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+						/>
 
-
-						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()}/>
-
-						<div>
-
-
-
-
-						</div>
+						<div></div>
 					</div>
 				}
 				expertData={metadata.getExpertTableData()}
 				id={metadata.getId()}
 				language={language}
-				sideContent={
-					<CardsBlock metadata={ metadata}  />
-
-
-				}
+				sideContent={<CardsBlock metadata={metadata} />}
 				translations={{
 					basic_view: t("metaview.basic_view"),
 					expert_view: t("metaview.expert_view"),

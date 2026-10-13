@@ -13,10 +13,7 @@ function FooterContactBox() {
 							<h3 className="">{t("menu.contact_box.label")}</h3>
 							<p className="cta-item">{t("menu.contact_box.description")}</p>
 						</div>
-						<a
-							className="btn btn-arche-blue"
-							href="mailto:arche@oeaw.ac.at"
-						>
+						<a className="btn btn-arche-blue" href="mailto:arche@oeaw.ac.at">
 							{t("menu.contact_box.button_label")}
 						</a>
 					</div>

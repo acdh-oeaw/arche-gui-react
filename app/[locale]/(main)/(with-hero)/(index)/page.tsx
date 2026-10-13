@@ -6,7 +6,6 @@ import { HomeStats } from "@/components/home/HomeStats";
 import { CollectionsCarouselEnhancer } from "@/components/ui/collections-carousel-enhancer";
 import { MainContent } from "@/components/ui/main-content";
 import { getStaticPage, getStaticPageFromDisk } from "@/lib/api/StaticPagesApi";
-import TwTokens from "@/lib/api/TwTokens";
 import { getIntlLanguage, type IntlLocale } from "@/lib/i18n/locales";
 
 interface StaticPageProps {
@@ -43,16 +42,15 @@ export default async function IndexPage(props: Readonly<StaticPageProps>): Promi
 
 	return (
 		<MainContent className="content-start">
-			{ /* The TWTokens passes the css classes for the static pages */}
-			<TwTokens />
+			{/* The TWTokens passes the css classes for the static pages */}
 			<section
 				className="w-full bg-white"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
 			/>
-			{ /* display the carousel on the main page */}
+			{/* display the carousel on the main page */}
 			<CollectionsCarouselEnhancer />
-			{ /* Display the new animated counter on the home page */}
+			{/* Display the new animated counter on the home page */}
 			<HomeStats lang={lang} />
 		</MainContent>
 	);

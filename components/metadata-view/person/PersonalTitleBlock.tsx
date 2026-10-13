@@ -14,9 +14,11 @@ function PersonalTitleBlock(props: Readonly<PersonalTitleBlockProps>): ReactNode
 
 	return (
 		<div>
-			{(personalTitle && (
-				<p className="metadata-alt-title">{t("personal_title")}: {metadata.getPersonalTitle()}</p>
-			))}
+			{personalTitle && (
+				<p className="metadata-alt-title">
+					{t("personal_title")}: {metadata.getPersonalTitle()}
+				</p>
+			)}
 		</div>
 	);
 }

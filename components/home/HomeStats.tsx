@@ -65,7 +65,9 @@ function StatBox(props: Readonly<StatBoxProps>) {
 		<div className="flex flex-1 items-center gap-4 rounded-[8px] border border-[#e1e1e1] bg-white p-6">
 			<span className="shrink-0">{icon}</span>
 			<div>
-				<div className="mb-[5px] text-[34px] leading-none font-bold tracking-[-1px] text-arche-acc-font-color">{value}</div>
+				<div className="mb-[5px] text-[34px] leading-none font-bold tracking-[-1px] text-arche-acc-font-color">
+					{value}
+				</div>
 				<div className="text-small tracking-wide text-text-weak uppercase">{label}</div>
 			</div>
 		</div>
@@ -79,7 +81,9 @@ export function HomeStats(props: Readonly<HomeStatsProps>): ReactNode {
 	const [container, setContainer] = useState<HTMLElement | null>(null);
 	const [stat, setStat] = useState<FrontendStat | null>(null);
 
-	{ /* change the static text div id=static-content with the HomeStats content */}
+	{
+		/* change the static text div id=static-content with the HomeStats content */
+	}
 	useEffect(() => {
 		setContainer(document.getElementById(PORTAL_TARGET_ID));
 	}, []);
@@ -114,9 +118,21 @@ export function HomeStats(props: Readonly<HomeStatsProps>): ReactNode {
 
 	return createPortal(
 		<div className="grid w-full grid-cols-1 gap-4 pb-10 sm:grid-cols-3">
-			<StatBox icon={<TopCollectionIcon className="size-9" />} label={t("topCollection")} value={formatCount(topCollection)} />
-			<StatBox icon={<ResourceIcon className="size-9" />} label={t("resources")} value={formatCount(resources)} />
-			<StatBox icon={<DatabaseIcon className="size-9" />} label={t("totalSize")} value={formatSize(size)} />
+			<StatBox
+				icon={<TopCollectionIcon className="size-9" />}
+				label={t("topCollection")}
+				value={formatCount(topCollection)}
+			/>
+			<StatBox
+				icon={<ResourceIcon className="size-9" />}
+				label={t("resources")}
+				value={formatCount(resources)}
+			/>
+			<StatBox
+				icon={<DatabaseIcon className="size-9" />}
+				label={t("totalSize")}
+				value={formatSize(size)}
+			/>
 		</div>,
 		container,
 	);

@@ -18,16 +18,16 @@ const PUBLICATIONS_TYPES = ["topcollection", "collection", "resource", "oldresou
 const PROJECT_TYPES = ["project"];
 
 interface TabConfig {
-  key: string;
-  label: string;
-  types: Array<string>;
-  content: ReactNode;
+	key: string;
+	label: string;
+	types: Array<string>;
+	content: ReactNode;
 }
 
 interface MetadataTabsProps {
-  id: string;
-  acdhType: string;
-  apiUrl: string;
+	id: string;
+	acdhType: string;
+	apiUrl: string;
 }
 
 export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProps>) {
@@ -44,57 +44,88 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 		});
 	}, []);
 
-	const handleCollectionContentEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("collection_content", isEmpty);
-	}, [handleEmpty]);
+	const handleCollectionContentEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("collection_content", isEmpty);
+		},
+		[handleEmpty],
+	);
 
-	const handleAssociatedCollectionsEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("associated_collections_and_resources", isEmpty);
-	}, [handleEmpty]);
+	const handleAssociatedCollectionsEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("associated_collections_and_resources", isEmpty);
+		},
+		[handleEmpty],
+	);
 
-	const handlePublicationsEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("publications", isEmpty);
-	}, [handleEmpty]);
+	const handlePublicationsEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("publications", isEmpty);
+		},
+		[handleEmpty],
+	);
 
-	const handleSpatialCoverageEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("place", isEmpty);
-	}, [handleEmpty]);
+	const handleSpatialCoverageEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("place", isEmpty);
+		},
+		[handleEmpty],
+	);
 
-	const handleProjectEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("project", isEmpty);
-	}, [handleEmpty]);
+	const handleProjectEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("project", isEmpty);
+		},
+		[handleEmpty],
+	);
 
-		const handleMembersEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("members", isEmpty);
-		}, [handleEmpty]);
-	const handleInvolvedEmpty = useCallback((isEmpty: boolean) => {
-		handleEmpty("involved", isEmpty);
-	}, [handleEmpty]);
+	const handleMembersEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("members", isEmpty);
+		},
+		[handleEmpty],
+	);
+	const handleInvolvedEmpty = useCallback(
+		(isEmpty: boolean) => {
+			handleEmpty("involved", isEmpty);
+		},
+		[handleEmpty],
+	);
 
 	const allTabs: Array<TabConfig> = [
 		{
 			key: "collection_content",
 			label: t("collection_content"),
-      types: COLLECTION_TYPES,
-			content: <CollectionContentBlock apiUrl={apiUrl} id={id} onEmpty={handleCollectionContentEmpty} />,
-    },
-    {
-      key: "associated_collections_and_resources",
-      label: t("associated_collections_and_resources"),
-      types: RPR_TYPES,
-			content: <AssociatedCollectionsBlock apiUrl={apiUrl} id={id} onEmpty={handleAssociatedCollectionsEmpty} />,
-    },
+			types: COLLECTION_TYPES,
+			content: (
+				<CollectionContentBlock apiUrl={apiUrl} id={id} onEmpty={handleCollectionContentEmpty} />
+			),
+		},
+		{
+			key: "associated_collections_and_resources",
+			label: t("associated_collections_and_resources"),
+			types: RPR_TYPES,
+			content: (
+				<AssociatedCollectionsBlock
+					apiUrl={apiUrl}
+					id={id}
+					onEmpty={handleAssociatedCollectionsEmpty}
+				/>
+			),
+		},
 		{
 			key: "publications",
 			label: t("publications"),
-      types: PUBLICATIONS_TYPES,
+			types: PUBLICATIONS_TYPES,
 			content: <PublicationsBlock apiUrl={apiUrl} id={id} onEmpty={handlePublicationsEmpty} />,
 		},
 		{
 			key: "place",
 			label: t("spatial_coverage_of"),
 			types: ["place"],
-			content: <SpatialCoverageBlock apiUrl={apiUrl} id={id} onEmpty={handleSpatialCoverageEmpty} />,
+			content: (
+				<SpatialCoverageBlock apiUrl={apiUrl} id={id} onEmpty={handleSpatialCoverageEmpty} />
+			),
 		},
 		{
 			key: "project",
@@ -123,25 +154,31 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 			types: ["person"],
 			content: <ContributedTableBlock apiUrl={apiUrl} id={id} onEmpty={handleInvolvedEmpty} />,
 		},
-  ];
+	];
 
-  const eligibleTabs = allTabs.filter((tab) => { return tab.types.includes(type); });
+	const eligibleTabs = allTabs.filter((tab) => {
+		return tab.types.includes(type);
+	});
 
-  if (eligibleTabs.length === 0) return null;
+	if (eligibleTabs.length === 0) return null;
 
-  const visibleTabs = eligibleTabs.filter((tab) => { return !emptyTabs[tab.key]; });
+	const visibleTabs = eligibleTabs.filter((tab) => {
+		return !emptyTabs[tab.key];
+	});
 
-	const currentKey = visibleTabs.some((tab) => { return tab.key === activeKey; })
+	const currentKey = visibleTabs.some((tab) => {
+		return tab.key === activeKey;
+	})
 		? activeKey
-		: visibleTabs[0]?.key ?? null;
+		: (visibleTabs[0]?.key ?? null);
 
+	if (visibleTabs.length === 0) {
+		return null;
+	}
 
-
-	if (visibleTabs.length === 0) { return null;  }
-
-  return (
-    <div className="w-full">
-      {/* Tab headers */}
+	return (
+		<div className="w-full">
+			{/* Tab headers */}
 			{visibleTabs.length > 0 && (
 				<div className="flex border-b border-gray-200">
 					{visibleTabs.map((tab) => {
@@ -155,7 +192,9 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 										? "border-b-2 border-(--color-arche-acc-dark-blue) text-(--color-arche-acc-dark-blue)"
 										: "text-gray-500 hover:text-gray-700",
 								].join(" ")}
-								onClick={() => { setActiveKey(tab.key); }}
+								onClick={() => {
+									setActiveKey(tab.key);
+								}}
 								type="button"
 							>
 								{tab.label}
@@ -165,8 +204,8 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 				</div>
 			)}
 
-      {/* Tab content */}
-      <div className="basic-inside-content-div mt-2">
+			{/* Tab content */}
+			<div className="basic-inside-content-div mt-2">
 				{eligibleTabs.map((tab) => {
 					const isActive = tab.key === currentKey;
 					return (
@@ -175,7 +214,7 @@ export function MetadataTabs({ id, acdhType, apiUrl }: Readonly<MetadataTabsProp
 						</div>
 					);
 				})}
-      </div>
-    </div>
-  );
+			</div>
+		</div>
+	);
 }

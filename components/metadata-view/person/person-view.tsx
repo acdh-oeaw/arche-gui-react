@@ -13,9 +13,6 @@ import { MemberBlock } from "@/components/metadata-view/organisation/MemberBlock
 import { ContactDetailsBlock } from "@/components/metadata-view/person/ContactDetailsBlock";
 import PersonalTitleBlock from "@/components/metadata-view/person/PersonalTitleBlock";
 
-
-
-
 interface BasicViewProps {
 	metadata: ParsedMetadata;
 	language?: string;
@@ -31,9 +28,7 @@ export function PersonView(props: Readonly<BasicViewProps>): ReactNode {
 				basicContent={
 					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
-							<div>
-
-							</div>
+							<div></div>
 							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>
 						</div>
 						<NewVersionBlock
@@ -47,33 +42,33 @@ export function PersonView(props: Readonly<BasicViewProps>): ReactNode {
 
 						<hr className="meatdata-view-top-hr"></hr>
 
-						<PreviousNextBlock url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()} rootId={metadata.getRootId()}></PreviousNextBlock>
+						<PreviousNextBlock
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+							rootId={metadata.getRootId()}
+						></PreviousNextBlock>
 
 						<TitleBlock metadata={metadata}></TitleBlock>
 
-						<PersonalTitleBlock metadata={metadata}/>
+						<PersonalTitleBlock metadata={metadata} />
 
 						<MemberBlock metadata={metadata} />
 
 						<ContactDetailsBlock metadata={metadata} />
 
-						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()} />
+						<MetadataTabs
+							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+						/>
 
-						<div>
-
-
-
-						</div>
+						<div></div>
 					</div>
 				}
 				expertData={metadata.getExpertTableData()}
 				id={metadata.getId()}
 				language={language}
-				sideContent={
-					<CardsBlock metadata={ metadata}  />
-
-
-				}
+				sideContent={<CardsBlock metadata={metadata} />}
 				translations={{
 					basic_view: t("metaview.basic_view"),
 					expert_view: t("metaview.expert_view"),

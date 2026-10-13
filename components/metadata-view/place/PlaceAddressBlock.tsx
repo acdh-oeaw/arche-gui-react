@@ -24,10 +24,7 @@ export default function PlaceAddressBlock(props: Readonly<PlaceAddressBlockProps
 					<span className="text-small font-strong text-text-strong">{label}:</span>
 					<span className="text-small text-text-weak">
 						{items.map((item) => (
-							<span
-								key={item.id != null ? String(item.id) : item.value}
-								className="block"
-							>
+							<span key={item.id != null ? String(item.id) : item.value} className="block">
 								{item.id != null ? (
 									<a
 										className="text-text-brand hover:underline"

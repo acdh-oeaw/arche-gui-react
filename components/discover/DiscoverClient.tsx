@@ -17,15 +17,13 @@ export function DiscoverClient() {
 		console.log("URL params:", params);
 	}, [sp]);
 
-
-	const uiPage = toNumber(sp.get('page'), 1);
+	const uiPage = toNumber(sp.get("page"), 1);
 	const apiPage = Math.max(0, uiPage - 1);
 
+	const apiParams = new URLSearchParams(sp.toString());
+	apiParams.set("page", String(apiPage));
 
-  const apiParams = new URLSearchParams(sp.toString());
-  apiParams.set('page', String(apiPage));
-
-  const base = process.env.NEXT_PUBLIC_BASE_BROWSER!;
+	const base = process.env.NEXT_PUBLIC_BASE_BROWSER!;
 
 	return null;
 }

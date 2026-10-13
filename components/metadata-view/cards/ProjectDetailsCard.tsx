@@ -1,12 +1,10 @@
-'use client';
+"use client";
 import { useTranslations } from "next-intl";
 
-import { CardTemplate, type CardValue } from './CardTemplate';
+import { CardTemplate, type CardValue } from "./CardTemplate";
 
 export function ProjectDetailsCard({ data }: Readonly<{ data: Record<string, Array<CardValue>> }>) {
 	const t = useTranslations("AppContent.metaview");
 
-	return (
-		<CardTemplate cardTitle={t('project_details')} data={data} />
-	);
+	return <CardTemplate cardTitle={t("project_details")} data={data} />;
 }

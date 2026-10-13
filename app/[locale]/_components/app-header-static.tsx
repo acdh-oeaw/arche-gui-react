@@ -15,7 +15,11 @@ interface AppHeaderStaticProps {
 	pdfUrl?: string;
 }
 
-export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHeaderStaticProps>): ReactNode {
+export function AppHeaderStatic({
+	title,
+	description,
+	pdfUrl,
+}: Readonly<AppHeaderStaticProps>): ReactNode {
 	const t = useTranslations("AppHeader");
 
 	const label = t("navigation.label");
@@ -117,7 +121,10 @@ export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHead
 
 	return (
 		// eslint-disable-next-line tailwindcss/no-custom-classname
-		<header className="background-image-front-div front-header-div flex w-full flex-col border-b border-stroke-weak bg-arche-acc-light-blue" style={{ height: "306px" }}>
+		<header
+			className="background-image-front-div front-header-div flex w-full flex-col border-b border-stroke-weak bg-arche-acc-light-blue"
+			style={{ height: "306px" }}
+		>
 			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile
@@ -143,7 +150,6 @@ export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHead
 					/>
 				</div>
 
-
 				<div className="max-w-3xl space-y-2">
 					<h1 className="section-header-title">{title}</h1>
 					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
@@ -158,27 +164,26 @@ export function AppHeaderStatic({ title, description, pdfUrl }: Readonly<AppHead
 						</a>
 					)}
 
-
-				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
-					<Link href="https://doi.org/10.34894/SNEQ7T">
-										<Image
-											alt="Core Trust Seal"
-											className="h-8 w-auto"
-											height="64"
-											src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
-											width="64"
-											/>
-										</Link>
-										<Link href="https://doi.org/10.34733/doc-105">
-										<Image
-											alt="CLARIN B-centre"
-											className="h-8 w-auto"
-											height="72"
-											src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
-											width="72"
-											/>
-											</Link>
-				</div>
+					<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
+						<Link href="https://doi.org/10.34894/SNEQ7T">
+							<Image
+								alt="Core Trust Seal"
+								className="h-8 w-auto"
+								height="64"
+								src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
+								width="64"
+							/>
+						</Link>
+						<Link href="https://doi.org/10.34733/doc-105">
+							<Image
+								alt="CLARIN B-centre"
+								className="h-8 w-auto"
+								height="72"
+								src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
+								width="72"
+							/>
+						</Link>
+					</div>
 				</div>
 			</div>
 		</header>

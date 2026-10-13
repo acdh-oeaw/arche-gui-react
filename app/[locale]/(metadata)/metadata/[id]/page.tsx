@@ -19,12 +19,10 @@ interface MetadataPageProps {
 	}>;
 }
 
-
 export async function generateMetadata(
 	props: Readonly<MetadataPageProps>,
 	_parent: ResolvingMetadata,
 ): Promise<NextMetadata> {
-
 	const { params } = props;
 	const { id, locale } = await params;
 	const t = await getTranslations({ locale, namespace: "AppHeader" });
@@ -43,11 +41,15 @@ export default async function MetadataPage(props: Readonly<MetadataPageProps>): 
 
 	setRequestLocale(locale);
 	const language = getIntlLanguage(locale);
-	{ /* Get the Expert data from the symfony API */}
+	{
+		/* Get the Expert data from the symfony API */
+	}
 	const metadata = await getData(id, "expert", language);
 	const acdhType = (metadata.getAcdhTypeNiceFormat() ?? "").toLowerCase();
 
-	{ /* Based on the acdhtype, provide the view with the custom data */}
+	{
+		/* Based on the acdhtype, provide the view with the custom data */
+	}
 	switch (acdhType) {
 		case "organisation":
 			return <OrganisationView metadata={metadata} />;

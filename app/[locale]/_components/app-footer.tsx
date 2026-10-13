@@ -53,16 +53,23 @@ export function AppFooter(): ReactNode {
 
 	return (
 		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
-			<div className="grid grid-cols-6 gap-4">
-				<div className="col-span-4 col-start-2">
+			{/* One column on phones; the inset 4-of-6 layout only from `sm` up, where it fits. */}
+			<div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-6">
+				<div className="col-span-full sm:col-span-4 sm:col-start-2">
 					<div className="w-full">
 						<FooterContactBox></FooterContactBox>
 					</div>
 				</div>
 			</div>
 
-			<div className="mx-auto max-w-7xl">
-				<div className="grid grid-cols-[100px_repeat(4,1fr)] gap-4">
+			{/* Inline padding so the stacked columns do not sit flush against the screen edge. */}
+			<div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
+				{/*
+				 * The five-track layout needs roughly 500px of content width, so it only applies from
+				 * `lg` up. Below that the columns stack, otherwise their `min-width: auto` forces the
+				 * whole page wider than a phone viewport.
+				 */}
+				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[100px_repeat(4,1fr)]">
 					{/* Logo & Address */}
 					<div className="">
 						<a href="https://www.oeaw.ac.at/acdh/">
@@ -203,7 +210,7 @@ export function AppFooter(): ReactNode {
 					</span>
 
 					<span>
-					<Link
+						<Link
 							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline"
 							href="/accessibility"
 						>

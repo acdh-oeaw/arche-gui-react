@@ -9,17 +9,16 @@ interface DepositionProcessLayoutProps {
 	params: Promise<{ locale: IntlLocale }>;
 }
 
-export default async function TermsOfUseLayout(props: Readonly<DepositionProcessLayoutProps>): Promise<ReactNode> {
+export default async function TermsOfUseLayout(
+	props: Readonly<DepositionProcessLayoutProps>,
+): Promise<ReactNode> {
 	const { children, params } = props;
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "AppContent.staticHeaders.terms-of-use" });
 
 	return (
 		<>
-			<AppHeaderStatic
-				description={t("description")}
-				title={t("title")}
-			/>
+			<AppHeaderStatic description={t("description")} title={t("title")} />
 			{children}
 		</>
 	);

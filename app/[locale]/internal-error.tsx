@@ -42,12 +42,8 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 					<h1 className="font-heading text-display font-strong text-balance text-text-strong">
 						{t("title")}
 					</h1>
-					<p className="max-w-xl text-balance text-text-weak">
-						{t("description")}
-					</p>
-					<p className="text-balance text-text-weak">
-						{t("apology")}
-					</p>
+					<p className="max-w-xl text-balance text-text-weak">{t("description")}</p>
+					<p className="text-balance text-text-weak">{t("apology")}</p>
 				</div>
 
 				<div className="flex w-full flex-col items-center justify-between gap-6 border-t border-stroke-weak pt-8 sm:flex-row">

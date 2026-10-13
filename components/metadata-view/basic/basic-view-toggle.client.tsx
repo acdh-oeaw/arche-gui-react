@@ -257,17 +257,16 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 						</button>
 					</div>
 				</div>
-
 			</section>
 
 			<section
 				className={isExpertView ? "hidden" : "grid grid-cols-1 gap-6 pt-6 lg:grid-cols-12"}
 				id="metadata-content"
 			>
-
-					<div className={sideContent != null ? "lg:col-span-9" : "lg:col-span-12"}>{basicContent}</div>
-						{sideContent != null ? <div className="space-y-3 lg:col-span-3">{sideContent}</div> : null}
-
+				<div className={sideContent != null ? "lg:col-span-9" : "lg:col-span-12"}>
+					{basicContent}
+				</div>
+				{sideContent != null ? <div className="space-y-3 lg:col-span-3">{sideContent}</div> : null}
 			</section>
 
 			<section
@@ -411,7 +410,9 @@ export function BasicViewToggle(props: Readonly<BasicViewToggleProps>): ReactNod
 						</div>
 					</div>
 				</div>
-				{sideContent != null ? <aside className="space-y-3 lg:col-span-3">{sideContent}</aside> : null}
+				{sideContent != null ? (
+					<aside className="space-y-3 lg:col-span-3">{sideContent}</aside>
+				) : null}
 			</section>
 		</div>
 	);

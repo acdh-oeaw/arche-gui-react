@@ -145,7 +145,21 @@ code {
 }
 
 #main-content {
+	min-width: 0;
 	background-color: rgb(255, 255, 255);
+}
+
+.header-content {
+	position: relative;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	row-gap: 1.5rem;
+	align-items: center;
+	width: 100%;
+	padding: 1.5rem 1rem 2.5rem;
+	text-align: center;
+
 }
 
 .discover-header-div,
@@ -1011,6 +1025,7 @@ details p {
 	}
 
 	.container-w980 {
+		width: 90%;
 		max-width: 980px !important;
 	}
 }

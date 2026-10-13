@@ -127,9 +127,7 @@ export function AppHeaderMetadata(): ReactNode {
 					<LocaleSwitcher />
 				</div>
 			</div>
-			<div className="relative flex w-full flex-col items-center gap-y-6 px-4 pt-6 pb-10 text-center">
-
-
+			<div className="header-content">
 				<div className="max-w-3xl space-y-2">
 					<h1 className="section-header-title">{t("navigation.hero.title")}</h1>
 					<p className="text-lg text-text-weak sm:text-xl">{t("navigation.hero.subtitle")}</p>
@@ -139,23 +137,23 @@ export function AppHeaderMetadata(): ReactNode {
 
 				<div className="flex flex-wrap items-center justify-center gap-6 pt-2">
 					<Link href="https://doi.org/10.34894/SNEQ7T">
-															<Image
-																alt="Core Trust Seal"
-																className="h-8 w-auto"
-																height="64"
-																src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
-																width="64"
-																/>
-															</Link>
-															<Link href="https://doi.org/10.34733/doc-105">
-															<Image
-																alt="CLARIN B-centre"
-																className="h-8 w-auto"
-																height="72"
-																src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
-																width="72"
-																/>
-																</Link>
+						<Image
+							alt="Core Trust Seal"
+							className="h-8 w-auto"
+							height="64"
+							src={withBasePath("/images/partner-logos/core_trust_seal_64.png")}
+							width="64"
+						/>
+					</Link>
+					<Link href="https://doi.org/10.34733/doc-105">
+						<Image
+							alt="CLARIN B-centre"
+							className="h-8 w-auto"
+							height="72"
+							src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
+							width="72"
+						/>
+					</Link>
 				</div>
 			</div>
 		</header>

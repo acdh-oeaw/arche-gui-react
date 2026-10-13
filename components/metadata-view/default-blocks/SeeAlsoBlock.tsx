@@ -1,4 +1,3 @@
-
 import { useTranslations } from "next-intl";
 import React, { type ReactNode } from "react";
 
@@ -10,17 +9,14 @@ interface MetadataProps {
 }
 
 export function SeeAlsoBlock(props: Readonly<MetadataProps>): ReactNode {
-
 	const { metadata } = props;
-		const t = useTranslations("AppContent.metaview");
+	const t = useTranslations("AppContent.metaview");
 
 	const hasKey = (key: string) => {
 		return Array.isArray(metadata.properties[key]) && metadata.properties[key].length > 0;
 	};
 
-		const hasListContent = hasKey("acdh:hasUrl") || hasKey("acdh:hasRelatedProject");
-
-
+	const hasListContent = hasKey("acdh:hasUrl") || hasKey("acdh:hasRelatedProject");
 
 	if (!hasListContent) return null;
 
@@ -33,21 +29,21 @@ export function SeeAlsoBlock(props: Readonly<MetadataProps>): ReactNode {
 			<div className="w-full pt-5">
 				<ul className="list-inside list-disc space-y-2">
 					{/* hasUrl */}
-					{hasKey('acdh:hasUrl') && (
+					{hasKey("acdh:hasUrl") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasUrl']}
-								title={t('url')}
+								items={metadata.properties["acdh:hasUrl"]}
+								title={t("url")}
 							></DisplayField>
 						</li>
 					)}
 
 					{/* hasUrl */}
-					{hasKey('acdh:hasRelatedProject') && (
+					{hasKey("acdh:hasRelatedProject") && (
 						<li>
 							<DisplayField
-								items={metadata.properties['acdh:hasRelatedProject']}
-								title={t('related_project')}
+								items={metadata.properties["acdh:hasRelatedProject"]}
+								title={t("related_project")}
 							></DisplayField>
 						</li>
 					)}
@@ -55,6 +51,4 @@ export function SeeAlsoBlock(props: Readonly<MetadataProps>): ReactNode {
 			</div>
 		</div>
 	);
-};
-
-
+}

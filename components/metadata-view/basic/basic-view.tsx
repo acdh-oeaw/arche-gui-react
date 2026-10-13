@@ -20,7 +20,6 @@ import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/PreviousNextBlock";
 import { ArrangementBlock } from "@/components/metadata-view/default-blocks/ArrangementBlock";
 
-
 interface BasicViewProps {
 	metadata: ParsedMetadata;
 	language?: string;
@@ -53,7 +52,11 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 
 						<hr className="meatdata-view-top-hr"></hr>
 
-						<PreviousNextBlock url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()} rootId={metadata.getRootId()}></PreviousNextBlock>
+						<PreviousNextBlock
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+							rootId={metadata.getRootId()}
+						></PreviousNextBlock>
 
 						<TitleBlock metadata={metadata}></TitleBlock>
 
@@ -63,35 +66,32 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							language={language}
 						/>
 
+						<SummaryBlock metadata={metadata}></SummaryBlock>
 
-						<SummaryBlock metadata={metadata} ></SummaryBlock>
+						<ArrangementBlock metadata={metadata} />
 
+						<SeeAlsoBlock metadata={metadata}></SeeAlsoBlock>
 
-						<ArrangementBlock metadata={metadata}/>
-
-						<SeeAlsoBlock metadata={metadata} ></SeeAlsoBlock>
-
-
-						<MetadataTabs acdhType={metadata.getAcdhTypeNiceFormat() ?? ""} apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API} id={metadata.getId()}/>
+						<MetadataTabs
+							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							id={metadata.getId()}
+						/>
 
 						<div>
-
-
-
-							{metadata.isPDF()  && (
-							<PdfBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`}/>
+							{metadata.isPDF() && (
+								<PdfBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`} />
 							)}
 							{/* <IIIFBlock url={`${env.NEXT_PUBLIC_IIIF_URL}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}&mode=image`} /> */}
 
-
-							{metadata.isIIIF()  && (
-
-								< IIIFBlock url="https://arche-iiifmanifest.acdh.oeaw.ac.at/?id=https://arche.acdh.oeaw.ac.at/api/7967&mode=image" />
-
+							{metadata.isIIIF() && (
+								<IIIFBlock url="https://arche-iiifmanifest.acdh.oeaw.ac.at/?id=https://arche.acdh.oeaw.ac.at/api/7967&mode=image" />
 							)}
 
-							{metadata.isAudio()  && (
-							<AudioBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`}/>
+							{metadata.isAudio() && (
+								<AudioBlock
+									url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`}
+								/>
 							)}
 
 							{metadata.isGlb3D() ? (
@@ -101,21 +101,17 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 							) : null}
 
 							{metadata.isTEI() && metadata.getBinarySizeGeneral() < 500000 && (
-							<TEIBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`} />
+								<TEIBlock
+									url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`}
+								/>
 							)}
-
-
 						</div>
 					</div>
 				}
 				expertData={metadata.getExpertTableData()}
 				id={metadata.getId()}
 				language={language}
-				sideContent={
-					<CardsBlock metadata={ metadata}  />
-
-
-				}
+				sideContent={<CardsBlock metadata={metadata} />}
 				translations={{
 					basic_view: t("metaview.basic_view"),
 					expert_view: t("metaview.expert_view"),

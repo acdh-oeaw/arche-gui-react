@@ -1,11 +1,19 @@
 "use client";
 
-import { ChevronRightIcon, DocumentIcon, FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid";
-import { useLocale,useTranslations  } from "next-intl";
+import {
+	ChevronRightIcon,
+	DocumentIcon,
+	FolderIcon,
+	FolderOpenIcon,
+} from "@heroicons/react/24/solid";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { type CollectionContentResult,getCollectionContent } from "@/lib/api/CollectionDTContentApi";
+import {
+	type CollectionContentResult,
+	getCollectionContent,
+} from "@/lib/api/CollectionDTContentApi";
 
 interface AssociatedCollectionsBlockProps {
 	id: string;
@@ -24,7 +32,7 @@ function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
 	const [expanded, setExpanded] = useState(false);
 	const [children, setChildren] = useState<Array<CollectionContentResult>>([]);
 	const [loading, setLoading] = useState(false);
-const t = useTranslations("AppContent.metaview");
+	const t = useTranslations("AppContent.metaview");
 	async function handleExpandClick() {
 		if (!expanded && children.length === 0 && item.children) {
 			setLoading(true);
@@ -35,20 +43,24 @@ const t = useTranslations("AppContent.metaview");
 				setLoading(false);
 			}
 		}
-		setExpanded((prev) => { return !prev; });
+		setExpanded((prev) => {
+			return !prev;
+		});
 	}
 
 	return (
 		<div className="w-full">
 			<div
 				className="flex items-center gap-2 border-b border-gray-200 px-3 py-2"
-				style={{ paddingLeft: `${String((depth * 16) + 12)}px` }}
+				style={{ paddingLeft: `${String(depth * 16 + 12)}px` }}
 			>
 				{/* Expand arrow — only for directories with children */}
 				{item.dir && item.children ? (
 					<button
 						className="tab-table-url"
-						onClick={() => { void handleExpandClick(); }}
+						onClick={() => {
+							void handleExpandClick();
+						}}
 						style={{ transform: expanded ? "rotate(90deg)" : "rotate(0deg)" }}
 						type="button"
 					>
@@ -60,38 +72,36 @@ const t = useTranslations("AppContent.metaview");
 
 				{/* Folder / file icon (decorative) */}
 				{item.dir ? (
-					expanded
-						? <FolderOpenIcon className="h-5 w-5 shrink-0 text-yellow-500" />
-						: <FolderIcon className="h-5 w-5 shrink-0 text-yellow-500" />
+					expanded ? (
+						<FolderOpenIcon className="h-5 w-5 shrink-0 text-yellow-500" />
+					) : (
+						<FolderIcon className="h-5 w-5 shrink-0 text-yellow-500" />
+					)
 				) : (
 					<DocumentIcon className="h-5 w-5 shrink-0 text-gray-300" />
 				)}
 
 				{/* Title — always a link */}
-				<a
-					className="tab-table-url"
-					href={`/browser/metadata/${item.id}`}
-				>
+				<a className="tab-table-url" href={`/browser/metadata/${item.id}`}>
 					{item.title}
 				</a>
 			</div>
 
-			{expanded && children.map((child) => {
-				return (
-					<TreeRow
-						key={child.id}
-						apiUrl={apiUrl}
-						depth={depth + 1}
-						item={child}
-						lang={lang}
-					/>
-				);
-			})}
+			{expanded &&
+				children.map((child) => {
+					return (
+						<TreeRow key={child.id} apiUrl={apiUrl} depth={depth + 1} item={child} lang={lang} />
+					);
+				})}
 		</div>
 	);
 }
 
-export function AssociatedCollectionsBlock({ id, apiUrl, onEmpty }: Readonly<AssociatedCollectionsBlockProps>) {
+export function AssociatedCollectionsBlock({
+	id,
+	apiUrl,
+	onEmpty,
+}: Readonly<AssociatedCollectionsBlockProps>) {
 	const [items, setItems] = useState<Array<CollectionContentResult>>([]);
 	const [loading, setLoading] = useState(true);
 	const locale = useLocale();
@@ -113,7 +123,9 @@ export function AssociatedCollectionsBlock({ id, apiUrl, onEmpty }: Readonly<Ass
 		}
 
 		void fetchItems();
-		return () => { controller.abort(); };
+		return () => {
+			controller.abort();
+		};
 	}, [id, lang, apiUrl]);
 
 	useEffect(() => {
@@ -121,7 +133,11 @@ export function AssociatedCollectionsBlock({ id, apiUrl, onEmpty }: Readonly<Ass
 	}, [loading, items, onEmpty]);
 
 	if (loading) {
-		return <div className="flex justify-center py-6"><ArcheLoader label={t("loading")} /></div>;
+		return (
+			<div className="flex justify-center py-6">
+				<ArcheLoader label={t("loading")} />
+			</div>
+		);
 	}
 
 	if (items.length === 0) {
@@ -131,15 +147,7 @@ export function AssociatedCollectionsBlock({ id, apiUrl, onEmpty }: Readonly<Ass
 	return (
 		<div className="mt-2 overflow-hidden rounded-lg border border-gray-200 bg-white">
 			{items.map((item) => {
-				return (
-					<TreeRow
-						key={item.id}
-						apiUrl={apiUrl}
-						depth={0}
-						item={item}
-						lang={lang}
-					/>
-				);
+				return <TreeRow key={item.id} apiUrl={apiUrl} depth={0} item={item} lang={lang} />;
 			})}
 		</div>
 	);

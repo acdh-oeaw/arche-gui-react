@@ -9,7 +9,9 @@ interface DiscoverSuspenseBoundaryProps {
 	fallback: ReactNode;
 }
 
-export function DiscoverSuspenseBoundary(props: Readonly<DiscoverSuspenseBoundaryProps>): ReactNode {
+export function DiscoverSuspenseBoundary(
+	props: Readonly<DiscoverSuspenseBoundaryProps>,
+): ReactNode {
 	const { children, fallback } = props;
 	const { isNavPending } = useDiscoverReload();
 
