@@ -109,7 +109,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 	}
 	apiParams.set("page", String(apiPage));
 
-	const smBaseUrl = process.env.NEXT_PUBLIC_APP_SM_BASE_URL ?? "";
+	const smBaseUrl = process.env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
 	const url = `${smBaseUrl}/smartsearch/?${apiParams.toString()}`;
 	const thumbnailBaseUrl = process.env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL ?? "";
 

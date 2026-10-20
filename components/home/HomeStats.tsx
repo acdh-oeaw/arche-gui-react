@@ -89,7 +89,7 @@ export function HomeStats(props: Readonly<HomeStatsProps>): ReactNode {
 	}, []);
 
 	useEffect(() => {
-		const baseUrl = process.env.NEXT_PUBLIC_APP_SM_BASE_URL;
+		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
 		if (!baseUrl) return;
 
 		const controller = new AbortController();

@@ -111,7 +111,7 @@ export function AppHeaderDiscover(): ReactNode {
 
 	return (
 		// eslint-disable-next-line tailwindcss/no-custom-classname
-		<header className="background-image-front-div discover-header-div w-full border-b border-stroke-weak bg-arche-acc-light-blue">
+		<header className="background-image-front-div discover-header-div w-full bg-arche-acc-light-blue">
 			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile

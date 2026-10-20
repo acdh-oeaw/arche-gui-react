@@ -122,7 +122,7 @@ export function AppHeaderStatic({
 	return (
 		// eslint-disable-next-line tailwindcss/no-custom-classname
 		<header
-			className="background-image-front-div front-header-div flex w-full flex-col border-b border-stroke-weak bg-arche-acc-light-blue"
+			className="background-image-front-div front-header-div flex w-full flex-col  bg-arche-acc-light-blue"
 			style={{ height: "306px" }}
 		>
 			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">

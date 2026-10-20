@@ -100,7 +100,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 								<PLYBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`} />
 							) : null}
 
-							{metadata.isTEI() && metadata.getBinarySizeGeneral() < 500000 && (
+							{metadata.isTEI() && (
 								<TEIBlock
 									url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`}
 								/>

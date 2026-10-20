@@ -149,93 +149,6 @@ code {
 	background-color: rgb(255, 255, 255);
 }
 
-.header-content {
-	position: relative;
-	z-index: 10;
-	display: flex;
-	flex-direction: column;
-	row-gap: 1.5rem;
-	align-items: center;
-	width: 100%;
-	padding: 1.5rem 1rem 2.5rem;
-	text-align: center;
-
-}
-
-.discover-header-div,
-.metadata-header-div {
-	z-index: 3;
-	height: 306px;
-}
-
-.discover-result-description {
-	display: -webkit-box;
-	overflow: hidden;
-	margin: 0;
-	font-size: 15px;
-	line-height: 1.6;
-	word-break: normal;
-	overflow-wrap: anywhere;
-	hyphens: auto;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 3;
-}
-
-.front-header-div {
-	height: 420px;
-}
-
-.header-nav-link {
-	display: inline-flex;
-	gap: 0.25rem;
-	align-items: center;
-	padding-right: 0.5rem;
-	padding-left: 0.5rem;
-	color: var(--color-arche-acc-font-color);
-	font-weight: 700;
-}
-
-.header-nav-link:hover {
-	color: var(--color-arche-acc-dark-blue);
-}
-
-.locale-active {
-	position: relative;
-	display: inline-block;
-}
-
-.locale-active::before {
-	content: "";
-	position: absolute;
-	top: -6px;
-	left: 0;
-	width: 100%;
-	height: 5px;
-	background-color: var(--arche-acc-dark-blue);
-}
-
-.locale-link-text {
-	position: relative;
-	display: inline-block;
-}
-
-.locale-link-text::before {
-	content: "";
-	position: absolute;
-	top: -6px;
-	left: 0;
-	width: 100%;
-	height: 5px;
-	background-color: var(--arche-acc-dark-blue);
-	transition: transform 0.3s ease;
-	transform: scaleX(0);
-	transform-origin: left;
-}
-
-a:hover .locale-link-text::before {
-	transform: scaleX(1);
-}
-
 .breadcrumb-text {
 	margin-bottom: 0 !important;
 }
@@ -257,32 +170,6 @@ a:hover .locale-link-text::before {
 	opacity: 30%;
 }
 
-.static-heading-div {
-	margin-bottom: 3rem;
-	padding-top: 3rem;
-}
-
-.section-header-title-small {
-	color: rgb(0, 84, 128, 100%) !important;
-	font-weight: 700 !important;
-	font-style: normal !important;
-	font-size: 16px !important;
-
-	/* Paragraph Bold */
-	font-family: Lato, Roboto, Helvetica, sans-serif !important;
-	line-height: 28px !important;
-	text-align: center;
-}
-
-.section-header-title {
-	color: rgb(77, 77, 77, 100%) !important;
-	font-weight: 700 !important;
-	font-style: normal !important;
-	font-size: 32px !important;
-	font-family: Lato, Roboto, Helvetica, sans-serif !important;
-	line-height: normal !important;
-	text-align: center;
-}
 
 .bubble-line-container {
 	margin-top: 5px;
@@ -332,9 +219,6 @@ a:hover .locale-link-text::before {
 	gap: 24px;
 	align-items: flex-start;
 	max-width: 980px;
-
-	/* The container is narrower than the grid area it is placed in, so without this it sits at the
-	   start of that area. Auto inline margins centre it in both grid and block context. */
 	margin-inline: auto;
 	padding: 24px;
 	border: 1px solid rgb(225, 225, 225, 100%);
@@ -393,23 +277,12 @@ a:hover .locale-link-text::before {
 	padding-left: 0;
 }
 
-/* Bottom decoration under the main content, on every page except the home page.
-
-   Deliberately applied to a full-width element with a plain `width: 100%` rather than breaking out
-   of a capped container with `100vw`: `100vw` includes the vertical scrollbar, which is what used
-   to push a horizontal scrollbar onto the page. */
 .main-content-bleed {
 	position: relative;
 	width: 100%;
-
-	/* The wave is 1600x537, and `background-size: 100% auto` ties its height to the element width
-	   (537/1600 = 0.336). On a short page that makes the wave taller than the content area on wide
-	   screens, so its top gets cut off and it runs straight into the header. Reserving that height
-	   plus clearance keeps it at the bottom where it belongs.
-
-	   `vw` is safe here: unlike `width`, a `min-height` cannot produce a horizontal scrollbar. */
 	min-height: calc(33.6vw + 120px);
 	padding-bottom: 50px;
+	background-color: rgb(255, 255, 255);
 	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-position: bottom center;
 	background-size: 100% auto;
@@ -738,14 +611,6 @@ a:hover .locale-link-text::before {
 .background-image-div,
 .background-image-front-div {
 	position: relative;
-
-	/* The decorative clouds are positioned with `bottom: -50px`, so they hang below the header and
-	   cover the top of the main content. Clipping keeps them inside it.
-
-	   `clip` rather than `hidden`: it does not create a scroll container, so it cannot turn into a
-	   scrollbar. The navigation dropdowns are unaffected because react-aria renders them in a
-	   portal at body level, outside this element. */
-	overflow: clip;
 }
 
 .background-image-div::before,
@@ -777,9 +642,9 @@ a:hover .locale-link-text::before {
 
 .background-image-div::after {
 	right: 0;
-	bottom: -50px;
+	bottom: 0;
 	z-index: 0;
-	background-image: url("/browser/images/common/bottom-right-cloud.svg");
+	background-image: url("/browser/images/common/bottom-right-cloud.png");
 
 	/* Replace with your bottom logo */
 	background-size: cover;
@@ -787,9 +652,9 @@ a:hover .locale-link-text::before {
 
 .background-image-front-div::after {
 	right: 0;
-	bottom: -50px;
+	bottom: 0;
 	z-index: 0;
-	background-image: url("/browser/images/common/bottom-right-cloud.svg");
+	background-image: url("/browser/images/common/bottom-right-cloud.png");
 
 	/* Replace with your bottom logo */
 	background-size: cover;
@@ -907,11 +772,6 @@ details p {
 	border-color: rgb(0, 0, 0, 17%);
 	border-bottom: 1px solid rgb(0, 0, 0, 17%);
 	border-radius: 8px 8px 0 0;
-
-	/* opaque flattened equivalent of rgb(33, 37, 41, 3%) over white — the previous
-	   translucent color let whatever sits behind the card (e.g. a page background
-	   image) bleed through, making this header look different depending on where
-	   the card happened to land on the page */
 	background-color: rgb(248, 248, 249);
 }
 
@@ -966,7 +826,6 @@ details p {
 			@apply px-3 py-2 align-top border-b border-gray-200;
 		}
 
-		/* Thicker bottom border for header – like Bootstrap */
 		#filenames-formats-dynamic-table table thead th,
 		#metadata-table table thead th {
 			@apply border-b-2 border-gray-300;
@@ -1107,6 +966,18 @@ details p {
 	.collection-card {
 		flex-basis: calc((100% - 24px) / 2);
 		width: calc((100% - 24px) / 2);
+	}
+
+	.arche-navbar {
+		padding-top: 0.25rem;
+		padding-bottom: 0.5rem;
+		padding-left: 0.5rem;
+	}
+
+	.arche-lng-switcher {
+		padding-top: 0.25rem;
+		padding-bottom: 0.5rem;
+		padding-right: 0.5rem;
 	}
 }
 
@@ -1296,39 +1167,6 @@ details p {
 	text-decoration: none;
 }
 
-.cite-container {
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
-	align-items: flex-start;
-	align-self: stretch;
-	padding: 24px;
-	border-radius: 12px;
-	background-color: rgb(237 242 247);
-}
-
-#tei-content {
-	overflow: scroll;
-	width: 100%;
-	height: 90%;
-}
-
-.tei-iframe {
-	width: 100%;
-	height: 100%;
-}
-
-#tei-container {
-	display: block;
-	width: 100%;
-	height: 800px;
-}
-
-.hero-search-field {
-	border-top-left-radius: 50px;
-	border-bottom-left-radius: 50px;
-}
-
 .input-group
 	> :not(
 		:first-child,
@@ -1349,9 +1187,6 @@ details p {
 	border-radius: 20px;
 }
 
-/* SummaryBlockDescription: renderMarkdown's output is block-level (<p>, headings),
-   but the show more/less button needs to trail right after the text on the same
-   line, like it did when this was plain text inside one <p>. */
 .summary-block-description :where(p, h1, h2, h3, h4, h5, h6) {
 	display: inline;
 	margin: 0;

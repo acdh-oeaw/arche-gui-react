@@ -379,7 +379,8 @@
 			},
 			"label": "Primary",
 			"general_arche_description": "ARCHE"
-		}
+		},
+		"search-now": "Jetzt Suchen"
 	},
 	"ColorSchemeSwitcher": {
 		"change-color-scheme": "Farbschema ändern",

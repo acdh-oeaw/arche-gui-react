@@ -5,7 +5,7 @@ import { PrefetchKind } from "next/dist/client/components/router-reducer/router-
 import { useLocale } from "next-intl";
 import { type ComponentPropsWithRef, Fragment, type ReactNode } from "react";
 import { chain } from "react-aria";
-import { Disclosure, DisclosurePanel, Heading } from "react-aria-components";
+import { Button, Disclosure, DisclosurePanel, Heading } from "react-aria-components";
 
 import { DiscoverNavLinkPendingReporter } from "@/components/discover/DiscoverNavLinkPendingReporter";
 import { Logo } from "@/components/logo";
@@ -36,7 +36,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	const pathname = usePathname();
 
 	return (
-		<nav aria-label={label} className="hidden w-full items-center lg:flex">
+		<nav aria-label={label} className="hidden w-full items-center lg:flex arche-navbar">
 			<NavLink
 				className="interactive -ml-2 grid shrink-0 place-content-center self-center rounded-2 p-2 outline-transparent focus-visible:focus-outline"
 				href="/"
@@ -51,9 +51,9 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 						case "action": {
 							return (
 								<li key={id}>
-									<button className="header-nav-link" onPress={item.onAction}>
+									<Button className="header-nav-link" onPress={item.onAction}>
 										{item.label}
-									</button>
+									</Button>
 								</li>
 							);
 						}
@@ -87,14 +87,14 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 							return (
 								<li key={id}>
 									<MenuTrigger>
-										<button className="header-nav-link">
+										<Button className="header-nav-link">
 											{item.label}
 											<ChevronDownIcon
 												aria-hidden={true}
 												className="size-6 shrink-0 text-icon-neutral transition group-aria-expanded:rotate-180"
 												data-slot="icon"
 											/>
-										</button>
+										</Button>
 										<Popover placement="bottom left">
 											<Menu className="min-w-70" selectedKeys={selectedKeys} selectionMode="single">
 												{Object.entries(item.children).map(([id, item]) => {
@@ -232,12 +232,12 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 												case "action": {
 													return (
 														<li key={id}>
-															<button
+															<Button
 																className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																onPress={chain(close, item.onAction)}
 															>
 																{item.label}
-															</button>
+															</Button>
 														</li>
 													);
 												}
@@ -261,7 +261,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 													return (
 														<Separator
 															key={id}
-															className="my-1 w-full border-b border-stroke-weak"
+															className="my-1 w-full"
 															elementType="li"
 														/>
 													);
@@ -272,7 +272,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 														<li key={id}>
 															<Disclosure className="group">
 																<Heading>
-																	<button
+																	<Button
 																		className="interactive inline-flex w-full items-center justify-between px-6 py-3 text-text-strong outline-transparent group-expanded:hover-overlay hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																		slot="trigger"
 																	>
@@ -282,7 +282,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																			className="size-6 shrink-0 text-icon-neutral transition group-expanded:rotate-180"
 																			data-slot="icon"
 																		/>
-																	</button>
+																	</Button>
 																</Heading>
 																<DisclosurePanel>
 																	<ul role="list">
@@ -291,12 +291,12 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																				case "action": {
 																					return (
 																						<li key={id}>
-																							<button
+																							<Button
 																								className="interactive inline-flex w-full px-6 py-3 text-text-strong outline-transparent hover:hover-overlay focus-visible:focus-outline focus-visible:-focus-outline-offset-2 pressed:press-overlay"
 																								onPress={chain(close, item.onAction)}
 																							>
 																								{item.label}
-																							</button>
+																							</Button>
 																						</li>
 																					);
 																				}
@@ -319,7 +319,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 																					return (
 																						<Separator
 																							key={id}
-																							className="my-1 w-full border-b border-stroke-weak"
+																							className="my-1 w-full"
 																							elementType="li"
 																						/>
 																					);

@@ -31,7 +31,7 @@ export function AppFooter(): ReactNode {
 
 		if (!nextOpen || versions != null || isVersionsLoading) return;
 
-		const baseUrl = env.NEXT_PUBLIC_APP_SM_BASE_URL;
+		const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
 		if (baseUrl == null || baseUrl.length === 0) {
 			setVersionsError("Software versions API is not configured.");
 			return;

@@ -391,9 +391,9 @@ export class Metadata {
 			return false;
 			}
 
-		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
+		const format = this.getFormat()?.toLowerCase() ?? '';
 
-		if (category.includes("xml/tei")) {
+		if (format.includes("xml/tei") || format.includes("application/xml") ) {
 			return true;
 		}
 
