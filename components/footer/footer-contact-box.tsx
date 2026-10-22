@@ -1,6 +1,8 @@
 import { useTranslations } from "next-intl";
 import React from "react";
 
+import { Link } from "@/components/link";
+
 function FooterContactBox() {
 	const t = useTranslations("AppFooter");
 
@@ -13,9 +15,9 @@ function FooterContactBox() {
 							<h3 className="">{t("menu.contact_box.label")}</h3>
 							<p className="cta-item">{t("menu.contact_box.description")}</p>
 						</div>
-						<a className="btn btn-arche-blue" href="mailto:arche@oeaw.ac.at">
+						<Link className="btn btn-arche-blue" href="mailto:arche@oeaw.ac.at">
 							{t("menu.contact_box.button_label")}
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>

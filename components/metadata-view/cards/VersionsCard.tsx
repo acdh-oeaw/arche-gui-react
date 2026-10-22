@@ -21,7 +21,7 @@ export async function VersionsCard({ id }: Readonly<VersionsCardProps>) {
 	const lang = locale.split("-")[0] ?? "en";
 
 	let nodes: Array<VersionNode> = [];
-	const apiBaseUrl = (env as Record<string, string>).NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
+	const apiBaseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
 
 	try {
 		const url = `${apiBaseUrl}versions-list/${id}/${lang}`;

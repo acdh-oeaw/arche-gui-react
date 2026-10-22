@@ -117,9 +117,6 @@
 		}
 	},
 	"app/[locale]/_components/app-footer.tsx": {
-		"@next/next/no-html-link-for-pages": {
-			"count": 3
-		},
 		"arrow-body-style": {
 			"count": 1
 		},
@@ -693,14 +690,6 @@
 	},
 	"e2e/lib/test.ts": {
 		"simple-import-sort/imports": {
-			"count": 1
-		}
-	},
-	"e2e/tests/app/metadata.test.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
-		"@typescript-eslint/restrict-template-expressions": {
 			"count": 1
 		}
 	},

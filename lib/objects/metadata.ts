@@ -629,7 +629,12 @@ export class Metadata {
 		return identifier;
 	}
 
-	getFundingLogos(): Array<string> {
+	/*
+	 * Entries of `properties` are objects built by `#addExternalURL`, not plain strings - the
+	 * previous `Array<string>` annotation did not describe what this actually returns, and
+	 * `FundingDataCard` reads `logo.value` from it.
+	 */
+	getFundingLogos(): Array<{ value: string }> {
 		const logos = this.properties["acdh:hasFunderLogo"] || [];
 		return logos;
 		//data.getData('acdh:hasFunderLogo');

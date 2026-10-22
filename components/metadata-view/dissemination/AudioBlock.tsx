@@ -24,9 +24,9 @@ const formatTime = (time: number): string => {
 
 const resolveAudioMime = (contentType: string | null, src: string): string => {
 	if (contentType && !contentType.includes("octet-stream") && !contentType.includes("text/html")) {
-		return contentType.split(";")[0].trim();
+		return contentType.split(";")[0]?.trim() ?? contentType;
 	}
-	const ext = src.split("?")[0].split(".").pop()?.toLowerCase() ?? "";
+	const ext = src.split("?")[0]?.split(".").pop()?.toLowerCase() ?? "";
 	return MIME_BY_EXT[ext] ?? "audio/mpeg";
 };
 

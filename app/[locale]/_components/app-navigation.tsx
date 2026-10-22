@@ -17,7 +17,7 @@ import { Popover } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { withBasePath } from "@/config/base-path";
 import {
-	getPathname,
+	getPathnameFromString,
 	type NavigationItem,
 	type NavigationLink,
 	usePathname,
@@ -162,7 +162,7 @@ function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 	 * Clicking still goes through the `RouterProvider` in `aria-providers.tsx`, which strips
 	 * `basePath` again before handing the path to the router.
 	 */
-	const resolvedHref = withBasePath(getPathname({ href, locale }));
+	const resolvedHref = withBasePath(getPathnameFromString({ href, locale }));
 
 	/**
 	 * Adds prefetch behavior similar to `next/link`.
@@ -173,7 +173,8 @@ function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 	 * @see https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/link/src/useLink.ts
 	 */
 	function prefetch() {
-		router.prefetch(href, { kind: PrefetchKind.AUTO });
+		/* Widened for the same reason as `getPathnameFromString` above - `href` is a message value. */
+		router.prefetch(href as Parameters<typeof router.prefetch>[0], { kind: PrefetchKind.AUTO });
 	}
 
 	return (

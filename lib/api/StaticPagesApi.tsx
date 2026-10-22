@@ -20,7 +20,8 @@ export async function getStaticPage(page: string, lang: string): Promise<string>
 		const urlHtml = createApiUrl(`${page}.html`, lang);
 
 		const htmlData = await request(urlHtml, { responseType: "text" });
-		const jsonData = await request(urlJson, { responseType: "json" });
+		/* `request` is untyped at the boundary; the companion json file is a flat key/value map. */
+		const jsonData = (await request(urlJson, { responseType: "json" })) as Record<string, unknown>;
 
 		return renderTemplate(htmlData, jsonData);
 	} catch (error) {

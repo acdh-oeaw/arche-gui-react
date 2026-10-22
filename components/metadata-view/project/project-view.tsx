@@ -44,7 +44,7 @@ export function ProjectView(props: Readonly<ProjectViewProps>): ReactNode {
 						<hr className="meatdata-view-top-hr"></hr>
 
 						<PreviousNextBlock
-							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 							rootId={metadata.getRootId()}
 						></PreviousNextBlock>
@@ -57,7 +57,7 @@ export function ProjectView(props: Readonly<ProjectViewProps>): ReactNode {
 
 						<MetadataTabs
 							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
-							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 						/>
 

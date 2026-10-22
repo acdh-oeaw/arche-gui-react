@@ -21,7 +21,7 @@ import * as fonts from "@/lib/fonts";
 import { type IntlLocale, isValidLocale, locales, timeZone } from "@/lib/i18n/locales";
 import { getMetadata } from "@/lib/i18n/metadata";
 import { createAbsoluteUrl } from "@/lib/navigation/create-absolute-url";
-import { getPathname } from "@/lib/navigation/navigation";
+import { getPathnameFromString } from "@/lib/navigation/navigation";
 
 interface LocaleLayoutProps {
 	children: ReactNode;
@@ -53,7 +53,7 @@ export async function generateMetadata(
 	 * by the `og-image` route handler instead.
 	 */
 	const openGraphImage = {
-		url: String(createAbsoluteUrl(getPathname({ href: "/og-image", locale }))),
+		url: String(createAbsoluteUrl(getPathnameFromString({ href: "/og-image", locale }))),
 		width: 1200,
 		height: 630,
 		alt: meta.title,

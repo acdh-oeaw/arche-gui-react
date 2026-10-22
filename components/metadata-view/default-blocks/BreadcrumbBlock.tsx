@@ -18,15 +18,13 @@ interface BreadcrumbEntry {
 
 function normalizeBreadcrumbArray(payload: Array<Record<string, unknown>>): Array<BreadcrumbEntry> {
 	return payload
-		.map((item) => {
-			const id = item.id;
-			const label = item.title;
-
-			if (label == null) return null;
+		.map((item): BreadcrumbEntry | null => {
+			/* The payload is untyped, so both fields have to be checked rather than just non-null. */
+			if (typeof item.title !== "string") return null;
 
 			return {
-				id: id ?? undefined,
-				label,
+				id: typeof item.id === "string" ? item.id : undefined,
+				label: item.title,
 			};
 		})
 		.filter((item): item is BreadcrumbEntry => {
@@ -98,7 +96,7 @@ export function BreadcrumbBlock({ id, language }: Readonly<BreadcrumbBlockProps>
 						{!isLast && item.id != null ? (
 							<Link href={`/metadata/${encodeURIComponent(item.id)}`}>{item.label}</Link>
 						) : (
-							<Link href={`/metadata/${encodeURIComponent(item.id)}`}>{item.label}</Link>
+							<Link href={`/metadata/${encodeURIComponent(String(item.id))}`}>{item.label}</Link>
 						)}
 						{!isLast ? (
 							<p aria-hidden="true" className="breadcrumb-text">

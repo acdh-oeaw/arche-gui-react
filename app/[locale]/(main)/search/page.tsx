@@ -75,7 +75,14 @@ export default async function SearchPage(props: Readonly<SearchPageProps>): Prom
 	const tStatic = await getTranslations({ locale, namespace: "StaticPages" });
 
 	const results = query.length > 0 ? await searchStaticContent(query, getIntlLanguage(locale)) : [];
-	const entries = tStatic.raw("items") as Record<string, StaticPageEntry>;
+	/*
+	 * `items` is an object node rather than a message, and `raw` is typed against leaf keys only,
+	 * so the key itself has to be widened even though it exists in the message files.
+	 */
+	const entries = tStatic.raw("items" as Parameters<typeof tStatic.raw>[0]) as Record<
+		string,
+		StaticPageEntry
+	>;
 
 	return (
 		<MainContent className="content-start bg-white main-content-bleed">

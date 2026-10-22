@@ -71,7 +71,7 @@ export const test = base.extend<Fixtures>({
 	},
 
 	async createImprintPage({ page }, use) {
-		async function createImprintPage(locale = defaultLocale) {
+		async function createImprintPage(locale: IntlLocale = defaultLocale) {
 			const i18n = await createI18n(page, locale);
 			const imprintPage = new ImprintPage(page, locale, i18n);
 			return { i18n, imprintPage };
@@ -81,7 +81,7 @@ export const test = base.extend<Fixtures>({
 	},
 
 	async createAccessibilityPage({ page }, use) {
-		async function createAccessibilityPage(locale = defaultLocale) {
+		async function createAccessibilityPage(locale: IntlLocale = defaultLocale) {
 			const i18n = await createI18n(page, locale);
 			const accessibilityPage = new AccessibilityPage(page, locale, i18n);
 			return { i18n, accessibilityPage };
@@ -91,7 +91,7 @@ export const test = base.extend<Fixtures>({
 	},
 
 	async createIndexPage({ page }, use) {
-		async function createIndexPage(locale = defaultLocale) {
+		async function createIndexPage(locale: IntlLocale = defaultLocale) {
 			const i18n = await createI18n(page, locale);
 			const indexPage = new IndexPage(page, locale, i18n);
 			return { i18n, indexPage };
@@ -101,7 +101,7 @@ export const test = base.extend<Fixtures>({
 	},
 
 	async createSearchPage({ page }, use) {
-		async function createSearchPage(locale = defaultLocale) {
+		async function createSearchPage(locale: IntlLocale = defaultLocale) {
 			const i18n = await createI18n(page, locale);
 			const searchPage = new SearchPage(page, locale, i18n);
 			return { i18n, searchPage };

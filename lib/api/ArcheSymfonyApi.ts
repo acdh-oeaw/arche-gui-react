@@ -23,7 +23,7 @@ interface ApiParams {
 }
 
 function createApiUrl(id: string, page: string, lang: string): URL {
-	const baseUrl = (env as Record<string, string>).NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
+	const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
 	const url = createUrl({ baseUrl });
 	const basePath = url.pathname.replace(/\/+$/, "");
 	url.pathname = `${basePath}/${page}/${id}/${lang}`;

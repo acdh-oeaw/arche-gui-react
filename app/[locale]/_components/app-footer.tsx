@@ -65,7 +65,7 @@ export function AppFooter(): ReactNode {
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[100px_repeat(4,1fr)]">
 					{/* Logo & Address */}
 					<div className="">
-						<a href="https://www.oeaw.ac.at/acdh/">
+						<Link href="https://www.oeaw.ac.at/acdh/">
 							<Image
 								alt="ACDH Logo"
 								className="mb-4 w-full max-w-[64px]"
@@ -73,7 +73,7 @@ export function AppFooter(): ReactNode {
 								src={withBasePath("/images/logos/acdh-white-transparent-logo.svg")}
 								width="100"
 							/>
-						</a>
+						</Link>
 					</div>
 
 					<div className="">
@@ -84,7 +84,7 @@ export function AppFooter(): ReactNode {
 							1010 Wien
 						</p>
 						<p className="mt-4">T: +43 1 51581-2200</p>
-						<a className="mt-4 inline-block" href="https://www.oeaw.ac.at/">
+						<Link className="mt-4 inline-block" href="https://www.oeaw.ac.at/">
 							<Image
 								alt="ÖAW Logo"
 								className=""
@@ -92,7 +92,7 @@ export function AppFooter(): ReactNode {
 								src={withBasePath("/images/logos/OEAW_Logo_white.svg")}
 								width="100"
 							/>
-						</a>
+						</Link>
 					</div>
 
 					{/* Orientierung */}
@@ -177,9 +177,9 @@ export function AppFooter(): ReactNode {
 
 						<ul className="mt-4 space-y-1">
 							<li>
-								<a data-external-app="" href="/user/login">
+								<Link data-external-app="" href="/user/login">
 									{t("menu.helpdesk.items.log_in")}
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>

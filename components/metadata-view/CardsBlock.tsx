@@ -101,9 +101,9 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 					binarySize: metadata.getBinarySize(),
 					acdhType: metadata.getAcdhType(),
 					downloadCardAccess: metadata.getDownloadCardAccess(),
-					archeApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? "",
-					appBaseUrl: (env as Record<string, string>).NEXT_PUBLIC_APP_BASE_URL ?? "",
-					appBaseApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? "",
+					archeApiUrl: env.NEXT_PUBLIC_ARCHE_CORE_API,
+					appBaseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
+					appBaseApiUrl: env.NEXT_PUBLIC_ARCHE_CORE_API,
 				}}
 			/>
 
@@ -111,8 +111,8 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 				data={{
 					id: metadata.getId(),
 					acdhType: metadata.getAcdhType(),
-					archeApiUrl: (env as Record<string, string>).NEXT_PUBLIC_ARCHE_CORE_API ?? "",
-					appBaseUrl: (env as Record<string, string>).NEXT_PUBLIC_APP_BASE_URL ?? "",
+					archeApiUrl: env.NEXT_PUBLIC_ARCHE_CORE_API,
+					appBaseUrl: env.NEXT_PUBLIC_APP_BASE_URL,
 				}}
 			/>
 

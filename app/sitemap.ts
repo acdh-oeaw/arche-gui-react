@@ -5,7 +5,7 @@ import type { MetadataRoute } from "next";
 
 import { locales } from "@/lib/i18n/locales";
 import { createAbsoluteUrl } from "@/lib/navigation/create-absolute-url";
-import { getPathname } from "@/lib/navigation/navigation";
+import { getPathnameFromString } from "@/lib/navigation/navigation";
 
 /**
  * Google supports up to 50.000 entries per sitemap file. Apps which need more than that can use
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const entries = locales.flatMap((locale) => {
 		return routes.map((pathname) => {
 			return {
-				url: String(createAbsoluteUrl(getPathname({ href: { pathname }, locale }))),
+				url: String(createAbsoluteUrl(getPathnameFromString({ href: pathname, locale }))),
 				/**
 				 * Only add `lastmod` when the publication date is actually known.
 				 * Don't use the build date instead.
