@@ -121,3 +121,33 @@ jobs:
       SERVICE_ID: "${{ vars.SERVICE_ID }}"
       PUBLIC_URL: "${{ needs.vars.outputs.public_url }}"
       default_port: "3000"
+
+  static-content:
+    name: Generate static content
+    needs: [vars, deploy]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Wait for the app to respond
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl -sfL -o /dev/null --max-time 10 "${{ needs.vars.outputs.public_url }}/browser/"; then
+              echo "App is responding after ${attempt} attempt(s)."
+              exit 0
+            fi
+            echo "Attempt ${attempt}/30: app is not responding yet, retrying in 10s."
+            sleep 10
+          done
+          echo "::error::App did not start responding within 5 minutes."
+          exit 1
+
+      - name: Regenerate static content
+        run: |
+          response=$(curl -sS --max-time 300 "${{ needs.vars.outputs.public_url }}/browser/api/static-content")
+          echo "$response" | jq .
+
+          if [ "$(echo "$response" | jq -r '.ok')" != "true" ]; then
+            echo "$response" | jq -r '.failed[] | "::error::\(.page) [\(.lang)]: \(.error)"'
+            exit 1
+          fi
+
+          echo "Generated $(echo "$response" | jq -r '.updated | length') page(s)."

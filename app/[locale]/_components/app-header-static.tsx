@@ -150,7 +150,7 @@ export function AppHeaderStatic({
 					/>
 				</div>
 
-				<div className="max-w-3xl space-y-2">
+				<div className="header-content">
 					<h1 className="section-header-title">{title}</h1>
 					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
 					{pdfUrl && (

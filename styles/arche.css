@@ -183,7 +183,7 @@ code {
 	padding-right: 0 !important;
 	padding-bottom: 3rem;
 	padding-left: 0 !important;
-	background-image: url("/browser/images/common/resource_bottom_bubble_acc.svg");
+	background-image: url("/browser/images/common/resource_bottom_bubble.svg");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -196,7 +196,7 @@ code {
 	padding-bottom: 150px;
 	padding-left: 0 !important;
 	background-color: rgb(248, 249, 250, 100%);
-	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
@@ -667,14 +667,14 @@ code {
 	padding-right: 0 !important;
 	padding-bottom: 150px;
 	padding-left: 0 !important;
-	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
 
 .deposition-agreement-container {
 	padding-bottom: 150px;
-	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-position: bottom;
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -721,7 +721,7 @@ details[open] summary {
 .static-pages {
 	min-height: 500px;
 	padding-bottom: 100px;
-	background-image: url("/browser/images/common/mission_bottom_bubble_acc.svg");
+	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
 	background-position: bottom;
 	background-size: 100% auto;
 	background-repeat: no-repeat;
@@ -1204,4 +1204,8 @@ details p {
 	border: 1px solid var(--light-gray);
 	border-radius: 12px;
 	background-color: rgb(255, 255, 255);
+}
+
+.shadow {
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
 }

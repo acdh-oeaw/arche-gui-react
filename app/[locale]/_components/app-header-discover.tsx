@@ -127,7 +127,7 @@ export function AppHeaderDiscover(): ReactNode {
 				</div>
 			</div>
 			<div className="header-content">
-				<div className="max-w-3xl space-y-2">
+				<div className="header-content">
 					<h1 className="section-header-title">{t("navigation.hero.title")}</h1>
 					<p className="text-lg text-text-weak sm:text-xl">{t("navigation.hero.subtitle")}</p>
 				</div>

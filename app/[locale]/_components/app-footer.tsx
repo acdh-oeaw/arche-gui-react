@@ -53,22 +53,15 @@ export function AppFooter(): ReactNode {
 
 	return (
 		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
-			{/* One column on phones; the inset 4-of-6 layout only from `sm` up, where it fits. */}
 			<div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-6">
-				<div className="col-span-full sm:col-span-4 sm:col-start-2">
+				<div className="col-span-full sm:col-span-4 sm:col-start-2 max-lg:mx-[15px]">
 					<div className="w-full">
 						<FooterContactBox></FooterContactBox>
 					</div>
 				</div>
 			</div>
 
-			{/* Inline padding so the stacked columns do not sit flush against the screen edge. */}
 			<div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-				{/*
-				 * The five-track layout needs roughly 500px of content width, so it only applies from
-				 * `lg` up. Below that the columns stack, otherwise their `min-width: auto` forces the
-				 * whole page wider than a phone viewport.
-				 */}
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[100px_repeat(4,1fr)]">
 					{/* Logo & Address */}
 					<div className="">
@@ -184,11 +177,6 @@ export function AppFooter(): ReactNode {
 
 						<ul className="mt-4 space-y-1">
 							<li>
-								{/*
-								 * Not a route of this app - login is served by another application on the same
-								 * domain, so this must bypass `Link`, which would add `basePath` and the locale
-								 * prefix. `data-external-app` marks it as deliberately outside `basePath`.
-								 */}
 								<a data-external-app="" href="/user/login">
 									{t("menu.helpdesk.items.log_in")}
 								</a>

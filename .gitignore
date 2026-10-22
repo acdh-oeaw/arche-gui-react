@@ -38,6 +38,15 @@ out/
 /content/**/*.d.json.ts
 /messages/**/*.d.json.ts
 
+# static content
+# The html files are fetched from the upstream github repo at runtime by `/api/static-content`, so
+# they are build output, not source. Keep the two directories in the repo (via `.gitkeep`) and
+# ignore everything else inside them.
+/static-content/de/*
+/static-content/en/*
+!/static-content/de/.gitkeep
+!/static-content/en/.gitkeep
+
 # test
 /coverage/
 
