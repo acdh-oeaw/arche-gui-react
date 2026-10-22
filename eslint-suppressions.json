@@ -489,9 +489,6 @@
 	"components/metadata-view/cards/DownloadCard.tsx": {
 		"@typescript-eslint/no-unnecessary-condition": {
 			"count": 1
-		},
-		"@typescript-eslint/no-unused-vars": {
-			"count": 1
 		}
 	},
 	"components/metadata-view/cards/FundingDataCard.tsx": {
