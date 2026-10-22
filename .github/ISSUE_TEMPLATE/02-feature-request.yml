@@ -1,7 +1,7 @@
 name: Feature request
 description: Suggest an idea for this project
 assignees:
-  - stefanprobst
+  - nczirjak-acdh
 labels:
   - needs-review
   - enhancement

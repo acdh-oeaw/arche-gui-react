@@ -1,7 +1,7 @@
 name: Bug report
 description: Report a technical issue
 assignees:
-  - stefanprobst
+  - nczirjak-acdh
 labels:
   - needs-review
   - bug
