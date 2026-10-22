@@ -18,7 +18,7 @@ service:
   internalPort: 3000
 ingress:
   enabled: true
-  path: "/"
+  path: "/browser"
 livenessProbe:
   path: /browser
   initialDelaySeconds: 15
