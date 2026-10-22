@@ -6,6 +6,7 @@ import FundingDataCard from "@/components/metadata-view/cards/FundingDataCard";
 import IdentifierCard from "@/components/metadata-view/cards/IdentifierCard";
 import { LicenseDataCard } from "@/components/metadata-view/cards/LicenseDataCard";
 import { MapCard } from "@/components/metadata-view/cards/MapCard";
+import { ProjectDetailsCard } from "@/components/metadata-view/cards/ProjectDetailsCard";
 import { ResourceTechnicalCard } from "@/components/metadata-view/cards/ResourceMetaTechnicalCard";
 import TechnicalCard from "@/components/metadata-view/cards/TechnicalCard";
 import { TitleImageCard } from "@/components/metadata-view/cards/TitleImageCard";
@@ -14,7 +15,6 @@ import { ViewShareCard } from "@/components/metadata-view/cards/ViewShareCard";
 import { env } from "@/config/env.config";
 import { getSpatialCoordinates } from "@/lib/api/ArcheSymfonyApi";
 import { Metadata, type Metadata as ParsedMetadata } from "@/lib/objects/metadata";
-import { ProjectDetailsCard } from "@/components/metadata-view/cards/ProjectDetailsCard";
 
 interface MetadataProps {
 	metadata: ParsedMetadata;
@@ -42,7 +42,7 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 	} else if (resourceMapType === "coordinates") {
 		mapData = metadata.getMapCoordinates();
 	} else if (spatialCoverageId) {
-		const spatialUrl = `${env.NEXT_PUBLIC_ARCHE_SYMFONY_API as string}getCoordinates/${spatialCoverageId}`;
+		const spatialUrl = `${env.NEXT_PUBLIC_ARCHE_SYMFONY_API!}getCoordinates/${spatialCoverageId}`;
 
 		try {
 			const spatial = await getSpatialCoordinates(spatialUrl);
@@ -56,7 +56,7 @@ async function CardsBlock(props: Readonly<MetadataProps>): Promise<ReactNode> {
 	return (
 		<div className="flex flex-col gap-5">
 			<TitleImageCard
-				url={`${env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL as string}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API as string}/${metadata.getId()}&width=400`}
+				url={`${env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL}/?id=${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}&width=400`}
 			/>
 
 			{mapData && (!acdhType.includes("#Place") || spatialCoverageId) && (

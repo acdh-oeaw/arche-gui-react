@@ -25,13 +25,10 @@ const result = createEnv({
 		},
 		private(environment) {
 			const schema = v.object({
-				NEXT_PUBLIC_CITATION_URL: v.pipe(v.string(), v.url()),
-				NEXT_PUBLIC_IIIF_URL: v.pipe(v.string(), v.url()),
 				BUILD_MODE: v.optional(v.picklist(["export", "standalone"])),
 				BUNDLE_ANALYZER: v.optional(v.picklist(["disabled", "enabled"]), "disabled"),
 				CI: v.optional(v.pipe(v.unknown(), v.transform(Boolean), v.boolean())),
 				NEXT_RUNTIME: v.optional(v.picklist(["edge", "nodejs"])),
-				NEXT_PUBLIC_STATIC_CONTENT_PAGES: v.pipe(v.string(), v.nonEmpty()),
 			});
 
 			const result = v.safeParse(schema, environment);
@@ -50,6 +47,9 @@ const result = createEnv({
 			const schema = v.object({
 				NEXT_PUBLIC_APP_BASE_URL: v.pipe(v.string(), v.url()),
 				NEXT_PUBLIC_ARCHE_CORE_API: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_CITATION_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_IIIF_URL: v.pipe(v.string(), v.url()),
+				NEXT_PUBLIC_STATIC_CONTENT_PAGES: v.pipe(v.string(), v.nonEmpty()),
 				NEXT_PUBLIC_ARCHE_SYMFONY_API: v.optional(v.pipe(v.string(), v.url())),
 				NEXT_PUBLIC_GITHUB_STATIC_URL: v.pipe(v.string(), v.url()),
 				NEXT_PUBLIC_ARCHE_THUMBNAIL_URL: v.pipe(v.string(), v.url()),

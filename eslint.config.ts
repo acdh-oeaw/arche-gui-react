@@ -22,8 +22,11 @@ export default defineConfig(
 	 * Inlined from `@acdh-oeaw/eslint-config-tailwindcss@3.0.3`, which cannot be used any more: it
 	 * reads `configs["flat/recommended"]` from `eslint-plugin-tailwindcss`, a key the plugin
 	 * dropped in v4.4 in favour of `configs.recommended`. The rule names are unchanged.
+	 *
+	 * The cast bridges two structurally identical but nominally distinct `LanguageOptions` types:
+	 * the plugin is typed against `@typescript-eslint/utils`, `defineConfig` against `@eslint/core`.
 	 */
-	tailwindcssPlugin.configs.recommended,
+	tailwindcssPlugin.configs.recommended as Parameters<typeof defineConfig>[0],
 	{
 		name: "acdh-oeaw/tailwindcss-config",
 		settings: {

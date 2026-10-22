@@ -77,9 +77,6 @@
 		}
 	},
 	"app/[locale]/(main)/imprint/page.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
 		"@typescript-eslint/no-unused-vars": {
 			"count": 1
 		}
@@ -122,15 +119,6 @@
 	"app/[locale]/_components/app-footer.tsx": {
 		"@next/next/no-html-link-for-pages": {
 			"count": 3
-		},
-		"@typescript-eslint/no-unsafe-argument": {
-			"count": 1
-		},
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
-		"@typescript-eslint/no-unsafe-member-access": {
-			"count": 1
 		},
 		"arrow-body-style": {
 			"count": 1
@@ -189,40 +177,6 @@
 		},
 		"@typescript-eslint/no-deprecated": {
 			"count": 1
-		}
-	},
-	"app/[locale]/layout.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 3
-		}
-	},
-	"app/api/auth/sso-user/route.ts": {
-		"@typescript-eslint/no-unsafe-argument": {
-			"count": 1
-		}
-	},
-	"app/api/static-content/route.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 3
-		},
-		"@typescript-eslint/no-unsafe-call": {
-			"count": 1
-		},
-		"@typescript-eslint/no-unsafe-member-access": {
-			"count": 2
-		},
-		"@typescript-eslint/restrict-template-expressions": {
-			"count": 4
-		}
-	},
-	"app/layout.tsx": {
-		"@typescript-eslint/no-unsafe-argument": {
-			"count": 1
-		}
-	},
-	"app/robots.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 2
 		}
 	},
 	"components/discover/DiscoverClient.tsx": {
@@ -446,9 +400,6 @@
 		},
 		"import-x/no-default-export": {
 			"count": 1
-		},
-		"simple-import-sort/imports": {
-			"count": 1
 		}
 	},
 	"components/metadata-view/basic/MetadataTabs.tsx": {
@@ -468,12 +419,6 @@
 		}
 	},
 	"components/metadata-view/basic/basic-view.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 3
-		},
-		"@typescript-eslint/restrict-template-expressions": {
-			"count": 5
-		},
 		"react/jsx-sort-props": {
 			"count": 2
 		},
@@ -659,9 +604,6 @@
 		}
 	},
 	"components/metadata-view/organisation/organisation-view.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 2
-		},
 		"react/jsx-sort-props": {
 			"count": 2
 		},
@@ -683,9 +625,6 @@
 		}
 	},
 	"components/metadata-view/person/person-view.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 2
-		},
 		"react/jsx-sort-props": {
 			"count": 2
 		},
@@ -721,9 +660,6 @@
 		}
 	},
 	"components/metadata-view/place/place-view.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
 		"@typescript-eslint/no-unused-vars": {
 			"count": 3
 		},
@@ -735,9 +671,6 @@
 		}
 	},
 	"components/metadata-view/project/project-view.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 2
-		},
 		"@typescript-eslint/no-unused-vars": {
 			"count": 1
 		},
@@ -759,34 +692,13 @@
 		}
 	},
 	"e2e/lib/test.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
 		"simple-import-sort/imports": {
-			"count": 1
-		}
-	},
-	"e2e/tests/app/analytics.test.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		}
-	},
-	"e2e/tests/app/app.test.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 2
-		},
-		"@typescript-eslint/restrict-template-expressions": {
-			"count": 2
-		}
-	},
-	"e2e/tests/app/i18n.test.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
 			"count": 1
 		}
 	},
 	"e2e/tests/app/metadata.test.ts": {
 		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 3
+			"count": 1
 		},
 		"@typescript-eslint/restrict-template-expressions": {
 			"count": 1
@@ -797,21 +709,7 @@
 			"count": 1
 		}
 	},
-	"lib/api/StaticContentSearchApi.ts": {
-		"@typescript-eslint/no-unsafe-call": {
-			"count": 4
-		},
-		"@typescript-eslint/no-unsafe-member-access": {
-			"count": 5
-		},
-		"@typescript-eslint/no-unsafe-return": {
-			"count": 2
-		}
-	},
 	"lib/api/StaticPagesApi.tsx": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
 		"no-useless-escape": {
 			"count": 4
 		}
@@ -831,13 +729,7 @@
 		"@typescript-eslint/no-inferrable-types": {
 			"count": 1
 		},
-		"@typescript-eslint/no-unsafe-argument": {
-			"count": 1
-		},
 		"@typescript-eslint/no-unused-vars": {
-			"count": 1
-		},
-		"@typescript-eslint/restrict-plus-operands": {
 			"count": 1
 		},
 		"arrow-body-style": {
@@ -860,25 +752,6 @@
 			"count": 2
 		}
 	},
-	"lib/navigation/create-absolute-url.ts": {
-		"@typescript-eslint/no-unsafe-assignment": {
-			"count": 1
-		},
-		"@typescript-eslint/no-unsafe-call": {
-			"count": 1
-		},
-		"@typescript-eslint/no-unsafe-member-access": {
-			"count": 1
-		},
-		"@typescript-eslint/restrict-plus-operands": {
-			"count": 1
-		}
-	},
-	"lib/navigation/create-full-url.ts": {
-		"@typescript-eslint/no-unsafe-argument": {
-			"count": 1
-		}
-	},
 	"lib/objects/metadata.ts": {
 		"@typescript-eslint/no-unnecessary-condition": {
 			"count": 23
@@ -898,14 +771,6 @@
 			"count": 14
 		},
 		"@typescript-eslint/no-redundant-type-constituents": {
-			"count": 1
-		}
-	},
-	"next.config.ts": {
-		"@typescript-eslint/no-unsafe-argument": {
-			"count": 1
-		},
-		"@typescript-eslint/no-unsafe-assignment": {
 			"count": 1
 		}
 	}
