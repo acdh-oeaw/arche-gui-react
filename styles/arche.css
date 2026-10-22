@@ -454,7 +454,7 @@ code {
 	justify-content: space-between;
 	align-items: center;
 	padding-bottom: 10px;
-	border-bottom: 1px solid #e1edf3;
+	border-bottom: 1px solid rgb(225 237 243 / 100%);
 }
 
 .smartsearch-result-row {
@@ -975,8 +975,8 @@ details p {
 
 	.arche-lng-switcher {
 		padding-top: 0.25rem;
-		padding-bottom: 0.5rem;
 		padding-right: 0.5rem;
+		padding-bottom: 0.5rem;
 	}
 }
 
@@ -1206,5 +1206,5 @@ details p {
 }
 
 .shadow {
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+	box-shadow: 0 0.5rem 1rem rgb(0, 0, 0, 15%) !important;
 }
