@@ -12,7 +12,9 @@ function formatModifiedLabel(value: string | undefined, locale: string): string 
 	if (!value) return "";
 	const date = new Date(value);
 	if (Number.isNaN(date.getTime())) return "";
-	const formatted = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(date);
+	const formatted = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(
+		date,
+	);
 	return `Modified · ${formatted}`.toUpperCase();
 }
 
@@ -40,9 +42,7 @@ export function renderHomeMainCollection(
 	const title = escapeHtml(item.title ?? "");
 	const rawDescription = item.description ?? "";
 	const description = renderMarkdown(
-		descriptionMaxLength > 0
-			? truncateText(rawDescription, descriptionMaxLength)
-			: rawDescription,
+		descriptionMaxLength > 0 ? truncateText(rawDescription, descriptionMaxLength) : rawDescription,
 	);
 
 	const href = escapeHtml(`/browser/metadata/${id}`);

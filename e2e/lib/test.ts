@@ -19,7 +19,9 @@ interface Fixtures {
 	createAccessibilityScanner: () => Promise<AccessibilityScanner>;
 	createI18n: (locale: IntlLocale) => Promise<I18n>;
 	createImprintPage: (locale: IntlLocale) => Promise<WithI18n<{ imprintPage: ImprintPage }>>;
-	createAccessibilityPage: (locale: IntlLocale) => Promise<WithI18n<{ accessibilityPage: AccessibilityPage }>>;
+	createAccessibilityPage: (
+		locale: IntlLocale,
+	) => Promise<WithI18n<{ accessibilityPage: AccessibilityPage }>>;
 	createIndexPage: (locale: IntlLocale) => Promise<WithI18n<{ indexPage: IndexPage }>>;
 	createSearchPage: (locale: IntlLocale) => Promise<WithI18n<{ searchPage: SearchPage }>>;
 }

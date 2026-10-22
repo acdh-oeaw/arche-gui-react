@@ -1,7 +1,6 @@
-import React from 'react'
+import React from "react";
 import { env } from "@/config/env.config";
 import { withBasePath } from "@/config/base-path";
-
 
 export interface LoginItem {
 	username: string;
@@ -10,17 +9,14 @@ export interface LoginItem {
 	roles: string;
 }
 
-
 /* Read a single cookie's value by name. Client-side only (uses document.cookie), and
  * only works for cookies that are NOT httpOnly — an httpOnly cookie (e.g. a typical
  * PHP/Shibboleth session cookie) is completely invisible to JS, not just unreadable,
  * so this will always return null for one of those regardless of whether it's set. */
 function getCookie(name: string): string | null {
-	if (typeof document === 'undefined') return null;
+	if (typeof document === "undefined") return null;
 
-	const match = document.cookie
-		.split('; ')
-		.find((row) => row.startsWith(`${name}=`));
+	const match = document.cookie.split("; ").find((row) => row.startsWith(`${name}=`));
 
 	if (!match) return null;
 
@@ -29,7 +25,6 @@ function getCookie(name: string): string | null {
 
 /* check the logged or not logged user rights and the actual resource rights */
 export async function checkUserPermission(resId: string, aclRead: string = ""): Promise<LoginItem> {
-
 	const actualPage = env.NEXT_PUBLIC_APP_BASE_URL + "/metadata/" + resId;
 	console.log("actualpage:");
 	console.log(actualPage);

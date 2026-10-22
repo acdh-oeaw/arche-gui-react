@@ -258,13 +258,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 												}
 
 												case "separator": {
-													return (
-														<Separator
-															key={id}
-															className="my-1 w-full"
-															elementType="li"
-														/>
-													);
+													return <Separator key={id} className="my-1 w-full" elementType="li" />;
 												}
 
 												case "menu": {

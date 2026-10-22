@@ -40,13 +40,7 @@ export default defineConfig(
 			"check-file": checkFilePlugin,
 		},
 		rules: {
-			"check-file/filename-naming-convention": [
-				"error",
-				{
-
-				},
-				{ ignoreMiddleExtensions: true },
-			],
+			"check-file/filename-naming-convention": ["error", {}, { ignoreMiddleExtensions: true }],
 			"check-file/folder-naming-convention": [
 				"error",
 				{
