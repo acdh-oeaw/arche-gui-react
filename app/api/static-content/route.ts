@@ -12,17 +12,15 @@ import {
 import { renderCollectionsCarousel } from "@/lib/helpers/RenderCollectionsCarousel";
 import { renderHomeMainCollection } from "@/lib/helpers/RenderHomeMainCollection";
 
-
 const baseApiUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
 if (baseApiUrl == null || baseApiUrl.length === 0) {
 	throw new Error("NEXT_PUBLIC_ARCHE_SYMFONY_API is not configured.");
 }
 const BASE_API_URL = baseApiUrl.replace(/\/+$/, "");
 
-const NEXT_PUBLIC_ARCHE_CORE_API = env.NEXT_PUBLIC_ARCHE_CORE_API as string;
+const NEXT_PUBLIC_ARCHE_CORE_API = env.NEXT_PUBLIC_ARCHE_CORE_API;
 
-const PAGES = (env.NEXT_PUBLIC_STATIC_CONTENT_PAGES as string)
-	.split(",")
+const PAGES = env.NEXT_PUBLIC_STATIC_CONTENT_PAGES.split(",")
 	.map((page) => {
 		return page.trim();
 	})

@@ -59,7 +59,8 @@ export function FundingDataCard({
 
 						return (
 							<div key={key}>
-								<b>{t(key)}:</b>
+								{/* `key` comes from the api payload, so it cannot be checked statically. */}
+								<b>{t(key as Parameters<typeof t>[0])}:</b>
 								<br />
 								{sortBySortValue(list).map((val) => {
 									const content = <span className="whitespace-pre-line">{val.value}</span>;

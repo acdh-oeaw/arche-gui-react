@@ -176,7 +176,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		const labels = (
 			messages?.AppContent as { smartsearch?: { facetLabels?: Record<string, string> } }
 		)?.smartsearch?.facetLabels;
-		if (labels?.[lookupKey]) return t(`smartsearch.facetLabels.${lookupKey}`);
+		/* The key is data-driven, so it cannot be checked statically; the lookup above guards it. */
+		if (labels?.[lookupKey])
+			return t(`smartsearch.facetLabels.${lookupKey}` as Parameters<typeof t>[0]);
 		return fallback;
 	}
 

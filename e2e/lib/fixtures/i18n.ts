@@ -12,7 +12,11 @@ export interface I18n {
 	messages: IntlMessages;
 }
 
-export async function createI18n(_page: Page, locale = defaultLocale): Promise<I18n> {
+/*
+ * `locale` is annotated rather than inferred: `defaultLocale` is `"en-GB" as const`, so a bare
+ * default would narrow the parameter to that one locale and reject `"de-AT"`.
+ */
+export async function createI18n(_page: Page, locale: IntlLocale = defaultLocale): Promise<I18n> {
 	const messages = await getIntlMessages(locale);
 
 	return {

@@ -42,7 +42,7 @@ export function OrganisationView(props: Readonly<BasicViewProps>): ReactNode {
 						<hr className="meatdata-view-top-hr"></hr>
 
 						<PreviousNextBlock
-							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 							rootId={metadata.getRootId()}
 						></PreviousNextBlock>
@@ -55,7 +55,7 @@ export function OrganisationView(props: Readonly<BasicViewProps>): ReactNode {
 
 						<MetadataTabs
 							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
-							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 						/>
 

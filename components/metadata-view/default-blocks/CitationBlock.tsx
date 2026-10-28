@@ -38,6 +38,13 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 			return;
 		}
 
+		/*
+		 * Both are narrowed to `string` by the guards above, but that narrowing does not reach into
+		 * `loadCitation`, because they are declared in the component scope rather than this one.
+		 */
+		const baseUrl = citationBaseUrl;
+		const resourceIdentifier = identifier;
+
 		const abortController = new AbortController();
 
 		async function loadCitation(): Promise<void> {
@@ -46,9 +53,9 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 				setError(null);
 				setIsCopied(false);
 				const text = await fetchCitation({
-					baseUrl: citationBaseUrl,
+					baseUrl,
 					format,
-					identifier,
+					identifier: resourceIdentifier,
 					language,
 					signal: abortController.signal,
 				});

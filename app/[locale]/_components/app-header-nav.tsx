@@ -106,7 +106,7 @@ export function AppHeaderNav(): ReactNode {
 	} satisfies Record<string, NavigationItem>;
 
 	return (
-		<header className="w-full border-b border-stroke-weak bg-arche-acc-light-blue">
+		<header className="w-full  bg-arche-acc-light-blue">
 			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile

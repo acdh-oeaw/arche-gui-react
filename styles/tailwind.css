@@ -20,6 +20,24 @@ automatic source detection does not pick them up. This is why we have to add the
 @source inline("my-12");
 @source inline("p-[24px]");
 @source inline("m{t,b}-[{30,50,100}px]");
+@source inline("{md:,}flex-row");
+@source inline("{md:,}w-1/2");
+@source inline("w-screen");
+@source inline("h-64");
+@source inline("max-w-{sm,6xl,[220px]}");
+@source inline("m-3");
+@source inline("mb-3");
+@source inline("mt-{10,auto}");
+@source inline("pt-{0,[50px]}");
+@source inline("rounded-2xl");
+@source inline("text-{start,slate-600,slate-900}");
+@source inline("xl:text-left");
+@source inline("hover:text-slate-700");
+@source inline("focus-visible:ring-slate-400");
+@source inline("group-open:text-white");
+@source inline("!text-inherit");
+@source inline("max-lg:col-{span-12,start-1}");
+@source inline("max-lg:m-[15px]");
 
 /* The collapsible blocks in the static content rely on these. */
 @source inline("group");

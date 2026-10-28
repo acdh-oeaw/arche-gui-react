@@ -79,7 +79,7 @@ export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
 						{/* Spatial Coverage of - /browser/api/spatialDT/" + resId + "/" + drupalSettings.arche_core_gui.gui_lang */}
 						<MetadataTabs
 							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
-							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 						/>
 					</div>

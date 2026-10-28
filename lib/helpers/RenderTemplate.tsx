@@ -5,7 +5,9 @@ function getByPath(obj: unknown, path: string): unknown {
 		.trim()
 		.replace(/\[(\d+)\]/g, ".$1") // arr[0] -> arr.0
 		.split(".")
-		.map((p) => { return p.trim(); })
+		.map((p) => {
+			return p.trim();
+		})
 		.filter(Boolean);
 
 	let cur: unknown = obj;

@@ -9,6 +9,7 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+import { Link } from "@/components/link";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import {
 	type CollectionContentResult,
@@ -81,10 +82,10 @@ function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
 					<DocumentIcon className="h-5 w-5 shrink-0 text-gray-300" />
 				)}
 
-				{/* Title — always a link */}
-				<a className="tab-table-url" href={`/browser/metadata/${item.id}`}>
+				{/* No `/browser` here - unlike a plain anchor, `Link` prepends `basePath` itself. */}
+				<Link className="tab-table-url" href={`/metadata/${item.id}`}>
 					{item.title}
-				</a>
+				</Link>
 			</div>
 
 			{expanded &&

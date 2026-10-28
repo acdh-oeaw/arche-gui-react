@@ -1,4 +1,4 @@
-// lib/Objects/metadata.ts
+// lib/objects/metadata.ts
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -31,7 +31,6 @@ type ResourceItem =
 			[k: string]: any;
 	  }
 	| Record<string, any>;
-
 
 export class Metadata {
 	private data: Record<string, any>;
@@ -68,7 +67,9 @@ export class Metadata {
 				// 3️⃣ Now handle array vs. single object
 				const store = (val: any) => {
 					if (Array.isArray(val)) {
-						this.properties[prop] = val.map((item: AnyObj) => { return this.#addExternalURL(item); });
+						this.properties[prop] = val.map((item: AnyObj) => {
+							return this.#addExternalURL(item);
+						});
 					} else if (val && typeof val === "object") {
 						const item = this.#addExternalURL(val as AnyObj);
 						if (item?.type === "REL") {
@@ -102,16 +103,20 @@ export class Metadata {
 		}
 
 		const excludedPatterns = [
-			process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? '',
-			'https://id.acdh.oeaw.ac.at',
-			'https://vocabs.acdh.oeaw.ac.at/rest/',
-			'.acdh.oeaw.ac.at/api/',
-			'arche-curation.',
-			'arche-dev.',
+			process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? "",
+			"https://id.acdh.oeaw.ac.at",
+			"https://vocabs.acdh.oeaw.ac.at/rest/",
+			".acdh.oeaw.ac.at/api/",
+			"arche-curation.",
+			"arche-dev.",
 		];
 
 		for (const identifier of identifiers) {
-			if (excludedPatterns.every((pattern) => { return !identifier.includes(pattern); })) {
+			if (
+				excludedPatterns.every((pattern) => {
+					return !identifier.includes(pattern);
+				})
+			) {
 				v.externalUrl = identifier;
 			}
 		}
@@ -239,13 +244,13 @@ export class Metadata {
 		const identifiers = this.properties["acdh:hasIdentifier"];
 		if (!Array.isArray(identifiers) || identifiers.length === 0) return [];
 
-		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? '';
+		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? "";
 
 		const filtered = identifiers.filter((v) => {
 			const value = v?.value;
 			if (typeof value !== "string") return false;
-			const matchesBase = baseUrl !== '' && value.includes(baseUrl);
-			const matchesAcdh = value.includes('https://id.acdh.oeaw.ac.at');
+			const matchesBase = baseUrl !== "" && value.includes(baseUrl);
+			const matchesAcdh = value.includes("https://id.acdh.oeaw.ac.at");
 			return !matchesBase && !matchesAcdh;
 		});
 
@@ -260,13 +265,13 @@ export class Metadata {
 		const identifiers = this.properties["acdh:hasIdentifier"];
 		if (!Array.isArray(identifiers) || identifiers.length === 0) return [];
 
-		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? '';
+		const baseUrl = process.env.NEXT_PUBLIC_ARCHE_CORE_API ?? "";
 
 		return identifiers.filter((v) => {
 			const value = v?.value;
 			if (typeof value !== "string") return false;
-			const matchesBase = baseUrl !== '' && value.includes(baseUrl);
-			const matchesOeaw = value.includes('oeaw.ac.at');
+			const matchesBase = baseUrl !== "" && value.includes(baseUrl);
+			const matchesOeaw = value.includes("oeaw.ac.at");
 			return !matchesBase && !matchesOeaw;
 		});
 	}
@@ -281,11 +286,11 @@ export class Metadata {
 
 	isPly3D(): boolean {
 		let category = false;
-  	if (!this.isPublic()) {
+		if (!this.isPublic()) {
 			return false;
 		}
 
-		const acdhCategory = this.getAcdhCategory()?.toLowerCase() ?? '';
+		const acdhCategory = this.getAcdhCategory()?.toLowerCase() ?? "";
 
 		if (acdhCategory.includes("3d data") || acdhCategory.includes("3d-daten")) {
 			category = true;
@@ -295,7 +300,7 @@ export class Metadata {
 			return true;
 		}
 
-  	return false;
+		return false;
 	}
 
 	isGlb3D(): boolean {
@@ -306,16 +311,15 @@ export class Metadata {
 			return false;
 		}
 
-		const acdhCategory = this.getAcdhCategory()?.toLowerCase() ?? '';
+		const acdhCategory = this.getAcdhCategory()?.toLowerCase() ?? "";
 
 		if (acdhCategory.includes("3d data") || acdhCategory.includes("3d-daten")) {
 			category = true;
 		}
 
+		const acdhFormat = this.getFormat()?.toLowerCase() ?? "";
 
-		const acdhFormat = this.getFormat()?.toLowerCase() ?? '';
-
-		if (acdhFormat === 'model/gltf-binary') {
+		if (acdhFormat === "model/gltf-binary") {
 			format = true;
 		}
 
@@ -332,14 +336,18 @@ export class Metadata {
 		}
 
 		let acdhCategory = false;
-		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
+		const category = this.getAcdhCategory()?.toLowerCase() ?? "";
 
-		if (category.includes("image") || category.includes("bild") ) {
+		if (category.includes("image") || category.includes("bild")) {
 			acdhCategory = true;
 		}
 
 		const format = this.getFormat()?.toLowerCase();
-		if (format !== undefined && (IIIF_FORMATS as ReadonlyArray<string>).includes(format) && acdhCategory) {
+		if (
+			format !== undefined &&
+			(IIIF_FORMATS as ReadonlyArray<string>).includes(format) &&
+			acdhCategory
+		) {
 			return true;
 		}
 
@@ -352,10 +360,10 @@ export class Metadata {
 		}
 
 		let acdhCategory = false;
-		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
+		const category = this.getAcdhCategory()?.toLowerCase() ?? "";
 
-		if ((AUDIO_CATEGORIES as ReadonlyArray<string>).includes(category) ) {
-			acdhCategory =  true;
+		if ((AUDIO_CATEGORIES as ReadonlyArray<string>).includes(category)) {
+			acdhCategory = true;
 		}
 
 		if (this.getBinarySizeGeneral() > 0 && acdhCategory) {
@@ -368,13 +376,13 @@ export class Metadata {
 	isPDF(): boolean {
 		let isPDF = false;
 
-    if (!this.isPublic()) {
+		if (!this.isPublic()) {
 			return false;
 		}
 
 		const format = this.getFormat()?.toLowerCase();
 
-		if (format === 'application/pdf') {
+		if (format === "application/pdf") {
 			isPDF = true;
 		}
 
@@ -386,14 +394,13 @@ export class Metadata {
 	}
 
 	isTEI(): boolean {
-
 		if (!this.isPublic()) {
 			return false;
-			}
+		}
 
-		const category = this.getAcdhCategory()?.toLowerCase() ?? '';
+		const format = this.getFormat()?.toLowerCase() ?? "";
 
-		if (category.includes("xml/tei")) {
+		if (format.includes("xml/tei") || format.includes("application/xml")) {
 			return true;
 		}
 
@@ -402,16 +409,14 @@ export class Metadata {
 
 	getBinarySizeGeneral(): number {
 		const size = this.data?.["acdh:hasBinarySize"]?.[this.mainId]?.[this.mainLang]?.[0]?.value;
-		if (
-			size
-		) {
+		if (size) {
 			return size;
 		}
 		return 0;
 	}
 
 	getBinarySize(): number {
-		const acdhtype = this.getAcdhType()?.toLowerCase() ?? '';
+		const acdhtype = this.getAcdhType()?.toLowerCase() ?? "";
 		if (
 			acdhtype.includes("resource") ||
 			acdhtype.includes("oldresource") ||
@@ -624,7 +629,12 @@ export class Metadata {
 		return identifier;
 	}
 
-	getFundingLogos(): Array<string> {
+	/*
+	 * Entries of `properties` are objects built by `#addExternalURL`, not plain strings - the
+	 * previous `Array<string>` annotation did not describe what this actually returns, and
+	 * `FundingDataCard` reads `logo.value` from it.
+	 */
+	getFundingLogos(): Array<{ value: string }> {
 		const logos = this.properties["acdh:hasFunderLogo"] || [];
 		return logos;
 		//data.getData('acdh:hasFunderLogo');
@@ -731,8 +741,6 @@ export class Metadata {
 		return this.#fetchCardsData(props);
 	}
 
-
-
 	getOrganisationAddressBlock(): Record<string, any> {
 		const props: Record<string, string> = {
 			"acdh:hasAddressLine1": "Address Line 1",
@@ -783,7 +791,6 @@ export class Metadata {
 		return {};
 	}
 
-
 	getTechnicalData(): Record<string, any> {
 		let props: Record<string, string> = {};
 		const lower = this.getAcdhType()?.toLowerCase();
@@ -808,8 +815,6 @@ export class Metadata {
 
 		return this.#fetchCardsData(props);
 	}
-
-
 
 	getProjectDetailsData() {
 		const props: Record<string, string> = {
@@ -897,18 +902,21 @@ export class Metadata {
 		const result: Record<string, any> = {};
 
 		const proto = Object.getPrototypeOf(this);
-		const methodNames = Object.getOwnPropertyNames(proto).filter(
-			(name) =>
-				{return typeof (this as Record<string, unknown>)[name] === "function" &&
+		const methodNames = Object.getOwnPropertyNames(proto).filter((name) => {
+			return (
+				typeof (this as Record<string, unknown>)[name] === "function" &&
 				name.startsWith("get") &&
 				name !== "get" && // avoid edge case
-				name !== "toJSON"},
-		);
+				name !== "toJSON"
+			);
+		});
 
 		for (const name of methodNames) {
 			const key = name
 				.replace(/^get/, "") // remove "get"
-				.replace(/^[A-Z]/, (c) => {return c.toLowerCase()}); // lowercase first letter
+				.replace(/^[A-Z]/, (c) => {
+					return c.toLowerCase();
+				}); // lowercase first letter
 
 			result[key] = (this as unknown as Record<string, () => unknown>)[name]!();
 		}

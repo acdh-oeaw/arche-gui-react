@@ -18,7 +18,7 @@ export class SearchPage {
 	/** Highlighted occurrences of the query within the snippets. */
 	readonly highlights: Locator;
 
-	constructor(page: Page, locale = defaultLocale, i18n: I18n) {
+	constructor(page: Page, locale: IntlLocale = defaultLocale, i18n: I18n) {
 		this.page = page;
 		this.locale = locale;
 		this.i18n = i18n;

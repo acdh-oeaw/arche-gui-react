@@ -4,7 +4,7 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { env } from "@/config/env.config";
 import { getMetadataPathname, getRootPathname } from "@/e2e/lib/get-pathname";
 import { expect, test } from "@/e2e/lib/test";
-import { defaultLocale, locales } from "@/lib/i18n/locales";
+import { defaultLocale, type IntlLocale, locales } from "@/lib/i18n/locales";
 import { localePrefix } from "@/lib/i18n/routing";
 
 test("should set a canonical url", async ({ createIndexPage }) => {
@@ -134,7 +134,12 @@ test("should serve an open-graph image", async ({ createIndexPage, request }) =>
 		await indexPage.goto();
 
 		const url = await indexPage.page.locator('meta[property="og:image"]').getAttribute("content");
-		const prefix = localePrefix.prefixes[locale] ?? "";
+		/*
+		 * `prefixes` only lists the locales that actually get one, so `as const` narrows it to just
+		 * `de-AT`. Widening it back keeps the lookup for `en-GB` (which has no prefix) legal.
+		 */
+		const prefixes: Partial<Record<IntlLocale, string>> = localePrefix.prefixes;
+		const prefix = prefixes[locale] ?? "";
 		expect(url).toContain(`${prefix}/og-image`);
 
 		const response = await request.get(String(url));

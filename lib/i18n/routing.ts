@@ -7,7 +7,11 @@ export const localePrefix = {
 	prefixes: {
 		"de-AT": "/de",
 	},
-} as const satisfies LocalePrefix<typeof locales>;
+	/*
+	 * The second type argument is the prefix mode, and it defaults to `"always"` - without it the
+	 * `satisfies` check validates this object against the wrong branch of the union.
+	 */
+} as const satisfies LocalePrefix<typeof locales, "as-needed">;
 
 export const routing = defineRouting({
 	defaultLocale,

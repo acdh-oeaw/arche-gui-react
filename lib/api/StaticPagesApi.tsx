@@ -20,7 +20,8 @@ export async function getStaticPage(page: string, lang: string): Promise<string>
 		const urlHtml = createApiUrl(`${page}.html`, lang);
 
 		const htmlData = await request(urlHtml, { responseType: "text" });
-		const jsonData = await request(urlJson, { responseType: "json" });
+		/* `request` is untyped at the boundary; the companion json file is a flat key/value map. */
+		const jsonData = (await request(urlJson, { responseType: "json" })) as Record<string, unknown>;
 
 		return renderTemplate(htmlData, jsonData);
 	} catch (error) {
@@ -68,7 +69,10 @@ export function injectHtmlIntoDiv(html: string, id: string, innerHtml: string): 
 /* Same as injectHtmlIntoDiv, but matches a placeholder div by its class attribute instead of
  * an id (some static page templates mark their injection points this way). */
 export function injectHtmlIntoClassDiv(html: string, className: string, innerHtml: string): string {
-	const pattern = new RegExp(`<div([^>]*\\s)?class=[\"']${className}[\"']([^>]*)>[\\s\\S]*?<\\/div>`, "i");
+	const pattern = new RegExp(
+		`<div([^>]*\\s)?class=[\"']${className}[\"']([^>]*)>[\\s\\S]*?<\\/div>`,
+		"i",
+	);
 	const replacement = `<div class="${className}">${innerHtml}</div>`;
 	if (!pattern.test(html)) return html;
 	return html.replace(pattern, replacement);

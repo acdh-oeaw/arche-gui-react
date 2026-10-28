@@ -4,7 +4,6 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { Image } from "@/components/image";
-import { Button } from "@/components/ui/button";
 import { checkUserPermission, type LoginItem } from "@/lib/helpers/ArcheLogin";
 import downloadIcon from "@/public/images/icons/dl_icon.png";
 
@@ -55,9 +54,9 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 					<div className="flex w-full items-center justify-between">
 						<span className="facet-card-title">{t("download")}</span>
 						{isOpen ? (
-							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+							<ChevronUpIcon className="size-5 text-gray-600" />
 						) : (
-							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+							<ChevronDownIcon className="size-5 text-gray-600" />
 						)}
 					</div>
 				</button>
@@ -65,7 +64,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 
 			{/* Content */}
 			{isOpen && (
-				<div className="flex flex-col gap-1 facet-card-content p-3">
+				<div className="facet-card-content flex flex-col gap-1 p-3">
 					{!isPublic && (
 						<div
 							className="relative w-full rounded-md border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800"
@@ -79,7 +78,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 						<div id="download-not-logged">
 							<div className="w-full pt-2">
 								<a
-									className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+									className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline"
 									href={`/api/user?redirect=${data.appBaseUrl}/browser/metadata/${data.id}`}
 									rel="nofollow"
 								>
@@ -88,7 +87,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 							</div>
 							<div className="w-full pt-2">
 								<a
-									className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+									className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline"
 									href={`/Shibboleth.sso/Login?target=${data.appBaseUrl}/api/user?redirect=${data.appBaseUrl}/browser/metadata/${data.id}`}
 									rel="nofollow"
 								>
@@ -110,7 +109,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 								</div>
 								<div className="pt-2">
 									<div className="w-full">
-										<span className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline">
+										<span className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline">
 											{t("Logout")}
 										</span>
 									</div>
@@ -129,7 +128,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 								</div>
 								<div className="pt-2">
 									<div className="w-full">
-										<span className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline">
+										<span className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline">
 											{t("Logout")}
 										</span>
 									</div>
@@ -141,9 +140,9 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 					{!needsLogin && (
 						<div className="w-full" id="download-resource-section">
 							{data.binarySize > 0 && (
-								<div className="flex w-full flex-col pt-2 pb-2">
+								<div className="flex w-full flex-col py-2">
 									<a
-										className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+										className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline"
 										href={`${data.appBaseApiUrl}/${data.id}`}
 										rel="noopener noreferrer"
 										target="_blank"
@@ -151,7 +150,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 										{t("download_file")}
 										<Image
 											alt={t("download_file")}
-											className="h-4 w-4"
+											className="size-4"
 											height={16}
 											src={downloadIcon}
 											width={16}
@@ -163,11 +162,11 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 							{(data.acdhType?.includes("TopCollection") ??
 								data.acdhType?.includes("Collection")) && (
 								<div
-									className="flex w-full flex-col pt-2 pb-2"
+									className="flex w-full flex-col py-2"
 									id="download-resource-collection-section"
 								>
 									<a
-										className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+										className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline"
 										href={`${data.appBaseUrl}/dissemination/collection_download_script/${data.id}`}
 										rel="noopener noreferrer"
 										target="_blank"
@@ -175,7 +174,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 										{t("download_collection_script")}
 										<Image
 											alt={t("download_collection_script")}
-											className="h-4 w-4"
+											className="size-4"
 											height={16}
 											src={downloadIcon}
 											width={16}
@@ -187,9 +186,9 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 					)}
 
 					<div className="w-full" id="download-metadata-section">
-						<div className="w-full pt-2 pb-2">
+						<div className="w-full py-2">
 							<a
-								className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+								className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline"
 								href={`${data.archeApiUrl}/${data.id}/metadata?format=text/turtle&readMode=relatives&parentProperty=https%3A%2F%2Fvocabs.acdh.oeaw.ac.at%2Fschema%23isPartOf`}
 								rel="noopener noreferrer"
 								target="_blank"
@@ -197,7 +196,7 @@ export function DownloadCard({ data }: Readonly<{ data: DownloadData }>) {
 								{t("download_metadata")}
 								<Image
 									alt={t("download_metadata")}
-									className="h-4 w-4"
+									className="size-4"
 									height={16}
 									src={downloadIcon}
 									width={16}

@@ -130,7 +130,7 @@ export function ProjectSummaryBlock(props: Readonly<MetadataProps>): ReactNode {
 
 					{collectedDateText && (
 						<li>
-							<strong>{t("data_collection_Date")}: </strong>
+							<strong>{t("data_collection_date")}: </strong>
 							<span>{coverageDateText}</span>
 						</li>
 					)}

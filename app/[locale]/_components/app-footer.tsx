@@ -31,7 +31,7 @@ export function AppFooter(): ReactNode {
 
 		if (!nextOpen || versions != null || isVersionsLoading) return;
 
-		const baseUrl = env.NEXT_PUBLIC_APP_SM_BASE_URL;
+		const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API;
 		if (baseUrl == null || baseUrl.length === 0) {
 			setVersionsError("Software versions API is not configured.");
 			return;
@@ -53,26 +53,19 @@ export function AppFooter(): ReactNode {
 
 	return (
 		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
-			{/* One column on phones; the inset 4-of-6 layout only from `sm` up, where it fits. */}
 			<div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-6">
-				<div className="col-span-full sm:col-span-4 sm:col-start-2">
+				<div className="col-span-full sm:col-span-4 sm:col-start-2 max-lg:mx-[15px]">
 					<div className="w-full">
 						<FooterContactBox></FooterContactBox>
 					</div>
 				</div>
 			</div>
 
-			{/* Inline padding so the stacked columns do not sit flush against the screen edge. */}
 			<div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-				{/*
-				 * The five-track layout needs roughly 500px of content width, so it only applies from
-				 * `lg` up. Below that the columns stack, otherwise their `min-width: auto` forces the
-				 * whole page wider than a phone viewport.
-				 */}
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[100px_repeat(4,1fr)]">
 					{/* Logo & Address */}
 					<div className="">
-						<a href="https://www.oeaw.ac.at/acdh/">
+						<Link href="https://www.oeaw.ac.at/acdh/">
 							<Image
 								alt="ACDH Logo"
 								className="mb-4 w-full max-w-[64px]"
@@ -80,7 +73,7 @@ export function AppFooter(): ReactNode {
 								src={withBasePath("/images/logos/acdh-white-transparent-logo.svg")}
 								width="100"
 							/>
-						</a>
+						</Link>
 					</div>
 
 					<div className="">
@@ -91,7 +84,7 @@ export function AppFooter(): ReactNode {
 							1010 Wien
 						</p>
 						<p className="mt-4">T: +43 1 51581-2200</p>
-						<a className="mt-4 inline-block" href="https://www.oeaw.ac.at/">
+						<Link className="mt-4 inline-block" href="https://www.oeaw.ac.at/">
 							<Image
 								alt="ÖAW Logo"
 								className=""
@@ -99,7 +92,7 @@ export function AppFooter(): ReactNode {
 								src={withBasePath("/images/logos/OEAW_Logo_white.svg")}
 								width="100"
 							/>
-						</a>
+						</Link>
 					</div>
 
 					{/* Orientierung */}
@@ -184,14 +177,9 @@ export function AppFooter(): ReactNode {
 
 						<ul className="mt-4 space-y-1">
 							<li>
-								{/*
-								 * Not a route of this app - login is served by another application on the same
-								 * domain, so this must bypass `Link`, which would add `basePath` and the locale
-								 * prefix. `data-external-app` marks it as deliberately outside `basePath`.
-								 */}
-								<a data-external-app="" href="/user/login">
+								<Link data-external-app="" href="/user/login">
 									{t("menu.helpdesk.items.log_in")}
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>

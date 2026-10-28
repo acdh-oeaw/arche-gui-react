@@ -53,7 +53,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						<hr className="meatdata-view-top-hr"></hr>
 
 						<PreviousNextBlock
-							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 							rootId={metadata.getRootId()}
 						></PreviousNextBlock>
@@ -74,7 +74,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 
 						<MetadataTabs
 							acdhType={metadata.getAcdhTypeNiceFormat() ?? ""}
-							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API}
+							apiUrl={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 						/>
 
@@ -100,7 +100,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 								<PLYBlock url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}`} />
 							) : null}
 
-							{metadata.isTEI() && metadata.getBinarySizeGeneral() < 500000 && (
+							{metadata.isTEI() && (
 								<TEIBlock
 									url={`${env.NEXT_PUBLIC_ARCHE_CORE_API}/${metadata.getId()}?skipContentDisposition=true`}
 								/>

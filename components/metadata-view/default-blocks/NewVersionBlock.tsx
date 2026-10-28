@@ -38,7 +38,12 @@ export function NewVersionBlock({ id, language, translations: t }: Readonly<Vers
 					signal: controller.signal,
 				});
 				if (!controller.signal.aborted) {
-					setItems(json);
+					/*
+					 * `getJsonData` is untyped at the boundary. The endpoint answers with a single
+					 * entry when there is only one version, the same way `VersionsCard` handles it.
+					 */
+					const entries = json as VersionEntry | Array<VersionEntry>;
+					setItems(Array.isArray(entries) ? entries : [entries]);
 				}
 			} catch (fetchError) {
 				if (!controller.signal.aborted) {

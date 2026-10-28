@@ -112,7 +112,7 @@ export function AppHeader(): ReactNode {
 
 	return (
 		// eslint-disable-next-line tailwindcss/no-custom-classname
-		<header className="background-image-front-div front-header-div w-full border-b border-stroke-weak bg-arche-acc-light-blue">
+		<header className="background-image-front-div front-header-div w-full  bg-arche-acc-light-blue">
 			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile
@@ -127,28 +127,31 @@ export function AppHeader(): ReactNode {
 					<LocaleSwitcher />
 				</div>
 			</div>
+
+			<div className="hero-left-character-image">
+				<Image
+					alt="Dante PC illustration"
+					className="h-[222px] w-auto"
+					height="222"
+					src={withBasePath("/images/common/dante_pc.svg")}
+					width="199"
+				/>
+			</div>
+			<div className="hero-right-character-image">
+				<Image
+					alt="Nora illustration"
+					className="h-48 w-auto"
+					height="100"
+					src={withBasePath("/images/common/nora.svg")}
+					width="100"
+				/>
+			</div>
+
 			<div className="header-content">
-				<div className="pointer-events-none absolute bottom-[-5px] left-[18%] hidden md:block">
-					<Image
-						alt="Dante PC illustration"
-						className="w-auto"
-						height="100"
-						src={withBasePath("/images/common/dante_pc.svg")}
-						width="100"
-					/>
-				</div>
-				<div className="pointer-events-none absolute right-[18%] bottom-[-5px] hidden md:block">
-					<Image
-						alt="Nora illustration"
-						className="h-48 w-auto"
-						height="100"
-						src={withBasePath("/images/common/nora.svg")}
-						width="100"
-					/>
-				</div>
 				<div className="max-w-3xl space-y-2">
+					<h3 className="section-header-title-small uppercase">{t("search-now")}</h3>
 					<h1 className="section-header-title">{t("navigation.hero.title")}</h1>
-					<p className="text-lg text-text-weak sm:text-xl">{t("navigation.hero.subtitle")}</p>
+					<p className="hero-small-text">{t("navigation.hero.subtitle")}</p>
 				</div>
 
 				<HeroSmartSearch searchLabel={t("navigation.hero.search")} />

@@ -5,10 +5,10 @@ import nextConfig from "@acdh-oeaw/eslint-config-next";
 import nodeConfig from "@acdh-oeaw/eslint-config-node";
 import playwrightConfig from "@acdh-oeaw/eslint-config-playwright";
 import reactConfig from "@acdh-oeaw/eslint-config-react";
-import tailwindConfig from "@acdh-oeaw/eslint-config-tailwindcss";
 import { defineConfig, globalIgnores } from "eslint/config";
 import gitignore from "eslint-config-flat-gitignore";
 import checkFilePlugin from "eslint-plugin-check-file";
+import tailwindcssPlugin from "eslint-plugin-tailwindcss";
 
 import plugin from "./config/eslint/plugin";
 
@@ -18,13 +18,44 @@ export default defineConfig(
 	baseConfig,
 	reactConfig,
 	nextConfig,
-	tailwindConfig,
+	/*
+	 * Inlined from `@acdh-oeaw/eslint-config-tailwindcss@3.0.3`, which cannot be used any more: it
+	 * reads `configs["flat/recommended"]` from `eslint-plugin-tailwindcss`, a key the plugin
+	 * dropped in v4.4 in favour of `configs.recommended`. The rule names are unchanged.
+	 *
+	 * The cast bridges two structurally identical but nominally distinct `LanguageOptions` types:
+	 * the plugin is typed against `@typescript-eslint/utils`, `defineConfig` against `@eslint/core`.
+	 */
+	tailwindcssPlugin.configs.recommended as Parameters<typeof defineConfig>[0],
 	{
+		name: "acdh-oeaw/tailwindcss-config",
 		settings: {
+			/*
+			 * v4 renamed these: `config` -> `cssConfigPath`, `callees` -> `functions`, and dropped
+			 * `safelist` entirely. The plugin merges them shallowly over its own defaults, so each
+			 * list has to repeat the defaults it wants to keep rather than just adding to them.
+			 */
 			tailwindcss: {
-				config: resolve("./styles/index.css"),
-				safelist: [
-					// add any other classes that appear in remote HTML
+				cssConfigPath: resolve("./styles/index.css"),
+				functions: [
+					"classnames",
+					"classNames",
+					"clsx",
+					"cn",
+					"ctl",
+					"cva",
+					"styles",
+					"tv",
+					"tw",
+					"twMerge",
+					"twJoin",
+				],
+				ignoredKeys: [
+					"compoundSlots",
+					"compoundVariants",
+					"defaultVariants",
+					"combinations",
+					"defaults",
 				],
 			},
 		},
@@ -40,13 +71,7 @@ export default defineConfig(
 			"check-file": checkFilePlugin,
 		},
 		rules: {
-			"check-file/filename-naming-convention": [
-				"error",
-				{
-
-				},
-				{ ignoreMiddleExtensions: true },
-			],
+			"check-file/filename-naming-convention": ["error", {}, { ignoreMiddleExtensions: true }],
 			"check-file/folder-naming-convention": [
 				"error",
 				{

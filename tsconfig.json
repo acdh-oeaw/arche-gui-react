@@ -13,7 +13,17 @@
 		"./**/*.ts",
 		"./**/*.tsx",
 		"./types/**/*.d.ts",
-		".next/types/**/*.ts"
-, "e2e/tests/pages/accessibility.test"	],
-	"exclude": [".next", "content", "node_modules", "out", "public"]
+		".next/types/**/*.ts",
+		"e2e/tests/pages/accessibility.test"
+	],
+	"exclude": [
+		".next",
+		"content",
+		"node_modules",
+		"out",
+		"public",
+		"blob-report",
+		"playwright-report",
+		"test-results"
+	]
 }

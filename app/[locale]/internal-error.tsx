@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { type ReactNode, useEffect } from "react";
 
 import { Image } from "@/components/image";
+import { Link } from "@/components/link";
 import { MainContent } from "@/components/ui/main-content";
 import { withBasePath } from "@/config/base-path";
 
@@ -55,17 +56,17 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 					/>
 
 					<div className="flex flex-col items-center gap-3">
-						<a
+						<Link
 							className={outlineButtonClassName}
 							href="https://www.oeaw.ac.at/acdh/"
 							rel="noopener noreferrer"
 							target="_blank"
 						>
 							{t("visit-website")}
-						</a>
-						<a className={outlineButtonClassName} href="mailto:arche@oeaw.ac.at">
+						</Link>
+						<Link className={outlineButtonClassName} href="mailto:arche@oeaw.ac.at">
 							{t("contact-us")}
-						</a>
+						</Link>
 					</div>
 				</div>
 			</section>

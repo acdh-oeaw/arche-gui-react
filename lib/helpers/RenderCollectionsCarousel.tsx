@@ -37,9 +37,7 @@ export function renderCollectionsCarousel(
 			);
 			const cardId = escapeHtml(item.id);
 			const href = escapeHtml(`/browser/metadata/${item.id}`);
-			const imgSrc = escapeHtml(
-				String(getImageUrl ? getImageUrl(item.id) : ""),
-			);
+			const imgSrc = escapeHtml(String(getImageUrl ? getImageUrl(item.id) : ""));
 
 			return `
 <article class="collection-card" data-collection-id="${cardId}">

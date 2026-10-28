@@ -1,4 +1,4 @@
- /* The MAIN API FIlE, this handles the Metadata view Expert view api  call */
+/* The MAIN API FIlE, this handles the Metadata view Expert view api  call */
 
 import { createUrl } from "@acdh-oeaw/lib";
 import { cache } from "react";
@@ -16,14 +16,14 @@ function createSignal(externalSignal?: AbortSignal): AbortSignal {
 }
 
 interface ApiParams {
-  readonly id: string;
-  readonly page: string;
-  readonly language: string;
-  readonly signal?: AbortSignal;
+	readonly id: string;
+	readonly page: string;
+	readonly language: string;
+	readonly signal?: AbortSignal;
 }
 
 function createApiUrl(id: string, page: string, lang: string): URL {
-	const baseUrl = (env as Record<string, string>).NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
+	const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
 	const url = createUrl({ baseUrl });
 	const basePath = url.pathname.replace(/\/+$/, "");
 	url.pathname = `${basePath}/${page}/${id}/${lang}`;
@@ -52,7 +52,6 @@ export async function getJsonData(params: Readonly<ApiParams>): Promise<unknown>
 	return (await res.json()) as unknown;
 }
 
-
 /* Get the SpatialCoverage coordinates for the map */
 export interface SpatialResult {
 	coordinates: string;
@@ -63,7 +62,7 @@ export async function getSpatialCoordinates(url: string, lang = "en"): Promise<S
 	const res = await fetch(url, { cache: "no-store", signal: createSignal() });
 	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
 
-	const items = await res.json() as Array<Record<string, unknown>>;
+	const items = (await res.json()) as Array<Record<string, unknown>>;
 	if (!Array.isArray(items) || items.length === 0) return { coordinates: "", mapType: "" };
 
 	function extractValue(field: unknown, spatialId: string): string | null {

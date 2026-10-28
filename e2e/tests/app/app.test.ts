@@ -167,11 +167,11 @@ test.describe("app", () => {
 			const homeLink = indexPage.page
 				.getByRole("navigation")
 				.getByRole("link", {
-					name: i18n.t("AppHeader.navigation.items.home"),
+					name: i18n.t("AppHeader.navigation.menu.discover.label"),
 				})
 				.first();
 			const aboutLink = indexPage.page.getByRole("navigation").getByRole("link", {
-				name: i18n.t("AppHeader.navigation.items.about"),
+				name: i18n.t("AppHeader.navigation.menu.about_arche.label"),
 			});
 
 			await expect(homeLink).toHaveAttribute("aria-current", "page");
@@ -197,11 +197,11 @@ test.describe("app", () => {
 			const homeLink = indexPage.page
 				.getByRole("dialog")
 				.getByRole("link", {
-					name: i18n.t("AppHeader.navigation.items.home"),
+					name: i18n.t("AppHeader.navigation.menu.discover.label"),
 				})
 				.first();
 			const aboutLink = indexPage.page.getByRole("dialog").getByRole("link", {
-				name: i18n.t("AppHeader.navigation.items.about"),
+				name: i18n.t("AppHeader.navigation.menu.about_arche.label"),
 			});
 
 			await expect(homeLink).toHaveAttribute("aria-current", "page");
