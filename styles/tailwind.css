@@ -4,7 +4,7 @@
 
 /* The static pages are coming from the github repo over an api call, and the react is savign them
 as a html to the disk under the static-content directory. And because of that the tailwind's
-automatic source detection does not pick them up. This is why we have to add the @sources with the classes */
+automatic source detection does not pick them up. This is why we have to add the @sources with the classes. */
 @source "../static-content/**/*.html";
 @source inline("{sm:,md:,lg:,xl:,}grid-cols-{1..12}");
 @source inline("{sm:,md:,lg:,xl:,}col-span-{{1..12},full}");

@@ -155,14 +155,6 @@ function MenuLink(props: Readonly<MenuLinkProps>): ReactNode {
 	const locale = useLocale();
 	const router = useRouter();
 
-	/**
-	 * `MenuItem` renders a plain anchor, so next.js never sees this href and does not prepend
-	 * `basePath` or the locale prefix the way it does for `Link`. Without resolving it here the
-	 * anchor would point outside the app whenever it is opened in a new tab or copied.
-	 *
-	 * Clicking still goes through the `RouterProvider` in `aria-providers.tsx`, which strips
-	 * `basePath` again before handing the path to the router.
-	 */
 	const resolvedHref = withBasePath(getPathnameFromString({ href, locale }));
 
 	/**

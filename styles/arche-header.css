@@ -162,7 +162,6 @@ a:hover .locale-link-text::before {
 	background-color: var(--arche-btn-blue-hover);
 }
 
-
 @media (width >= 768px) {
 	.hero-left-character-image,
 	.hero-right-character-image {
