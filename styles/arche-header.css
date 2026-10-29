@@ -150,6 +150,19 @@ a:hover .locale-link-text::before {
 	text-align: center;
 }
 
+.arche-header-nav-submenu {
+	background-color: rgb(255 255 255);
+}
+
+.arche-header-nav-submenu-item {
+	border: none;
+}
+
+.arche-header-nav-submenu-item a:hover {
+	background-color: var(--arche-btn-blue-hover);
+}
+
+
 @media (width >= 768px) {
 	.hero-left-character-image,
 	.hero-right-character-image {
