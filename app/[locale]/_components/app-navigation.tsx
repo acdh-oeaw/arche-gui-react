@@ -96,7 +96,11 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 											/>
 										</Button>
 										<Popover placement="bottom left">
-											<Menu className="min-w-70 arche-header-nav-submenu" selectedKeys={selectedKeys} selectionMode="single">
+											<Menu
+												className="min-w-70 arche-header-nav-submenu"
+												selectedKeys={selectedKeys}
+												selectionMode="single"
+											>
 												{Object.entries(item.children).map(([id, item]) => {
 													switch (item.type) {
 														case "action": {
@@ -115,7 +119,13 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 
 														case "link": {
 															return (
-																<MenuLink key={id} className="arche-header-nav-submenu-item" href={item.href} id={id} textValue={item.label} >
+																<MenuLink
+																	key={id}
+																	className="arche-header-nav-submenu-item"
+																	href={item.href}
+																	id={id}
+																	textValue={item.label}
+																>
 																	{item.label}
 																</MenuLink>
 															);
