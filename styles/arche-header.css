@@ -164,11 +164,18 @@ a:hover .locale-link-text::before {
 }
 
 .arche-header-nav-submenu-item[data-hovered] {
+	border: none;
 	background-color: var(--arche-btn-blue-hover);
 	color: var(--arche-acc-light-blue);
 }
 
 .arche-header-nav-submenu-item[data-hovered]::after {
+	border: none;
+	background-color: transparent;
+}
+
+.arche-nav-popover {
+	border: none;
 	background-color: transparent;
 }
 

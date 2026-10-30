@@ -95,7 +95,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 												data-slot="icon"
 											/>
 										</Button>
-										<Popover placement="bottom left">
+										<Popover placement="bottom left" className="arche-nav-popover">
 											<Menu
 												className="min-w-70 arche-header-nav-submenu"
 												selectedKeys={selectedKeys}
