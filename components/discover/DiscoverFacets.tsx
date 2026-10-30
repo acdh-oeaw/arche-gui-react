@@ -468,6 +468,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					<label className="flex cursor-pointer items-center gap-2 text-sm">
 						<input
 							checked={includeBinaries}
+							className="smartsearch-checkbox"
 							onChange={() => toggleBoolParam("includeBinaries")}
 							type="checkbox"
 						/>
@@ -476,6 +477,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					<label className="flex cursor-pointer items-center gap-2 text-sm">
 						<input
 							checked={linkNamedEntities}
+							className="smartsearch-checkbox"
 							onChange={() => toggleBoolParam("linkNamedEntities")}
 							type="checkbox"
 						/>
