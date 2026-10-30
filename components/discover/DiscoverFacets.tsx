@@ -71,88 +71,115 @@ function FacetCard({
 	);
 }
 
-function TagInput({
+function MultiSelect({
 	activeValues,
 	allValues,
-	onAdd,
-	onRemove,
+	onToggle,
 }: {
 	activeValues: string[];
 	allValues: Array<FacetValue>;
-	onAdd: (value: string) => void;
-	onRemove: (value: string) => void;
+	onToggle: (value: string) => void;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [filter, setFilter] = useState("");
-	const inputRef = useRef<HTMLInputElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
 
-	const available = allValues.filter(
-		(v) => v.value !== null && !activeValues.includes(v.value ?? ""),
-	);
+	// Close the dropdown on outside click or Escape
+	useEffect(() => {
+		if (!isOpen) return;
+		function handlePointerDown(e: PointerEvent) {
+			if (!containerRef.current?.contains(e.target as Node)) setIsOpen(false);
+		}
+		function handleKeyDown(e: KeyboardEvent) {
+			if (e.key === "Escape") setIsOpen(false);
+		}
+		document.addEventListener("pointerdown", handlePointerDown);
+		document.addEventListener("keydown", handleKeyDown);
+		return () => {
+			document.removeEventListener("pointerdown", handlePointerDown);
+			document.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [isOpen]);
+
+	const options = allValues.filter((v) => v.value !== null);
 	const filtered = filter
-		? available.filter((v) => shortenUri(v.label).toLowerCase().includes(filter.toLowerCase()))
-		: available;
+		? options.filter((v) => shortenUri(v.label).toLowerCase().includes(filter.toLowerCase()))
+		: options;
 
 	return (
-		<div className="relative">
+		<div ref={containerRef} className="relative">
 			<div
-				className="flex min-h-[38px] cursor-text flex-wrap gap-1 rounded border border-gray-300 px-2 py-1 focus-within:ring-1 focus-within:ring-blue-500"
-				onClick={() => {
-					inputRef.current?.focus();
-					setIsOpen(true);
-				}}
+				className="flex min-h-[38px] cursor-pointer items-center gap-1 rounded border border-gray-300 px-2 py-1"
+				onClick={() => setIsOpen((prev) => !prev)}
 			>
-				{activeValues.map((val) => {
-					const found = allValues.find((v) => v.value === val);
-					const label = found?.label ? shortenUri(found.label) : shortenUri(val);
-					const count = found?.count;
-					return (
-						<span
-							key={val}
-							className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800"
-						>
-							{label}
-							{count !== undefined ? ` (${count})` : ""}
-							<button
-								className="ml-0.5 hover:text-blue-600"
-								onClick={(e) => {
-									e.stopPropagation();
-									onRemove(val);
-								}}
-								type="button"
+				<div className="flex flex-1 flex-wrap gap-1">
+					{activeValues.length === 0 && (
+						<span className="text-sm text-gray-400">{"Select..."}</span>
+					)}
+					{activeValues.map((val) => {
+						const found = allValues.find((v) => v.value === val);
+						const label = found?.label ? shortenUri(found.label) : shortenUri(val);
+						const count = found?.count;
+						return (
+							<span
+								key={val}
+								className="flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800"
 							>
-								×
-							</button>
-						</span>
-					);
-				})}
-				<input
-					ref={inputRef}
-					className="smartsearch-inside-input"
-					onBlur={() => setTimeout(() => setIsOpen(false), 150)}
-					onChange={(e) => setFilter(e.target.value)}
-					onFocus={() => setIsOpen(true)}
-					placeholder={activeValues.length === 0 ? "Select types..." : ""}
-					value={filter}
-				/>
+								{label}
+								{count !== undefined ? ` (${count})` : ""}
+								<button
+									className="ml-0.5 hover:text-blue-600"
+									onClick={(e) => {
+										e.stopPropagation();
+										onToggle(val);
+									}}
+									type="button"
+								>
+									×
+								</button>
+							</span>
+						);
+					})}
+				</div>
+				<button
+					aria-expanded={isOpen}
+					className="shrink-0 px-1 text-gray-400"
+					onClick={(e) => {
+						e.stopPropagation();
+						setIsOpen((prev) => !prev);
+					}}
+					type="button"
+				>
+					{isOpen ? "▲" : "▼"}
+				</button>
 			</div>
-			{isOpen && filtered.length > 0 && (
-				<div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-48 overflow-y-auto rounded border border-gray-200 bg-white shadow-lg">
-					{filtered.map((v) => (
-						<button
-							key={v.value}
-							className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-gray-50"
-							onClick={() => {
-								if (v.value) onAdd(v.value);
-								setFilter("");
-								inputRef.current?.focus();
-							}}
-							type="button"
-						>
-							<span>{shortenUri(v.label)}</span>
-							<span className="text-xs text-gray-400">({v.count})</span>
-						</button>
-					))}
+			{isOpen && (
+				<div className="absolute left-0 right-0 top-full z-20 mt-1 rounded border border-gray-200 bg-white shadow-lg">
+					<input
+						className="w-full border-b border-gray-200 px-3 py-2 text-sm outline-none"
+						onChange={(e) => setFilter(e.target.value)}
+						placeholder="Filter..."
+						value={filter}
+					/>
+					<div className="max-h-48 overflow-y-auto">
+						{filtered.map((v) => (
+							<label
+								key={v.value}
+								className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50"
+							>
+								<input
+									checked={activeValues.includes(v.value ?? "")}
+									className="smartsearch-checkbox"
+									onChange={() => {
+										if (v.value) onToggle(v.value);
+									}}
+									type="checkbox"
+								/>
+								<span className="flex-1">{shortenUri(v.label)}</span>
+								<span className="text-xs text-gray-400">({v.count})</span>
+							</label>
+						))}
+					</div>
 				</div>
 			)}
 		</div>
@@ -445,13 +472,12 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 						onToggle={() => toggleCollapse(key)}
 						tooltip={facet.tooltip?.[lang]}
 					>
-						{/* All value-based facets: tag input */}
+						{/* All value-based facets: multi-select dropdown */}
 						{(facet.type === "literal" || facet.type === "object") && (
-							<TagInput
+							<MultiSelect
 								activeValues={activeValues}
 								allValues={facet.values as Array<FacetValue>}
-								onAdd={(val) => toggleFacetValue(key, val)}
-								onRemove={(val) => toggleFacetValue(key, val)}
+								onToggle={(val) => toggleFacetValue(key, val)}
 							/>
 						)}
 					</FacetCard>
