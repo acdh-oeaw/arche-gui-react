@@ -457,6 +457,10 @@ code {
 	border-bottom: 1px solid rgb(225 237 243 / 100%);
 }
 
+.smartsearch-pager span {
+	margin-bottom: 0;
+}
+
 .smartsearch-result-row {
 	display: flex;
 	flex-direction: row;
@@ -555,7 +559,7 @@ code {
 	padding: 0.25rem 0.5rem;
 	border: 1px solid var(--color-gray-300);
 	background-color: rgb(255 255 255);
-	color: var(--color-gray-300);
+	color: var(--color-gray-500);
 	font-size: 1.125rem;
 	line-height: 1.75rem;
 	border-start-start-radius: 9999px;

@@ -5,10 +5,10 @@ import { AppNavigation, AppNavigationMobile } from "@/app/[locale]/_components/a
 import { HeroSmartSearch } from "@/app/[locale]/_components/hero-smart-search";
 import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Image } from "@/components/image";
-import { createHref } from "@/lib/navigation/create-href";
-import type { NavigationItem } from "@/lib/navigation/navigation";
 import { Link } from "@/components/link";
 import { withBasePath } from "@/config/base-path";
+import { createHref } from "@/lib/navigation/create-href";
+import type { NavigationItem } from "@/lib/navigation/navigation";
 
 export function AppHeader(): ReactNode {
 	const t = useTranslations("AppHeader");
@@ -111,9 +111,8 @@ export function AppHeader(): ReactNode {
 	} satisfies Record<string, NavigationItem>;
 
 	return (
-		// eslint-disable-next-line tailwindcss/no-custom-classname
 		<header className="background-image-front-div front-header-div w-full  bg-arche-acc-light-blue">
-			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
+			<div className="flex w-full justify-between gap-x-12 px-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile
 					drawerCloseLabel={t("navigation.drawer.close")}
@@ -172,6 +171,15 @@ export function AppHeader(): ReactNode {
 							className="h-8 w-auto"
 							height="72"
 							src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
+							width="72"
+						/>
+					</Link>
+					<Link href="https://worlddatasystem.org/about/">
+						<Image
+							alt="World Data System"
+							className="h-8 w-auto"
+							height="72"
+							src={withBasePath("/images/partner-logos/WDS_LOGO_Bar.png")}
 							width="72"
 						/>
 					</Link>

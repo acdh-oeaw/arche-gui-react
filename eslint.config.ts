@@ -59,6 +59,10 @@ export default defineConfig(
 				],
 			},
 		},
+		rules: {
+			/* The project mixes Tailwind with its own CSS classes (`styles/arche*.css`). */
+			"tailwindcss/no-custom-classname": "off",
+		},
 	},
 	{
 		files: ["**/*.tsx"],

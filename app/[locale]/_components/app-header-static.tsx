@@ -4,10 +4,10 @@ import type { ReactNode } from "react";
 import { AppNavigation, AppNavigationMobile } from "@/app/[locale]/_components/app-navigation";
 import { LocaleSwitcher } from "@/app/[locale]/_components/locale-switcher";
 import { Image } from "@/components/image";
-import { createHref } from "@/lib/navigation/create-href";
-import type { NavigationItem } from "@/lib/navigation/navigation";
 import { Link } from "@/components/link";
 import { withBasePath } from "@/config/base-path";
+import { createHref } from "@/lib/navigation/create-href";
+import type { NavigationItem } from "@/lib/navigation/navigation";
 
 interface AppHeaderStaticProps {
 	title: string;
@@ -120,12 +120,11 @@ export function AppHeaderStatic({
 	} satisfies Record<string, NavigationItem>;
 
 	return (
-		// eslint-disable-next-line tailwindcss/no-custom-classname
 		<header
 			className="background-image-front-div front-header-div flex w-full flex-col  bg-arche-acc-light-blue"
 			style={{ height: "306px" }}
 		>
-			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
+			<div className="flex w-full justify-between gap-x-12 px-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile
 					drawerCloseLabel={t("navigation.drawer.close")}
@@ -139,7 +138,7 @@ export function AppHeaderStatic({
 					<LocaleSwitcher />
 				</div>
 			</div>
-			<div className="relative flex flex-1 w-full flex-col items-center justify-end gap-y-6 px-4 pb-10 text-center">
+			<div className="relative flex w-full flex-1 flex-col items-center justify-end gap-y-6 px-4 pb-10 text-center">
 				<div className="pointer-events-none absolute -bottom-1 left-[18%] hidden md:block">
 					<Image
 						alt="Dante sitting illustration"
@@ -155,7 +154,7 @@ export function AppHeaderStatic({
 					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
 					{pdfUrl && (
 						<a
-							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2  !text-white  hover:opacity-90"
+							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2  text-white!  hover:opacity-90"
 							href={pdfUrl}
 							rel="noopener noreferrer"
 							target="_blank"
@@ -180,6 +179,15 @@ export function AppHeaderStatic({
 								className="h-8 w-auto"
 								height="72"
 								src={withBasePath("/images/partner-logos/clarin_b_centre_72.png")}
+								width="72"
+							/>
+						</Link>
+						<Link href="https://worlddatasystem.org/about/">
+							<Image
+								alt="World Data System"
+								className="h-8 w-auto"
+								height="72"
+								src={withBasePath("/images/partner-logos/WDS_LOGO_Bar.png")}
 								width="72"
 							/>
 						</Link>

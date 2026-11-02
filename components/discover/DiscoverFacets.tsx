@@ -1,13 +1,12 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useLocale, useMessages, useTranslations } from "next-intl";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { Facet, FacetValue } from "@/lib/types/discover";
-import { useLocale, useMessages, useTranslations } from "next-intl";
 
 interface DiscoverFacetsProps {
 	facets: Record<string, Facet>;
@@ -31,8 +30,8 @@ function shortenUri(value: string): string {
 function summarizePolygon(wkt: string): string {
 	const nums = wkt.match(/-?\d+\.?\d*/g)?.map(Number) ?? [];
 	if (nums.length < 4) return wkt;
-	const lons: number[] = [];
-	const lats: number[] = [];
+	const lons: Array<number> = [];
+	const lats: Array<number> = [];
 	for (let i = 0; i + 1 < nums.length; i += 2) {
 		lons.push(nums[i] ?? 0);
 		lats.push(nums[i + 1] ?? 0);
@@ -62,7 +61,7 @@ function FacetCard({
 					title={tooltip}
 					type="button"
 				>
-					<span className="!font-bold">{label}</span>
+					<span className="font-bold!">{label}</span>
 					<span className="text-gray-400">{collapsed ? "▼" : "▲"}</span>
 				</button>
 			</div>
@@ -76,7 +75,7 @@ function MultiSelect({
 	allValues,
 	onToggle,
 }: {
-	activeValues: string[];
+	activeValues: Array<string>;
 	allValues: Array<FacetValue>;
 	onToggle: (value: string) => void;
 }) {
@@ -101,23 +100,33 @@ function MultiSelect({
 		};
 	}, [isOpen]);
 
-	const options = allValues.filter((v) => v.value !== null);
+	const options = allValues.filter((v) => {
+		return v.value !== null;
+	});
 	const filtered = filter
-		? options.filter((v) => shortenUri(v.label).toLowerCase().includes(filter.toLowerCase()))
+		? options.filter((v) => {
+				return shortenUri(v.label).toLowerCase().includes(filter.toLowerCase());
+			})
 		: options;
 
 	return (
 		<div ref={containerRef} className="relative">
 			<div
 				className="flex min-h-[38px] cursor-pointer items-center gap-1 rounded border border-gray-300 px-2 py-1"
-				onClick={() => setIsOpen((prev) => !prev)}
+				onClick={() => {
+					setIsOpen((prev) => {
+						return !prev;
+					});
+				}}
 			>
 				<div className="flex flex-1 flex-wrap gap-1">
 					{activeValues.length === 0 && (
 						<span className="text-sm text-gray-400">{"Select..."}</span>
 					)}
 					{activeValues.map((val) => {
-						const found = allValues.find((v) => v.value === val);
+						const found = allValues.find((v) => {
+							return v.value === val;
+						});
 						const label = found?.label ? shortenUri(found.label) : shortenUri(val);
 						const count = found?.count;
 						return (
@@ -146,7 +155,9 @@ function MultiSelect({
 					className="shrink-0 px-1 text-gray-400"
 					onClick={(e) => {
 						e.stopPropagation();
-						setIsOpen((prev) => !prev);
+						setIsOpen((prev) => {
+							return !prev;
+						});
 					}}
 					type="button"
 				>
@@ -154,31 +165,35 @@ function MultiSelect({
 				</button>
 			</div>
 			{isOpen && (
-				<div className="absolute left-0 right-0 top-full z-20 mt-1 rounded border border-gray-200 bg-white shadow-lg">
+				<div className="absolute inset-x-0 top-full z-20 mt-1 rounded border border-gray-200 bg-white shadow-lg">
 					<input
 						className="w-full border-b border-gray-200 px-3 py-2 text-sm outline-none"
-						onChange={(e) => setFilter(e.target.value)}
+						onChange={(e) => {
+							setFilter(e.target.value);
+						}}
 						placeholder="Filter..."
 						value={filter}
 					/>
 					<div className="max-h-48 overflow-y-auto">
-						{filtered.map((v) => (
-							<label
-								key={v.value}
-								className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50"
-							>
-								<input
-									checked={activeValues.includes(v.value ?? "")}
-									className="smartsearch-checkbox"
-									onChange={() => {
-										if (v.value) onToggle(v.value);
-									}}
-									type="checkbox"
-								/>
-								<span className="flex-1">{shortenUri(v.label)}</span>
-								<span className="text-xs text-gray-400">({v.count})</span>
-							</label>
-						))}
+						{filtered.map((v) => {
+							return (
+								<label
+									key={v.value}
+									className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50"
+								>
+									<input
+										checked={activeValues.includes(v.value ?? "")}
+										className="smartsearch-checkbox"
+										onChange={() => {
+											if (v.value) onToggle(v.value);
+										}}
+										type="checkbox"
+									/>
+									<span className="flex-1">{shortenUri(v.label)}</span>
+									<span className="text-xs text-gray-400">({v.count})</span>
+								</label>
+							);
+						})}
 					</div>
 				</div>
 			)}
@@ -211,8 +226,8 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 	const [q, setQ] = useState(sp.get("q") ?? "");
 	const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
-	const [localFacets, setLocalFacets] = useState<Record<string, string[]>>(() => {
-		const init: Record<string, string[]> = {};
+	const [localFacets, setLocalFacets] = useState<Record<string, Array<string>>>(() => {
+		const init: Record<string, Array<string>> = {};
 		for (const [key, facet] of Object.entries(facets)) {
 			const propKey = facet.property || key;
 			const vals = sp.getAll(`facets[${propKey}][]`);
@@ -251,7 +266,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 	// Sync all local state from URL (handles back/forward navigation)
 	useEffect(() => {
 		setQ(sp.get("q") ?? "");
-		const synced: Record<string, string[]> = {};
+		const synced: Record<string, Array<string>> = {};
 		for (const [key, facet] of Object.entries(facets)) {
 			const propKey = facet.property || key;
 			const vals = sp.getAll(`facets[${propKey}][]`);
@@ -274,19 +289,23 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		setContinuousState(contState);
 	}, [sp]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	function getActiveValues(property: string): string[] {
+	function getActiveValues(property: string): Array<string> {
 		return localFacets[property] ?? [];
 	}
 
 	function toggleCollapse(key: string) {
-		setCollapsed((prev) => ({ ...prev, [key]: !prev[key] }));
+		setCollapsed((prev) => {
+			return { ...prev, [key]: !prev[key] };
+		});
 	}
 
 	function toggleFacetValue(property: string, value: string) {
 		setLocalFacets((prev) => {
 			const existing = prev[property] ?? [];
 			const next = existing.includes(value)
-				? existing.filter((v) => v !== value)
+				? existing.filter((v) => {
+						return v !== value;
+					})
 				: [...existing, value];
 			if (next.length === 0) {
 				const { [property]: _removed, ...rest } = prev;
@@ -319,7 +338,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		params.set("includeBinaries", includeBinaries ? "1" : "0");
 		params.set("linkNamedEntities", linkNamedEntities ? "1" : "0");
 		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		navigate(() => {
+			router.push(`${pathname}?${params.toString()}`);
+		});
 	}
 
 	function handleReset() {
@@ -335,12 +356,20 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		params.set("includeBinaries", "0");
 		params.set("linkNamedEntities", "1");
 		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		navigate(() => {
+			router.push(`${pathname}?${params.toString()}`);
+		});
 	}
 
 	function toggleBoolParam(paramKey: string) {
-		if (paramKey === "includeBinaries") setIncludeBinaries((prev) => !prev);
-		else if (paramKey === "linkNamedEntities") setLinkNamedEntities((prev) => !prev);
+		if (paramKey === "includeBinaries")
+			setIncludeBinaries((prev) => {
+				return !prev;
+			});
+		else if (paramKey === "linkNamedEntities")
+			setLinkNamedEntities((prev) => {
+				return !prev;
+			});
 	}
 
 	return (
@@ -356,7 +385,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 			<div className="flex">
 				<input
 					className="smartsearch-input"
-					onChange={(e) => setQ(e.target.value)}
+					onChange={(e) => {
+						setQ(e.target.value);
+					}}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") handleSearch();
 					}}
@@ -370,7 +401,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					type="button"
 				>
 					<svg
-						className="h-4 w-4"
+						className="size-4"
 						fill="none"
 						stroke="currentColor"
 						strokeWidth={2}
@@ -390,9 +421,11 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					return (
 						<FacetCard
 							key={key}
-							collapsed={!!collapsed[key]}
+							collapsed={Boolean(collapsed[key])}
 							label={getFacetLabel(key, facet.label)}
-							onToggle={() => toggleCollapse(key)}
+							onToggle={() => {
+								toggleCollapse(key);
+							}}
 							tooltip={facet.tooltip?.[lang]}
 						>
 							{mapPolygon && (
@@ -400,7 +433,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 									<span>{summarizePolygon(mapPolygon)}</span>
 									<button
 										className="ml-2 text-gray-400 hover:text-red-500"
-										onClick={() => setMapPolygon(null)}
+										onClick={() => {
+											setMapPolygon(null);
+										}}
 										title="Remove drawn area"
 										type="button"
 									>
@@ -410,7 +445,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 							)}
 							<button
 								className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
-								onClick={() => setShowMap(true)}
+								onClick={() => {
+									setShowMap(true);
+								}}
 								type="button"
 							>
 								Map
@@ -424,20 +461,24 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 					return (
 						<FacetCard
 							key={key}
-							collapsed={!!collapsed[key]}
+							collapsed={Boolean(collapsed[key])}
 							label={getFacetLabel(key, facet.label)}
-							onToggle={() => toggleCollapse(key)}
+							onToggle={() => {
+								toggleCollapse(key);
+							}}
 							tooltip={facet.tooltip?.[lang]}
 						>
 							<div className="flex items-center gap-2">
 								<input
 									className="smartsearch-input-select"
-									onChange={(e) =>
-										setContinuousState((prev) => ({
-											...prev,
-											[key]: { max: prev[key]?.max ?? "", min: e.target.value },
-										}))
-									}
+									onChange={(e) => {
+										setContinuousState((prev) => {
+											return {
+												...prev,
+												[key]: { max: prev[key]?.max ?? "", min: e.target.value },
+											};
+										});
+									}}
 									placeholder={String(facet.min ?? "")}
 									type="number"
 									value={cont.min}
@@ -445,12 +486,14 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 								<span className="shrink-0 text-gray-400">–</span>
 								<input
 									className="smartsearch-input-select"
-									onChange={(e) =>
-										setContinuousState((prev) => ({
-											...prev,
-											[key]: { max: e.target.value, min: prev[key]?.min ?? "" },
-										}))
-									}
+									onChange={(e) => {
+										setContinuousState((prev) => {
+											return {
+												...prev,
+												[key]: { max: e.target.value, min: prev[key]?.min ?? "" },
+											};
+										});
+									}}
 									placeholder={String(facet.max ?? "")}
 									type="number"
 									value={cont.max}
@@ -467,17 +510,21 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				return (
 					<FacetCard
 						key={key}
-						collapsed={!!collapsed[key]}
+						collapsed={Boolean(collapsed[key])}
 						label={getFacetLabel(key, facet.label)}
-						onToggle={() => toggleCollapse(key)}
+						onToggle={() => {
+							toggleCollapse(key);
+						}}
 						tooltip={facet.tooltip?.[lang]}
 					>
 						{/* All value-based facets: multi-select dropdown */}
 						{(facet.type === "literal" || facet.type === "object") && (
 							<MultiSelect
 								activeValues={activeValues}
-								allValues={facet.values as Array<FacetValue>}
-								onToggle={(val) => toggleFacetValue(key, val)}
+								allValues={facet.values}
+								onToggle={(val) => {
+									toggleFacetValue(key, val);
+								}}
 							/>
 						)}
 					</FacetCard>
@@ -486,16 +533,20 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 			{/* Extended Search */}
 			<FacetCard
-				collapsed={!!collapsed["__extended"]}
+				collapsed={Boolean(collapsed.__extended)}
 				label={t("smartsearch.facetLabels.extended_search")}
-				onToggle={() => toggleCollapse("__extended")}
+				onToggle={() => {
+					toggleCollapse("__extended");
+				}}
 			>
 				<div className="flex flex-col gap-2">
 					<label className="flex cursor-pointer items-center gap-2 text-sm">
 						<input
 							checked={includeBinaries}
 							className="smartsearch-checkbox"
-							onChange={() => toggleBoolParam("includeBinaries")}
+							onChange={() => {
+								toggleBoolParam("includeBinaries");
+							}}
 							type="checkbox"
 						/>
 						{t("smartsearch.search_in_file_content")}
@@ -504,7 +555,9 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 						<input
 							checked={linkNamedEntities}
 							className="smartsearch-checkbox"
-							onChange={() => toggleBoolParam("linkNamedEntities")}
+							onChange={() => {
+								toggleBoolParam("linkNamedEntities");
+							}}
 							type="checkbox"
 						/>
 						{t("smartsearch.follow_named_entitites")}
@@ -514,7 +567,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 
 			{/* Action buttons */}
 			<button
-				className="w-full rounded border border-gray-300 py-2 text-sm hover:bg-gray-50"
+				className="sms-reset-btn rounded  py-2 text-sm hover:opacity-90"
 				onClick={handleReset}
 				type="button"
 			>
