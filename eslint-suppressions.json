@@ -48,13 +48,7 @@
 		}
 	},
 	"app/[locale]/(main)/discover/page.tsx": {
-		"@typescript-eslint/dot-notation": {
-			"count": 2
-		},
 		"@typescript-eslint/no-unnecessary-condition": {
-			"count": 1
-		},
-		"arrow-body-style": {
 			"count": 1
 		},
 		"no-restricted-syntax": {
@@ -247,12 +241,6 @@
 		}
 	},
 	"components/discover/DiscoverResultPagers.tsx": {
-		"@typescript-eslint/no-confusing-void-expression": {
-			"count": 6
-		},
-		"arrow-body-style": {
-			"count": 10
-		},
 		"no-restricted-imports": {
 			"count": 3
 		},

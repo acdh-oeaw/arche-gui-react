@@ -11,12 +11,17 @@ interface DiscoverResultPagersProps {
 }
 
 function buildPageButtons(current: number, total: number): Array<number | "…"> {
-	if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+	if (total <= 7)
+		return Array.from({ length: total }, (_, i) => {
+			return i + 1;
+		});
 	const pages = new Set<number>();
 	pages.add(1);
 	pages.add(total);
 	for (let i = Math.max(1, current - 2); i <= Math.min(total, current + 2); i++) pages.add(i);
-	const sorted = [...pages].sort((a, b) => a - b);
+	const sorted = [...pages].sort((a, b) => {
+		return a - b;
+	});
 	const result: Array<number | "…"> = [];
 	for (let i = 0; i < sorted.length; i++) {
 		const cur = sorted[i];
@@ -40,18 +45,25 @@ export function DiscoverResultPagers({
 	const uiPage = page + 1;
 	const pageCount = Math.max(1, Math.ceil(totalCount / pageSize));
 	const pageButtons = buildPageButtons(uiPage, pageCount);
+	// On mobile only a window of 3 pages around the current one is shown
+	const mobileStart = Math.min(Math.max(1, uiPage - 1), Math.max(1, pageCount - 2));
+	const mobileEnd = mobileStart + 2;
 
 	function goToPage(newPage: number) {
 		const params = new URLSearchParams(sp.toString());
 		params.set("page", String(newPage));
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		navigate(() => {
+			router.push(`${pathname}?${params.toString()}`);
+		});
 	}
 
 	function changePageSize(newSize: string) {
 		const params = new URLSearchParams(sp.toString());
 		params.set("pageSize", newSize);
 		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		navigate(() => {
+			router.push(`${pathname}?${params.toString()}`);
+		});
 	}
 
 	return (
@@ -66,14 +78,19 @@ export function DiscoverResultPagers({
 				<button
 					className="rounded border border-gray-300 px-2 py-1 text-sm disabled:opacity-40"
 					disabled={uiPage <= 1}
-					onClick={() => goToPage(uiPage - 1)}
+					onClick={() => {
+						goToPage(uiPage - 1);
+					}}
 					type="button"
 				>
 					‹
 				</button>
-				{pageButtons.map((p, i) =>
-					p === "…" ? (
-						<span key={`ellipsis-${String(i)}`} className="px-1 text-sm text-gray-400">
+				{pageButtons.map((p, i) => {
+					return p === "…" ? (
+						<span
+							key={`ellipsis-${String(i)}`}
+							className="px-1 text-sm text-gray-400 max-lg:hidden"
+						>
 							…
 						</span>
 					) : (
@@ -81,21 +98,26 @@ export function DiscoverResultPagers({
 							key={p}
 							className={[
 								"rounded border px-2 py-1 text-sm",
+								p < mobileStart || p > mobileEnd ? "max-lg:hidden" : "",
 								p === uiPage
 									? "border-(--color-arche-acc-dark-blue) bg-(--color-arche-acc-dark-blue) text-white"
 									: "border-gray-300 hover:bg-gray-50",
 							].join(" ")}
-							onClick={() => goToPage(p)}
+							onClick={() => {
+								goToPage(p);
+							}}
 							type="button"
 						>
 							{p}
 						</button>
-					),
-				)}
+					);
+				})}
 				<button
 					className="rounded border border-gray-300 px-2 py-1 text-sm disabled:opacity-40"
 					disabled={uiPage >= pageCount}
-					onClick={() => goToPage(uiPage + 1)}
+					onClick={() => {
+						goToPage(uiPage + 1);
+					}}
 					type="button"
 				>
 					›
@@ -106,14 +128,18 @@ export function DiscoverResultPagers({
 			<div className="flex w-[20%] items-center justify-end">
 				<select
 					className="rounded border border-gray-300 px-2 py-1 text-sm"
-					onChange={(e) => changePageSize(e.target.value)}
+					onChange={(e) => {
+						changePageSize(e.target.value);
+					}}
 					value={String(pageSize)}
 				>
-					{["10", "20", "50"].map((s) => (
-						<option key={s} value={s}>
-							{s}
-						</option>
-					))}
+					{["10", "20", "50"].map((s) => {
+						return (
+							<option key={s} value={s}>
+								{s}
+							</option>
+						);
+					})}
 				</select>
 			</div>
 		</div>

@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { DiscoverFacets } from "@/components/discover/DiscoverFacets";
+import { DiscoverFiltersPanel } from "@/components/discover/DiscoverFiltersPanel";
 import { DiscoverNavProvider } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverResults } from "@/components/discover/DiscoverResults";
 import { DiscoverSuspenseBoundary } from "@/components/discover/DiscoverSuspenseBoundary";
@@ -50,13 +51,14 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 	}
 
 	const mapGeoJson = data?.facets
-		? ((Object.values(data.facets).find((f) => f.type === "map")?.values as string | undefined) ??
-			null)
+		? ((Object.values(data.facets).find((f) => {
+				return f.type === "map";
+			})?.values as string | undefined) ?? null)
 		: null;
 
 	return (
-		<div className="flex w-full gap-6 pt-6">
-			<section className="w-[25%] shrink-0">
+		<div className="flex w-full flex-col gap-6 pt-6 lg:flex-row">
+			<DiscoverFiltersPanel>
 				{data?.facets ? (
 					<DiscoverFacets facets={data.facets} lang={lang} />
 				) : (
@@ -64,10 +66,10 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 						{t("smartsearch.filters_unavailable")}
 					</div>
 				)}
-			</section>
+			</DiscoverFiltersPanel>
 			<section className="min-w-0 flex-1">
 				{data ? (
-					<div className="flex gap-4 discover-results-div">
+					<div className="discover-results-div flex gap-4">
 						<DiscoverResults
 							lang={lang}
 							mapGeoJson={mapGeoJson}
@@ -90,14 +92,16 @@ async function DiscoverContent(props: Readonly<DiscoverContentProps>): Promise<R
 }
 
 export default async function Discover(props: Readonly<DiscoverPageProps>): Promise<ReactNode> {
-	const { locale } = await props.params;
-	const sp = await props.searchParams;
+	const { params, searchParams } = props;
+
+	const { locale } = await params;
+	const sp = await searchParams;
 
 	setRequestLocale(locale);
 
-	const uiPage = toNumber(String(sp["page"] ?? "1"), 1);
+	const uiPage = toNumber(String(sp.page ?? "1"), 1);
 	const apiPage = Math.max(0, uiPage - 1);
-	const lang = String(sp["preferredLang"] ?? locale ?? "en");
+	const lang = String(sp.preferredLang ?? locale ?? "en");
 
 	const apiParams = new URLSearchParams();
 	for (const [key, value] of Object.entries(sp)) {
@@ -114,7 +118,7 @@ export default async function Discover(props: Readonly<DiscoverPageProps>): Prom
 	const thumbnailBaseUrl = process.env.NEXT_PUBLIC_ARCHE_THUMBNAIL_URL ?? "";
 
 	return (
-		<MainContent className="layout-grid content-start pb-20 main-content-bleed">
+		<MainContent className="main-content-bleed layout-grid content-start pb-20">
 			{/* will provide isNavPending value */}
 			<DiscoverNavProvider>
 				{/* if the isNavPending is true, then display arche loader  */}

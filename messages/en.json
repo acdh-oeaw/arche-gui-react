@@ -80,6 +80,8 @@
 			"add_to_clarin": "Add to CLARIN Virtual Collection",
 			"search": "Search",
 			"reset_filters": "Reset filters",
+			"filters": "Filters",
+			"close_filters": "Close filters",
 			"follow_named_entitites": "Follow named entities",
 			"search_in_file_content": "Search in file content",
 			"facetLabels": {
