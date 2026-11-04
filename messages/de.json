@@ -82,6 +82,7 @@
 			"reset_filters": "Filter zurücksetzen",
 			"filters": "Filter",
 			"close_filters": "Filter schließen",
+			"filter_info": "Weitere Informationen",
 			"follow_named_entitites": "Folgen Sie benannten Entitäten",
 			"search_in_file_content": "Im Dateiinhalt suchen",
 			"facetLabels": {

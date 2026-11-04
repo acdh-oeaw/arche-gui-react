@@ -166,6 +166,14 @@ code {
 	padding-left: 2rem;
 }
 
+.static-content .home-static-title {
+	color: var(--arche-acc-font-color);
+	font-size: var(--text-small);
+	line-height: var(--text-small--line-height);
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+}
+
 .form-control::placeholder {
 	opacity: 30%;
 }

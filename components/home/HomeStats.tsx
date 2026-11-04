@@ -68,7 +68,7 @@ function StatBox(props: Readonly<StatBoxProps>) {
 				<div className="mb-[5px] text-[34px] leading-none font-bold tracking-[-1px] text-arche-acc-font-color">
 					{value}
 				</div>
-				<div className="text-small tracking-wide text-text-weak uppercase">{label}</div>
+				<div className="home-static-title">{label}</div>
 			</div>
 		</div>
 	);

@@ -1,11 +1,14 @@
 "use client";
 
+import { CircleQuestionMarkIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useMessages, useTranslations } from "next-intl";
 import { type ReactNode, useEffect, useRef, useState } from "react";
+import { Button, Dialog, DialogTrigger } from "react-aria-components";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { ArcheLoader } from "@/components/ui/arche-loader";
+import { Popover } from "@/components/ui/popover";
 import type { Facet, FacetValue } from "@/lib/types/discover";
 
 interface DiscoverFacetsProps {
@@ -39,6 +42,29 @@ function summarizePolygon(wkt: string): string {
 	return `${Math.min(...lons).toFixed(1)}, ${Math.min(...lats).toFixed(1)} – ${Math.max(...lons).toFixed(1)}, ${Math.max(...lats).toFixed(1)}`;
 }
 
+function FacetTooltip({ label, text }: Readonly<{ label: string; text: string }>) {
+	const t = useTranslations("AppContent");
+
+	// Opens on click/tap rather than hover, so it also works on touch devices
+	return (
+		<DialogTrigger>
+			<Button
+				aria-label={`${label}: ${t("smartsearch.filter_info")}`}
+				className="shrink-0 rounded-full outline-transparent focus-visible:focus-outline"
+			>
+				<CircleQuestionMarkIcon
+					aria-hidden={true}
+					className="size-6 fill-arche-acc-dark-blue text-white"
+					data-slot="icon"
+				/>
+			</Button>
+			<Popover className="z-60 max-w-xs" placement="bottom">
+				<Dialog className="p-3 text-sm text-gray-700 outline-hidden">{text}</Dialog>
+			</Popover>
+		</DialogTrigger>
+	);
+}
+
 function FacetCard({
 	children,
 	collapsed,
@@ -54,15 +80,24 @@ function FacetCard({
 }) {
 	return (
 		<div className="facet-card w-full rounded-[8px] ">
-			<div className="facet-card-header">
+			<div className="facet-card-header flex items-center gap-3">
 				<button
-					className="flex w-full items-center justify-between  text-sm font-bold text-gray-700  hover:bg-gray-50"
+					aria-expanded={!collapsed}
+					className="flex flex-1 items-center text-left text-sm font-bold text-gray-700"
 					onClick={onToggle}
-					title={tooltip}
 					type="button"
 				>
 					<span className="font-bold!">{label}</span>
-					<span className="text-gray-400">{collapsed ? "▼" : "▲"}</span>
+				</button>
+				{tooltip && <FacetTooltip label={label} text={tooltip} />}
+				<button
+					aria-hidden={true}
+					className="text-gray-400"
+					onClick={onToggle}
+					tabIndex={-1}
+					type="button"
+				>
+					{collapsed ? "▼" : "▲"}
 				</button>
 			</div>
 			{!collapsed && <div className="facet-card-content flex flex-col gap-2">{children}</div>}
@@ -581,7 +616,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 				{t("smartsearch.search")}
 			</button>
 			<button
-				className="w-full rounded bg-(--color-arche-acc-dark-blue) py-2 text-sm text-white hover:opacity-90"
+				className="w-full rounded border border-arche-acc-heading-url bg-arche-acc-light-cyan/60 py-2 text-sm text-arche-acc-font-color-second hover:bg-arche-acc-light-cyan"
 				type="button"
 			>
 				{t("smartsearch.add_to_clarin")}
