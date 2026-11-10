@@ -11,6 +11,7 @@ import { DiscoverResultPagers } from "@/components/discover/DiscoverResultPagers
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import type { DiscoverResult, DiscoverResultParent } from "@/lib/types/discover";
 import { Button } from "@/components/ui/button";
+import { withBasePath } from "@/config/base-path";
 import { escapeHtml, formatYear, renderMarkdown, truncateText } from "@/lib/helpers/ArcheHelpers";
 
 interface DiscoverResultsProps {
@@ -110,8 +111,8 @@ function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<Se
 							</div>
 							{description && (
 								<div
-									className="discover-result-description"
 									dangerouslySetInnerHTML={{ __html: description }}
+									className="discover-result-description"
 								/>
 							)}
 							<div className="mt-3 flex flex-wrap gap-2">
@@ -141,7 +142,7 @@ function ResultCard({
 	isSearchedIn,
 	onToggleSearchIn,
 }: Readonly<ResultCardProps>) {
-	const [thumbOk, setThumbOk] = useState(!!thumbnailBaseUrl);
+	const [thumbFailed, setThumbFailed] = useState(false);
 	const title = getLangValue(result.title, lang);
 	const rawDescription = result.description ? getLangValue(result.description, lang) : "";
 	const descriptionMaxLength = 150;
@@ -157,16 +158,18 @@ function ResultCard({
 	const accessSummary = result.accessRestrictionSummary
 		? getLangValue(result.accessRestrictionSummary, lang)
 		: "";
-	const thumbnailUrl = thumbnailBaseUrl
-		? `${thumbnailBaseUrl}/?width=120&height=120&id=${encodeURIComponent(result.url)}`
-		: "";
+	// Fall back to the placeholder when there is no thumbnail service or the image fails to load
+	const thumbnailUrl =
+		thumbnailBaseUrl && !thumbFailed
+			? `${thumbnailBaseUrl}/?width=120&height=120&id=${encodeURIComponent(result.url)}`
+			: withBasePath("/images/common/arche_resource_placeholder_250.svg");
 
 	const accessClass = getAccessClass(accessRestriction);
 	const parentChain = getParentChain(result.parent);
 
 	return (
 		<div className="smartsearch-result-row">
-			<div className={thumbOk ? "w-[80%] min-w-0" : "w-full min-w-0"}>
+			<div className="w-[80%] min-w-0">
 				<div className="flex items-start gap-1">
 					<button
 						className={`search-in-btn${isSearchedIn ? " search-in-btn-active" : ""}`}
@@ -237,18 +240,16 @@ function ResultCard({
 					{accessSummary && <span className={accessClass}>{accessSummary}</span>}
 				</div>
 			</div>
-			{thumbOk && (
-				<div className="relative h-[100px] w-[20%] shrink-0 overflow-hidden rounded">
-					<Image
-						alt=""
-						className="smartsearch-list-image"
-						fill
-						onError={() => setThumbOk(false)}
-						src={thumbnailUrl}
-						unoptimized
-					/>
-				</div>
-			)}
+			<div className="relative h-[100px] w-[20%] shrink-0 overflow-hidden rounded">
+				<Image
+					alt=""
+					className="smartsearch-list-image"
+					fill
+					onError={() => setThumbFailed(true)}
+					src={thumbnailUrl}
+					unoptimized
+				/>
+			</div>
 		</div>
 	);
 }

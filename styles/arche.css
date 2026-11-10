@@ -881,13 +881,15 @@ details p {
 		text-align: center !important;
 	}
 
-	.home-resources-title {
-		color: var(--color-arche-acc-font-color);
+	.home-resources-title,
+	.home-resources-title a {
+		color: var(--color-arche-acc-font-color) !important;
 		font-weight: 700;
 		text-align: center !important;
 	}
 
 	.home-resources-title a:hover {
+		color: var(--arche-acc-dark-blue-hover);
 		text-decoration: none !important;
 	}
 
@@ -1224,4 +1226,69 @@ details p {
 
 .shadow {
 	box-shadow: 0 0.5rem 1rem rgb(0, 0, 0, 15%) !important;
+}
+
+/* Bootstrap-style container */
+.container-arche {
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: 0.75rem;
+	padding-left: 0.75rem;
+}
+
+@media (width >= 576px) {
+	.container-arche {
+		max-width: 540px;
+	}
+}
+
+@media (width >= 768px) {
+	.container-arche {
+		max-width: 720px;
+	}
+}
+
+@media (width >= 992px) {
+	.container-arche {
+		max-width: 960px;
+	}
+}
+
+@media (width >= 1200px) {
+	.container-arche {
+		max-width: 1140px;
+	}
+}
+
+@media (width >= 1400px) {
+	.container-arche {
+		max-width: 1320px;
+	}
+}
+
+/*
+ * Bootstrap 5-style row; override the gutters per row with `--arche-gutter-x` / `--arche-gutter-y`.
+ * In the components layer so Tailwind utilities (e.g. `md:w-1/2` on a column) win over it.
+ */
+@layer components {
+	.row-arche {
+		--arche-gutter-x: 1.5rem;
+		--arche-gutter-y: 0;
+
+		display: flex;
+		flex-wrap: wrap;
+		margin-top: calc(-1 * var(--arche-gutter-y));
+		margin-right: calc(-0.5 * var(--arche-gutter-x));
+		margin-left: calc(-0.5 * var(--arche-gutter-x));
+	}
+
+	.row-arche > * {
+		flex-shrink: 0;
+		width: 100%;
+		max-width: 100%;
+		margin-top: var(--arche-gutter-y);
+		padding-right: calc(var(--arche-gutter-x) * 0.5);
+		padding-left: calc(var(--arche-gutter-x) * 0.5);
+	}
 }
