@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { extractTypeLabel } from "@/lib/helpers/ArcheHelpers";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 import { BasicView } from "./basic/basic-view";
@@ -12,16 +13,6 @@ import { PublicationView } from "./publication/publication-view";
 
 interface MetadataViewProps {
 	metadata: ParsedMetadata;
-}
-
-function extractTypeLabel(type: string | null): string {
-	if (type == null || type.length === 0) return "";
-
-	const hashIndex = type.lastIndexOf("#");
-	const slashIndex = type.lastIndexOf("/");
-	const separatorIndex = Math.max(hashIndex, slashIndex);
-
-	return separatorIndex >= 0 ? type.slice(separatorIndex + 1) : type;
 }
 
 function renderByType(typeLabel: string, metadata: ParsedMetadata): ReactNode {

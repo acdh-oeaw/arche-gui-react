@@ -4,21 +4,21 @@ import type { ReactNode } from "react";
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
 import { MetadataTabs } from "@/components/metadata-view/basic/MetadataTabs";
 import CardsBlock from "@/components/metadata-view/CardsBlock";
+import { ArrangementBlock } from "@/components/metadata-view/default-blocks/ArrangementBlock";
 import { CitationBlock } from "@/components/metadata-view/default-blocks/CitationBlock";
 import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
+import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/PreviousNextBlock";
 import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
 import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
 import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
-import { PLYBlock } from "@/components/metadata-view/dissemination/PLYBlock";
 import { AudioBlock } from "@/components/metadata-view/dissemination/AudioBlock";
 import { GLBBlock } from "@/components/metadata-view/dissemination/GLBBlock";
 import { IIIFBlock } from "@/components/metadata-view/dissemination/IIIFBlock";
 import { PdfBlock } from "@/components/metadata-view/dissemination/PdfBlock";
+import { PLYBlock } from "@/components/metadata-view/dissemination/PLYBlock";
 import { TEIBlock } from "@/components/metadata-view/dissemination/TEIBlock";
 import { env } from "@/config/env.config";
 import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
-import { PreviousNextBlock } from "@/components/metadata-view/default-blocks/PreviousNextBlock";
-import { ArrangementBlock } from "@/components/metadata-view/default-blocks/ArrangementBlock";
 
 interface BasicViewProps {
 	metadata: ParsedMetadata;
@@ -33,7 +33,7 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
 			<BasicViewToggle
 				basicContent={
-					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
+					<div className="relative mt-(--bs-gutter-y) flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
 							<div>
 								{t("metaview.available_since")}&nbsp;
@@ -53,9 +53,9 @@ export function BasicView(props: Readonly<BasicViewProps>): ReactNode {
 						<hr className="meatdata-view-top-hr"></hr>
 
 						<PreviousNextBlock
-							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 							id={metadata.getId()}
 							rootId={metadata.getRootId()}
+							url={env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? ""}
 						></PreviousNextBlock>
 
 						<TitleBlock metadata={metadata}></TitleBlock>

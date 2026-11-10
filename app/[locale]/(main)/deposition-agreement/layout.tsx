@@ -23,8 +23,8 @@ export default async function DepositionAgreementLayout(
 		<>
 			<AppHeaderStatic
 				description={t("description")}
-				title={t("title")}
 				pdfUrl="https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/DepositionAgreement/ARCHE_DepositionAgreement.pdf"
+				title={t("title")}
 			/>
 			{children}
 		</>

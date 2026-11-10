@@ -43,9 +43,9 @@ export function FundingDataCard({
 					<div className="flex w-full items-center justify-between">
 						<span className="facet-card-title">{t("funding")}</span>
 						{isOpen ? (
-							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+							<ChevronUpIcon className="size-5 text-gray-600" />
 						) : (
-							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+							<ChevronDownIcon className="size-5 text-gray-600" />
 						)}
 					</div>
 				</button>
@@ -102,7 +102,7 @@ export function FundingDataCard({
 							<Image
 								key={logo.value}
 								alt="funder-logo"
-								className="max-h-[72px] w-full object-contain object-left"
+								className="max-h-18 w-full object-contain object-left"
 								height={72}
 								src={logo.value}
 								width={100}

@@ -4,12 +4,12 @@ import { type ReactNode, useCallback, useState } from "react";
 
 import { AssociatedCollectionsBlock } from "@/components/metadata-view/default-blocks/tabs/AssociatedCollectionsBlock";
 import { CollectionContentBlock } from "@/components/metadata-view/default-blocks/tabs/CollectionContentBlock";
-import { PublicationsBlock } from "@/components/metadata-view/default-blocks/tabs/PublicationsBlock";
-import { SpatialCoverageBlock } from "@/components/metadata-view/default-blocks/tabs/SpatialCoverageBlock";
-import { ProjectAssociatedBlock } from "@/components/metadata-view/default-blocks/tabs/ProjectAssociatedBlock";
+import { ContributedTableBlock } from "@/components/metadata-view/default-blocks/tabs/ContributedTableBlock";
 import { InvolvedTableBlock } from "@/components/metadata-view/default-blocks/tabs/InvolvedTableBlock";
 import { MembersTableBlock } from "@/components/metadata-view/default-blocks/tabs/MembersTableBlock";
-import { ContributedTableBlock } from "@/components/metadata-view/default-blocks/tabs/ContributedTableBlock";
+import { ProjectAssociatedBlock } from "@/components/metadata-view/default-blocks/tabs/ProjectAssociatedBlock";
+import { PublicationsBlock } from "@/components/metadata-view/default-blocks/tabs/PublicationsBlock";
+import { SpatialCoverageBlock } from "@/components/metadata-view/default-blocks/tabs/SpatialCoverageBlock";
 import { Button } from "@/components/ui/button";
 
 const COLLECTION_TYPES = ["topcollection", "collection", "resource", "oldresource", "metadata"];

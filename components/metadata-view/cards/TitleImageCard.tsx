@@ -53,7 +53,7 @@ export function TitleImageCard({ url }: Readonly<{ url: string }>) {
 
 	if (status === "loading") {
 		return (
-			<div className="flex h-[200px] w-full items-center justify-center rounded-[8px] border border-[#E1E1E1]">
+			<div className="flex h-50 w-full items-center justify-center rounded-[8px] border border-[#E1E1E1]">
 				<Image
 					alt="Loading..."
 					className="h-12 w-auto"
@@ -67,7 +67,7 @@ export function TitleImageCard({ url }: Readonly<{ url: string }>) {
 	}
 
 	return (
-		<div className="flex h-[200px] w-full justify-center rounded-[8px] border border-[#E1E1E1]">
+		<div className="flex h-50 w-full justify-center rounded-[8px] border border-[#E1E1E1]">
 			<DialogTrigger>
 				<AriaButton
 					aria-label="Open larger image"
@@ -86,28 +86,30 @@ export function TitleImageCard({ url }: Readonly<{ url: string }>) {
 
 				<AriaModalOverlay
 					className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-					isDismissable
+					isDismissable={true}
 				>
 					<AriaModal className="flex max-h-full max-w-full items-center justify-center outline-hidden">
 						<AriaDialog className="relative outline-hidden">
-							{({ close }) => (
-								<>
-									<AriaButton
-										aria-label="Close"
-										className="absolute -top-10 right-0 border-0 bg-transparent p-1 text-white outline-hidden hover:text-gray-300 focus-visible:ring-2"
-										onPress={close}
-									>
-										<XMarkIcon className="h-8 w-8" />
-									</AriaButton>
-									<Image
-										alt="Preview"
-										className="max-h-[90vh] max-w-[90vw] rounded object-contain"
-										height={1600}
-										src={url}
-										width={1600}
-									/>
-								</>
-							)}
+							{({ close }) => {
+								return (
+									<>
+										<AriaButton
+											aria-label="Close"
+											className="absolute -top-10 right-0 border-0 bg-transparent p-1 text-white outline-hidden hover:text-gray-300 focus-visible:ring-2"
+											onPress={close}
+										>
+											<XMarkIcon className="size-8" />
+										</AriaButton>
+										<Image
+											alt="Preview"
+											className="max-h-[90vh] max-w-[90vw] rounded object-contain"
+											height={1600}
+											src={url}
+											width={1600}
+										/>
+									</>
+								);
+							}}
 						</AriaDialog>
 					</AriaModal>
 				</AriaModalOverlay>

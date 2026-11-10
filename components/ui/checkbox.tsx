@@ -58,7 +58,7 @@ const checkBoxBoxStyles = styles({
 	base: "interactive isolate inline-grid shrink-0 place-content-center rounded-1 border border-stroke-strong bg-fill-inverse-strong text-fill-inverse-strong outline-transparent transition group-invalid:border-stroke-error-strong group-invalid:bg-fill-error-weak group-hover:hover-overlay group-focus-visible:focus-outline group-disabled:border-stroke-disabled group-pressed:press-overlay group-selected:border-transparent group-selected:bg-fill-brand-strong group-selected:group-invalid:bg-fill-error-strong group-selected:group-disabled:bg-fill-disabled forced-colors:group-invalid:text-[Mark] forced-colors:group-disabled:text-[GrayText] forced-colors:group-selected:text-[Highlight]",
 	variants: {
 		size: {
-			small: "size-6 rounded-1 slot-icon:size-4.5 slot-icon:stroke-[2.5]",
+			small: "slot-icon:stroke-2.5 size-6 rounded-1 slot-icon:size-4.5",
 			large: "size-8 rounded-1 slot-icon:size-6 slot-icon:stroke-3",
 		},
 	},

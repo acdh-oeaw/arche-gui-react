@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useTransition, type ReactNode } from "react";
+import { createContext, type ReactNode, use, useState, useTransition } from "react";
 
 interface DiscoverNavContextValue {
 	isPending: boolean;
@@ -14,14 +14,20 @@ interface DiscoverNavContextValue {
 const DiscoverNavContext = createContext<DiscoverNavContextValue>({
 	isPending: false,
 	mapPolygon: null,
-	navigate: (fn) => fn(),
-	setMapPolygon: () => undefined,
-	setShowMap: () => undefined,
+	navigate: (fn) => {
+		fn();
+	},
+	setMapPolygon: () => {
+		return undefined;
+	},
+	setShowMap: () => {
+		return undefined;
+	},
 	showMap: false,
 });
 
 export function useDiscoverNav() {
-	return useContext(DiscoverNavContext);
+	return use(DiscoverNavContext);
 }
 
 export function DiscoverNavProvider({ children }: { children: ReactNode }) {
@@ -34,10 +40,10 @@ export function DiscoverNavProvider({ children }: { children: ReactNode }) {
 	}
 
 	return (
-		<DiscoverNavContext.Provider
+		<DiscoverNavContext
 			value={{ isPending, mapPolygon, navigate, setMapPolygon, setShowMap, showMap }}
 		>
 			{children}
-		</DiscoverNavContext.Provider>
+		</DiscoverNavContext>
 	);
 }

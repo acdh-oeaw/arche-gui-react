@@ -277,7 +277,7 @@ export function PLYBlock({ url }: Readonly<PLYBlockProps>) {
 						title="Zoom out"
 						type="button"
 					>
-						<MagnifyingGlassMinusIcon className="h-4 w-4" />
+						<MagnifyingGlassMinusIcon className="size-4" />
 					</button>
 					<button
 						className="rounded p-1 hover:bg-gray-200"
@@ -285,7 +285,7 @@ export function PLYBlock({ url }: Readonly<PLYBlockProps>) {
 						title="Zoom in"
 						type="button"
 					>
-						<MagnifyingGlassPlusIcon className="h-4 w-4" />
+						<MagnifyingGlassPlusIcon className="size-4" />
 					</button>
 					<button
 						className="ml-auto flex items-center gap-1 rounded px-2 py-1 text-sm hover:bg-gray-200"
@@ -293,7 +293,7 @@ export function PLYBlock({ url }: Readonly<PLYBlockProps>) {
 						title={t("reset_view")}
 						type="button"
 					>
-						<ArrowPathIcon className="h-4 w-4" />
+						<ArrowPathIcon className="size-4" />
 						{t("reset_view")}
 					</button>
 				</div>

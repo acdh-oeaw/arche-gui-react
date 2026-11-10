@@ -37,10 +37,12 @@ export function ArrangementBlock(props: Readonly<MetadataProps>): ReactNode {
 				<h3 className="metadata-view-block-title">{t("arrangement")}</h3>
 			</div>
 
-			<div className="w-full pt-5 arrangement-content">
-				{ArrangementData?.map((entry, index) => (
-					<div key={index} dangerouslySetInnerHTML={{ __html: renderMarkdown(entry.value) }} />
-				))}
+			<div className="arrangement-content w-full pt-5">
+				{ArrangementData?.map((entry, index) => {
+					return (
+						<div dangerouslySetInnerHTML={{ __html: renderMarkdown(entry.value) }} key={index} />
+					);
+				})}
 			</div>
 		</div>
 	);

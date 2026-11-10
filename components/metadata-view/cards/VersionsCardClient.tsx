@@ -12,6 +12,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+
 import type { VersionNode } from "./VersionsCard";
 
 interface TreeNodeProps {
@@ -56,25 +57,25 @@ function TreeNode({ node, apiBaseUrl, lang }: Readonly<TreeNodeProps>) {
 						type="button"
 					>
 						{expanded ? (
-							<FolderOpenIcon className="h-4 w-4 shrink-0 text-yellow-500" />
+							<FolderOpenIcon className="size-4 shrink-0 text-yellow-500" />
 						) : (
-							<FolderIcon className="h-4 w-4 shrink-0 text-yellow-500" />
+							<FolderIcon className="size-4 shrink-0 text-yellow-500" />
 						)}
 						<span className="break-all">{node.title}</span>
 						{loading ? (
-							<ChevronDownIcon className="h-3 w-3 shrink-0 animate-spin text-gray-400" />
+							<ChevronDownIcon className="size-3 shrink-0 animate-spin text-gray-400" />
 						) : expanded ? (
-							<ChevronDownIcon className="h-3 w-3 shrink-0 text-gray-400" />
+							<ChevronDownIcon className="size-3 shrink-0 text-gray-400" />
 						) : (
-							<ChevronRightIcon className="h-3 w-3 shrink-0 text-gray-400" />
+							<ChevronRightIcon className="size-3 shrink-0 text-gray-400" />
 						)}
 					</button>
 				) : (
 					<a
-						className="flex items-center gap-1 break-all text-sm hover:underline"
+						className="flex items-center gap-1 text-sm break-all hover:underline"
 						href={`/browser/metadata/${String(node.id)}`}
 					>
-						<DocumentIcon className="h-4 w-4 shrink-0 text-gray-400" />
+						<DocumentIcon className="size-4 shrink-0 text-gray-400" />
 						{node.title}
 					</a>
 				)}
@@ -118,9 +119,9 @@ export function VersionsCardClient({
 					<div className="flex w-full items-center justify-between">
 						<span className="facet-card-title">{t("versions")}</span>
 						{isOpen ? (
-							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+							<ChevronUpIcon className="size-5 text-gray-600" />
 						) : (
-							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+							<ChevronDownIcon className="size-5 text-gray-600" />
 						)}
 					</div>
 				</button>

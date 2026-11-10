@@ -126,7 +126,7 @@ export function GLBBlock({ url }: Readonly<GLBBlockProps>) {
 						title="Zoom out"
 						type="button"
 					>
-						<MagnifyingGlassMinusIcon className="h-4 w-4" />
+						<MagnifyingGlassMinusIcon className="size-4" />
 					</button>
 					<span className="min-w-12 text-center text-sm text-gray-700">
 						{fov !== null ? `${String(fov)}°` : "Auto"}
@@ -138,7 +138,7 @@ export function GLBBlock({ url }: Readonly<GLBBlockProps>) {
 						title="Zoom in"
 						type="button"
 					>
-						<MagnifyingGlassPlusIcon className="h-4 w-4" />
+						<MagnifyingGlassPlusIcon className="size-4" />
 					</button>
 
 					<button
@@ -147,7 +147,7 @@ export function GLBBlock({ url }: Readonly<GLBBlockProps>) {
 						title={t("reset_view")}
 						type="button"
 					>
-						<ArrowPathIcon className="h-4 w-4" />
+						<ArrowPathIcon className="size-4" />
 						{t("reset_view")}
 					</button>
 				</div>

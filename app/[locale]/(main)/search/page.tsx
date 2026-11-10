@@ -85,8 +85,8 @@ export default async function SearchPage(props: Readonly<SearchPageProps>): Prom
 	>;
 
 	return (
-		<MainContent className="content-start bg-white main-content-bleed">
-			<section className="container-w980 white-container mb-[70px] mt-[50px]">
+		<MainContent className="main-content-bleed content-start bg-white">
+			<section className="container-w980 white-container mt-[50px] mb-[70px]">
 				<h1 className="mb-6 text-3xl font-bold">{t("title")}</h1>
 
 				<StaticContentSearchForm
@@ -108,8 +108,8 @@ export default async function SearchPage(props: Readonly<SearchPageProps>): Prom
 							{results.map((result) => {
 								return (
 									<SearchResult
-										href={getPageHref(result.slug)}
 										key={result.slug}
+										href={getPageHref(result.slug)}
 										matchesLabel={t("matches", { count: result.matchCount })}
 										result={result}
 										title={getPageTitle(entries, result.slug)}
@@ -148,7 +148,7 @@ function SearchResult(props: Readonly<SearchResultProps>): ReactNode {
 				{result.snippets.map((snippet, index) => {
 					return (
 						// eslint-disable-next-line @eslint-react/no-array-index-key
-						<li className="text-sm" key={index}>
+						<li key={index} className="text-sm">
 							{snippet.before}
 							<mark className="bg-yellow-200">{snippet.match}</mark>
 							{snippet.after}

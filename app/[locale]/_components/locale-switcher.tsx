@@ -26,7 +26,7 @@ export function LocaleSwitcher(): ReactNode {
 	}, [currentLocale]);
 
 	return (
-		<div className="flex items-center gap-x-2 text-tiny arche-lng-switcher">
+		<div className="arche-lng-switcher flex items-center gap-x-2 text-tiny">
 			{locales.map((locale, index) => {
 				const { label, language } = items[locale];
 

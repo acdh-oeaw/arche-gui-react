@@ -31,9 +31,9 @@ export function ViewShareCard({ data }: Readonly<{ data: ShareData }>) {
 					<div className="flex w-full items-center justify-between">
 						<span className="facet-card-title">{t("view_and_share")}</span>
 						{isOpen ? (
-							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+							<ChevronUpIcon className="size-5 text-gray-600" />
 						) : (
-							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+							<ChevronDownIcon className="size-5 text-gray-600" />
 						)}
 					</div>
 				</button>
@@ -41,11 +41,11 @@ export function ViewShareCard({ data }: Readonly<{ data: ShareData }>) {
 
 			{/* Content */}
 			{isOpen && (
-				<div className="flex flex-col gap-6 facet-card-content border-t border-[#E1EDF3] p-3">
+				<div className="facet-card-content flex flex-col gap-6 border-t border-[#E1EDF3] p-3">
 					<div className="w-full" id="download-metadata-section">
-						<div className="w-full pt-2 pb-2">
+						<div className="w-full py-2">
 							<a
-								className="btn-arche-blue inline-flex items-center gap-2 pt-2 pr-2 pb-2 pl-2 text-white no-underline hover:no-underline"
+								className="btn-arche-blue inline-flex items-center gap-2 p-2 text-white no-underline hover:no-underline"
 								href={`${data.archeApiUrl}/${data.id}/metadata`}
 								target="_blank"
 							>
@@ -53,7 +53,7 @@ export function ViewShareCard({ data }: Readonly<{ data: ShareData }>) {
 
 								<Image
 									alt={t("rdf_viewer")}
-									className="h-4 w-4"
+									className="size-4"
 									height={16}
 									src={downloadIcon}
 									width={16}

@@ -1,8 +1,9 @@
 "use client";
 
-import { toNumber } from "@/lib/helpers/ArcheHelpers";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
+import { toNumber } from "@/lib/helpers/ArcheHelpers";
 
 export function DiscoverClient() {
 	const sp = useSearchParams();

@@ -44,9 +44,9 @@ export default async function IndexPage(props: Readonly<StaticPageProps>): Promi
 		<MainContent className="content-start">
 			{/* The TWTokens passes the css classes for the static pages */}
 			<section
-				className="w-full bg-white"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
+				className="w-full bg-white"
 			/>
 			{/* display the carousel on the main page */}
 			<CollectionsCarouselEnhancer />

@@ -30,6 +30,24 @@ function createApiUrl(id: string, page: string, lang: string): URL {
 	return url;
 }
 
+/* Autocomplete suggestions for the hero search box. The endpoint answers with a flat string array. */
+export async function getAutocompleteSuggestions(
+	term: string,
+	signal?: AbortSignal,
+): Promise<Array<string>> {
+	const baseUrl = env.NEXT_PUBLIC_ARCHE_SYMFONY_API ?? "";
+	const url = createUrl({ baseUrl });
+	const basePath = url.pathname.replace(/\/+$/, "");
+	url.pathname = `${basePath}/smsearch/autocomplete/${encodeURIComponent(term)}`;
+	const res = await fetch(url, { cache: "no-store", signal: createSignal(signal) });
+	if (!res.ok) throw new Error(`HTTP ${String(res.status)}`);
+	const json = (await res.json()) as unknown;
+	if (!Array.isArray(json)) return [];
+	return json.filter((item): item is string => {
+		return typeof item === "string";
+	});
+}
+
 /* basic API request for the Blocks and Prev. NExt Item */
 export async function getBlocksApiData(url: string): Promise<unknown> {
 	const res = await fetch(url, { cache: "no-store", signal: createSignal() });

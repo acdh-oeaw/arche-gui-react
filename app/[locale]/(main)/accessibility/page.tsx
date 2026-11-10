@@ -37,11 +37,11 @@ export default async function AccessibilityPage(
 	const html = cached ?? (await getStaticPage("accessibility", lang));
 
 	return (
-		<MainContent className="content-start main-content-bleed">
+		<MainContent className="main-content-bleed content-start">
 			<section
-				className="w-full pb-[100px]"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
+				className="w-full pb-25"
 			/>
 		</MainContent>
 	);

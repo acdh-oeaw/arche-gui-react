@@ -20,7 +20,7 @@ export default function PlaceDescriptionBlock(
 
 	const t = useTranslations("AppContent.metaview");
 
-	const description = data["Description"]?.[0]?.value;
+	const description = data.Description?.[0]?.value;
 	const otherEntries = Object.entries(data)
 		.filter(([key]) => {
 			return key !== "Description";
@@ -44,27 +44,31 @@ export default function PlaceDescriptionBlock(
 
 			{otherEntries.length > 0 && (
 				<ul className="flex flex-col gap-3">
-					{otherEntries.map(([label, items]) => (
-						<li key={label} className="flex flex-col gap-0.5">
-							<span className="text-small font-strong text-text-strong">{label}:</span>
-							<span className="text-small text-text-weak">
-								{items.map((item) => (
-									<span key={item.id != null ? String(item.id) : item.value} className="block">
-										{item.id != null ? (
-											<a
-												className="text-text-brand hover:underline"
-												href={`/browser/metadata/${String(item.id)}`}
-											>
-												{item.value}
-											</a>
-										) : (
-											item.value
-										)}
-									</span>
-								))}
-							</span>
-						</li>
-					))}
+					{otherEntries.map(([label, items]) => {
+						return (
+							<li key={label} className="flex flex-col gap-0.5">
+								<span className="text-small font-strong text-text-strong">{label}:</span>
+								<span className="text-small text-text-weak">
+									{items.map((item) => {
+										return (
+											<span key={item.id != null ? String(item.id) : item.value} className="block">
+												{item.id != null ? (
+													<a
+														className="text-text-brand hover:underline"
+														href={`/browser/metadata/${String(item.id)}`}
+													>
+														{item.value}
+													</a>
+												) : (
+													item.value
+												)}
+											</span>
+										);
+									})}
+								</span>
+							</li>
+						);
+					})}
 				</ul>
 			)}
 		</div>

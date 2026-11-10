@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, type ReactNode, use, useState } from "react";
 
 interface DiscoverReloadContextValue {
 	isNavPending: boolean;
@@ -9,7 +9,9 @@ interface DiscoverReloadContextValue {
 
 const DiscoverReloadContext = createContext<DiscoverReloadContextValue>({
 	isNavPending: false,
-	setIsNavPending: () => undefined,
+	setIsNavPending: () => {
+		return undefined;
+	},
 });
 
 /**
@@ -22,15 +24,15 @@ const DiscoverReloadContext = createContext<DiscoverReloadContextValue>({
  * Discover button on the Main navigation.
  */
 export function useDiscoverReload() {
-	return useContext(DiscoverReloadContext);
+	return use(DiscoverReloadContext);
 }
 
 export function DiscoverReloadProvider({ children }: { children: ReactNode }) {
 	const [isNavPending, setIsNavPending] = useState(false);
 
 	return (
-		<DiscoverReloadContext.Provider value={{ isNavPending, setIsNavPending }}>
+		<DiscoverReloadContext value={{ isNavPending, setIsNavPending }}>
 			{children}
-		</DiscoverReloadContext.Provider>
+		</DiscoverReloadContext>
 	);
 }

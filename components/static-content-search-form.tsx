@@ -3,8 +3,8 @@
 import { type FormEvent, type ReactNode, useState } from "react";
 
 import { Image } from "@/components/image";
-import { useRouter } from "@/lib/navigation/navigation";
 import { withBasePath } from "@/config/base-path";
+import { useRouter } from "@/lib/navigation/navigation";
 
 interface StaticContentSearchFormProps {
 	/** Accessible label and placeholder for the input. */
@@ -48,7 +48,7 @@ export function StaticContentSearchForm(props: Readonly<StaticContentSearchFormP
 
 	return (
 		<form className={className} id={id} onSubmit={handleSubmit} role="search">
-			<div className="flex w-full input-group">
+			<div className="input-group flex w-full">
 				<input
 					className={inputClassName}
 					name="q"
@@ -62,7 +62,7 @@ export function StaticContentSearchForm(props: Readonly<StaticContentSearchFormP
 				<button className="btn hero-search-button" type="submit">
 					<Image
 						alt="Search"
-						className="h-4 w-4"
+						className="size-4"
 						height="32"
 						src={withBasePath("/images/common/search_icon.svg")}
 						width="32"

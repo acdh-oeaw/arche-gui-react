@@ -3,33 +3,12 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
+import { buildPageButtons } from "@/lib/helpers/ArcheHelpers";
 
 interface DiscoverResultPagersProps {
 	page: number; // 0-based from API
 	pageSize: number;
 	totalCount: number;
-}
-
-function buildPageButtons(current: number, total: number): Array<number | "…"> {
-	if (total <= 7)
-		return Array.from({ length: total }, (_, i) => {
-			return i + 1;
-		});
-	const pages = new Set<number>();
-	pages.add(1);
-	pages.add(total);
-	for (let i = Math.max(1, current - 2); i <= Math.min(total, current + 2); i++) pages.add(i);
-	const sorted = [...pages].sort((a, b) => {
-		return a - b;
-	});
-	const result: Array<number | "…"> = [];
-	for (let i = 0; i < sorted.length; i++) {
-		const cur = sorted[i];
-		const prev = sorted[i - 1];
-		if (prev !== undefined && cur !== undefined && cur - prev > 1) result.push("…");
-		if (cur !== undefined) result.push(cur);
-	}
-	return result;
 }
 
 export function DiscoverResultPagers({

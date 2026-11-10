@@ -8,6 +8,7 @@ import { type ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { DatabaseIcon, ResourceIcon, TopCollectionIcon } from "@/components/home/HomeStatsIcons";
+import { formatCount, formatSize } from "@/lib/helpers/ArcheHelpers";
 
 const PORTAL_TARGET_ID = "static-content";
 const COUNT_UP_DURATION_SECONDS = 1.5;
@@ -42,14 +43,6 @@ function useCountUp(target: number | null): number {
 	}, [target]);
 
 	return value;
-}
-
-function formatCount(value: number): string {
-	return Math.round(value).toLocaleString("en-US");
-}
-
-function formatSize(value: number): string {
-	return `${value.toFixed(2)} TB`;
 }
 
 interface StatBoxProps {

@@ -2,66 +2,40 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverMap } from "@/components/discover/DiscoverMap";
+import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { DiscoverResultPagers } from "@/components/discover/DiscoverResultPagers";
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import type { DiscoverResult, DiscoverResultParent } from "@/lib/types/discover";
 import { Button } from "@/components/ui/button";
 import { withBasePath } from "@/config/base-path";
-import { escapeHtml, formatYear, renderMarkdown, truncateText } from "@/lib/helpers/ArcheHelpers";
+import {
+	escapeHtml,
+	formatYear,
+	getAccessClass,
+	getLangValue,
+	getParentChain,
+	renderMarkdown,
+	shortenUri,
+	truncateText,
+} from "@/lib/helpers/ArcheHelpers";
+import type { DiscoverResult } from "@/lib/types/discover";
 
 interface DiscoverResultsProps {
 	lang: string;
 	mapGeoJson: string | null;
-	messages: string | unknown[];
+	messages: string | Array<unknown>;
 	page: number; // 0-based from API
 	pageSize: number;
-	results: DiscoverResult[];
+	results: Array<DiscoverResult>;
 	thumbnailBaseUrl: string;
 	totalCount: number;
 }
 
-function shortenUri(value: string): string {
-	if (value.startsWith("https://vocabs.acdh.oeaw.ac.at/schema#")) {
-		return `acdh:${value.slice(38)}`;
-	}
-	const hash = value.lastIndexOf("#");
-	if (hash !== -1) return value.slice(hash + 1);
-	const slash = value.lastIndexOf("/");
-	if (slash !== -1) return value.slice(slash + 1);
-	return value;
-}
-
-function getLangValue(data: Record<string, string>, lang: string): string {
-	return data[lang] ?? data["en"] ?? data["de"] ?? Object.values(data)[0] ?? "";
-}
-
-/* Walks the parent chain from topmost ancestor down to the immediate parent. */
-function getParentChain(parent: DiscoverResultParent[] | undefined): DiscoverResultParent[] {
-	const current = parent?.[0];
-	if (!current) return [];
-	return [...getParentChain(current.parent), current];
-}
-
-const ACCESS_KEYWORDS = ["public", "academic", "restricted"] as const;
-
-/* We need to display a nice colored div for the accessrestrictions */
-function getAccessClass(accessRestriction: string): string {
-	const lower = accessRestriction.toLowerCase();
-	const ordered = ACCESS_KEYWORDS.map((k) => ({ key: k, index: lower.indexOf(k) }))
-		.filter(({ index }) => index !== -1)
-		.sort((a, b) => a.index - b.index)
-		.map(({ key }) => key);
-	if (ordered.length === 0) return "";
-	return `btn-toolbar btn-toolbar-${ordered.join("-")}`;
-}
-
 interface SearchInPanelProps {
-	searchInIds: string[];
+	searchInIds: Array<string>;
 	resultsById: Map<string, DiscoverResult>;
 	lang: string;
 	onRemove: (id: string) => void;
@@ -100,7 +74,9 @@ function SearchInPanel({ searchInIds, resultsById, lang, onRemove }: Readonly<Se
 							<div className="flex items-start gap-1">
 								<button
 									className="search-in-btn smartsearch-searchin-remove"
-									onClick={() => onRemove(id)}
+									onClick={() => {
+										onRemove(id);
+									}}
 									type="button"
 								>
 									+
@@ -185,15 +161,15 @@ function ResultCard({
 				</div>
 				{description && (
 					<div
-						className="discover-result-description"
 						dangerouslySetInnerHTML={{ __html: description }}
+						className="discover-result-description"
 					/>
 				)}
 
 				{result.matchHighlight && (
 					<>
 						<span>Highlight:</span>
-						<p className="mt-2" dangerouslySetInnerHTML={{ __html: result.matchHighlight }} />
+						<p dangerouslySetInnerHTML={{ __html: result.matchHighlight }} className="mt-2" />
 					</>
 				)}
 
@@ -224,14 +200,16 @@ function ResultCard({
 				{parentChain.length > 0 && (
 					<div className="mt-2">
 						In:
-						{parentChain.map((parent, index) => (
-							<span key={parent.id}>
-								{index > 0 && " > "}
-								<Link href={`/metadata/${String(parent.id)}`}>
-									{getLangValue(parent.title, lang)}
-								</Link>
-							</span>
-						))}
+						{parentChain.map((parent, index) => {
+							return (
+								<span key={parent.id}>
+									{index > 0 && " > "}
+									<Link href={`/metadata/${String(parent.id)}`}>
+										{getLangValue(parent.title, lang)}
+									</Link>
+								</span>
+							);
+						})}
 					</div>
 				)}
 
@@ -240,14 +218,16 @@ function ResultCard({
 					{accessSummary && <span className={accessClass}>{accessSummary}</span>}
 				</div>
 			</div>
-			<div className="relative h-[100px] w-[20%] shrink-0 overflow-hidden rounded">
+			<div className="relative h-25 w-[20%] shrink-0 overflow-hidden rounded">
 				<Image
 					alt=""
 					className="smartsearch-list-image"
-					fill
-					onError={() => setThumbFailed(true)}
+					fill={true}
+					onError={() => {
+						setThumbFailed(true);
+					}}
 					src={thumbnailUrl}
-					unoptimized
+					unoptimized={true}
 				/>
 			</div>
 		</div>
@@ -302,27 +282,39 @@ export function DiscoverResults({
 			// Remove: keep existing params, just drop this ID
 			const params = new URLSearchParams(sp.toString());
 			params.delete("searchIn[]");
-			for (const v of searchInIds.filter((v) => v !== idStr)) params.append("searchIn[]", v);
+			for (const v of searchInIds.filter((v) => {
+				return v !== idStr;
+			}))
+				params.append("searchIn[]", v);
 			params.set("page", "1");
-			navigate(() => router.push(`${pathname}?${params.toString()}`));
+			navigate(() => {
+				router.push(`${pathname}?${params.toString()}`);
+			});
 		} else {
 			// Add: reset URL to clean format with only this resource
 			const params = buildCleanParams();
 			params.append("searchIn[]", idStr);
-			navigate(() => router.push(`${pathname}?${params.toString()}`));
+			navigate(() => {
+				router.push(`${pathname}?${params.toString()}`);
+			});
 		}
 	}
 
 	function removeSearchIn(id: string) {
 		const params = new URLSearchParams(sp.toString());
 		params.delete("searchIn[]");
-		for (const v of searchInIds.filter((v) => v !== id)) params.append("searchIn[]", v);
+		for (const v of searchInIds.filter((v) => {
+			return v !== id;
+		}))
+			params.append("searchIn[]", v);
 		params.set("page", "1");
-		navigate(() => router.push(`${pathname}?${params.toString()}`));
+		navigate(() => {
+			router.push(`${pathname}?${params.toString()}`);
+		});
 	}
 
 	return (
-		<div className="w-full relative flex flex-col gap-4">
+		<div className="relative flex w-full flex-col gap-4">
 			{/* Spatial coverage map */}
 			{showMap && mapGeoJson && <DiscoverMap geoJson={mapGeoJson} />}
 
@@ -353,30 +345,38 @@ export function DiscoverResults({
 						typeof messages === "string"
 							? messages
 							: Array.isArray(messages) && messages.length > 0
-								? messages.map((m) => String(m)).join(" ")
+								? messages
+										.map((m) => {
+											return String(m);
+										})
+										.join(" ")
 								: "";
 					return (
 						<div className="w-full">
 							{msg ? (
-								<div className="p-5 m-5 bg-amber-400" dangerouslySetInnerHTML={{ __html: msg }} />
+								<div dangerouslySetInnerHTML={{ __html: msg }} className="m-5 bg-amber-400 p-5" />
 							) : (
-								<p className="p-5 m-5 bg-amber-400 text-center text-sm text-gray-400">
+								<p className="m-5 bg-amber-400 p-5 text-center text-sm text-gray-400">
 									No results found.
 								</p>
 							)}
 						</div>
 					);
 				})()}
-			{results.map((result) => (
-				<ResultCard
-					key={result.id}
-					isSearchedIn={searchInSet.has(String(result.id))}
-					lang={lang}
-					onToggleSearchIn={() => toggleSearchIn(result.id)}
-					result={result}
-					thumbnailBaseUrl={thumbnailBaseUrl}
-				/>
-			))}
+			{results.map((result) => {
+				return (
+					<ResultCard
+						key={result.id}
+						isSearchedIn={searchInSet.has(String(result.id))}
+						lang={lang}
+						onToggleSearchIn={() => {
+							toggleSearchIn(result.id);
+						}}
+						result={result}
+						thumbnailBaseUrl={thumbnailBaseUrl}
+					/>
+				);
+			})}
 
 			{/* Pagination footer */}
 			<DiscoverResultPagers page={page} pageSize={pageSize} totalCount={totalCount} />

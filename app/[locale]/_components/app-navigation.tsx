@@ -36,7 +36,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	const pathname = usePathname();
 
 	return (
-		<nav aria-label={label} className="hidden w-full items-center lg:flex arche-navbar">
+		<nav aria-label={label} className="arche-navbar hidden w-full items-center lg:flex">
 			<NavLink
 				className="interactive -ml-2 grid shrink-0 place-content-center self-center rounded-2 p-2 outline-transparent focus-visible:focus-outline"
 				href="/"
@@ -97,7 +97,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 										</Button>
 										<Popover className="arche-nav-popover" placement="bottom left">
 											<Menu
-												className="min-w-70 arche-header-nav-submenu"
+												className="arche-header-nav-submenu min-w-70"
 												selectedKeys={selectedKeys}
 												selectionMode="single"
 											>

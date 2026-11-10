@@ -1,6 +1,7 @@
 import React from "react";
-import { env } from "@/config/env.config";
+
 import { withBasePath } from "@/config/base-path";
+import { env } from "@/config/env.config";
 
 export interface LoginItem {
 	username: string;
@@ -16,7 +17,9 @@ export interface LoginItem {
 function getCookie(name: string): string | null {
 	if (typeof document === "undefined") return null;
 
-	const match = document.cookie.split("; ").find((row) => row.startsWith(`${name}=`));
+	const match = document.cookie.split("; ").find((row) => {
+		return row.startsWith(`${name}=`);
+	});
 
 	if (!match) return null;
 
@@ -24,8 +27,8 @@ function getCookie(name: string): string | null {
 }
 
 /* check the logged or not logged user rights and the actual resource rights */
-export async function checkUserPermission(resId: string, aclRead: string = ""): Promise<LoginItem> {
-	const actualPage = env.NEXT_PUBLIC_APP_BASE_URL + "/metadata/" + resId;
+export async function checkUserPermission(resId: string, aclRead = ""): Promise<LoginItem> {
+	const actualPage = `${env.NEXT_PUBLIC_APP_BASE_URL}/metadata/${resId}`;
 	console.log("actualpage:");
 	console.log(actualPage);
 	console.log(env.NEXT_PUBLIC_AUTH_LOGIN_COOKIE);
@@ -75,7 +78,12 @@ async function checkShibbolethLogin(aclRead: string): Promise<LoginItem> {
 	if (aclRead) {
 		const requiredRoles = aclRead.split(",");
 		//the user has the right aclread group
-		if (requiredRoles.some((role) => roles.includes(role)) || roles.includes("admin")) {
+		if (
+			requiredRoles.some((role) => {
+				return roles.includes(role);
+			}) ||
+			roles.includes("admin")
+		) {
 			result.access = "authorized";
 		}
 		//else: the user doesnt have the right group to access the resource
@@ -108,7 +116,12 @@ function checkHttpLogin(aclRead: string): LoginItem {
 	if (aclRead) {
 		const requiredRoles = aclRead.split(",");
 		//the user has the right aclread group
-		if (requiredRoles.some((role) => roles.includes(role)) || roles.includes("admin")) {
+		if (
+			requiredRoles.some((role) => {
+				return roles.includes(role);
+			}) ||
+			roles.includes("admin")
+		) {
 			result.access = "authorized";
 		}
 		//else: the user doesnt have the right group to access the resource

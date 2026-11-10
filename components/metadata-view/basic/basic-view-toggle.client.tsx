@@ -1,8 +1,10 @@
 "use client";
 
 import { type ReactNode, useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
+
 import { BreadcrumbBlock } from "@/components/metadata-view/default-blocks/BreadcrumbBlock";
+import { Button } from "@/components/ui/button";
+import { flattenValues, isRecord, isUrl, readString, toText } from "@/lib/helpers/ArcheHelpers";
 
 export interface MetaviewTranslations {
 	basic_view: string;
@@ -36,42 +38,6 @@ interface ExpertRow {
 type SortKey = "property" | "value";
 type SortDirection = "asc" | "desc";
 const PAGE_SIZE_OPTIONS = [10, 25, 50] as const;
-
-function toText(value: unknown): string {
-	if (value == null) return "";
-	if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-		return String(value);
-	}
-	if (Array.isArray(value)) {
-		return value.map(toText).filter(Boolean).join(" | ");
-	}
-
-	try {
-		return JSON.stringify(value);
-	} catch {
-		return "[Unserializable value]";
-	}
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-	return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function readString(value: unknown): string | null {
-	if (value == null) return null;
-	if (typeof value === "string") {
-		const trimmed = value.trim();
-		return trimmed.length > 0 ? trimmed : null;
-	}
-	if (typeof value === "number" || typeof value === "boolean") {
-		return String(value);
-	}
-	return null;
-}
-
-function isUrl(value: string): boolean {
-	return /^https?:\/\//i.test(value);
-}
 
 function toExpertValue(value: unknown): Omit<ExpertRow, "property"> {
 	if (Array.isArray(value) && value.length > 0) {
@@ -146,15 +112,6 @@ function toExpertValue(value: unknown): Omit<ExpertRow, "property"> {
 	}
 
 	return { valueText: textValue, valueParts: [{ text: textValue }] };
-}
-
-function flattenValues(value: unknown): Array<unknown> {
-	if (Array.isArray(value)) {
-		return value.flatMap((entry) => {
-			return flattenValues(entry);
-		});
-	}
-	return [value];
 }
 
 function toRows(data: Record<string, unknown>): Array<ExpertRow> {

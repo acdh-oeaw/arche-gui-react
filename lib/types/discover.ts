@@ -16,44 +16,44 @@ export interface Facet {
 	min?: number;
 	max?: number;
 	bins?: number;
-	start?: string[];
-	end?: string[];
+	start?: Array<string>;
+	end?: Array<string>;
 	distribution?: boolean;
 	precision?: number;
-	classes?: string[];
+	classes?: Array<string>;
 }
 
 export interface DiscoverResultParent {
 	id: number;
 	title: Record<string, string>;
-	parent?: DiscoverResultParent[];
+	parent?: Array<DiscoverResultParent>;
 }
 
 export interface DiscoverResult {
 	id: number;
-	matchWeight: string[];
-	matchOrder: string[];
-	class: string[];
+	matchWeight: Array<string>;
+	matchOrder: Array<string>;
+	class: Array<string>;
 	accessRestrictionSummary?: Record<string, string>;
 	description?: Record<string, string>;
 	title: Record<string, string>;
-	availableDate: string[];
+	availableDate: Array<string>;
 	url: string;
-	matchProperty: string[];
-	matchHiglight: string[];
+	matchProperty: Array<string>;
+	matchHiglight: Array<string>;
 	matchHighlight?: string;
-	parent?: DiscoverResultParent[];
+	parent?: Array<DiscoverResultParent>;
 }
 
 export interface DiscoverResponse {
 	facets: Record<string, Facet>;
-	results: DiscoverResult[];
+	results: Array<DiscoverResult>;
 	totalCount: number;
 	maxCount: number;
 	page: number;
-	messages: string | unknown[];
+	messages: string | Array<unknown>;
 	class: string;
 	pageSize: number;
-	searchIn: null | string[];
+	searchIn: null | Array<string>;
 	allPins: null | unknown;
 }

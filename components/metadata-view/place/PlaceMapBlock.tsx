@@ -30,12 +30,20 @@ export default function PlaceMapBlock(props: Readonly<PlaceMapBlockProps>): Reac
 
 			{coordEntries.length > 0 && (
 				<ul className="list-inside list-disc space-y-2">
-					{coordEntries.map(([label, items]) => (
-						<li key={label} className="">
-							<span className="mb-0!">{label}:</span>
-							<span className="mb-0!">{items.map((item) => item.value).join(", ")}</span>
-						</li>
-					))}
+					{coordEntries.map(([label, items]) => {
+						return (
+							<li key={label} className="">
+								<span className="mb-0!">{label}:</span>
+								<span className="mb-0!">
+									{items
+										.map((item) => {
+											return item.value;
+										})
+										.join(", ")}
+								</span>
+							</li>
+						);
+					})}
 				</ul>
 			)}
 

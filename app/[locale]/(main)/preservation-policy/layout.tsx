@@ -23,8 +23,8 @@ export default async function PreservationPolicyLayout(
 		<>
 			<AppHeaderStatic
 				description={t("description")}
-				title={t("title")}
 				pdfUrl="https://raw.githubusercontent.com/acdh-oeaw/arche-static-text/main/PreservationPolicy/ARCHE_PreservationPolicy.pdf"
+				title={t("title")}
 			/>
 			{children}
 		</>

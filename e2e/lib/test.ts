@@ -5,9 +5,9 @@ import { test as base } from "@playwright/test";
 
 import { env } from "@/config/env.config";
 import { type AccessibilityScanner, createAccessibilityScanner } from "@/e2e/lib/fixtures/a11y";
+import { AccessibilityPage } from "@/e2e/lib/fixtures/accessibility-page";
 import { createI18n, type I18n, type WithI18n } from "@/e2e/lib/fixtures/i18n";
 import { ImprintPage } from "@/e2e/lib/fixtures/imprint-page";
-import { AccessibilityPage } from "@/e2e/lib/fixtures/accessibility-page";
 import { IndexPage } from "@/e2e/lib/fixtures/index-page";
 import { SearchPage } from "@/e2e/lib/fixtures/search-page";
 import { defaultLocale, type IntlLocale } from "@/lib/i18n/locales";

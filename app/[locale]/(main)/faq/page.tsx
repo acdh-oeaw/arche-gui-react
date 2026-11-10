@@ -40,11 +40,11 @@ export default async function FAQPage(props: Readonly<StaticPageProps>): Promise
 	const html = cached ?? (await getStaticPage("faq", lang));
 
 	return (
-		<MainContent className="content-start main-content-bleed">
+		<MainContent className="main-content-bleed content-start">
 			<section
-				className="w-full"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
+				className="w-full"
 			/>
 		</MainContent>
 	);

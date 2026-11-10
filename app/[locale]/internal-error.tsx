@@ -34,7 +34,7 @@ export default function InternalError(props: Readonly<InternalErrorProps>): Reac
 				<Image
 					alt=""
 					height={234}
-					priority
+					priority={true}
 					src={withBasePath("/images/404_image.png")}
 					width={300}
 				/>

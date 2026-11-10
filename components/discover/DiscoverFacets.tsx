@@ -9,37 +9,12 @@ import { Button, Dialog, DialogTrigger } from "react-aria-components";
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
 import { ArcheLoader } from "@/components/ui/arche-loader";
 import { Popover } from "@/components/ui/popover";
+import { shortenUri, summarizePolygon } from "@/lib/helpers/ArcheHelpers";
 import type { Facet, FacetValue } from "@/lib/types/discover";
 
 interface DiscoverFacetsProps {
 	facets: Record<string, Facet>;
 	lang: string;
-}
-
-function shortenUri(value: string): string {
-	if (value.startsWith("https://vocabs.acdh.oeaw.ac.at/schema#")) {
-		return `acdh:${value.slice(38)}`;
-	}
-	if (value.startsWith("http://www.w3.org/1999/02/22-rdf-syntax-ns#")) {
-		return `rdf:${value.slice(43)}`;
-	}
-	const hash = value.lastIndexOf("#");
-	if (hash !== -1) return value.slice(hash + 1);
-	const slash = value.lastIndexOf("/");
-	if (slash !== -1) return value.slice(slash + 1);
-	return value;
-}
-
-function summarizePolygon(wkt: string): string {
-	const nums = wkt.match(/-?\d+\.?\d*/g)?.map(Number) ?? [];
-	if (nums.length < 4) return wkt;
-	const lons: Array<number> = [];
-	const lats: Array<number> = [];
-	for (let i = 0; i + 1 < nums.length; i += 2) {
-		lons.push(nums[i] ?? 0);
-		lats.push(nums[i + 1] ?? 0);
-	}
-	return `${Math.min(...lons).toFixed(1)}, ${Math.min(...lats).toFixed(1)} – ${Math.max(...lons).toFixed(1)}, ${Math.max(...lats).toFixed(1)}`;
 }
 
 function FacetTooltip({ label, text }: Readonly<{ label: string; text: string }>) {

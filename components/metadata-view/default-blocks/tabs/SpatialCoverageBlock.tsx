@@ -2,10 +2,11 @@
 
 import { ChevronDownIcon, ChevronUpDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { useLocale, useTranslations } from "next-intl";
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { getSpatialDTContent, type DTResult, type DTRow } from "@/lib/api/CollectionDTContentApi";
+import { type DTResult, getSpatialDTContent } from "@/lib/api/CollectionDTContentApi";
+import { formatCellValue, formatColLabel } from "@/lib/helpers/ArcheHelpers";
 
 interface SpatialCoverageBlockProps {
 	id: string;
@@ -14,36 +15,6 @@ interface SpatialCoverageBlockProps {
 }
 
 const PAGE_SIZES = [10, 25, 50];
-
-function formatColLabel(col: string): string {
-	return col
-		.replace(/([A-Z])/g, " $1")
-		.replace(/^./, (s) => {
-			return s.toUpperCase();
-		})
-		.trim();
-}
-
-function formatCellValue(col: string, value: string, row: DTRow): ReactNode {
-	if (col === "title") {
-		return (
-			<a
-				className="text-[color:var(--color-arche-link-color)] hover:underline"
-				href={`/browser/metadata/${row.id}`}
-			>
-				{value}
-			</a>
-		);
-	}
-	if ((col === "property" || col === "type") && value.includes("/")) {
-		const short = value.split(/[#/]/).filter(Boolean).pop() ?? value;
-		return <span title={value}>{short}</span>;
-	}
-	if (col === "customCitation") {
-		return <span className="whitespace-pre-wrap font-mono text-xs">{value}</span>;
-	}
-	return value;
-}
 
 export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCoverageBlockProps>) {
 	const [result, setResult] = useState<DTResult | null>(null);
@@ -189,7 +160,7 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 								return (
 									<th
 										key={col}
-										className="cursor-pointer select-none px-4 py-2 text-left font-semibold text-gray-700 hover:bg-gray-100"
+										className="cursor-pointer px-4 py-2 text-left font-semibold text-gray-700 select-none hover:bg-gray-100"
 										onClick={() => {
 											handleSort(col);
 										}}
@@ -198,12 +169,12 @@ export function SpatialCoverageBlock({ id, apiUrl, onEmpty }: Readonly<SpatialCo
 											{formatColLabel(col)}
 											{isActive ? (
 												sortDir === "asc" ? (
-													<ChevronUpIcon className="h-3 w-3 shrink-0 text-gray-500" />
+													<ChevronUpIcon className="size-3 shrink-0 text-gray-500" />
 												) : (
-													<ChevronDownIcon className="h-3 w-3 shrink-0 text-gray-500" />
+													<ChevronDownIcon className="size-3 shrink-0 text-gray-500" />
 												)
 											) : (
-												<ChevronUpDownIcon className="h-3 w-3 shrink-0 text-gray-400" />
+												<ChevronUpDownIcon className="size-3 shrink-0 text-gray-400" />
 											)}
 										</div>
 									</th>

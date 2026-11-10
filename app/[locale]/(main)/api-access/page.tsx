@@ -40,11 +40,11 @@ export default async function ApiAccessPage(props: Readonly<StaticPageProps>): P
 	const html = cached ?? (await getStaticPage("api-access", lang));
 
 	return (
-		<MainContent className="content-start main-content-bleed">
+		<MainContent className="main-content-bleed content-start">
 			<section
-				className="w-full"
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
+				className="w-full"
 			/>
 		</MainContent>
 	);

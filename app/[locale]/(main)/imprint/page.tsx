@@ -43,11 +43,11 @@ export default async function ImprintPage(props: Readonly<ImprintPageProps>): Pr
 	const html = await getImprintHtml(locale);
 
 	return (
-		<MainContent className="layout-grid content-start pb-[70px] bg-white imprint-page main-content-bleed">
+		<MainContent className="imprint-page main-content-bleed layout-grid content-start bg-white pb-[70px]">
 			<section
 				// eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml
 				dangerouslySetInnerHTML={{ __html: html }}
-				className="white-container mb-[100px] mt-[50px]"
+				className="white-container mt-[50px] mb-25"
 			/>
 		</MainContent>
 	);

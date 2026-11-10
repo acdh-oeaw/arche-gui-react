@@ -46,9 +46,9 @@ export function CardTemplate({
 					<div className="flex w-full items-center justify-between">
 						<span className="facet-card-title">{cardTitle}</span>
 						{isOpen ? (
-							<ChevronUpIcon className="h-5 w-5 text-gray-600" />
+							<ChevronUpIcon className="size-5 text-gray-600" />
 						) : (
-							<ChevronDownIcon className="h-5 w-5 text-gray-600" />
+							<ChevronDownIcon className="size-5 text-gray-600" />
 						)}
 					</div>
 				</button>

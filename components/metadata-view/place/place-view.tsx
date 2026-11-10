@@ -1,18 +1,18 @@
-import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
-import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 import { BasicViewToggle } from "@/components/metadata-view/basic/basic-view-toggle.client";
-import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
-import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
-import CardsBlock from "@/components/metadata-view/CardsBlock";
-import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
-import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
 import { MetadataTabs } from "@/components/metadata-view/basic/MetadataTabs";
-import { env } from "@/config/env.config";
+import CardsBlock from "@/components/metadata-view/CardsBlock";
+import { NewVersionBlock } from "@/components/metadata-view/default-blocks/NewVersionBlock";
+import { SeeAlsoBlock } from "@/components/metadata-view/default-blocks/SeeAlsoBlock";
+import { SummaryBlock } from "@/components/metadata-view/default-blocks/SummaryBlock";
+import TitleBlock from "@/components/metadata-view/default-blocks/TitleBlock";
 import PlaceAddressBlock from "@/components/metadata-view/place/PlaceAddressBlock";
 import PlaceDescriptionBlock from "@/components/metadata-view/place/PlaceDescriptionBlock";
 import PlaceMapBlock from "@/components/metadata-view/place/PlaceMapBlock";
+import { env } from "@/config/env.config";
+import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface PlaceViewProps {
 	metadata: ParsedMetadata;
@@ -23,7 +23,7 @@ export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
 	const { metadata, language = "en" } = props;
 	const t = useTranslations("AppContent");
 	let mapData = "";
-	let resourceMapType = metadata.getMapType();
+	const resourceMapType = metadata.getMapType();
 
 	if (resourceMapType === "multipolygon") {
 		mapData = metadata.getMapPolygon();
@@ -50,7 +50,7 @@ export function PlaceView(props: Readonly<PlaceViewProps>): ReactNode {
 		<div className="metadata-main-content mx-auto w-full px-3 pt-3">
 			<BasicViewToggle
 				basicContent={
-					<div className="relative mt-[var(--bs-gutter-y)] flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
+					<div className="relative mt-(--bs-gutter-y) flex flex-col gap-6 rounded-[12px] border border-[#e1e1e1] bg-white p-8">
 						<div className="flex flex-wrap items-center justify-between gap-3">
 							<div></div>
 							<div className="btn-detail-type-gray">{metadata.getAcdhTypeNiceFormat()}</div>

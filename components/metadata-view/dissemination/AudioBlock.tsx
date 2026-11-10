@@ -158,12 +158,12 @@ export function AudioBlock({ url }: Readonly<AudioBlockProps>) {
 					{/* Seek bar */}
 					<div className="relative h-2 w-full rounded-full bg-gray-200">
 						<div
-							className="absolute left-0 top-0 h-2 rounded-full bg-blue-500"
+							className="absolute top-0 left-0 h-2 rounded-full bg-blue-500"
 							style={{ width: `${String(progressPercent)}%` }}
 						/>
 						<input
 							aria-label="Seek"
-							className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+							className="absolute inset-0 size-full cursor-pointer opacity-0"
 							max={duration || 0}
 							min={0}
 							onChange={onSeek}
@@ -182,9 +182,9 @@ export function AudioBlock({ url }: Readonly<AudioBlockProps>) {
 							type="button"
 						>
 							{isPlaying ? (
-								<PauseIcon className="h-6 w-6 text-gray-700" />
+								<PauseIcon className="size-6 text-gray-700" />
 							) : (
-								<PlayIcon className="h-6 w-6 text-gray-700" />
+								<PlayIcon className="size-6 text-gray-700" />
 							)}
 						</button>
 
@@ -202,9 +202,9 @@ export function AudioBlock({ url }: Readonly<AudioBlockProps>) {
 								type="button"
 							>
 								{isMuted ? (
-									<SpeakerXMarkIcon className="h-5 w-5 text-gray-700" />
+									<SpeakerXMarkIcon className="size-5 text-gray-700" />
 								) : (
-									<SpeakerWaveIcon className="h-5 w-5 text-gray-700" />
+									<SpeakerWaveIcon className="size-5 text-gray-700" />
 								)}
 							</button>
 							<input

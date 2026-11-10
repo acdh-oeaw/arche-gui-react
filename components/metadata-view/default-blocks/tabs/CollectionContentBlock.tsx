@@ -65,21 +65,21 @@ function TreeRow({ item, apiUrl, lang, depth }: Readonly<TreeRowProps>) {
 						style={{ transform: expanded ? "rotate(90deg)" : "rotate(0deg)" }}
 						type="button"
 					>
-						<ChevronRightIcon className={loading ? "h-4 w-4 animate-spin" : "h-4 w-4"} />
+						<ChevronRightIcon className={loading ? "size-4 animate-spin" : "size-4"} />
 					</button>
 				) : (
-					<span className="h-4 w-4 shrink-0" />
+					<span className="size-4 shrink-0" />
 				)}
 
 				{/* Folder / file icon (decorative) */}
 				{item.dir ? (
 					expanded ? (
-						<FolderOpenIcon className="h-5 w-5 shrink-0 text-yellow-500" />
+						<FolderOpenIcon className="size-5 shrink-0 text-yellow-500" />
 					) : (
-						<FolderIcon className="h-5 w-5 shrink-0 text-yellow-500" />
+						<FolderIcon className="size-5 shrink-0 text-yellow-500" />
 					)
 				) : (
-					<DocumentIcon className="h-5 w-5 shrink-0 text-gray-300" />
+					<DocumentIcon className="size-5 shrink-0 text-gray-300" />
 				)}
 
 				{/* No `/browser` here - unlike a plain anchor, `Link` prepends `basePath` itself. */}

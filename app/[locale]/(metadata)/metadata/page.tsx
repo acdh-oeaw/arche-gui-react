@@ -1,8 +1,8 @@
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 
 import { MainContent } from "@/components/ui/main-content";
 import type { IntlLocale } from "@/lib/i18n/locales";
-import { getTranslations, setRequestLocale } from "next-intl/server";
 
 interface MetadataPageProps {
 	params: Promise<{
@@ -19,7 +19,7 @@ export default async function MetadataPage(props: Readonly<MetadataPageProps>): 
 
 	return (
 		<MainContent className="metadata-main-content mx-auto w-full px-3 pt-3">
-			<div className="rounded-[10px] bg-red-500 p-5 mb-5 text-center text-2xl text-white">
+			<div className="mb-5 rounded-[10px] bg-red-500 p-5 text-center text-2xl text-white">
 				{t("provide_id_metadata_view")}
 			</div>
 		</MainContent>

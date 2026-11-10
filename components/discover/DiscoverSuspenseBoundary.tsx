@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 
 import { useDiscoverReload } from "@/components/discover/DiscoverReloadProvider";
 

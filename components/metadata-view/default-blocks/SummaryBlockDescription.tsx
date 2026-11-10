@@ -2,46 +2,13 @@
 
 import { type ReactNode, useMemo, useState } from "react";
 
-import { renderMarkdown } from "@/lib/helpers/ArcheHelpers";
+import { normalizeText, renderMarkdown, truncateTextByWords } from "@/lib/helpers/ArcheHelpers";
 
 interface SummaryBlockDescriptionProps {
 	readonly maxWords?: number;
 	readonly showLessLabel: string;
 	readonly showMoreLabel: string;
 	readonly text: string;
-}
-
-function normalizeText(text: string): string {
-	return text.replace(/\\n/g, "\n").trim();
-}
-
-function truncateTextByWords(
-	text: string,
-	maxWords: number,
-): {
-	isLong: boolean;
-	shortText: string;
-} {
-	// Slice the original string at the Nth word's end instead of splitting/rejoining on
-	// whitespace, so line breaks (e.g. the blank line between a markdown heading and the
-	// following paragraph) survive truncation instead of collapsing into a single line.
-	const words = [...text.matchAll(/\S+/g)];
-
-	if (words.length <= maxWords) {
-		return { isLong: false, shortText: text };
-	}
-
-	const lastWord = words[maxWords - 1];
-	if (!lastWord) {
-		return { isLong: false, shortText: text };
-	}
-
-	const endIndex = (lastWord.index ?? 0) + lastWord[0].length;
-
-	return {
-		isLong: true,
-		shortText: text.slice(0, endIndex),
-	};
 }
 
 export function SummaryBlockDescription(props: Readonly<SummaryBlockDescriptionProps>): ReactNode {

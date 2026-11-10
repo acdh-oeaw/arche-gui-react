@@ -188,7 +188,7 @@ export function PdfBlock({ url }: Readonly<PdfBlockProps>) {
 					onClick={prevPage}
 					type="button"
 				>
-					<ChevronLeftIcon className="h-4 w-4" />
+					<ChevronLeftIcon className="size-4" />
 				</button>
 				<span className="min-w-20 text-center text-sm text-gray-700">
 					{currentPage} / {totalPages}
@@ -199,7 +199,7 @@ export function PdfBlock({ url }: Readonly<PdfBlockProps>) {
 					onClick={nextPage}
 					type="button"
 				>
-					<ChevronRightIcon className="h-4 w-4" />
+					<ChevronRightIcon className="size-4" />
 				</button>
 
 				<div className="ml-auto flex items-center gap-2">
@@ -209,7 +209,7 @@ export function PdfBlock({ url }: Readonly<PdfBlockProps>) {
 						onClick={zoomOut}
 						type="button"
 					>
-						<MagnifyingGlassMinusIcon className="h-4 w-4" />
+						<MagnifyingGlassMinusIcon className="size-4" />
 					</button>
 					<span className="min-w-12 text-center text-sm text-gray-700">
 						{Math.round(scale * 100)}
@@ -221,7 +221,7 @@ export function PdfBlock({ url }: Readonly<PdfBlockProps>) {
 						onClick={zoomIn}
 						type="button"
 					>
-						<MagnifyingGlassPlusIcon className="h-4 w-4" />
+						<MagnifyingGlassPlusIcon className="size-4" />
 					</button>
 				</div>
 			</div>

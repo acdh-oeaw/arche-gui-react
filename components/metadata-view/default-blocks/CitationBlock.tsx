@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 
 import { ArcheLoader } from "@/components/ui/arche-loader";
-import { CITATION_FORMATS, type CitationFormatValue, fetchCitation } from "@/lib/api/CitationApi";
 import { Button } from "@/components/ui/button";
+import { CITATION_FORMATS, type CitationFormatValue, fetchCitation } from "@/lib/api/CitationApi";
 
 interface CitationBlockProps {
 	citationBaseUrl: string | null;
@@ -119,7 +119,7 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 
 				<div className="flex w-full flex-col justify-end gap-3 sm:flex-row sm:items-center">
 					<select
-						className="h-7 min-w-[120px] rounded-[6px] border border-[#6f7b86] bg-white px-2 text-[12px] leading-none text-[#4f4f4f]"
+						className="h-7 min-w-30 rounded-[6px] border border-[#6f7b86] bg-white px-2 text-[12px] leading-none text-[#4f4f4f]"
 						onChange={(event) => {
 							setFormat(event.currentTarget.value as CitationFormatValue);
 						}}
@@ -135,7 +135,7 @@ export function CitationBlock(props: Readonly<CitationBlockProps>) {
 					</select>
 
 					<button
-						className="h-7 min-w-[120px] rounded-[6px] bg-[#005a87] px-6 text-[12px] leading-none text-white transition-colors hover:bg-[#004a70] disabled:cursor-not-allowed disabled:opacity-60"
+						className="h-7 min-w-30 rounded-[6px] bg-[#005a87] px-6 text-[12px] leading-none text-white transition-colors hover:bg-[#004a70] disabled:cursor-not-allowed disabled:opacity-60"
 						disabled={isLoading || citationText.length === 0}
 						onClick={() => {
 							void handleCopy();

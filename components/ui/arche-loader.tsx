@@ -14,13 +14,7 @@ export function ArcheLoader(props: Readonly<ArcheLoaderProps>) {
 		<div
 			className={["flex items-center justify-center gap-2", className].filter(Boolean).join(" ")}
 		>
-			<Image
-				alt="Loading..."
-				className="h-auto w-auto"
-				height={size}
-				src={loaderGif}
-				width={size}
-			/>
+			<Image alt="Loading..." className="size-auto" height={size} src={loaderGif} width={size} />
 			{label != null ? <span className="text-sm text-gray-600">{label}</span> : null}
 		</div>
 	);

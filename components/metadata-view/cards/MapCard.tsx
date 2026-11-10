@@ -282,8 +282,8 @@ export function MapCard({ data, mapType }: Readonly<MapCardProps>) {
 	};
 
 	return (
-		<div className="relative h-[300px]">
-			<div ref={divRef} className="h-full w-full rounded-md border shadow" />
+		<div className="relative h-75">
+			<div ref={divRef} className="size-full rounded-md border shadow" />
 			{err && (
 				<div className="absolute inset-x-2 top-2 rounded-md border border-red-200 bg-red-50 px-2 py-1 text-xs text-red-700 shadow">
 					{err}

@@ -107,7 +107,7 @@ export function AppHeaderNav(): ReactNode {
 
 	return (
 		<header className="w-full  bg-arche-acc-light-blue">
-			<div className="flex w-full justify-between gap-x-12 pr-2.5 pl-2.5">
+			<div className="flex w-full justify-between gap-x-12 px-2.5">
 				<AppNavigation label={label} navigation={navigation} />
 				<AppNavigationMobile
 					drawerCloseLabel={t("navigation.drawer.close")}

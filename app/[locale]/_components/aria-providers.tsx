@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line no-restricted-imports
 import { useRouter } from "next/navigation";
-import { useCallback, type ReactNode } from "react";
+import { type ReactNode, useCallback } from "react";
 import {
 	I18nProvider as AriaI18nProvider,
 	RouterProvider as AriaRouterProvider,

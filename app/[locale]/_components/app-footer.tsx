@@ -8,12 +8,12 @@ import { Image } from "@/components/image";
 import { Link } from "@/components/link";
 import { StaticContentSearchForm } from "@/components/static-content-search-form";
 import { ArcheLoader } from "@/components/ui/arche-loader";
+import { withBasePath } from "@/config/base-path";
 import { env } from "@/config/env.config";
 import {
 	fetchSoftwareVersions,
 	type SoftwareVersionsResponse,
 } from "@/lib/api/SoftwareVersionsApi";
-import { withBasePath } from "@/config/base-path";
 
 export function AppFooter(): ReactNode {
 	const t = useTranslations("AppFooter");
@@ -54,7 +54,7 @@ export function AppFooter(): ReactNode {
 	return (
 		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
 			<div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-6">
-				<div className="col-span-full sm:col-span-4 sm:col-start-2 max-lg:mx-[15px]">
+				<div className="col-span-full max-lg:mx-[15px] sm:col-span-4 sm:col-start-2">
 					<div className="w-full">
 						<FooterContactBox></FooterContactBox>
 					</div>
@@ -68,7 +68,7 @@ export function AppFooter(): ReactNode {
 						<Link href="https://www.oeaw.ac.at/acdh/">
 							<Image
 								alt="ACDH Logo"
-								className="mb-4 w-full max-w-[64px]"
+								className="mb-4 w-full max-w-16"
 								height="100"
 								src={withBasePath("/images/logos/acdh-white-transparent-logo.svg")}
 								width="100"
@@ -208,7 +208,7 @@ export function AppFooter(): ReactNode {
 
 					<span>
 						<button
-							className="rounded-0.5 outline-transparent hover:underline focus-visible:focus-outline text-white"
+							className="rounded-0.5 text-white outline-transparent hover:underline focus-visible:focus-outline"
 							id="footer-versions-btn"
 							onClick={() => {
 								void handleVersionsClick();
@@ -233,11 +233,13 @@ export function AppFooter(): ReactNode {
 										{versions.symfony.name}: {versions.symfony.version}
 									</li>
 								)}
-								{versions.libraries?.map((library) => (
-									<li className="inline" key={library.name}>
-										{library.name}: {library.version}
-									</li>
-								))}
+								{versions.libraries?.map((library) => {
+									return (
+										<li key={library.name} className="inline">
+											{library.name}: {library.version}
+										</li>
+									);
+								})}
 							</ul>
 						) : null}
 					</div>

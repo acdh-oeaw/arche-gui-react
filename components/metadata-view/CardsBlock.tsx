@@ -2,19 +2,19 @@ import React, { type ReactNode } from "react";
 
 import { CreditsDataCard } from "@/components/metadata-view/cards/CreditsCard";
 import { DownloadCard } from "@/components/metadata-view/cards/DownloadCard";
-import FundingDataCard from "@/components/metadata-view/cards/FundingDataCard";
-import IdentifierCard from "@/components/metadata-view/cards/IdentifierCard";
+import { FundingDataCard } from "@/components/metadata-view/cards/FundingDataCard";
+import { IdentifierCard } from "@/components/metadata-view/cards/IdentifierCard";
 import { LicenseDataCard } from "@/components/metadata-view/cards/LicenseDataCard";
 import { MapCard } from "@/components/metadata-view/cards/MapCard";
 import { ProjectDetailsCard } from "@/components/metadata-view/cards/ProjectDetailsCard";
 import { ResourceTechnicalCard } from "@/components/metadata-view/cards/ResourceMetaTechnicalCard";
-import TechnicalCard from "@/components/metadata-view/cards/TechnicalCard";
+import { TechnicalCard } from "@/components/metadata-view/cards/TechnicalCard";
 import { TitleImageCard } from "@/components/metadata-view/cards/TitleImageCard";
 import { VersionsCard } from "@/components/metadata-view/cards/VersionsCard";
 import { ViewShareCard } from "@/components/metadata-view/cards/ViewShareCard";
 import { env } from "@/config/env.config";
 import { getSpatialCoordinates } from "@/lib/api/ArcheSymfonyApi";
-import { Metadata, type Metadata as ParsedMetadata } from "@/lib/objects/metadata";
+import type { Metadata as ParsedMetadata } from "@/lib/objects/metadata";
 
 interface MetadataProps {
 	metadata: ParsedMetadata;

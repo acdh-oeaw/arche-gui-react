@@ -1,19 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+
 import { useDiscoverNav } from "@/components/discover/DiscoverNavProvider";
+import { boundsToWkt } from "@/lib/helpers/ArcheHelpers";
 
 /* ── Helpers ─────────────────────────────────────────────────────────── */
 
 interface GeoJsonMultiPoint {
 	coordinates: Array<[number, number]>;
 	type: "MultiPoint";
-}
-
-function boundsToWkt(sw: LatLng, ne: LatLng): string {
-	const { lng: minLon, lat: minLat } = sw;
-	const { lng: maxLon, lat: maxLat } = ne;
-	return `POLYGON((${minLon} ${minLat},${minLon} ${maxLat},${maxLon} ${maxLat},${maxLon} ${minLat},${minLon} ${minLat}))`;
 }
 
 async function loadLeafletDraw() {
@@ -31,8 +27,8 @@ async function loadLeafletDraw() {
 		link.href = "https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css";
 		document.head.appendChild(link);
 	}
-	const loadScript = (id: string, src: string) =>
-		new Promise<void>((resolve, reject) => {
+	const loadScript = (id: string, src: string) => {
+		return new Promise<void>((resolve, reject) => {
 			if (document.getElementById(id)) {
 				resolve();
 				return;
@@ -41,10 +37,15 @@ async function loadLeafletDraw() {
 			s.id = id;
 			s.src = src;
 			s.async = true;
-			s.onload = () => resolve();
-			s.onerror = () => reject(new Error(`Failed to load ${src}`));
+			s.onload = () => {
+				resolve();
+			};
+			s.onerror = () => {
+				reject(new Error(`Failed to load ${src}`));
+			};
 			document.head.appendChild(s);
 		});
+	};
 	await loadScript("leaflet-js", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
 	await loadScript("leaflet-draw-js", "https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js");
 }
@@ -141,8 +142,12 @@ export function DiscoverMap({ geoJson }: DiscoverMapProps) {
 					} else if (markers.length === 1 && markers[0]) {
 						map.setView(markers[0], 10);
 					} else {
-						const lats = markers.map(([lat]) => lat);
-						const lons = markers.map(([, lon]) => lon);
+						const lats = markers.map(([lat]) => {
+							return lat;
+						});
+						const lons = markers.map(([, lon]) => {
+							return lon;
+						});
 						map.fitBounds([
 							[Math.min(...lats), Math.min(...lons)],
 							[Math.max(...lats), Math.max(...lons)],
@@ -167,11 +172,13 @@ export function DiscoverMap({ geoJson }: DiscoverMapProps) {
 	}, [geoJson]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
-		<div className="relative mb-4 h-[400px] overflow-hidden rounded border border-gray-200 shadow">
-			<div ref={divRef} className="h-full w-full" />
+		<div className="relative mb-4 h-100 overflow-hidden rounded border border-gray-200 shadow">
+			<div ref={divRef} className="size-full" />
 			<button
-				className="absolute right-2 top-2 z-1000 rounded bg-white px-3 py-1 text-sm font-semibold shadow hover:bg-gray-50"
-				onClick={() => setShowMap(false)}
+				className="absolute top-2 right-2 z-1000 rounded bg-white px-3 py-1 text-sm font-semibold shadow hover:bg-gray-50"
+				onClick={() => {
+					setShowMap(false);
+				}}
 				type="button"
 			>
 				Close

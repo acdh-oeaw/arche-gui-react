@@ -92,7 +92,7 @@ export function IIIFBlock({ url }: Readonly<IIIFBlockProps>) {
 						title="Zoom out"
 						type="button"
 					>
-						<MagnifyingGlassMinusIcon className="h-4 w-4" />
+						<MagnifyingGlassMinusIcon className="size-4" />
 					</button>
 					<button
 						className="rounded p-1 hover:bg-gray-200"
@@ -100,7 +100,7 @@ export function IIIFBlock({ url }: Readonly<IIIFBlockProps>) {
 						title="Zoom in"
 						type="button"
 					>
-						<MagnifyingGlassPlusIcon className="h-4 w-4" />
+						<MagnifyingGlassPlusIcon className="size-4" />
 					</button>
 					<button
 						className="ml-auto flex items-center gap-1 rounded px-2 py-1 text-sm hover:bg-gray-200"
@@ -108,7 +108,7 @@ export function IIIFBlock({ url }: Readonly<IIIFBlockProps>) {
 						title="Reset view"
 						type="button"
 					>
-						<ArrowPathIcon className="h-4 w-4" />
+						<ArrowPathIcon className="size-4" />
 						{"Reset view"}
 					</button>
 				</div>
@@ -123,7 +123,7 @@ export function IIIFBlock({ url }: Readonly<IIIFBlockProps>) {
 				ref={containerRef}
 				className={
 					!loading && !error
-						? "h-[500px] w-full rounded-b-md border border-gray-200"
+						? "h-125 w-full rounded-b-md border border-gray-200"
 						: "h-0 w-full overflow-hidden"
 				}
 			/>
