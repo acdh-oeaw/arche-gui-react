@@ -9,7 +9,7 @@ automatic source detection does not pick them up. This is why we have to add the
 @source inline("{sm:,md:,lg:,xl:,}grid-cols-{1..12}");
 @source inline("{sm:,md:,lg:,xl:,}col-span-{{1..12},full}");
 @source inline("{sm:,md:,lg:,xl:,}col-start-{1..12}");
-@source inline("{sm:,md:,lg:,xl:,}gap-{4,6,8}");
+@source inline("{sm:,md:,lg:,xl:,}gap-{4,6,8,12}");
 @source inline("{sm:,md:,lg:,xl:,}{flex,grid,table}");
 @source inline("{sm:,md:,lg:,xl:,}w-{4,5,full}");
 @source inline("{sm:,md:,lg:,xl:,}h-{4,5}");
@@ -24,12 +24,15 @@ automatic source detection does not pick them up. This is why we have to add the
 @source inline("{md:,}w-1/2");
 @source inline("w-screen");
 @source inline("h-64");
-@source inline("max-w-{sm,6xl,[220px]}");
+@source inline("max-w-{sm,6xl,72,[220px]}");
 @source inline("m-3");
 @source inline("mb-3");
 @source inline("mt-{10,auto}");
 @source inline("pt-{0,[50px]}");
 @source inline("rounded-2xl");
+@source inline("leading-snug");
+@source inline("ring-{1,black/5}");
+@source inline("shadow-[0_20px_60px_-20px_rgba(2,6,23,0.2)]");
 @source inline("text-{start,slate-600,slate-900}");
 @source inline("xl:text-left");
 @source inline("hover:text-slate-700");
