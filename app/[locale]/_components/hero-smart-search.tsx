@@ -6,6 +6,7 @@ import {
 	type ReactNode,
 	use,
 	useEffect,
+	useEffectEvent,
 	useState,
 } from "react";
 import {
@@ -45,8 +46,16 @@ export function HeroSmartSearch(props: Readonly<HeroSmartSearchProps>): ReactNod
 		const timeout = setTimeout(() => {
 			getAutocompleteSuggestions(term, controller.signal)
 				.then((items) => {
+					// The endpoint can return the same label twice, also with trailing whitespace
+					const labels = new Set(
+						items
+							.map((item) => {
+								return item.trim();
+							})
+							.filter(Boolean),
+					);
 					setSuggestions(
-						[...new Set(items)].map((item) => {
+						[...labels].map((item) => {
 							return { id: item };
 						}),
 					);
@@ -75,14 +84,20 @@ export function HeroSmartSearch(props: Readonly<HeroSmartSearchProps>): ReactNod
 		search(query);
 	}
 
+	const visibleSuggestions = isAutocompleteActive ? suggestions : [];
+
 	return (
 		<form className="flex w-full max-w-xl items-stretch" onSubmit={handleSubmit}>
 			<ComboBox
 				allowsCustomValue={true}
 				aria-label={searchLabel}
 				className="w-full"
+				// The API already matched the suggestions, so the combobox must not filter them again
+				defaultFilter={() => {
+					return true;
+				}}
 				inputValue={query}
-				items={isAutocompleteActive ? suggestions : []}
+				items={visibleSuggestions}
 				menuTrigger="input"
 				onInputChange={setQuery}
 				onSelectionChange={(key) => {
@@ -93,7 +108,7 @@ export function HeroSmartSearch(props: Readonly<HeroSmartSearchProps>): ReactNod
 					}
 				}}
 			>
-				<SearchInput onSubmit={search} placeholder={searchLabel} />
+				<SearchInput onSubmit={search} placeholder={searchLabel} suggestions={visibleSuggestions} />
 				<Popover
 					className="max-h-72 w-(--trigger-width) overflow-auto rounded border border-gray-200 bg-white scheme-light shadow-lg"
 					placement="bottom start"
@@ -102,7 +117,7 @@ export function HeroSmartSearch(props: Readonly<HeroSmartSearchProps>): ReactNod
 						{(item: { id: string }) => {
 							return (
 								<ListBoxItem
-									className="focused:bg-gray-100 cursor-pointer px-3 py-2 text-arche-acc-font-color outline-hidden"
+									className="cursor-pointer px-3 py-2 text-arche-acc-font-color outline-hidden data-focused:bg-gray-100"
 									id={item.id}
 									textValue={item.id}
 								>
@@ -140,6 +155,7 @@ export function HeroSmartSearch(props: Readonly<HeroSmartSearchProps>): ReactNod
 interface SearchInputProps {
 	onSubmit: (value: string) => void;
 	placeholder: string;
+	suggestions: Array<{ id: string }>;
 }
 
 /**
@@ -147,9 +163,24 @@ interface SearchInputProps {
  * suggestion, Enter should still search for the typed text instead of only closing the list.
  */
 function SearchInput(props: Readonly<SearchInputProps>): ReactNode {
-	const { onSubmit, placeholder } = props;
+	const { onSubmit, placeholder, suggestions } = props;
 
 	const state = use(ComboBoxStateContext);
+
+	/*
+	 * The combobox only opens its list in the render where the typed text changes. Suggestions
+	 * arrive later (debounce + request), so the list has to be opened when they come in.
+	 */
+	const syncListWithSuggestions = useEffectEvent(() => {
+		if (state == null) return;
+		if (suggestions.length > 0 && state.isFocused && !state.isOpen) state.open();
+		if (suggestions.length === 0 && state.isOpen) state.close();
+	});
+
+	// Runs only when a new set of suggestions arrives, so Esc can still close the list
+	useEffect(() => {
+		syncListWithSuggestions();
+	}, [suggestions]);
 
 	function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
 		if (event.key !== "Enter" || state == null) return;
