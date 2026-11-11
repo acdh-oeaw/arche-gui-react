@@ -139,7 +139,13 @@ export function AppHeaderStatic({
 				</div>
 			</div>
 			<div className="relative flex w-full flex-1 flex-col items-center justify-end gap-y-6 px-4 pb-10 text-center">
-				<div className="pointer-events-none absolute -bottom-1 left-[18%] hidden md:block">
+				<div
+					className={
+						pdfUrl
+							? "hero-left-character-image hero-character-image-static-pdf"
+							: "hero-left-character-image hero-character-image-static"
+					}
+				>
 					<Image
 						alt="Dante sitting illustration"
 						className=" w-auto"
@@ -159,7 +165,7 @@ export function AppHeaderStatic({
 							rel="noopener noreferrer"
 							target="_blank"
 						>
-							Download PDF
+							{t("download_pdf")}
 						</a>
 					)}
 

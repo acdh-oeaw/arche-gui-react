@@ -142,6 +142,15 @@ a:hover .locale-link-text::before {
 	left: 18%;
 }
 
+/* The static pages' header sits the character closer to the bottom edge than the home page */
+.hero-left-character-image.hero-character-image-static {
+	bottom: -5px;
+}
+
+.hero-left-character-image.hero-character-image-static-pdf {
+	bottom: 0;
+}
+
 .hero-right-character-image {
 	right: 18%;
 }

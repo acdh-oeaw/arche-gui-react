@@ -22,11 +22,6 @@
 			"count": 8
 		}
 	},
-	"app/[locale]/_components/app-header-static.tsx": {
-		"react/jsx-no-literals": {
-			"count": 1
-		}
-	},
 	"app/[locale]/_components/color-scheme-sync.tsx": {
 		"@typescript-eslint/no-unnecessary-condition": {
 			"count": 1

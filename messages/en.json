@@ -312,7 +312,7 @@
 			"menu": {
 				"discover": {
 					"label": "Discover",
-					"url": "/discover?q=&preferredLang=en&includeBinaries=0&linkNamedEntities=1&page=1&pageSize=10&facets[http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23type][]=https%3A%2F%2Fvocabs.acdh.oeaw.ac.at%2Fschema%23TopCollection&noCache=0"
+					"url": "/discover?q=&preferredLang=en&includeBinaries=0&linkNamedEntities=0&page=1&pageSize=10&facets[http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23type][]=https%3A%2F%2Fvocabs.acdh.oeaw.ac.at%2Fschema%23TopCollection&noCache=0"
 				},
 				"deposit": {
 					"label": "Deposit",
@@ -383,7 +383,8 @@
 			"label": "Primary",
 			"general_arche_description": "ARCHE"
 		},
-		"search-now": "Search Now"
+		"search-now": "Search Now",
+		"download_pdf": "Download PDF"
 	},
 	"ColorSchemeSwitcher": {
 		"change-color-scheme": "Change color scheme",

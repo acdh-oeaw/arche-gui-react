@@ -364,7 +364,7 @@ export function DiscoverFacets({ facets, lang }: DiscoverFacetsProps) {
 		params.set("q", "");
 		params.set("preferredLang", sp.get("preferredLang") ?? "en");
 		params.set("includeBinaries", "0");
-		params.set("linkNamedEntities", "1");
+		params.set("linkNamedEntities", "0");
 		params.set("page", "1");
 		navigate(() => {
 			router.push(`${pathname}?${params.toString()}`);
