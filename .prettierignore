@@ -11,3 +11,6 @@ pnpm-workspace.yaml
 
 # public assets
 /public
+
+# rewritten by `next dev`, which does not follow the prettier line width
+AGENTS.md
