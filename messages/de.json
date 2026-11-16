@@ -16,6 +16,87 @@
 		},
 		"title": "Durchstöbern Sie die Arche-Sammlungen und -Ressourcen."
 	},
+	"DiscoveryPage": {
+		"meta": {
+			"title": "Discovery-Suche"
+		},
+		"form": {
+			"query_label": "Wonach suchen Sie in ARCHE?",
+			"placeholder": "Zum Beispiel: historische Korrespondenz",
+			"submit": "Suchen",
+			"mode": "Suchmodus",
+			"mode_expanded": "Mit Vokabular erweitert",
+			"mode_original": "Ursprüngliche Anfrage",
+			"date_from": "Von",
+			"date_to": "Bis"
+		},
+		"filters": {
+			"all": "Alle Filter",
+			"title": "Suchfilter",
+			"back": "Zurück zu den Filterkategorien",
+			"apply": "Anwenden",
+			"remove_all": "Alle Filter entfernen",
+			"remove": "Filter {filter} entfernen",
+			"applied": "Angewendete Filter",
+			"active": "{count, plural, one {# aktiver Filter} other {# aktive Filter}}",
+			"range_from": "Ab {value}",
+			"range_to": "Bis {value}",
+			"search_values": "{facet} filtern…",
+			"no_values": "Keine passenden Werte.",
+			"map_hint": "Zeichnen Sie ein Rechteck auf der Karte, um in diesem Gebiet zu suchen.",
+			"map_remove": "Gezeichnetes Gebiet entfernen"
+		},
+		"kinds": {
+			"TopCollection": "Top-Level-Sammlung",
+			"Collection": "Sammlung",
+			"Resource": "Ressource / Datei",
+			"Person": "Person",
+			"Organisation": "Organisation",
+			"Place": "Ort",
+			"Publication": "Publikation",
+			"Project": "Projekt",
+			"Concept": "Konzept"
+		},
+		"date_types": {
+			"coverage": "Abdeckungszeitraum",
+			"created": "Erstellungsdatum",
+			"original": "Ursprüngliches Erstellungsdatum"
+		},
+		"examples": {
+			"eyebrow": "Ein Ausgangspunkt",
+			"title": "Ein Thema erkunden",
+			"description": "Wählen Sie ein Beispiel, um mit Ihren aktuellen Filtern zu suchen.",
+			"count": "{count, plural, one {# Beispiel} other {# Beispiele}}"
+		},
+		"results": {
+			"count": "{count, plural, one {# Treffer} other {# Treffer}}",
+			"expansions": "Auch gesucht nach",
+			"related": "Verwandte Themen",
+			"no_results": "Keine Datensätze entsprechen Ihrer Suche.",
+			"error": "Die Suche ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
+			"pagination": "Seitennavigation",
+			"previous": "Zurück",
+			"next": "Weiter",
+			"page": "Seite {page} von {pages}"
+		},
+		"plan": {
+			"title": "Wie haben wir gesucht?",
+			"expanded": "Wir fragen bei ARCHE nach Datensätzen, die einem der aufgeführten Begriffe entsprechen (ODER-Verknüpfung).",
+			"original": "Ihre Anfrage wird unverändert an ARCHE übergeben.",
+			"no_date_filter": "Es wird kein automatischer Datumsfilter angewendet.",
+			"fields": "Durchsuchte Felder",
+			"api_link": "Die Abfrage in der ARCHE-API öffnen",
+			"properties": {
+				"hasTitle": "Titel",
+				"hasAlternativeTitle": "Alternativer Titel",
+				"hasDescription": "Beschreibung",
+				"hasSubject": "Schlagwort",
+				"hasKeyword": "Stichwort"
+			},
+			"date_only": "Es wird nur der Datumsfilter angewendet, ohne Suchbegriffe.",
+			"date_filter": "Datumsfilter ({type}): {range}"
+		}
+	},
 	"AppContent": {
 		"general": {
 			"loading": "Laden"

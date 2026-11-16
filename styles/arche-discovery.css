@@ -1,0 +1,753 @@
+/*
+ * Discovery search page (app/[locale]/(main)/discovery). Plain CSS instead of Tailwind utilities,
+ * because the unlayered global `h2`, `p` and `span` rules in arche.css would override those.
+ */
+
+.discovery-page {
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 2.5rem 1rem 0;
+}
+
+.discovery-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.discovery-search-box {
+	display: flex;
+	align-items: stretch;
+	overflow: hidden;
+	border: 1px solid rgb(209 213 219);
+	border-radius: 9999px;
+	background-color: rgb(255 255 255);
+	box-shadow: 0 10px 30px -15px rgb(2 6 23 / 25%);
+	color-scheme: light;
+}
+
+.discovery-search-box:focus-within {
+	outline: 2px solid var(--arche-acc-dark-blue);
+	outline-offset: 2px;
+}
+
+.discovery-search-icon {
+	display: grid;
+	place-items: center;
+	margin: 0;
+	padding-left: 1.25rem;
+	color: rgb(107 114 128);
+	font-size: 1.5rem;
+	line-height: 1;
+}
+
+.discovery-search-input {
+	flex: 1;
+	min-width: 0;
+	padding: 0.875rem 0.75rem;
+	border: none;
+	background-color: transparent;
+	color: var(--arche-acc-font-color);
+	font-size: 1.125rem;
+}
+
+.discovery-search-input:focus {
+	outline: none;
+}
+
+.discovery-search-input::placeholder {
+	color: rgb(107 114 128);
+	opacity: 100%;
+}
+
+.discovery-search-submit {
+	padding: 0 1.5rem;
+	background-color: var(--arche-acc-dark-blue);
+	color: rgb(255 255 255);
+	font-weight: 700;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.discovery-search-submit:hover {
+	background-color: var(--arche-acc-dark-blue-hover);
+}
+
+.discovery-search-bar {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.discovery-filter-trigger {
+	display: inline-flex;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+	min-height: 3.25rem;
+	padding: 0 1.25rem;
+	border: 1px solid rgb(209 213 219);
+	border-radius: 9999px;
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-dark-blue);
+	box-shadow: 0 10px 30px -15px rgb(2 6 23 / 25%);
+	font-weight: 700;
+	white-space: nowrap;
+	cursor: pointer;
+	color-scheme: light;
+}
+
+.discovery-filter-trigger[data-hovered],
+.discovery-filter-trigger[aria-expanded="true"] {
+	background-color: var(--arche-acc-light-blue);
+}
+
+.discovery-filter-trigger[data-focus-visible] {
+	outline: 2px solid var(--arche-acc-dark-blue);
+	outline-offset: 2px;
+}
+
+.discovery-filter-count {
+	min-width: 1.5rem;
+	margin: 0;
+	padding: 0 0.375rem;
+	border-radius: 9999px;
+	background-color: var(--arche-acc-dark-blue);
+	color: rgb(255 255 255);
+	font-weight: 700;
+	font-size: 0.75rem;
+	line-height: 1.5rem;
+	text-align: center;
+}
+
+/* The menu is rendered in a portal, outside of the page layout */
+.discovery-filter-popover {
+	overflow: hidden;
+	width: min(26rem, calc(100vw - 2rem));
+	border: 1px solid rgb(209 213 219);
+	border-radius: 1rem;
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-font-color);
+	box-shadow: 0 20px 60px -20px rgb(2 6 23 / 30%);
+	color-scheme: light;
+}
+
+.discovery-filter-dialog {
+	display: flex;
+	flex-direction: column;
+	max-height: min(34rem, 70vh);
+	outline: none;
+}
+
+.discovery-filter-body {
+	flex: 1;
+	overflow-y: auto;
+}
+
+.discovery-filter-category,
+.discovery-filter-back {
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+	width: 100%;
+	padding: 0.875rem 1.25rem;
+	border-bottom: 1px solid rgb(225 237 243);
+	font-weight: 700;
+	text-align: left;
+	cursor: pointer;
+}
+
+.discovery-filter-category {
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-font-color-second);
+}
+
+.discovery-filter-category:hover,
+.discovery-filter-category:focus-visible {
+	background-color: var(--arche-acc-light-blue);
+	outline: none;
+}
+
+.discovery-filter-category-value {
+	overflow: hidden;
+	margin: 0 0 0 auto;
+	color: rgb(107 114 128);
+	font-weight: 400;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.discovery-filter-back {
+	background-color: var(--arche-acc-light-blue);
+	color: var(--arche-acc-dark-blue);
+}
+
+.discovery-filter-back:focus-visible {
+	outline: 2px solid var(--arche-acc-dark-blue);
+	outline-offset: -2px;
+}
+
+.discovery-filter-options {
+	display: flex;
+	flex-direction: column;
+	padding: 0.5rem 0;
+}
+
+.discovery-filter-option {
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+	padding: 0.5rem 1.25rem;
+	cursor: pointer;
+}
+
+.discovery-filter-option:hover {
+	background-color: var(--arche-acc-light-blue);
+}
+
+.discovery-filter-option input {
+	flex-shrink: 0;
+	width: 1rem;
+	height: 1rem;
+	padding: 0;
+	accent-color: var(--arche-acc-dark-blue);
+}
+
+.discovery-filter-search {
+	padding: 0.75rem 1.25rem 0;
+}
+
+.discovery-filter-search input {
+	width: 100%;
+	height: 2.5rem;
+	padding: 0 0.75rem;
+	border: 1px solid rgb(209 213 219);
+	border-radius: 5px;
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-font-color);
+	font-size: 1rem;
+}
+
+.discovery-filter-map {
+	padding: 0.5rem 1.25rem 0;
+}
+
+.discovery-filter-map-area {
+	display: flex;
+	gap: 0.75rem;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 0 0.75rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.discovery-filter-map-area button {
+	flex-shrink: 0;
+	color: var(--arche-acc-dark-blue);
+	font-weight: 700;
+	text-decoration: underline;
+}
+
+.discovery-filter-legend {
+	margin: 0;
+	padding: 1rem 1.25rem 0;
+	color: rgb(107 114 128);
+	font-weight: 700;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.discovery-filter-dates {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.75rem;
+	padding: 0.5rem 1.25rem 0;
+}
+
+.discovery-filter-dates label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	font-weight: 700;
+	font-size: 0.875rem;
+}
+
+.discovery-filter-dates input {
+	height: 2.5rem;
+	padding: 0 0.5rem;
+	border: 1px solid rgb(209 213 219);
+	border-radius: 5px;
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-font-color);
+	font-weight: 400;
+	font-size: 1rem;
+}
+
+.discovery-filter-dates input::placeholder {
+	color: rgb(107 114 128);
+	opacity: 100%;
+}
+
+.discovery-filter-dates input[aria-invalid="true"] {
+	border-color: var(--arche-acc-restricted-red);
+}
+
+.discovery-filter-error {
+	margin: 0;
+	padding: 0.5rem 1.25rem 0;
+	color: var(--arche-acc-restricted-red);
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.discovery-filter-hint {
+	margin: 0;
+	padding: 0.5rem 1.25rem 1rem;
+	color: rgb(107 114 128);
+	font-size: 0.8125rem;
+	line-height: 1.25rem;
+}
+
+.discovery-filter-footer {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	border-top: 1px solid rgb(225 237 243);
+}
+
+.discovery-filter-reset,
+.discovery-filter-apply {
+	padding: 0.875rem 1rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.discovery-filter-reset {
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-dark-blue);
+}
+
+.discovery-filter-reset:disabled {
+	color: rgb(156 163 175);
+	cursor: default;
+}
+
+.discovery-filter-apply {
+	background-color: var(--arche-acc-dark-blue);
+	color: rgb(255 255 255);
+}
+
+.discovery-filter-apply:hover {
+	background-color: var(--arche-acc-dark-blue-hover);
+}
+
+.discovery-filter-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.discovery-filter-chip {
+	display: inline-flex;
+	gap: 0.5rem;
+	align-items: center;
+	padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+	border: 1px solid var(--arche-btn-blue);
+	border-radius: 5px;
+	background-color: var(--arche-acc-light-blue);
+	color: var(--arche-acc-dark-blue);
+	cursor: pointer;
+}
+
+.discovery-filter-chip:hover {
+	border-color: var(--arche-acc-dark-blue);
+	background-color: rgb(255 255 255);
+}
+
+.discovery-filter-chip-label,
+.discovery-filter-chip-value {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.discovery-filter-chip-label {
+	color: rgb(75 85 99);
+}
+
+.discovery-filter-chip-value {
+	color: var(--arche-acc-font-color-second);
+	font-weight: 700;
+}
+
+.discovery-samples {
+	padding: 2rem;
+	border-radius: 1rem;
+	background-color: var(--arche-acc-light-blue);
+}
+
+/* The global `details` and `summary` rules of arche.css are meant for the static page accordions */
+.discovery-samples-details {
+	border: none;
+}
+
+.discovery-samples-summary {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	align-items: flex-start;
+	cursor: pointer;
+}
+
+.discovery-samples-summary::-webkit-details-marker {
+	display: none;
+}
+
+.discovery-samples-details[open] > .discovery-samples-summary {
+	background-color: transparent !important;
+}
+
+.discovery-samples-chevron {
+	margin: 0;
+	color: var(--arche-acc-dark-blue);
+	font-size: 1.25rem;
+	line-height: 2rem;
+	transition: transform 0.2s ease;
+	transform: rotate(-90deg);
+}
+
+.discovery-samples-details[open] .discovery-samples-chevron {
+	transform: none;
+}
+
+.discovery-eyebrow {
+	display: block;
+	margin: 0 0 0.25rem;
+	color: var(--arche-acc-dark-blue);
+	font-weight: 700;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.discovery-samples-heading h2 {
+	margin: 0;
+	color: var(--arche-acc-font-color-second);
+	font-size: 1.5rem;
+}
+
+.discovery-samples-heading p {
+	margin: 0.25rem 0 0;
+	padding: 0;
+	background-color: transparent;
+	font-size: 1rem;
+}
+
+.discovery-sample-groups {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+.discovery-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.discovery-chip {
+	display: inline-flex;
+	gap: 0.375rem;
+	align-items: center;
+	padding: 0.375rem 0.875rem;
+	border: 1px solid var(--arche-btn-blue);
+	border-radius: 9999px;
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-dark-blue);
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.discovery-chip:hover {
+	background-color: var(--arche-acc-dark-blue);
+	color: rgb(255 255 255);
+}
+
+.discovery-chip span {
+	margin: 0;
+	color: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.discovery-sample-group h3 {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: space-between;
+	align-items: baseline;
+	margin: 0 0 0.75rem;
+	color: var(--arche-acc-font-color-second);
+	font-weight: 700;
+	font-size: 1rem;
+}
+
+.discovery-sample-group h3 span {
+	margin: 0;
+	color: rgb(107 114 128);
+	font-size: 0.875rem;
+}
+
+/* The global `details` and `summary` rules of arche.css are meant for the static page accordions */
+
+/* Also beats the global `details:last-of-type`, which would remove the bottom border */
+
+.discovery-plan-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding: 1rem;
+	border: 1px solid rgb(225 237 243);
+	border-radius: 0.5rem;
+	background-color: rgb(255 255 255);
+}
+
+.discovery-plan-body p {
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	font-size: 0.875rem;
+	line-height: 1.5;
+}
+
+.discovery-plan-body .discovery-plan-expression {
+	padding: 0.5rem 0.75rem;
+	border-radius: 5px;
+	background-color: var(--arche-acc-light-blue);
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	overflow-wrap: anywhere;
+}
+
+.discovery-plan-fields {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	font-size: 0.875rem;
+}
+
+.discovery-plan-fields a {
+	display: inline-block;
+	padding: 0.125rem 0.625rem;
+	border: 1px solid rgb(225 237 243);
+	border-radius: 9999px;
+}
+
+/* After a search "Explore a topic" and "How did we search?" are buttons in one row */
+.discovery-toolbar {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.discovery-toolbar-inline {
+	margin-bottom: 1.5rem;
+}
+
+.discovery-toolbar-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.discovery-toolbar-button {
+	display: inline-flex;
+	gap: 0.5rem;
+	align-items: center;
+	min-height: 2.75rem;
+	padding: 0 1.25rem;
+	border: 1px solid rgb(209 213 219);
+	border-radius: 9999px;
+	background-color: rgb(255 255 255);
+	color: var(--arche-acc-dark-blue);
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.discovery-toolbar-button:hover {
+	border-color: var(--arche-acc-dark-blue);
+}
+
+.discovery-toolbar-button[aria-expanded="true"] {
+	background-color: var(--arche-acc-light-blue);
+}
+
+.discovery-toolbar-chevron {
+	transition: transform 0.2s ease;
+	transform: rotate(-90deg);
+}
+
+.discovery-toolbar-button[aria-expanded="true"] .discovery-toolbar-chevron {
+	transform: none;
+}
+
+.discovery-toolbar-panel {
+	margin-top: 0;
+	padding: 1.5rem;
+	border-radius: 1rem;
+	background-color: var(--arche-acc-light-blue);
+}
+
+.discovery-results-summary {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid rgb(225 237 243);
+}
+
+.discovery-results-count {
+	margin: 0;
+	color: var(--arche-acc-font-color-second);
+	font-weight: 700;
+	font-size: 1.125rem;
+}
+
+.discovery-results-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	align-items: center;
+	margin: 0;
+	font-size: 0.875rem;
+}
+
+.discovery-results-meta-label {
+	margin: 0;
+	font-weight: 700;
+	font-size: 0.875rem;
+}
+
+/* A result uses the row of the discover page: the text on the left, the thumbnail on the right */
+.discovery-result {
+	padding: 1.5rem 0;
+}
+
+.discovery-result-content {
+	flex: 1;
+	min-width: 0;
+}
+
+.discovery-result-thumbnail {
+	position: relative;
+	flex-shrink: 0;
+	overflow: hidden;
+	width: 20%;
+	max-width: 10rem;
+	height: 6.25rem;
+	border-radius: 0.25rem;
+}
+
+.discovery-result-thumbnail img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.discovery-result-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.75rem;
+}
+
+.discovery-result-matches {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.25rem 0.75rem;
+	margin: 0.75rem 0 0;
+	font-size: 0.875rem;
+}
+
+.discovery-result-matches dt {
+	font-weight: 700;
+}
+
+.discovery-result-matches dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
+.discovery-message {
+	margin: 1.5rem 0 0;
+	padding: 1rem;
+	border: 1px solid rgb(225 237 243);
+	border-radius: 0.5rem;
+}
+
+.discovery-message-error {
+	border-color: rgb(254 202 202);
+	color: var(--arche-acc-restricted-red);
+}
+
+.discovery-pager {
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	align-items: center;
+	padding-top: 1.5rem;
+}
+
+.discovery-pager-status {
+	margin: 0;
+	font-size: 0.875rem;
+}
+
+.discovery-pager-link {
+	margin: 0;
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+	background-color: var(--arche-acc-dark-blue);
+	color: rgb(255 255 255);
+	text-decoration: none;
+}
+
+.discovery-pager-link:hover {
+	background-color: var(--arche-acc-dark-blue-hover);
+	color: rgb(255 255 255);
+}
+
+.discovery-pager-link[aria-disabled="true"] {
+	background-color: rgb(209 213 219);
+	color: rgb(107 114 128);
+}
+
+@media (width >= 48rem) {
+	.discovery-search-bar {
+		flex-direction: row;
+		align-items: stretch;
+	}
+
+	.discovery-search-bar .discovery-search-box {
+		flex: 1;
+	}
+
+	.discovery-sample-groups {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.discovery-result-matches {
+		grid-template-columns: max-content 1fr;
+	}
+}

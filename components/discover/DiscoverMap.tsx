@@ -12,6 +12,8 @@ interface GeoJsonMultiPoint {
 	type: "MultiPoint";
 }
 
+const scriptLoads = new Map<string, Promise<void>>();
+
 async function loadLeafletDraw() {
 	if (!document.getElementById("leaflet-css")) {
 		const link = document.createElement("link");
@@ -27,12 +29,14 @@ async function loadLeafletDraw() {
 		link.href = "https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css";
 		document.head.appendChild(link);
 	}
+	/*
+	 * A second caller (e.g. the repeated effect of React strict mode) must wait for the same download:
+	 * the script tag is in the document long before the script has run
+	 */
 	const loadScript = (id: string, src: string) => {
-		return new Promise<void>((resolve, reject) => {
-			if (document.getElementById(id)) {
-				resolve();
-				return;
-			}
+		const pending = scriptLoads.get(id);
+		if (pending) return pending;
+		const load = new Promise<void>((resolve, reject) => {
 			const s = document.createElement("script");
 			s.id = id;
 			s.src = src;
@@ -41,10 +45,14 @@ async function loadLeafletDraw() {
 				resolve();
 			};
 			s.onerror = () => {
+				scriptLoads.delete(id);
+				s.remove();
 				reject(new Error(`Failed to load ${src}`));
 			};
 			document.head.appendChild(s);
 		});
+		scriptLoads.set(id, load);
+		return load;
 	};
 	await loadScript("leaflet-js", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
 	await loadScript("leaflet-draw-js", "https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js");

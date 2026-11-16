@@ -16,6 +16,87 @@
 		},
 		"title": "Browser Arche Collections and Resources"
 	},
+	"DiscoveryPage": {
+		"meta": {
+			"title": "Discovery search"
+		},
+		"form": {
+			"query_label": "What are you looking for in ARCHE?",
+			"placeholder": "For example: historical correspondence",
+			"submit": "Search",
+			"mode": "Search mode",
+			"mode_expanded": "Vocabulary-expanded",
+			"mode_original": "Original query",
+			"date_from": "From",
+			"date_to": "To"
+		},
+		"filters": {
+			"all": "All filters",
+			"title": "Search filters",
+			"back": "Back to the filter categories",
+			"apply": "Apply",
+			"remove_all": "Remove all filters",
+			"remove": "Remove filter {filter}",
+			"applied": "Applied filters",
+			"active": "{count, plural, one {# active filter} other {# active filters}}",
+			"range_from": "From {value}",
+			"range_to": "Until {value}",
+			"search_values": "Filter {facet}…",
+			"no_values": "No matching values.",
+			"map_hint": "Draw a rectangle on the map to search in that area.",
+			"map_remove": "Remove drawn area"
+		},
+		"kinds": {
+			"TopCollection": "Top-level collection",
+			"Collection": "Collection",
+			"Resource": "Resource / file",
+			"Person": "Person",
+			"Organisation": "Organisation",
+			"Place": "Place",
+			"Publication": "Publication",
+			"Project": "Project",
+			"Concept": "Concept"
+		},
+		"date_types": {
+			"coverage": "Coverage period",
+			"created": "Creation date",
+			"original": "Original creation date"
+		},
+		"examples": {
+			"eyebrow": "A place to start",
+			"title": "Explore a topic",
+			"description": "Choose an example to search with your current filters.",
+			"count": "{count, plural, one {# example} other {# examples}}"
+		},
+		"results": {
+			"count": "{count, plural, one {# result} other {# results}}",
+			"expansions": "Also searched for",
+			"related": "Related topics",
+			"no_results": "No records match your search.",
+			"error": "The search is currently unavailable. Please try again later.",
+			"pagination": "Pagination",
+			"previous": "Previous",
+			"next": "Next",
+			"page": "Page {page} of {pages}"
+		},
+		"plan": {
+			"title": "How did we search?",
+			"expanded": "We ask ARCHE for records matching any of the listed terms (OR).",
+			"original": "Your query is passed to ARCHE as entered.",
+			"no_date_filter": "No automatic date filter is applied.",
+			"fields": "Searched fields",
+			"api_link": "Open the query in the ARCHE API",
+			"properties": {
+				"hasTitle": "Title",
+				"hasAlternativeTitle": "Alternative title",
+				"hasDescription": "Description",
+				"hasSubject": "Subject",
+				"hasKeyword": "Keyword"
+			},
+			"date_only": "Only the date filter is applied, without search terms.",
+			"date_filter": "Date filter ({type}): {range}"
+		}
+	},
 	"AppContent": {
 		"general": {
 			"loading": "Loading"

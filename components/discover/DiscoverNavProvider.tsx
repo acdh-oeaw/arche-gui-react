@@ -11,7 +11,7 @@ interface DiscoverNavContextValue {
 	showMap: boolean;
 }
 
-const DiscoverNavContext = createContext<DiscoverNavContextValue>({
+export const DiscoverNavContext = createContext<DiscoverNavContextValue>({
 	isPending: false,
 	mapPolygon: null,
 	navigate: (fn) => {

@@ -35,6 +35,11 @@ export const routing = defineRouting({
 			"en-GB": "/discover",
 			"de-AT": "/discover",
 		},
+		/** Vocabulary-expanded search of the Symfony discovery API. */
+		"/discovery": {
+			"en-GB": "/discovery",
+			"de-AT": "/discovery",
+		},
 		/** Full-text search across the static content pages. */
 		"/search": {
 			"en-GB": "/search",

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import type { DTRow } from "@/lib/api/CollectionDTContentApi";
 import type { DiscoverResultParent } from "@/lib/types/discover";
+import { type DiscoveryMode, discoveryModes, type DiscoveryQuery } from "@/lib/types/discovery";
 
 export function formatBytes(raw: string): string {
 	const bytes = Number(raw);
@@ -382,4 +383,115 @@ export function formatCellValue(col: string, value: string, row: DTRow): ReactNo
 		return <span className="font-mono text-xs whitespace-pre-wrap">{value}</span>;
 	}
 	return value;
+}
+
+function pickOption<T extends string>(options: ReadonlyArray<T>, value: unknown, fallback: T): T {
+	return (
+		options.find((option) => {
+			return option === value;
+		}) ?? fallback
+	);
+}
+
+/* The property of the map facet, as it is used in the `facets[map]` url parameter */
+const discoveryMapProperty = "map";
+const discoveryFacetParam = /^facets\[(.+)\]\[(min|max)?\]$/;
+const discoveryRangeBound = /^-?\d+$/;
+
+/* The range facet which the discovery API knows as its date filter */
+export const discoveryDateProperty = "dateContent";
+/* The value facet which the discovery API knows as its record type (`kind`) filter */
+export const discoveryTypeProperty = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
+
+export function hasDiscoveryDateFilter(query: Readonly<Pick<DiscoveryQuery, "ranges">>): boolean {
+	const range = query.ranges[discoveryDateProperty];
+	return range != null && (range.min !== "" || range.max !== "");
+}
+
+/*
+ * The discovery API only searches with 2+ characters of text or with a date filter; the other
+ * facets narrow such a search down, but are not a search on their own
+ */
+export function isDiscoverySearch(query: Readonly<DiscoveryQuery>): boolean {
+	return query.q.length >= 2 || hasDiscoveryDateFilter(query);
+}
+
+/* Reads the discovery search form values from the page url; unknown values fall back to the API defaults */
+export function parseDiscoveryQuery(
+	sp: Record<string, string | Array<string> | undefined>,
+): DiscoveryQuery {
+	const first = (value: string | Array<string> | undefined) => {
+		return Array.isArray(value) ? value[0] : value;
+	};
+	const page = Math.trunc(toNumber(first(sp.page) ?? "1", 1));
+
+	/* The facets use the url parameters of the discover page: `facets[property][]`, `[min]`, `[max]` */
+	const facets: DiscoveryQuery["facets"] = {};
+	const ranges: DiscoveryQuery["ranges"] = {};
+	for (const [key, raw] of Object.entries(sp)) {
+		const match = discoveryFacetParam.exec(key);
+		const property = match?.[1];
+		if (match == null || property == null || raw == null) continue;
+		if (match[2] == null) {
+			const values = [...new Set(Array.isArray(raw) ? raw : [raw])].filter(Boolean);
+			if (values.length > 0) facets[property] = values;
+		} else {
+			const bound = (first(raw) ?? "").trim();
+			if (!discoveryRangeBound.test(bound)) continue;
+			const range = ranges[property] ?? { min: "", max: "" };
+			ranges[property] = match[2] === "min" ? { ...range, min: bound } : { ...range, max: bound };
+		}
+	}
+
+	return {
+		q: (first(sp.q) ?? "").trim(),
+		mode: pickOption<DiscoveryMode>(discoveryModes, first(sp.mode), "expanded"),
+		facets,
+		ranges,
+		map: (first(sp[`facets[${discoveryMapProperty}]`]) ?? "").trim(),
+		includeBinaries: first(sp.includeBinaries) === "1",
+		linkNamedEntities: first(sp.linkNamedEntities) === "1",
+		page: Math.min(Math.max(page, 1), 1000),
+	};
+}
+
+/* The facet filters as url parameters, for the page url as well as for the search API */
+export function toDiscoveryFacetParams(
+	query: Readonly<Omit<DiscoveryQuery, "mode" | "page" | "q">>,
+): Record<string, string | Array<string>> {
+	const result: Record<string, string | Array<string>> = {};
+	for (const [property, values] of Object.entries(query.facets)) {
+		if (values.length > 0) result[`facets[${property}][]`] = values;
+	}
+	for (const [property, range] of Object.entries(query.ranges)) {
+		if (range.min) result[`facets[${property}][min]`] = range.min;
+		if (range.max) result[`facets[${property}][max]`] = range.max;
+	}
+	if (query.map) result[`facets[${discoveryMapProperty}]`] = query.map;
+	if (query.includeBinaries) result.includeBinaries = "1";
+	if (query.linkNamedEntities) result.linkNamedEntities = "1";
+	return result;
+}
+
+/* The url query of a discovery search; default values are left out to keep the url short */
+export function toDiscoveryUrlQuery(
+	query: Readonly<DiscoveryQuery>,
+): Record<string, string | Array<string>> {
+	const result: Record<string, string | Array<string>> = {};
+	if (query.q) result.q = query.q;
+	if (query.mode !== "expanded") result.mode = query.mode;
+	Object.assign(result, toDiscoveryFacetParams(query));
+	if (query.page > 1) result.page = String(query.page);
+	return result;
+}
+
+/* Adds url parameters to a query string; an array becomes a repeated parameter */
+export function appendUrlQuery(
+	params: URLSearchParams,
+	query: Readonly<Record<string, string | Array<string>>>,
+): URLSearchParams {
+	for (const [key, value] of Object.entries(query)) {
+		for (const item of Array.isArray(value) ? value : [value]) params.append(key, item);
+	}
+	return params;
 }
