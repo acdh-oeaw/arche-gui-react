@@ -124,19 +124,19 @@ export function AppHeaderStatic({
 			className="background-image-front-div front-header-div flex w-full flex-col  bg-arche-acc-light-blue"
 			style={{ height: "306px" }}
 		>
-			<div className="flex w-full justify-between gap-x-12 px-2.5">
+			<div className="flex w-full justify-between gap-x-3 px-2.5 md:gap-x-12">
 				<AppNavigation label={label} navigation={navigation} />
+				<div className="flex items-center gap-x-6 pt-2 max-md:hidden">
+					<LocaleSwitcher />
+				</div>
 				<AppNavigationMobile
 					drawerCloseLabel={t("navigation.drawer.close")}
 					drawerLabel={t("navigation.drawer.label")}
 					drawerOpenLabel={t("navigation.drawer.open")}
 					label={label}
+					localeSwitcher={<LocaleSwitcher />}
 					navigation={navigation}
 				/>
-
-				<div className="flex items-center gap-x-6 pt-2">
-					<LocaleSwitcher />
-				</div>
 			</div>
 			<div className="relative flex w-full flex-1 flex-col items-center justify-end gap-y-6 px-4 pb-10 text-center">
 				<div
@@ -157,7 +157,7 @@ export function AppHeaderStatic({
 
 				<div className="header-content">
 					<h1 className="section-header-title">{title}</h1>
-					<p className="text-lg text-text-weak sm:text-xl">{description}</p>
+					<span className="hero-small-text">{description}</span>
 					{pdfUrl && (
 						<a
 							className="inline-flex items-center gap-2 rounded bg-arche-acc-dark-blue px-4 py-2  text-white!  hover:opacity-90"

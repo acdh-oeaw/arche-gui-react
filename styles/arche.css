@@ -18,6 +18,7 @@
 	--color-arche-acc-static-url-text: rgb(0, 84, 128);
 	--color-arche-acc-heading-url: rgb(12, 90, 83);
 	--color-arche-acc-public-green: rgb(11, 101, 78);
+	--color-arche-acc-static-font-color: rgb(122, 154, 176);
 	--color-arche-acc-restricted-red: rgb(167, 17, 17);
 	--color-arche-acc-academic: rgb(138, 66, 0);
 	--color-arche-acc-dark-blue-hover: rgb(10, 106, 155);
@@ -56,10 +57,11 @@
 	--arche-acc-dark-blue-smart-title: rgb(10, 106, 155);
 	--arche-acc-dark-blue-hover: rgb(10, 106, 155);
 	--arche-acc-light-cyan: rgb(136, 219, 223);
+	--arche-acc-static-font-color: rgb(122, 154, 176);
 }
 
 body {
-	color: var(--arche-acc-font-color);
+	color: var(--color-arche-acc-font-color);
 	font-weight: 400;
 	font-style: normal;
 	font-size: 1rem;
@@ -101,6 +103,14 @@ h5 {
 	line-height: normal;
 }
 
+/*
+ * The card titles of the static pages: long single words (e.g. "Datenübergabevertrag") shrink to the
+ * card width instead of breaking. Unlayered like the h5 rule above, which it has to override.
+ */
+.home-resources-body .card-title {
+	font-size: clamp(14px, 9cqi, 20px);
+}
+
 h6 {
 	color: rgb(33, 37, 41, 100%);
 	font-weight: 700;
@@ -113,7 +123,7 @@ h6 {
 p,
 span {
 	margin-bottom: 1rem;
-	color: rgb(77, 77, 77, 100%);
+	color: var(--color-arche-acc-font-color);
 	font-weight: 400;
 	font-style: normal;
 	font-size: 1rem;
@@ -167,7 +177,7 @@ code {
 }
 
 .static-content .home-static-title {
-	color: var(--arche-acc-font-color);
+	color: var(--arche-acc-static-font-color);
 	font-size: var(--text-small);
 	line-height: var(--text-small--line-height);
 	letter-spacing: var(--tracking-wide);
@@ -676,6 +686,22 @@ code {
 	background-size: cover;
 }
 
+/*
+ * Up to the desktop width the clouds take too much room from the header content: the images are
+ * pushed outwards inside their own boxes, so the cut-off part does not widen the page
+ */
+@media (width < 1024px) {
+	.background-image-front-div::before {
+		background-position: -45px 0;
+		background-repeat: no-repeat;
+	}
+
+	.background-image-front-div::after {
+		background-position: 100px 0;
+		background-repeat: no-repeat;
+	}
+}
+
 .cards-container {
 	margin-right: 0 !important;
 	margin-left: 0 !important;
@@ -683,9 +709,6 @@ code {
 	padding-right: 0 !important;
 	padding-bottom: 150px;
 	padding-left: 0 !important;
-	background-image: url("/browser/images/common/mission_bottom_bubble.svg");
-	background-size: cover;
-	background-repeat: no-repeat;
 }
 
 .deposition-agreement-container {
@@ -765,10 +788,16 @@ details[open] summary {
 }
 
 .static-acc-title {
+	margin: 0 !important;
+	padding: 0 !important;
 	font-weight: 700;
 }
 
 details[open] summary .static-acc-title {
+	color: rgb(255, 255, 255, 100%) !important;
+}
+
+details[open] summary svg {
 	color: rgb(255, 255, 255, 100%) !important;
 }
 
@@ -883,6 +912,7 @@ details[open] summary .static-acc-title {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
+		container-type: inline-size;
 	}
 
 	.home-resources-images {
@@ -1082,6 +1112,14 @@ details[open] summary .static-acc-title {
 	text-decoration: none;
 	word-break: normal;
 	overflow-wrap: anywhere;
+}
+
+.card-body .card-text {
+	display: -webkit-box;
+	overflow: hidden;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	-webkit-box-orient: vertical;
 }
 
 /* Home page "latest addition" single top collection.
@@ -1303,5 +1341,19 @@ details[open] summary .static-acc-title {
 		margin-top: var(--arche-gutter-y);
 		padding-right: calc(var(--arche-gutter-x) * 0.5);
 		padding-left: calc(var(--arche-gutter-x) * 0.5);
+	}
+}
+
+/*
+ * The two-column blocks of the static pages (e.g. the video and the text on the home page) come
+ * from the GitHub HTML with `md:flex-row` / `md:w-1/2`. Up to and including 768px they are stacked.
+ */
+@media (width <= 768px) {
+	.container-w980 [class~="md:flex-row"] {
+		flex-direction: column;
+	}
+
+	.container-w980 [class~="md:w-1/2"] {
+		width: 100%;
 	}
 }

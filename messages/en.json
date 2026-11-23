@@ -44,7 +44,8 @@
 			"search_values": "Filter {facet}…",
 			"no_values": "No matching values.",
 			"map_hint": "Draw a rectangle on the map to search in that area.",
-			"map_remove": "Remove drawn area"
+			"map_remove": "Remove drawn area",
+			"map_apply": "Search in this area"
 		},
 		"kinds": {
 			"TopCollection": "Top-level collection",
@@ -322,6 +323,7 @@
 	},
 	"AppFooter": {
 		"creator": "Austrian Centre for Digital Humanities",
+		"institution": "ACDH\nAustrian Centre for Digital Humanities\nAustrian Academy of Sciences",
 		"menu": {
 			"guidance": {
 				"label": "Guidance",

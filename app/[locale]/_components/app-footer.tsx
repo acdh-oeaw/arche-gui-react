@@ -54,7 +54,7 @@ export function AppFooter(): ReactNode {
 	return (
 		<footer className="arche-footer flex flex-col items-center bg-[#005480] text-sm text-white">
 			<div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-6">
-				<div className="col-span-full max-lg:mx-[15px] sm:col-span-4 sm:col-start-2">
+				<div className="col-span-full max-lg:mx-[15px] lg:col-span-4 lg:col-start-2">
 					<div className="w-full">
 						<FooterContactBox></FooterContactBox>
 					</div>
@@ -70,14 +70,14 @@ export function AppFooter(): ReactNode {
 								alt="ACDH Logo"
 								className="mb-4 w-full max-w-16"
 								height="100"
-								src={withBasePath("/images/logos/acdh-white-transparent-logo.svg")}
+								src={withBasePath("/images/logos/acdh_logo_whitemelt_2026.svg")}
 								width="100"
 							/>
 						</Link>
 					</div>
 
 					<div className="">
-						<p>ACDH Austrian Centre for Digital Humanities Austrian Academy of Sciences</p>
+						<p className="whitespace-pre-line">{t("institution")}</p>
 						<p className="mt-4">
 							Bäckerstraße 13
 							<br />

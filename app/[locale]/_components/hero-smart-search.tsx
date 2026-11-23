@@ -87,11 +87,11 @@ export function HeroSmartSearch(props: Readonly<HeroSmartSearchProps>): ReactNod
 	const visibleSuggestions = isAutocompleteActive ? suggestions : [];
 
 	return (
-		<form className="flex w-full max-w-xl items-stretch" onSubmit={handleSubmit}>
+		<form className="mb-2 flex w-full items-stretch justify-center" onSubmit={handleSubmit}>
 			<ComboBox
 				allowsCustomValue={true}
 				aria-label={searchLabel}
-				className="w-full"
+				className="w-full max-w-100"
 				// The API already matched the suggestions, so the combobox must not filter them again
 				defaultFilter={() => {
 					return true;

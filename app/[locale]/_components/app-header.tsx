@@ -112,19 +112,19 @@ export function AppHeader(): ReactNode {
 
 	return (
 		<header className="background-image-front-div front-header-div w-full  bg-arche-acc-light-blue">
-			<div className="flex w-full justify-between gap-x-12 px-2.5">
+			<div className="flex w-full justify-between gap-x-3 px-2.5 md:gap-x-12">
 				<AppNavigation label={label} navigation={navigation} />
+				<div className="flex items-center gap-x-6 pt-2 max-md:hidden">
+					<LocaleSwitcher />
+				</div>
 				<AppNavigationMobile
 					drawerCloseLabel={t("navigation.drawer.close")}
 					drawerLabel={t("navigation.drawer.label")}
 					drawerOpenLabel={t("navigation.drawer.open")}
 					label={label}
+					localeSwitcher={<LocaleSwitcher />}
 					navigation={navigation}
 				/>
-
-				<div className="flex items-center gap-x-6 pt-2">
-					<LocaleSwitcher />
-				</div>
 			</div>
 
 			<div className="hero-left-character-image">

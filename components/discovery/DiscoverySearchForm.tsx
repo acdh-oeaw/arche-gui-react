@@ -1,6 +1,6 @@
 "use client";
 
-import { XIcon } from "lucide-react";
+import { MapIcon, XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type FormEvent, type ReactNode, useState } from "react";
 
@@ -8,6 +8,7 @@ import {
 	DiscoveryFilterMenu,
 	useDiscoveryFilterLabels,
 } from "@/components/discovery/DiscoveryFilterMenu";
+import { DiscoveryMapPanel, discoveryMapPanelId } from "@/components/discovery/DiscoveryMapPanel";
 import {
 	discoveryPlanButtonSlotId,
 	discoveryPlanPanelSlotId,
@@ -56,6 +57,8 @@ export function DiscoverySearchForm(props: Readonly<DiscoverySearchFormProps>): 
 	const [q, setQ] = useState(initialQuery.q);
 	/* Only used after a search, when the examples are behind a button */
 	const [isExamplesOpen, setIsExamplesOpen] = useState(false);
+	/* The spatial coverage map, which opens above the "Explore a topic" button */
+	const [isMapOpen, setIsMapOpen] = useState(false);
 	const [filters, setFilters] = useState<DiscoveryFilters>(() => {
 		const { q: _q, page: _page, ...rest } = initialQuery;
 		return rest;
@@ -129,6 +132,10 @@ export function DiscoverySearchForm(props: Readonly<DiscoverySearchFormProps>): 
 		});
 	}
 
+	const mapFacet = facets.find((facet) => {
+		return facet.type === "map";
+	});
+
 	/* After a search, or with a filter, the examples shrink to a single button */
 	const isCompact = hasSearch || chips.length > 0;
 
@@ -196,12 +203,36 @@ export function DiscoverySearchForm(props: Readonly<DiscoverySearchFormProps>): 
 							{`${t("form.submit")} ↗`}
 						</button>
 					</div>
-					<DiscoveryFilterMenu
-						activeCount={chips.length}
-						facets={facets}
-						filters={filters}
-						onApply={applyFilters}
-					/>
+					<div className="discovery-search-actions">
+						{mapFacet != null && (
+							<button
+								aria-controls={discoveryMapPanelId}
+								aria-expanded={isMapOpen}
+								className="discovery-filter-trigger discovery-map-trigger"
+								onClick={() => {
+									setIsMapOpen(!isMapOpen);
+								}}
+								type="button"
+							>
+								<MapIcon aria-hidden={true} className="size-5" data-slot="icon" />
+								{labels.facet(mapFacet)}
+								{filters.map !== "" && (
+									<span
+										aria-label={t("filters.active", { count: 1 })}
+										className="discovery-filter-count"
+									>
+										{1}
+									</span>
+								)}
+							</button>
+						)}
+						<DiscoveryFilterMenu
+							activeCount={chips.length}
+							facets={facets}
+							filters={filters}
+							onApply={applyFilters}
+						/>
+					</div>
 				</div>
 
 				{chips.length > 0 && (
@@ -227,6 +258,20 @@ export function DiscoverySearchForm(props: Readonly<DiscoverySearchFormProps>): 
 					</ul>
 				)}
 			</form>
+
+			{isMapOpen && mapFacet != null && (
+				<DiscoveryMapPanel
+					area={filters.map}
+					facet={mapFacet}
+					label={labels.facet(mapFacet)}
+					onApply={(map) => {
+						applyFilters({ ...filters, map });
+					}}
+					onClose={() => {
+						setIsMapOpen(false);
+					}}
+				/>
+			)}
 
 			{isCompact ? (
 				<div className="discovery-toolbar">

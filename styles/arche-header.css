@@ -103,6 +103,7 @@ a:hover .locale-link-text::before {
 }
 
 .section-header-title {
+	margin-bottom: 0.5rem;
 	color: rgb(77 77 77 / 100%) !important;
 	font-weight: 700 !important;
 	font-style: normal !important;
@@ -192,5 +193,21 @@ a:hover .locale-link-text::before {
 	.hero-left-character-image,
 	.hero-right-character-image {
 		display: block;
+	}
+}
+
+/* Tablet: the menu already fits, so the characters move to the edges and shrink beside the search */
+@media (768px <= width < 1024px) {
+	.hero-left-character-image {
+		left: 3%;
+	}
+
+	.hero-right-character-image {
+		right: 3%;
+	}
+
+	.hero-left-character-image img,
+	.hero-right-character-image img {
+		max-height: 160px;
 	}
 }

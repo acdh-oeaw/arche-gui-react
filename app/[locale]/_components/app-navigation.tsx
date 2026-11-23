@@ -36,7 +36,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 	const pathname = usePathname();
 
 	return (
-		<nav aria-label={label} className="arche-navbar hidden w-full items-center lg:flex">
+		<nav aria-label={label} className="arche-navbar flex w-full items-center">
 			<NavLink
 				className="interactive -ml-2 grid shrink-0 place-content-center self-center rounded-2 p-2 outline-transparent focus-visible:focus-outline"
 				href="/"
@@ -45,7 +45,7 @@ export function AppNavigation(props: Readonly<AppNavigationProps>): ReactNode {
 				<span className="sr-only">{navigation.home.label}</span>
 			</NavLink>
 
-			<ul className="ml-auto flex flex-wrap justify-end p-2 text-small" role="list">
+			<ul className="ml-auto hidden flex-wrap justify-end p-2 text-small md:flex" role="list">
 				{Object.entries(navigation).map(([id, item]) => {
 					switch (item.type) {
 						case "action": {
@@ -197,26 +197,29 @@ interface AppNavigationMobileProps {
 	drawerLabel: string;
 	drawerOpenLabel: string;
 	label: string;
+	/* The language switcher, shown in the drawer: the header hides its own one on small screens */
+	localeSwitcher?: ReactNode;
 	navigation: Record<string, NavigationItem> & { home: NavigationLink };
 }
 
 export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): ReactNode {
-	const { drawerCloseLabel, drawerLabel, drawerOpenLabel, label, navigation } = props;
+	const { drawerCloseLabel, drawerLabel, drawerOpenLabel, label, localeSwitcher, navigation } =
+		props;
 
 	return (
 		<DrawerTrigger>
-			<nav aria-label={label} className="flex items-center py-3 lg:hidden">
-				<IconButton className="-ml-3" kind="tertiary" label={drawerOpenLabel} tone="neutral">
+			<nav aria-label={label} className="flex items-center py-3 md:hidden">
+				<IconButton className="-mr-1" kind="tertiary" label={drawerOpenLabel} tone="neutral">
 					<MenuIcon aria-hidden={true} data-slot="icon" />
 				</IconButton>
 			</nav>
 			<ModalOverlay isDismissable={true}>
-				<Modal placement="left">
+				<Modal placement="right">
 					<Drawer>
 						{({ close }) => {
 							return (
 								<Fragment>
-									<header className="p-6">
+									<header className="flex items-center justify-between gap-x-6 p-6">
 										<Heading className="sr-only" data-slot="title" slot="title">
 											{drawerLabel}
 										</Heading>
@@ -229,6 +232,7 @@ export function AppNavigationMobile(props: Readonly<AppNavigationMobileProps>): 
 										>
 											<XIcon aria-hidden={true} data-slot="icon" />
 										</IconButton>
+										{localeSwitcher}
 									</header>
 									<ul className="text-small" role="list">
 										{Object.entries(navigation).map(([id, item]) => {

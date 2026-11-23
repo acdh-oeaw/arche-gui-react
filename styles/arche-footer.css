@@ -202,3 +202,7 @@
 	background: rgb(255 255 255 / 100%);
 	color: rgb(102 102 102 / 100%);
 }
+
+.footer-contact-title {
+	font-weight: 700;
+}

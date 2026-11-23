@@ -124,6 +124,60 @@
 	text-align: center;
 }
 
+/* The spatial coverage button and the "All filters" menu, next to the search box */
+.discovery-search-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.discovery-map-trigger:hover {
+	background-color: var(--arche-acc-light-blue);
+}
+
+.discovery-map-trigger:focus-visible {
+	outline: 2px solid var(--arche-acc-dark-blue);
+	outline-offset: 2px;
+}
+
+/* The spatial coverage map opens between the search box and the "Explore a topic" button */
+.discovery-map-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding: 1.25rem;
+	border: 1px solid rgb(209 213 219);
+	border-radius: 1rem;
+	background-color: rgb(255 255 255);
+	color-scheme: light;
+}
+
+.discovery-map-panel-header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.discovery-map-panel-area {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.discovery-map-panel-actions {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.discovery-map-panel-hint {
+	margin: 0;
+	color: rgb(107 114 128);
+	font-size: 0.8125rem;
+	line-height: 1.25rem;
+}
+
 /* The menu is rendered in a portal, outside of the page layout */
 .discovery-filter-popover {
 	overflow: hidden;
@@ -234,27 +288,6 @@
 	font-size: 1rem;
 }
 
-.discovery-filter-map {
-	padding: 0.5rem 1.25rem 0;
-}
-
-.discovery-filter-map-area {
-	display: flex;
-	gap: 0.75rem;
-	justify-content: space-between;
-	align-items: center;
-	margin: 0 0 0.75rem;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
-}
-
-.discovery-filter-map-area button {
-	flex-shrink: 0;
-	color: var(--arche-acc-dark-blue);
-	font-weight: 700;
-	text-decoration: underline;
-}
-
 .discovery-filter-legend {
 	margin: 0;
 	padding: 1rem 1.25rem 0;
@@ -347,6 +380,19 @@
 
 .discovery-filter-apply:hover {
 	background-color: var(--arche-acc-dark-blue-hover);
+}
+
+.discovery-filter-apply:disabled {
+	opacity: 50%;
+	cursor: not-allowed;
+}
+
+/* In the map panel the footer buttons of the menu stand on their own */
+.discovery-map-panel-actions .discovery-filter-reset,
+.discovery-map-panel-actions .discovery-filter-apply {
+	padding: 0.5rem 1.25rem;
+	border: 1px solid var(--arche-acc-dark-blue);
+	border-radius: 9999px;
 }
 
 .discovery-filter-chips {
@@ -741,6 +787,11 @@
 
 	.discovery-search-bar .discovery-search-box {
 		flex: 1;
+	}
+
+	.discovery-search-actions {
+		flex-shrink: 0;
+		flex-wrap: nowrap;
 	}
 
 	.discovery-sample-groups {

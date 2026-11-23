@@ -12,7 +12,7 @@ function FooterContactBox() {
 				<div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
 					<div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
 						<div>
-							<h3 className="">{t("menu.contact_box.label")}</h3>
+							<h3 className="footer-contact-title">{t("menu.contact_box.label")}</h3>
 							<p className="cta-item">{t("menu.contact_box.description")}</p>
 						</div>
 						<Link className="btn btn-arche-blue" href="mailto:arche@oeaw.ac.at">

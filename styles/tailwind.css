@@ -7,6 +7,7 @@ as a html to the disk under the static-content directory. And because of that th
 automatic source detection does not pick them up. This is why we have to add the @sources with the classes. */
 @source "../static-content/**/*.html";
 @source inline("{sm:,md:,lg:,xl:,}grid-cols-{1..12}");
+@source inline("min-[1000px]:grid-cols-{2,3,4}");
 @source inline("{sm:,md:,lg:,xl:,}col-span-{{1..12},full}");
 @source inline("{sm:,md:,lg:,xl:,}col-start-{1..12}");
 @source inline("{sm:,md:,lg:,xl:,}gap-{4,6,8,12}");
@@ -39,6 +40,7 @@ automatic source detection does not pick them up. This is why we have to add the
 @source inline("focus-visible:ring-slate-400");
 @source inline("group-open:text-white");
 @source inline("!text-inherit");
+@source inline("{text,bg,border}-arche-acc-static-font-color");
 @source inline("max-lg:col-{span-12,start-1}");
 @source inline("max-lg:m-[15px]");
 

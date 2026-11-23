@@ -5,8 +5,6 @@ import { useLocale, useMessages, useTranslations } from "next-intl";
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { Button, Dialog, DialogTrigger } from "react-aria-components";
 
-import { DiscoverMap } from "@/components/discover/DiscoverMap";
-import { DiscoverNavContext } from "@/components/discover/DiscoverNavProvider";
 import { Popover } from "@/components/ui/popover";
 import { shortenUri, summarizePolygon } from "@/lib/helpers/ArcheHelpers";
 import type { Facet, FacetValue } from "@/lib/types/discover";
@@ -177,9 +175,13 @@ export function DiscoveryFilterMenu(props: Readonly<DiscoveryFilterMenuProps>): 
 		});
 	}
 
+	/* The spatial coverage has its own button next to the menu */
+	const menuFacets = facets.filter((facet) => {
+		return facet.type !== "map";
+	});
 	const categories = [
 		{ id: modeView, label: t("form.mode"), value: labels.mode(draft) },
-		...facets.map((facet) => {
+		...menuFacets.map((facet) => {
 			return {
 				id: facet.property,
 				label: labels.facet(facet),
@@ -191,7 +193,7 @@ export function DiscoveryFilterMenu(props: Readonly<DiscoveryFilterMenuProps>): 
 	const currentCategory = categories.find((item) => {
 		return item.id === view;
 	});
-	const currentFacet = facets.find((facet) => {
+	const currentFacet = menuFacets.find((facet) => {
 		return facet.property === view;
 	});
 
@@ -277,49 +279,6 @@ export function DiscoveryFilterMenu(props: Readonly<DiscoveryFilterMenuProps>): 
 						value={range.max}
 					/>
 				</label>
-			</div>
-		);
-	}
-
-	function renderMap(facet: Facet): ReactNode {
-		return (
-			<div className="discovery-filter-map">
-				<p className="discovery-filter-map-area">
-					{draft.map ? summarizePolygon(draft.map) : t("filters.map_hint")}
-					{draft.map && (
-						<button
-							onClick={() => {
-								setDraft((prev) => {
-									return { ...prev, map: "" };
-								});
-							}}
-							type="button"
-						>
-							{t("filters.map_remove")}
-						</button>
-					)}
-				</p>
-				{/* The map of the discover page reports the drawn area through this context */}
-				<DiscoverNavContext
-					value={{
-						isPending: false,
-						mapPolygon: draft.map || null,
-						navigate: (fn) => {
-							fn();
-						},
-						setMapPolygon: (wkt) => {
-							setDraft((prev) => {
-								return { ...prev, map: wkt ?? "" };
-							});
-						},
-						setShowMap: (isShown) => {
-							if (!isShown) openView(categoriesView);
-						},
-						showMap: true,
-					}}
-				>
-					<DiscoverMap geoJson={typeof facet.values === "string" ? facet.values : ""} />
-				</DiscoverNavContext>
 			</div>
 		);
 	}
@@ -436,11 +395,9 @@ export function DiscoveryFilterMenu(props: Readonly<DiscoveryFilterMenuProps>): 
 
 								{currentFacet != null && (
 									<>
-										{currentFacet.type === "map"
-											? renderMap(currentFacet)
-											: currentFacet.type === "continuous"
-												? renderRange(currentFacet)
-												: renderValues(currentFacet, currentCategory.label)}
+										{currentFacet.type === "continuous"
+											? renderRange(currentFacet)
+											: renderValues(currentFacet, currentCategory.label)}
 										{currentFacet.tooltip?.[lang] && (
 											<p className="discovery-filter-hint">{currentFacet.tooltip[lang]}</p>
 										)}

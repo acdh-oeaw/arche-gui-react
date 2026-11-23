@@ -44,7 +44,8 @@
 			"search_values": "{facet} filtern…",
 			"no_values": "Keine passenden Werte.",
 			"map_hint": "Zeichnen Sie ein Rechteck auf der Karte, um in diesem Gebiet zu suchen.",
-			"map_remove": "Gezeichnetes Gebiet entfernen"
+			"map_remove": "Gezeichnetes Gebiet entfernen",
+			"map_apply": "In diesem Gebiet suchen"
 		},
 		"kinds": {
 			"TopCollection": "Top-Level-Sammlung",
@@ -322,6 +323,7 @@
 	},
 	"AppFooter": {
 		"creator": "Austrian Centre for Digital Humanities",
+		"institution": "ACDH\nAustrian Centre for Digital Humanities\nÖsterreichische Akademie der Wissenschaften",
 		"menu": {
 			"guidance": {
 				"label": "Orientierung",
@@ -357,7 +359,7 @@
 				}
 			},
 			"contact_box": {
-				"label": "Contact us!",
+				"label": "Kontaktieren Sie uns!",
 				"description": "Nehmen Sie mit uns vor der Einreichung der Daten Kontakt auf, um offene Fragen zu klären, sicherzustellen, dass die Daten den Anforderungen von ARCHE genügen und uns zeitgerecht über die geplante Einreichung zu informieren. Berücksichtigen Sie dabei, dass die Einreichung inklusive der Kuratierung ein langwieriger Prozess sein kann und planen Sie ausreichend Zeit ein.",
 				"button_label": "Contact",
 				"button_url": "mailto:arche@oeaw.ac.at"
@@ -367,7 +369,7 @@
 			"items": {
 				"contact": "Contact",
 				"imprint": "Imprint",
-				"contact_us": "Contact us!"
+				"contact_us": "Kontaktieren Sie uns!"
 			},
 			"label": "Secondary"
 		},
