@@ -211,3 +211,10 @@ a:hover .locale-link-text::before {
 		max-height: 160px;
 	}
 }
+
+/* The static pages' character sits close to the left edge, beside the title */
+@media (768px <= width <= 1024px) {
+	.hero-left-character-image.hero-character-image-static {
+		left: 3%;
+	}
+}

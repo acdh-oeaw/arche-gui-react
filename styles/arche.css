@@ -711,6 +711,13 @@ code {
 	padding-left: 0 !important;
 }
 
+/* The card grid of the static pages (GitHub HTML: `md:grid-cols-4`) keeps two cards per row up to 1000px */
+@media (640px <= width < 1000px) {
+	.cards-container .grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
 .deposition-agreement-container {
 	padding-bottom: 150px;
 	background-image: url("/browser/images/common/mission_bottom_bubble.svg");

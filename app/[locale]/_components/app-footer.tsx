@@ -62,9 +62,10 @@ export function AppFooter(): ReactNode {
 			</div>
 
 			<div className="mx-auto w-full max-w-7xl px-6 sm:px-8">
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[100px_repeat(4,1fr)]">
+				{/* Between 640 and 1024px: logo, contacts and the first menu in one row, the other two menus below */}
+				<div className="grid grid-cols-1 gap-4 sm:max-lg:grid-cols-6 lg:grid-cols-[100px_repeat(4,1fr)]">
 					{/* Logo & Address */}
-					<div className="">
+					<div className="footer-logo-section sm:max-lg:col-span-2">
 						<Link href="https://www.oeaw.ac.at/acdh/">
 							<Image
 								alt="ACDH Logo"
@@ -76,7 +77,7 @@ export function AppFooter(): ReactNode {
 						</Link>
 					</div>
 
-					<div className="">
+					<div className="footer-contacts-section sm:max-lg:col-span-2">
 						<p className="whitespace-pre-line">{t("institution")}</p>
 						<p className="mt-4">
 							Bäckerstraße 13
@@ -96,7 +97,7 @@ export function AppFooter(): ReactNode {
 					</div>
 
 					{/* Orientierung */}
-					<div>
+					<div className="footer-menu-section-one sm:max-lg:col-span-2">
 						<h4 className="mb-2 font-bold text-white">{t("menu.guidance.label")}</h4>
 						<ul className="space-y-1">
 							<li>
@@ -138,7 +139,7 @@ export function AppFooter(): ReactNode {
 					</div>
 
 					{/* Richtlinien */}
-					<div>
+					<div className="footer-menu-section-two sm:max-lg:col-span-3">
 						<h4 className="mb-2 font-bold">{t("menu.policies.label")}</h4>
 						<ul className="space-y-1">
 							<li>
@@ -165,7 +166,7 @@ export function AppFooter(): ReactNode {
 					</div>
 
 					{/* Helpdesk */}
-					<div className="">
+					<div className="footer-menu-section-three sm:max-lg:col-span-3">
 						<h4 className="mb-2 font-bold">{t("menu.helpdesk.label")}</h4>
 						<p className="mb-4">{t("menu.helpdesk.items.description")}</p>
 
