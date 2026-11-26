@@ -212,9 +212,15 @@ a:hover .locale-link-text::before {
 	}
 }
 
-/* The static pages' character sits close to the left edge, beside the title */
+/* The static pages' characters sit close to the left edge, beside the title */
 @media (768px <= width <= 1024px) {
-	.hero-left-character-image.hero-character-image-static {
+	.hero-left-character-image.hero-character-image-static,
+	.hero-left-character-image.hero-character-image-static-pdf {
 		left: 3%;
+	}
+
+	/* The PDF header's character is lifted so it hangs only slightly below the header */
+	.hero-left-character-image.hero-character-image-static-pdf {
+		bottom: 40px;
 	}
 }
