@@ -22,8 +22,8 @@ import type { IntlLanguage } from "@/lib/i18n/locales";
 
 const MODEL_ID = EMBEDDING_MODEL_ID;
 const INDEX_FILE_NAME = "search-index.json";
-/** Version 3: computed with the webassembly runtime, and with the sentence vectors. */
-const INDEX_VERSION = 3;
+/** Version 4: without bibliographies and the navigation repeated on several pages. */
+const INDEX_VERSION = 4;
 
 /**
  * The e5 scores of unrelated texts are still around 0.78, and good matches are above 0.85. A chunk
@@ -194,12 +194,14 @@ function getHighlight(
 		return b.score - a.score;
 	});
 	const best = scored[0]!.score;
+	const selected = scored.slice(0, MAX_HIGHLIGHT_SENTENCES).filter((entry) => {
+		return best - entry.score <= MAX_SECOND_SENTENCE_DISTANCE;
+	});
 
-	return scored
-		.slice(0, MAX_HIGHLIGHT_SENTENCES)
-		.filter((entry) => {
-			return best - entry.score <= MAX_SECOND_SENTENCE_DISTANCE;
-		})
+	/* All sentences of a short chunk would just repeat the passage below it. */
+	if (selected.length === chunk.sentences.length) return null;
+
+	return selected
 		.sort((a, b) => {
 			return a.position - b.position;
 		})
@@ -351,8 +353,22 @@ async function buildIndex(language: IntlLanguage): Promise<number> {
 			return html == null ? [] : htmlToChunks(html, slug);
 		}),
 	);
+	/*
+	 * Passages which appear word for word on several pages are navigation, e.g. the cards linking to
+	 * the other pages ("Preservation Policy - Archiving, maintenance, ... Show") at the bottom of
+	 * most pages. They are the most generic passages of all and would match many questions a little.
+	 */
+	const pagesByPassage = new Map<string, Set<string>>();
+	for (const chunk of pages.flat()) {
+		const key = chunkToPassage(chunk);
+		pagesByPassage.set(key, (pagesByPassage.get(key) ?? new Set()).add(chunk.slug));
+	}
+	const contentChunks = pages.flat().filter((chunk) => {
+		return pagesByPassage.get(chunkToPassage(chunk))!.size === 1;
+	});
+
 	let sentenceCount = 0;
-	const chunks: Array<IndexedChunk> = pages.flat().map((chunk) => {
+	const chunks: Array<IndexedChunk> = contentChunks.map((chunk) => {
 		const sentences = splitSentences(chunk.text);
 		const indexed = {
 			...chunk,

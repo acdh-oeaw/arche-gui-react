@@ -281,10 +281,25 @@ function splitLongBlock(block: string): Array<string> {
 	return parts;
 }
 
+/**
+ * Sections which can never answer a question. A bibliography in particular reads so generic ("this
+ * policy is based on several sources…") that it comes up as a weak match for almost any question.
+ */
+const SKIPPED_SECTION_HEADINGS = new Set([
+	"literatur",
+	"literature",
+	"quellen",
+	"references",
+	"referenzen",
+	"sources",
+]);
+
 export function htmlToChunks(html: string, slug: string): Array<StaticContentChunk> {
 	const chunks: Array<StaticContentChunk> = [];
 
 	for (const section of htmlToSections(html)) {
+		if (SKIPPED_SECTION_HEADINGS.has(section.heading?.toLowerCase() ?? "")) continue;
+
 		let current = "";
 
 		function pushChunk(): void {
