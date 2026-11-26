@@ -37,6 +37,7 @@
 		"@acdh-oeaw/style-variants": "^0.1.0",
 		"@acdh-oeaw/validate-env": "^0.2.1",
 		"@heroicons/react": "^2.2.0",
+		"@huggingface/transformers": "4.3.2",
 		"@react-aria/utils": "^3.30.0",
 		"@valibot/i18n": "^1.0.0",
 		"client-only": "^0.0.1",

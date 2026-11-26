@@ -3,6 +3,7 @@ import { createUrl } from "@acdh-oeaw/lib";
 import { type NextRequest, NextResponse } from "next/server";
 
 import { env } from "@/config/env.config";
+import { buildStaticContentSearchIndex } from "@/lib/api/StaticContentSemanticSearch";
 import {
 	getStaticPage,
 	injectHtmlIntoClassDiv,
@@ -148,10 +149,25 @@ export async function GET(request: NextRequest) {
 		}
 	}
 
+	/*
+	 * The semantic search index is rebuilt from all pages on disk, so it also stays complete when
+	 * only a single page was regenerated. A failure here does not fail the page update - the search
+	 * then falls back to the plain text search.
+	 */
+	const searchIndex: Partial<Record<Lang, { chunks: number } | { error: string }>> = {};
+	for (const lang of langs) {
+		try {
+			searchIndex[lang] = { chunks: await buildStaticContentSearchIndex(lang) };
+		} catch (error) {
+			searchIndex[lang] = { error: error instanceof Error ? error.message : String(error) };
+		}
+	}
+
 	return NextResponse.json({
 		ok: failed.length === 0,
 		pages,
 		updated,
 		failed,
+		searchIndex,
 	});
 }

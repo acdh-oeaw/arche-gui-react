@@ -600,17 +600,39 @@
 		"meta": {
 			"title": "Search"
 		},
-		"title": "Search results",
+		"title": "Search in ARCHE information pages",
 		"search-label": "Search the website",
 		"empty-query": "Enter a search term to search the content of this website.",
 		"no-results": "No pages match “{query}”.",
-		"results-count": "{count, plural, =1 {# page matches} other {# pages match}} “{query}”.",
-		"matches": "{count, plural, =1 {# match} other {# matches}}"
+		"results-count": "{count, plural, =1 {# matching passage} other {# matching passages}} for “{query}”.",
+		"text-search-notice": "No passage matched the meaning of your search, so these are the pages which contain the exact words."
 	},
 	"AccessibilityPage": {
 		"meta": {
 			"title": "Accessibility"
 		},
 		"title": "Accessibility"
+	},
+	"StaticContentAssistant": {
+		"open": "Ask a question",
+		"open-hint": "Assisted search in ARCHE Information Pages",
+		"title": "Search in ARCHE information pages",
+		"intro": "Ask a question about depositing data, file formats, policies or access. I will show you the matching passages from the ARCHE pages.",
+		"examples-label": "Example questions",
+		"example-1": "How can I deposit my data?",
+		"example-2": "Which 3D file formats can I deposit?",
+		"example-3": "How much does it cost to deposit data?",
+		"input-label": "Your question",
+		"placeholder": "e.g. Which file formats are accepted?",
+		"send": "Ask",
+		"close": "Close",
+		"searching": "Searching…",
+		"no-results": "I could not find a matching passage. Try asking in a different way, or contact the ARCHE helpdesk.",
+		"text-search-notice": "Showing results of the word search.",
+		"error": "The search is not available right now. Please try again later.",
+		"open-page": "Open page"
+	},
+	"ScrollToTop": {
+		"label": "Back to top"
 	}
 }

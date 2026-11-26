@@ -600,17 +600,39 @@
 		"meta": {
 			"title": "Suche"
 		},
-		"title": "Suchergebnisse",
+		"title": "Suche in den ARCHE-Informationsseiten",
 		"search-label": "Website durchsuchen",
 		"empty-query": "Geben Sie einen Suchbegriff ein, um den Inhalt dieser Website zu durchsuchen.",
 		"no-results": "Keine Seite enthält „{query}“.",
-		"results-count": "{count, plural, =1 {# Seite enthält} other {# Seiten enthalten}} „{query}“.",
-		"matches": "{count, plural, =1 {# Treffer} other {# Treffer}}"
+		"results-count": "{count, plural, =1 {# passende Stelle} other {# passende Stellen}} für „{query}“.",
+		"text-search-notice": "Keine Stelle passt inhaltlich zu Ihrer Suche, daher werden die Seiten angezeigt, die genau diese Wörter enthalten."
 	},
 	"AccessibilityPage": {
 		"meta": {
 			"title": "Barrierefreiheit"
 		},
 		"title": "Barrierefreiheit"
+	},
+	"StaticContentAssistant": {
+		"open": "Frage stellen",
+		"open-hint": "Unterstützte Suche in den ARCHE-Informationsseiten",
+		"title": "Suche in den ARCHE-Informationsseiten",
+		"intro": "Stellen Sie eine Frage zur Dateneinreichung, zu Dateiformaten, Richtlinien oder zum Zugang. Ich zeige Ihnen die passenden Stellen aus den ARCHE-Seiten.",
+		"examples-label": "Beispielfragen",
+		"example-1": "Wie kann ich meine Daten einreichen?",
+		"example-2": "Welche 3D-Formate werden akzeptiert?",
+		"example-3": "Was kostet die Archivierung meiner Daten?",
+		"input-label": "Ihre Frage",
+		"placeholder": "z. B. Welche Dateiformate werden akzeptiert?",
+		"send": "Fragen",
+		"close": "Schließen",
+		"searching": "Suche läuft…",
+		"no-results": "Ich habe keine passende Stelle gefunden. Formulieren Sie die Frage anders oder wenden Sie sich an den ARCHE-Helpdesk.",
+		"text-search-notice": "Ergebnisse der Wortsuche.",
+		"error": "Die Suche ist gerade nicht verfügbar. Bitte versuchen Sie es später erneut.",
+		"open-page": "Seite öffnen"
+	},
+	"ScrollToTop": {
+		"label": "Nach oben"
 	}
 }

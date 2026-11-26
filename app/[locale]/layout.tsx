@@ -10,7 +10,9 @@ import { jsonLdScriptProps } from "react-schemaorg";
 import { ColorSchemeSync } from "@/app/[locale]/_components/color-scheme-sync";
 import { Providers } from "@/app/[locale]/_components/providers";
 import { TailwindIndicator } from "@/app/[locale]/_components/tailwind-indicator";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 import { ServerToast } from "@/components/server-toast";
+import { StaticContentAssistant } from "@/components/static-content-assistant";
 import { id } from "@/components/ui/main-content";
 import { SkipLink } from "@/components/ui/skip-link";
 import { ToastRegion } from "@/components/ui/toast-region";
@@ -164,6 +166,9 @@ export default async function LocaleLayout(props: Readonly<LocaleLayoutProps>): 
 					<SkipLink targetId={id}>{t("skip-to-main-content")}</SkipLink>
 
 					{children}
+
+					<StaticContentAssistant />
+					<ScrollToTopButton />
 				</Providers>
 
 				<TailwindIndicator />

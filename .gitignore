@@ -58,3 +58,6 @@ out/
 
 .claude/
 .vscode/
+
+# local model cache of the static content semantic search
+/.cache/

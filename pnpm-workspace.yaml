@@ -1,4 +1,7 @@
 ignoredBuiltDependencies:
+  # The CPU binaries are bundled in the package; its install script only downloads CUDA binaries.
+  - onnxruntime-node
+  - protobufjs
   - unrs-resolver
 
 onlyBuiltDependencies:
