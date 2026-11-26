@@ -1,9 +1,10 @@
 /* API to call to regenrate the static pages from the github repo */
 import { createUrl } from "@acdh-oeaw/lib";
-import { type NextRequest, NextResponse } from "next/server";
+import { after, type NextRequest, NextResponse } from "next/server";
 
+import { withBasePath } from "@/config/base-path";
 import { env } from "@/config/env.config";
-import { buildStaticContentSearchIndex } from "@/lib/api/StaticContentSemanticSearch";
+import { rebuildStaticContentSearchIndex } from "@/lib/api/StaticContentSemanticSearch";
 import {
 	getStaticPage,
 	injectHtmlIntoClassDiv,
@@ -153,21 +154,41 @@ export async function GET(request: NextRequest) {
 	 * The semantic search index is rebuilt from all pages on disk, so it also stays complete when
 	 * only a single page was regenerated. A failure here does not fail the page update - the search
 	 * then falls back to the plain text search.
+	 *
+	 * The build takes a few minutes, so by default it runs after the response is sent, and
+	 * `/api/static-content-search/status` shows its progress. With `?wait=true` the response waits
+	 * for it and contains the result, e.g. to see an error directly.
 	 */
-	const searchIndex: Partial<Record<Lang, { chunks: number } | { error: string }>> = {};
-	for (const lang of langs) {
-		try {
-			searchIndex[lang] = { chunks: await buildStaticContentSearchIndex(lang) };
-		} catch (error) {
-			searchIndex[lang] = { error: error instanceof Error ? error.message : String(error) };
+	if (searchParams.get("wait") === "true") {
+		const searchIndex: Partial<Record<Lang, { chunks: number } | { error: string }>> = {};
+		for (const lang of langs) {
+			try {
+				searchIndex[lang] = { chunks: await rebuildStaticContentSearchIndex(lang) };
+			} catch (error) {
+				searchIndex[lang] = { error: error instanceof Error ? error.message : String(error) };
+			}
 		}
+
+		return NextResponse.json({ ok: failed.length === 0, pages, updated, failed, searchIndex });
 	}
+
+	after(async () => {
+		for (const lang of langs) {
+			/* Errors are logged and kept for the status endpoint by the rebuild itself. */
+			await rebuildStaticContentSearchIndex(lang).catch(() => {
+				return null;
+			});
+		}
+	});
 
 	return NextResponse.json({
 		ok: failed.length === 0,
 		pages,
 		updated,
 		failed,
-		searchIndex,
+		searchIndex: {
+			state: "building",
+			status: withBasePath("/api/static-content-search/status"),
+		},
 	});
 }

@@ -1,6 +1,5 @@
 ignoredBuiltDependencies:
-  # The CPU binaries are bundled in the package; its install script only downloads CUDA binaries.
-  - onnxruntime-node
+  # A dependency of `onnxruntime-web`; its install script only prints a version check.
   - protobufjs
   - unrs-resolver
 

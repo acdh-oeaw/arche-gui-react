@@ -59,11 +59,6 @@ RUN pnpm run build
 # serve
 FROM node:24-alpine AS serve
 
-# The embedding model of the static content search runs on `onnxruntime-node`, whose binaries are
-# built against glibc. `gcompat` provides the glibc loader (`ld-linux-x86-64.so.2`) and symbols on
-# alpine's musl, `libstdc++` the c++ runtime they link against.
-RUN apk add --no-cache gcompat libstdc++
-
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
 

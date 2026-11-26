@@ -51,6 +51,19 @@ const config: Config = {
 		},
 	},
 	output: env.BUILD_MODE,
+	/**
+	 * The embedding model of the static content search runs on `onnxruntime-web` in a worker thread
+	 * (see `lib/api/EmbeddingModel.ts`). The package stays in `node_modules`, where the worker
+	 * imports it, and its webassembly runtime - loaded by the package at runtime, invisible to the
+	 * file tracing - is added to the standalone output explicitly.
+	 */
+	outputFileTracingIncludes: {
+		"/**": [
+			"./node_modules/.pnpm/onnxruntime-web@*/node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs",
+			"./node_modules/.pnpm/onnxruntime-web@*/node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.wasm",
+		],
+	},
+	serverExternalPackages: ["onnxruntime-web"],
 	reactCompiler: true,
 	// typedRoutes: true,
 	typescript: {

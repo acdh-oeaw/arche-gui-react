@@ -3,8 +3,7 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import { join } from "node:path";
 
-import type { FeatureExtractionPipeline } from "@huggingface/transformers";
-
+import { EMBEDDING_MODEL_ID, embedTexts } from "@/lib/api/EmbeddingModel";
 import { htmlToChunks, type StaticContentChunk } from "@/lib/api/StaticContentChunks";
 import { getStaticContentPages } from "@/lib/api/StaticContentSearchApi";
 import { getStaticPageFromDisk } from "@/lib/api/StaticPagesApi";
@@ -17,16 +16,14 @@ import type { IntlLanguage } from "@/lib/i18n/locales";
  * `/api/static-content` regenerates the pages. A question is turned into a vector the same way, and
  * the chunks whose vectors point in the most similar direction are the answer.
  *
- * The model runs locally in the node.js process (onnx runtime on the cpu), so no external api is
- * called. It is downloaded from the hugging face hub on first use and cached on disk.
+ * The model runs locally in the node.js process (see `EmbeddingModel`), so no external api is
+ * called.
  */
 
-/** @see https://huggingface.co/intfloat/multilingual-e5-small */
-const MODEL_ID = "Xenova/multilingual-e5-small";
-const MODEL_CACHE_DIR = join(process.cwd(), ".cache", "transformers");
+const MODEL_ID = EMBEDDING_MODEL_ID;
 const INDEX_FILE_NAME = "search-index.json";
-const INDEX_VERSION = 1;
-const EMBEDDING_BATCH_SIZE = 16;
+/** Version 3: computed with the webassembly runtime, and with the sentence vectors. */
+const INDEX_VERSION = 3;
 
 /**
  * The e5 scores of unrelated texts are still around 0.78, and good matches are above 0.85. A chunk
@@ -160,62 +157,56 @@ function dot(a: Float32Array, aOffset: number, b: Float32Array, dimensions: numb
 }
 
 /**
- * Picks the sentences of every result which are most similar to the question. All sentences are
- * embedded in one batch, which takes a few dozen milliseconds for five results.
+ * A chunk with its sentences, whose vectors are stored in the index too, so the highlight of a
+ * result needs no model run at search time - on webassembly embedding the sentences of five results
+ * would take seconds.
+ */
+interface IndexedChunk extends StaticContentChunk {
+	/** Empty for a chunk with a single sentence (or a table), which needs no highlight. */
+	sentences: Array<string>;
+	/** Position of the first sentence vector in `sentenceVectors`. */
+	firstSentence: number;
+}
+
+/**
+ * Picks the one or two sentences of a chunk which are most similar to the question.
  *
  * A chunk with a single sentence (or a table without sentence punctuation) gets no highlight, since
  * it would only repeat the passage.
  */
-async function addHighlights(
-	results: Array<Omit<SemanticSearchResult, "highlight">>,
+function getHighlight(
+	chunk: IndexedChunk,
+	sentenceVectors: Float32Array,
 	queryVector: Float32Array,
 	dimensions: number,
-): Promise<Array<SemanticSearchResult>> {
-	const sentencesByResult = results.map((result) => {
-		const sentences = splitSentences(result.text);
-		return sentences.length > 1 ? sentences : [];
+): string | null {
+	if (chunk.sentences.length === 0) return null;
+
+	const scored = chunk.sentences.map((sentence, position) => {
+		const offset = (chunk.firstSentence + position) * dimensions;
+		const score =
+			dot(sentenceVectors, offset, queryVector, dimensions) +
+			(position === 0 ? FIRST_SENTENCE_BONUS : 0);
+		return { sentence, position, score };
 	});
-	const allSentences = sentencesByResult.flat();
-	if (allSentences.length === 0) {
-		return results.map((result) => {
-			return { ...result, highlight: null };
-		});
-	}
 
-	const sentenceVectors = await embed(allSentences, "passage");
-	let sentenceIndex = 0;
-
-	return results.map((result, resultIndex) => {
-		const sentences = sentencesByResult[resultIndex]!;
-		const scored = sentences.map((sentence, position) => {
-			const score =
-				dot(sentenceVectors, sentenceIndex * dimensions, queryVector, dimensions) +
-				(position === 0 ? FIRST_SENTENCE_BONUS : 0);
-			sentenceIndex++;
-			return { sentence, position, score };
-		});
-
-		if (scored.length === 0) return { ...result, highlight: null };
-
-		scored.sort((a, b) => {
-			return b.score - a.score;
-		});
-		const best = scored[0]!.score;
-		const highlight = scored
-			.slice(0, MAX_HIGHLIGHT_SENTENCES)
-			.filter((entry) => {
-				return best - entry.score <= MAX_SECOND_SENTENCE_DISTANCE;
-			})
-			.sort((a, b) => {
-				return a.position - b.position;
-			})
-			.map((entry) => {
-				return entry.sentence;
-			})
-			.join(" ");
-
-		return { ...result, highlight };
+	scored.sort((a, b) => {
+		return b.score - a.score;
 	});
+	const best = scored[0]!.score;
+
+	return scored
+		.slice(0, MAX_HIGHLIGHT_SENTENCES)
+		.filter((entry) => {
+			return best - entry.score <= MAX_SECOND_SENTENCE_DISTANCE;
+		})
+		.sort((a, b) => {
+			return a.position - b.position;
+		})
+		.map((entry) => {
+			return entry.sentence;
+		})
+		.join(" ");
 }
 
 interface StoredIndex {
@@ -223,65 +214,43 @@ interface StoredIndex {
 	model: string;
 	createdAt: string;
 	dimensions: number;
-	chunks: Array<StaticContentChunk>;
-	/** All vectors as one base64 encoded `Float32Array`, `dimensions` values per chunk. */
+	chunks: Array<IndexedChunk>;
+	/** All chunk vectors as one base64 encoded `Float32Array`, `dimensions` values per chunk. */
 	vectors: string;
+	/** All sentence vectors, in the same encoding. */
+	sentenceVectors: string;
 }
 
 interface LoadedIndex {
 	modifiedAt: number;
+	createdAt: string;
 	dimensions: number;
-	chunks: Array<StaticContentChunk>;
+	chunks: Array<IndexedChunk>;
 	vectors: Float32Array;
+	sentenceVectors: Float32Array;
 }
 
-let extractorPromise: Promise<FeatureExtractionPipeline> | null = null;
+function encodeVectors(vectors: Float32Array): string {
+	return Buffer.from(vectors.buffer, vectors.byteOffset, vectors.byteLength).toString("base64");
+}
+
+function decodeVectors(encoded: string): Float32Array {
+	/* Copied into a fresh buffer, because a `Float32Array` view needs a 4 byte aligned offset. */
+	return new Float32Array(new Uint8Array(Buffer.from(encoded, "base64")).buffer);
+}
+
 const loadedIndexes = new Map<IntlLanguage, LoadedIndex>();
-
-function getExtractor(): Promise<FeatureExtractionPipeline> {
-	extractorPromise ??= (async () => {
-		/* Imported lazily, so the onnx runtime is only loaded once the search is actually used. */
-		const { env, pipeline } = await import("@huggingface/transformers");
-		env.cacheDir = MODEL_CACHE_DIR;
-
-		return pipeline("feature-extraction", MODEL_ID, { dtype: "q8", device: "cpu" });
-	})().catch((error: unknown) => {
-		/* Allow a retry on the next request, e.g. after a network error during the download. */
-		extractorPromise = null;
-		throw error;
-	});
-
-	return extractorPromise;
-}
 
 /**
  * The e5 models are trained with these prefixes, which tell the model whether a text is a question
  * or a passage that might answer one.
  */
-async function embed(texts: Array<string>, kind: "query" | "passage"): Promise<Float32Array> {
-	const extractor = await getExtractor();
-	const batches: Array<Float32Array> = [];
-
-	for (let start = 0; start < texts.length; start += EMBEDDING_BATCH_SIZE) {
-		const batch = texts.slice(start, start + EMBEDDING_BATCH_SIZE).map((text) => {
+function embed(texts: Array<string>, kind: "query" | "passage"): Promise<Float32Array> {
+	return embedTexts(
+		texts.map((text) => {
 			return `${kind}: ${text}`;
-		});
-		const output = await extractor(batch, { pooling: "mean", normalize: true });
-		batches.push(output.data as Float32Array);
-	}
-
-	const vectors = new Float32Array(
-		batches.reduce((length, batch) => {
-			return length + batch.length;
-		}, 0),
+		}),
 	);
-	let offset = 0;
-	for (const batch of batches) {
-		vectors.set(batch, offset);
-		offset += batch.length;
-	}
-
-	return vectors;
 }
 
 function getIndexPath(language: IntlLanguage): string {
@@ -292,13 +261,89 @@ function chunkToPassage(chunk: StaticContentChunk): string {
 	return chunk.heading ? `${chunk.heading}: ${chunk.text}` : chunk.text;
 }
 
+export type StaticContentSearchIndexBuild =
+	| { state: "building"; startedAt: string }
+	| { state: "done"; chunks: number; startedAt: string; finishedAt: string }
+	| { state: "failed"; error: string; startedAt: string; finishedAt: string };
+
+/** The last build of each language since the server started. */
+const builds = new Map<IntlLanguage, StaticContentSearchIndexBuild>();
+const runningBuilds = new Map<IntlLanguage, Promise<number>>();
+
 /**
  * Rebuilds the search index of one language from the pages on disk. Called by `/api/static-content`
  * after it wrote the pages, so the index always matches the published content.
  *
+ * Takes a few minutes, because the model runs on webassembly. A build already running for the
+ * language is reused instead of starting a second one.
+ *
  * @returns the number of indexed chunks
  */
-export async function buildStaticContentSearchIndex(language: IntlLanguage): Promise<number> {
+export function rebuildStaticContentSearchIndex(language: IntlLanguage): Promise<number> {
+	const running = runningBuilds.get(language);
+	if (running != null) return running;
+
+	const startedAt = new Date().toISOString();
+	builds.set(language, { state: "building", startedAt });
+
+	const build = buildIndex(language)
+		.then((chunks) => {
+			builds.set(language, {
+				state: "done",
+				chunks,
+				startedAt,
+				finishedAt: new Date().toISOString(),
+			});
+			return chunks;
+		})
+		.catch((error: unknown) => {
+			const message = error instanceof Error ? error.message : String(error);
+			console.error(`Building the ${language} static content search index failed.`, error);
+			builds.set(language, {
+				state: "failed",
+				error: message,
+				startedAt,
+				finishedAt: new Date().toISOString(),
+			});
+			throw error;
+		})
+		.finally(() => {
+			runningBuilds.delete(language);
+		});
+
+	runningBuilds.set(language, build);
+
+	return build;
+}
+
+/** The state of the last index build and of the index file on disk, for each language. */
+export async function getStaticContentSearchIndexStatus(
+	languages: ReadonlyArray<IntlLanguage>,
+): Promise<
+	Record<
+		string,
+		{
+			lastBuild: StaticContentSearchIndexBuild | null;
+			index: { createdAt: string; chunks: number } | null;
+		}
+	>
+> {
+	const entries = await Promise.all(
+		languages.map(async (language) => {
+			const index = await loadIndex(language).catch(() => {
+				return null;
+			});
+			const stored =
+				index == null ? null : { createdAt: index.createdAt, chunks: index.chunks.length };
+
+			return [language, { lastBuild: builds.get(language) ?? null, index: stored }] as const;
+		}),
+	);
+
+	return Object.fromEntries(entries);
+}
+
+async function buildIndex(language: IntlLanguage): Promise<number> {
 	const pages = await Promise.all(
 		getStaticContentPages().map(async (slug) => {
 			const html = await getStaticPageFromDisk(slug, language);
@@ -306,8 +351,25 @@ export async function buildStaticContentSearchIndex(language: IntlLanguage): Pro
 			return html == null ? [] : htmlToChunks(html, slug);
 		}),
 	);
-	const chunks = pages.flat();
+	let sentenceCount = 0;
+	const chunks: Array<IndexedChunk> = pages.flat().map((chunk) => {
+		const sentences = splitSentences(chunk.text);
+		const indexed = {
+			...chunk,
+			sentences: sentences.length > 1 ? sentences : [],
+			firstSentence: sentenceCount,
+		};
+		sentenceCount += indexed.sentences.length;
+		return indexed;
+	});
+
 	const vectors = await embed(chunks.map(chunkToPassage), "passage");
+	const sentenceVectors = await embed(
+		chunks.flatMap((chunk) => {
+			return chunk.sentences;
+		}),
+		"passage",
+	);
 
 	const index: StoredIndex = {
 		version: INDEX_VERSION,
@@ -315,7 +377,8 @@ export async function buildStaticContentSearchIndex(language: IntlLanguage): Pro
 		createdAt: new Date().toISOString(),
 		dimensions: chunks.length > 0 ? vectors.length / chunks.length : 0,
 		chunks,
-		vectors: Buffer.from(vectors.buffer, vectors.byteOffset, vectors.byteLength).toString("base64"),
+		vectors: encodeVectors(vectors),
+		sentenceVectors: encodeVectors(sentenceVectors),
 	};
 
 	await fs.writeFile(getIndexPath(language), JSON.stringify(index), "utf8");
@@ -341,13 +404,13 @@ async function loadIndex(language: IntlLanguage): Promise<LoadedIndex | null> {
 	const stored = JSON.parse(await fs.readFile(path, "utf8")) as StoredIndex;
 	if (stored.version !== INDEX_VERSION || stored.model !== MODEL_ID) return null;
 
-	const bytes = Buffer.from(stored.vectors, "base64");
 	const index: LoadedIndex = {
 		modifiedAt,
+		createdAt: stored.createdAt,
 		dimensions: stored.dimensions,
 		chunks: stored.chunks,
-		/* Copied into a fresh buffer, because a `Float32Array` view needs a 4 byte aligned offset. */
-		vectors: new Float32Array(new Uint8Array(bytes).buffer),
+		vectors: decodeVectors(stored.vectors),
+		sentenceVectors: decodeVectors(stored.sentenceVectors),
 	};
 	loadedIndexes.set(language, index);
 
@@ -390,26 +453,38 @@ export async function semanticSearchStaticContent(
 			return b.score - a.score;
 		});
 
-		const results: Array<Omit<SemanticSearchResult, "highlight">> = [];
+		const results: Array<SemanticSearchResult> = [];
 		const countBySlug = new Map<string, number>();
 		const bestScore =
 			scored.find((result) => {
 				return result.similarity >= MIN_SCORE;
 			})?.score ?? 0;
 
-		for (const { similarity, ...result } of scored) {
+		for (const result of scored) {
 			if (results.length >= limit) break;
 			/* Relevance is decided by meaning alone, the keyword bonus only reorders. */
-			if (similarity < MIN_SCORE || result.score < bestScore - MAX_DISTANCE_TO_BEST) continue;
+			if (result.similarity < MIN_SCORE || result.score < bestScore - MAX_DISTANCE_TO_BEST) {
+				continue;
+			}
 
 			const count = countBySlug.get(result.slug) ?? 0;
 			if (count >= MAX_RESULTS_PER_PAGE) continue;
 
 			countBySlug.set(result.slug, count + 1);
-			results.push(result);
+
+			const {
+				similarity: _similarity,
+				sentences: _sentences,
+				firstSentence: _first,
+				...chunk
+			} = result;
+			results.push({
+				...chunk,
+				highlight: getHighlight(result, index.sentenceVectors, queryVector, dimensions),
+			});
 		}
 
-		return await addHighlights(results, queryVector, dimensions);
+		return results;
 	} catch (error) {
 		console.error("Semantic search is unavailable, falling back to the text search.", error);
 
