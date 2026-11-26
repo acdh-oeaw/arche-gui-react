@@ -87,7 +87,11 @@ export default async function SearchPage(props: Readonly<SearchPageProps>): Prom
 
 	return (
 		<MainContent className="main-content-bleed content-start bg-white">
-			<section className="container-w980 white-container mt-[50px] mb-[70px]">
+			{/* Light theme only, also when the os is in dark mode, like the chat */}
+			<section
+				className="container-w980 white-container mt-[50px] mb-[70px]"
+				data-ui-color-scheme="light"
+			>
 				<h1 className="mb-2 text-3xl font-bold">{t("title")}</h1>
 				{/* `div` instead of `p`, because the unlayered global `p` rule in `arche.css` overrides the utilities */}
 				<div className="mb-6 text-text-weak">{tAssistant("intro")}</div>

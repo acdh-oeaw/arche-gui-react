@@ -40,6 +40,8 @@ export function ScrollToTopButton(): ReactNode {
 				"fixed right-4 bottom-4 z-9 rounded-full! bg-arche-acc-dark-blue! shadow-overlay transition duration-200 ease-out motion-reduce:transition-none md:right-6 md:bottom-6",
 				isVisible ? "translate-y-0 opacity-100" : "invisible translate-y-2 opacity-0",
 			)}
+			/* Light theme only, like the chat button next to it, also when the os is in dark mode. */
+			data-ui-color-scheme="light"
 			label={t("label")}
 			onPress={() => {
 				const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

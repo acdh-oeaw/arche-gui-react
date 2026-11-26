@@ -130,12 +130,18 @@ export function StaticContentAssistant(): ReactNode {
 
 	return (
 		<DrawerTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
-			{/* Hidden while the panel is open; it stays in the dom so focus returns to it on close */}
+			{/*
+			 * Hidden while the panel is open; it stays in the dom so focus returns to it on close.
+			 *
+			 * The chat is designed for the light theme only, so the button and the panel pin the theme
+			 * tokens to their light values even when the os is in dark mode.
+			 */}
 			<div
 				className={cn(
 					"group fixed right-4 bottom-20 z-30 md:right-6 md:bottom-22",
 					isOpen && "invisible",
 				)}
+				data-ui-color-scheme="light"
 			>
 				{/*
 				 * Slides in on hover and on keyboard focus. Only visual - screen readers get the same
@@ -158,7 +164,7 @@ export function StaticContentAssistant(): ReactNode {
 				</IconButton>
 			</div>
 
-			<ModalOverlay isDismissable={true}>
+			<ModalOverlay data-ui-color-scheme="light" isDismissable={true}>
 				<Modal placement="right" size="large">
 					<Drawer aria-label={t("title")}>
 						{({ close }) => {
